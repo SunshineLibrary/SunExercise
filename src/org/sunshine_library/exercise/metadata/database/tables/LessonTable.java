@@ -3,7 +3,7 @@ package org.sunshine_library.exercise.metadata.database.tables;
 import org.sunshine_library.exercise.metadata.database.DBHandler;
 
 import static org.sunshine_library.exercise.metadata.MetadataContract.Lessons;
-import static org.sunshine_library.exercise.metadata.MetadataContract.Stages;
+import static org.sunshine_library.exercise.metadata.MetadataContract.Subjects;
 
 public class LessonTable extends MenuWithForeignKeyTable {
     public static final String TABLE_NAME = "lessons";
@@ -34,12 +34,12 @@ public class LessonTable extends MenuWithForeignKeyTable {
 
     @Override
     protected String getForeignKey() {
-        return Stages._IDENTIFIER;
+        return Subjects._IDENTIFIER;
     }
 
     @Override
     protected String getParentTableName() {
-        return StageTable.TABLE_NAME;
+        return SubjectTable.TABLE_NAME;
     }
 
     @Override
