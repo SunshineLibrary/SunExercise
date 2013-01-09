@@ -10,7 +10,7 @@ public class StageTable extends MenuWithForeignKeyTable {
 
     public static final String[] ALL_COLUMNS = {
             Stages._IDENTIFIER,
-            Stages._PARENT_ID,
+            Stages._PARENT_IDENTIFIER,
             Stages._SEQUENCE,
             Stages._TYPE,
             Stages._NAME,
@@ -20,7 +20,7 @@ public class StageTable extends MenuWithForeignKeyTable {
 
     public static final String[][] COLUMN_DEFINITIONS = {
             {Stages._IDENTIFIER, "TEXT PRIMARY KEY"},
-            {Stages._PARENT_ID, "TEXT NOT NULL"},
+            {Stages._PARENT_IDENTIFIER, "TEXT NOT NULL"},
             {Stages._SEQUENCE, "INTEGER"},
             {Stages._TYPE, "INTEGER"},
             {Stages._NAME, "TEXT"},
@@ -44,6 +44,6 @@ public class StageTable extends MenuWithForeignKeyTable {
 
     @Override
     protected String getForeignKeyColumn() {
-        return Stages._PARENT_ID;
+        return Stages._PARENT_IDENTIFIER;
     }
 }
