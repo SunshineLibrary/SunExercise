@@ -10,7 +10,7 @@ public class SectionTable extends MenuWithForeignKeyTable {
 
     private static final String[] ALL_COLUMNS = {
             Sections._IDENTIFIER,
-            Sections._PARENT_ID,
+            Sections._PARENT_IDENTIFIER,
             Sections._SEQUENCE,
             Sections._NAME,
             Sections._USER_PROGRESS
@@ -18,7 +18,7 @@ public class SectionTable extends MenuWithForeignKeyTable {
 
     private static final String[][] COLUMN_DEFINITIONS = {
             {Sections._IDENTIFIER, "TEXT PRIMARY KEY"},
-            {Sections._PARENT_ID, "TEXT NOT NULL"},
+            {Sections._PARENT_IDENTIFIER, "TEXT NOT NULL"},
             {Sections._SEQUENCE, "INTEGER"},
             {Sections._NAME, "TEXT"},
             {Sections._USER_PROGRESS, "INTEGER"}
@@ -41,6 +41,6 @@ public class SectionTable extends MenuWithForeignKeyTable {
 
     @Override
     protected String getForeignKeyColumn() {
-        return Sections._PARENT_ID;
+        return Sections._PARENT_IDENTIFIER;
     }
 }

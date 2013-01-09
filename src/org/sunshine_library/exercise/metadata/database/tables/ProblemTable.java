@@ -11,7 +11,7 @@ public class ProblemTable extends MenuWithForeignKeyTable {
 
     public static final String[] ALL_COLUMNS = {
             Problems._IDENTIFIER,
-            Problems._PARENT_ID,
+            Problems._PARENT_IDENTIFIER,
             Problems._SEQUENCE,
             Problems._TYPE,
             Problems._BODY,
@@ -22,7 +22,7 @@ public class ProblemTable extends MenuWithForeignKeyTable {
 
     public static final String[][] COLUMN_DEFINITIONS = {
             {Problems._IDENTIFIER, "TEXT PRIMARY KEY"},
-            {Problems._PARENT_ID, "TEXT NOT NULL"},
+            {Problems._PARENT_IDENTIFIER, "TEXT NOT NULL"},
             {Problems._SEQUENCE, "INTEGER"},
             {Problems._TYPE, "INTEGER"},
             {Problems._BODY, "TEXT"},
@@ -47,6 +47,6 @@ public class ProblemTable extends MenuWithForeignKeyTable {
 
     @Override
     protected String getForeignKeyColumn() {
-        return Problems._PARENT_ID;
+        return Problems._PARENT_IDENTIFIER;
     }
 }
