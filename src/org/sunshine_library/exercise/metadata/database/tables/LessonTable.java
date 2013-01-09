@@ -10,7 +10,7 @@ public class LessonTable extends MenuWithForeignKeyTable {
 
     private static final String[] ALL_COLUMNS = {
             Lessons._IDENTIFIER,
-            Lessons._PARENT_ID,
+            Lessons._PARENT_IDENTIFIER,
             Lessons._NAME,
             Lessons._TIME,
             Lessons._USER_PROGRESS,
@@ -20,7 +20,7 @@ public class LessonTable extends MenuWithForeignKeyTable {
 
     private static final String[][] COLUMN_DEFINITIONS = {
             {Lessons._IDENTIFIER, "TEXT PRIMARY KEY"},
-            {Lessons._PARENT_ID, "TEXT NOT NULL"},
+            {Lessons._PARENT_IDENTIFIER, "TEXT NOT NULL"},
             {Lessons._NAME, "TEXT"},
             {Lessons._TIME, "INTEGER"},
             {Lessons._USER_PROGRESS, "TEXT"},
@@ -44,6 +44,6 @@ public class LessonTable extends MenuWithForeignKeyTable {
 
     @Override
     protected String getForeignKeyColumn() {
-        return Lessons._PARENT_ID;
+        return Lessons._PARENT_IDENTIFIER;
     }
 }

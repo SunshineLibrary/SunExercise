@@ -10,7 +10,7 @@ public class ActivityTable extends MenuWithForeignKeyTable {
 
     public static final String[] ALL_COLUMNS = {
             Activities._IDENTIFIER,
-            Activities._PARENT_ID,
+            Activities._PARENT_IDENTIFIER,
             Activities._SEQUENCE,
             Activities._TYPE,
             Activities._NAME,
@@ -24,7 +24,7 @@ public class ActivityTable extends MenuWithForeignKeyTable {
 
     public static final String[][] COLUMN_DEFINITIONS = {
             {Activities._IDENTIFIER, "INTEGER PRIMARY KEY"},
-            {Activities._PARENT_ID, "TEXT NOT NULL"},
+            {Activities._PARENT_IDENTIFIER, "TEXT NOT NULL"},
             {Activities._SEQUENCE, "INTEGER"},
             {Activities._TYPE, "INTEGER"},
             {Activities._NAME, "TEXT"},
@@ -52,6 +52,6 @@ public class ActivityTable extends MenuWithForeignKeyTable {
 
     @Override
     protected String getForeignKeyColumn() {
-        return Activities._PARENT_ID;
+        return Activities._PARENT_IDENTIFIER;
     }
 }
