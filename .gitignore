@@ -20,7 +20,7 @@ local.properties
 .project
 
 # IntelliJ project files
-.iml
+*.iml
 
 # MAC OS Finder files
 .DS_Store
