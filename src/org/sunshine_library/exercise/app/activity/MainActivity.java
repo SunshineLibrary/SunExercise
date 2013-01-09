@@ -1,7 +1,8 @@
-package org.sunshine_library.exercise;
+package org.sunshine_library.exercise.app.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import org.sunshine_library.exercise.R;
 
 public class MainActivity extends Activity {
     /**
