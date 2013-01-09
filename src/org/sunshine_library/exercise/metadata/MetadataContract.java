@@ -31,9 +31,21 @@ public class MetadataContract {
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("subjects").build();
     }
 
-    public static final class Stages {
+    public static final class Lessons {
         public static final String _IDENTIFIER = Columns._IDENTIFIER;
         public static final String _PARENT_IDENTIFIER = "subject_identifier";
+        public static final String _NAME = Columns._NAME;
+        public static final String _TIME = "time";
+        public static final String _USER_PROGRESS = Columns._USER_PROGRESS;
+        public static final String _USER_PERCENTAGE = "user_percentage";
+        public static final String _USER_RESULT = Columns._USER_RESULT;
+
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("lessons").build();
+    }
+
+    public static final class Stages {
+        public static final String _IDENTIFIER = Columns._IDENTIFIER;
+        public static final String _PARENT_IDENTIFIER = "lesson_identifier";
         public static final String _SEQUENCE = Columns._SEQUENCE;
         public static final String _TYPE = "stage_type";
         public static final String _NAME = Columns._NAME;
@@ -48,24 +60,12 @@ public class MetadataContract {
 
     public static final class Sections {
         public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _PARENT_IDENTIFIER = "lesson_identifier";
+        public static final String _PARENT_IDENTIFIER = "stage_identifier";
         public static final String _SEQUENCE = Columns._SEQUENCE;
         public static final String _NAME = Columns._NAME;
         public static final String _USER_PROGRESS = Columns._USER_PROGRESS;
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("sections").build();
-    }
-
-    public static final class Lessons {
-        public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _PARENT_IDENTIFIER = "stage_identifier";
-        public static final String _NAME = Columns._NAME;
-        public static final String _TIME = "time";
-        public static final String _USER_PROGRESS = Columns._USER_PROGRESS;
-        public static final String _USER_PERCENTAGE = "user_percentage";
-        public static final String _USER_RESULT = Columns._USER_RESULT;
-
-        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("lessons").build();
     }
 
     public static final class Activities {
