@@ -10,7 +10,9 @@ jQuery(function($) {
     }
 
     showLessons = function(str) {
+		//alert(str);//这里是拿到所有的
         var lessons = new Lessons(JSON.parse(str));
+		//alert(lessons.length);
         var container = $("#lessons");
         container.empty();
 
@@ -20,8 +22,9 @@ jQuery(function($) {
 	        });
 	
 	        var keys = Object.keys(lessonGroups);
+			alert(keys.length);
 	
-	        for (var i = keys.length - 1; i-- ; i>=0) {
+	        for (var i = keys.length; i-- ; i>=1) {
 	            var key = keys[i]
 	            var month_lessons = new Lessons(lessonGroups[key]);
 	            var lessonsView = new MonthLessonsView({
