@@ -24,3 +24,6 @@ local.properties
 
 # MAC OS Finder files
 .DS_Store
+
+# Generated asset files
+._*
