@@ -1,87 +1,93 @@
-.shape{
-			
-		}
-        .circle{
-            border-radius:50%;
-			border:1px solid gray;
-			position:absolute;
-			background:white;
-			width:158px;
-			height:158px;
-			left:-80px;
-			top:-80px;
-			-webkit-transition: width 500ms, height 500ms, left 500ms, top 500ms;
-        }
-		.circle.right{
-			left:200px;
-		}
-        .circle div{
-			text-align:center;
-			margin:0 20px;
-			-webkit-transition: font-size 500ms, margin 500ms;
-		}
-		.circle div.circle-id{
-			margin-top:35px;
-			font-size:250%;
-		}
-		.circle div.circle-title{
-			margin-top:15px;
-			font-size:150%;
-		}
-		.circle div.circle-desc{
-			margin-top:15px;
-			color:gray;
-		}
-		.circle.active{
-			width:198px;
-			height:198px;
-			left:-100px;
-			top:-100px;
-		}
-		.circle.right.active{
-			left:180px;
-		}
-		.circle.active div{
-			text-align:center;
-			margin:0 25px;
-		}
-		.circle.active div.circle-id{
-			margin-top:44px;
-			font-size:315%;
-		}
-		.circle.active div.circle-title{
-			margin-top:19px;
-			font-size:190%;
-		}
-		.circle.active div.circle-desc{
-			margin-top:18.75px;
-			color:gray;
-			font-size:125%;
-		}		
-		#intro-container{
-            position:fixed;
-            left:0;
-            top:0;
-            right:0;
-            bottom:0;
-        }		
-		#intro-marginer{
-			margin:0 auto;
-			width:0px;
-			height:100px;
-			margin-top:200px;
-			overflow:visible;
-			position:relative;
-		}
-		#intro-circles{
-			-webkit-transition: left 500ms;
-			left:0px;
-			position:relative;
-		}
-		#intro-circles.second{
-			left:-280px;
-		}
-		button{
-			position:absolute;
-			z-index:1;
-		}
+
+.circle{
+	border-radius:50%;
+	border:1px solid gray;
+	position:absolute;
+	background:white;
+	width:158px;
+	height:158px;
+	left:-80px;
+	top:-80px;
+	-webkit-transition: width 500ms, height 500ms, left 500ms, top 500ms;
+}
+.circle.right{
+	left:200px;
+}
+.circle.lock{
+	background:#f2f2f2 url(../images/lock.png) no-repeat center;
+	-webkit-transition:opacity 500ms 500ms;
+	opacity:1;
+}
+.second .circle.lock{
+	opacity:0;
+}
+.circle div{
+	text-align:center;
+	margin:0 20px;
+	-webkit-transition: font-size 500ms, margin 500ms;
+}
+.circle div.circle-id{
+	margin-top:35px;
+	font-size:250%;
+}
+.circle div.circle-title{
+	margin-top:15px;
+	font-size:150%;
+}
+.circle div.circle-desc{
+	margin-top:15px;
+	color:gray;
+}
+.circle.active{
+	width:198px;
+	height:198px;
+	left:-100px;
+	top:-100px;
+}
+.circle.right.active{
+	left:180px;
+}
+.circle.active div{
+	text-align:center;
+	margin:0 25px;
+}
+.circle.active div.circle-id{
+	margin-top:44px;
+	font-size:315%;
+}
+.circle.active div.circle-title{
+	margin-top:19px;
+	font-size:190%;
+}
+.circle.active div.circle-desc{
+	margin-top:18.75px;
+	color:gray;
+	font-size:125%;
+}		
+#intro-container{
+	position:fixed;
+	left:0;
+	top:0;
+	right:0;
+	bottom:0;
+}		
+#intro-marginer{
+	margin:0 auto;
+	width:0px;
+	height:100px;
+	margin-top:200px;
+	overflow:visible;
+	position:relative;
+}
+#intro-circles{
+	-webkit-transition: left 500ms;
+	left:0px;
+	position:relative;
+}
+#intro-circles.second{
+	left:-280px;
+}
+button{
+	position:absolute;
+	z-index:1;
+}
