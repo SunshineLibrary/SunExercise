@@ -21,7 +21,7 @@ jQuery(function($) {
 	
 	        var keys = Object.keys(lessonGroups);
 	
-	        for (var i = keys.length - 1; i-- ; i>=0) {
+	        for (var i = keys.length; i-- ; i>=1) {
 	            var key = keys[i]
 	            var month_lessons = new Lessons(lessonGroups[key]);
 	            var lessonsView = new MonthLessonsView({
