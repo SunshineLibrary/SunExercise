@@ -1,0 +1,98 @@
+<head>
+    <title>Exercise</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <style>
+        body {
+            padding-top: 60px;
+        }
+    </style>
+    <link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+    <link href="stylesheets/exercise.css" rel="stylesheet" media="screen">
+</head>
+<body>
+    <div class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+            <div class="container">
+                <span class="brand">这里是进度条（练习）</span>
+            </div>
+        </div>
+        
+    </div>
+	
+    <div class="container" id="problem">
+ 		<!--<div class="problem">
+            1. 下列式子中属于单项式的是
+			<span class="problem_type">&nbsp;&nbsp;(单选题)</span>
+        </div>-->
+    </div>
+	<br/>
+	<div class="container" id="choices">
+		<div class="radio">
+            <input type="radio" name="optionsRadios" id="choice1" >
+				<label class="raido_label" for="choice1">
+					a + 1
+				</label>
+		</div>
+		<div class="radio">
+            <input type="radio" name="optionsRadios" id="choice2" >
+				<label class="raido_label" for="choice2">
+					x = 4
+				</label>
+		</div>
+		<div class="radio">
+            <input type="radio" name="optionsRadios" id="choice3">
+				<label class="raido_label" for="choice3">
+					axy
+				</label>
+		</div>
+	</div>
+	
+	<div class="foot">
+		<div>
+			
+		</div>
+		<div class="button_next" id="submit">
+			<button class="btn btn-large" type="button" >
+				确定
+			</button>
+		</div>
+	</div>
+	
+    <script type="text/template" id="problem_template">
+            <%=seq%>. <%=body%>
+			<span class="problem_type">&nbsp;&nbsp;(<%=type%>)</span>
+    </script>
+	
+	<script type="text/template" id="choice_template">
+		<div class="radio">
+			<input type="radio" name="optionsRadios" id="<%=choice_id%>">
+				<label class="raido_label" for="<%=choice_id%>">
+					<%=body%>
+				</label>
+		</div>
+	</script>
+	
+	<script type="text/template" id="submit_template">
+		<div class="button_next">
+			<button class="btn btn-large" type="button" >
+				<%=buttonText%>
+			</button>
+		</div>
+	</script>
+	
+
+    <script src="javascripts/libs/jquery-1.8.3.js"></script>
+    <script src="javascripts/libs/underscore.js"></script>
+    <script src="javascripts/libs/backbone.js"></script>
+    <script src="bootstrap/js/bootstrap.js"></script>
+
+    <script src="sun.js" charset="utf-8"></script>
+    <script src="javascripts/templates/exercise.js"></script>
+    <script src="javascripts/models/exercise.js"></script>
+    <script src="javascripts/views/exercise.js"></script>
+    <script src="javascripts/controllers/exercise.js"></script>
+
+</body>
+</html>

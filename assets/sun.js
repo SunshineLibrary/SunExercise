@@ -25,7 +25,28 @@ jQuery(function($) {
         ],
         []
     ]
-
+	
+	var problems = [
+		[
+			{ seq: 1, body: "下列式子中属于单项式的是", type: 0}
+		],
+		[
+			{ seq: 2, body: "下列式子中不属于单项式的是", type: 0}
+		]
+	]
+	
+	var choices = [
+		[
+			{ seq: 1, body: "a + 1", answer: 1},
+			{ seq: 2, body: "x = 4", answer: 0},
+			{ seq: 3, body: "abc", answer: 0}
+		],
+		[
+			{ seq: 1, body: "a + 1", answer: 0},
+			{ seq: 2, body: "x - 4", answer: 0},
+			{ seq: 3, body: "abc", answer: 1}
+		]
+	]
 
     Sun = {
         fetchSubjects: function(method) {
@@ -34,6 +55,14 @@ jQuery(function($) {
         fetchLessons: function(method, id) {
             eval(method)(JSON.stringify(lessons[id-1]));
         },
+		fetchProblem: function(method) {
+            eval(method)(JSON.stringify(problems[0]));
+        },
+		fetchChoices: function(method, seq) {
+            eval(method)(JSON.stringify(choices[seq-1]));
+        },
     }
+	
+	
 });
 
