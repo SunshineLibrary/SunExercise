@@ -32,7 +32,7 @@ jQuery(function($) {
 		
 		showProblem: function(seq) {
             Sun.fetchProblem("showProblem", seq);
-			//Sun.fetchChoices("showChoices", seq);
+			Sun.fetchChoices("showChoices", seq);
         }
     });
 

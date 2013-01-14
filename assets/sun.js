@@ -28,14 +28,14 @@ jQuery(function($) {
 	
 	var choices = [
 		[
-			{ id: choice1, seq: 1, body: "a + 1", answer: 1},
-			{ id: choice2, seq: 2, body: "x = 4", answer: 0},
-			{ id: choice3, seq: 3, body: "abc", answer: 0}
+			{ id: "choice1", seq: 1, body: "a + 1", answer: 1},
+			{ id: "choice2", seq: 2, body: "x = 4", answer: 0},
+			{ id: "choice3", seq: 3, body: "abc", answer: 0}
 		],
 		[
-			{ id: choice1, seq: 1, body: "a + 1", answer: 0},
-			{ id: choice2, seq: 2, body: "x - 4", answer: 0},
-			{ id: choice3, seq: 3, body: "abc", answer: 1}
+			{ id: "choice1", seq: 1, body: "a + 1", answer: 0},
+			{ id: "choice2", seq: 2, body: "x - 4", answer: 0},
+			{ id: "choice3", seq: 3, body: "abc", answer: 1}
 		]
 	]
 	
