@@ -5,11 +5,20 @@ jQuery(function($) {
         var container = $("#problem");
         var problemView = new ProblemView({
 			model: problem,
-			el: $("#problem")
+			container: container
 		});
         problemView.render();
     }
-
+	
+	showChoices = function(str) {
+		var choices = new Choices(JSON.parse(str));
+		var container = $("#choices");
+		var choicesView = new ChoicesView({
+			collection: choices,
+			container: container
+		});
+		choicesView.render();
+	}
 
     IndexPage = Backbone.Router.extend({
         routes: {
@@ -17,8 +26,13 @@ jQuery(function($) {
         },
 
         initPage: function() {
-			//showProblem();
-            Sun.fetchProblem("showProblem");
+            Sun.fetchProblem("showProblem", 1);
+			Sun.fetchChoices("showChoices", 1);
+        },
+		
+		showProblem: function(seq) {
+            Sun.fetchProblem("showProblem", seq);
+			//Sun.fetchChoices("showChoices", seq);
         }
     });
 

@@ -22,10 +22,6 @@
     </div>
 	
     <div class="container" id="problem">
- 		<!--<div class="problem">
-            1. 下列式子中属于单项式的是
-			<span class="problem_type">&nbsp;&nbsp;(单选题)</span>
-        </div>-->
     </div>
 	<br/>
 	<div class="container" id="choices">
@@ -61,8 +57,10 @@
 	</div>
 	
     <script type="text/template" id="problem_template">
+		<div class = "problem">
             <%=seq%>. <%=body%>
 			<span class="problem_type">&nbsp;&nbsp;(<%=type%>)</span>
+		</div>
     </script>
 	
 	<script type="text/template" id="choice_template">
