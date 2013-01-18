@@ -1,5 +1,16 @@
 jQuery(function($) {
     var classNames=["nth1","nth2","nth3"];
+    var refineData=function(data){
+        if(data[0]){	
+            if(!data[0].name)data[0].name="基础巩固";
+            if(!data[0].body)data[0].body="30-60分钟复习新学的知识点";
+        }
+        if(data[1]){
+            if(!data[1].name)data[1].name="融会贯通";
+            if(!data[1].body)data[1].body="你解锁了扩展练习题";
+        }
+        return data;
+    }
     var moveToStep=function(step){
         var index = step-1;
         for(var i=0;i< classNames.length;i++){
@@ -28,7 +39,7 @@ jQuery(function($) {
             }
         }else{
             Sun.fetchStages(function(str){
-                var stages = new Stages(JSON.parse(str));
+                var stages = new Stages(refineData(JSON.parse(str)));
                 var currentId = container.attr("data_id");
                 var stagesView = new StagesView({
                     model: stages,
