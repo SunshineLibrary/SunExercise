@@ -1,13 +1,15 @@
 jQuery(function($) {
     var classNames=["nth1","nth2","nth3"];
     var refineData=function(data){
-        if(data[0]){	
-            if(!data[0].name)data[0].name="基础巩固";
-            if(!data[0].body)data[0].body="30-60分钟复习新学的知识点";
-        }
-        if(data[1]){
-            if(!data[1].name)data[1].name="融会贯通";
-            if(!data[1].body)data[1].body="你解锁了扩展练习题";
+        data = data.sort(function(a,b){return a.seq>b.seq;});
+        for(var i in data){
+            if(data[i].type==1){
+                if(!data[i].name)data[i].name="基础巩固";
+                if(!data[i].body)data[i].body="30-60分钟复习新学的知识点";                
+            }else if(data[i].type==2){
+                if(!data[1].name)data[1].name="融会贯通";
+                if(!data[1].body)data[1].body="你解锁了扩展练习题";
+            }        
         }
         return data;
     }

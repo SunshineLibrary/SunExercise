@@ -29,19 +29,19 @@ jQuery(function($) {
     ]
     var stages =
     {301:[
-            {
-                "id": "stage1",
-                "seq": 1,
-                "type": 1,
-                "user_percentage": 0.5,
-                "user_progress": "section1"
-            },
+            
             {
                 "id": "stage2",
                 "seq": 2,
                 "type": 2,
                 "user_percentage": 0,
                 "user_progress": ""
+            },{
+                "id": "stage1",
+                "seq": 1,
+                "type": 1,
+                "user_percentage": 0.5,
+                "user_progress": "section1"
             }
          ],302:[
                   {
