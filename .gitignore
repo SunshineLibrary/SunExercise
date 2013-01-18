@@ -21,6 +21,7 @@ local.properties
 
 # IntelliJ project files
 *.iml
+.idea
 
 # MAC OS Finder files
 .DS_Store
