@@ -1,7 +1,16 @@
 jQuery(function($) {
     
 	var PTYPE = ["选择题", "判断题"]
+	
 	Problem = Backbone.Model.extend({
+		initialize: function(options) {
+            this.set({
+                type: PTYPE[options.type]
+            })
+        }
+	});
+	
+	/* Problem = Backbone.Model.extend({
 		initialize: function(options) {
 			obj = options[0];
             this.set({
@@ -10,19 +19,18 @@ jQuery(function($) {
                 type: PTYPE[obj.type]
             })
         }
-	});
+	}); */
 	
-	Choice = Backbone.Model.extend({
-		initialize: function(options) {
-            this.set({
-                body: options.body,
-                choice_id: options.id
-            })
-        }
-	});
+	Choice = Backbone.Model.extend();
 	
 	Choices = Backbone.Collection.extend({
         model: Choice
+    });
+	
+	Dialog = Backbone.Model.extend();
+	
+	Dialogs = Backbone.Collection.extend({
+        model: Dialog
     });
 	
 });

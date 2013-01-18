@@ -26,26 +26,41 @@ jQuery(function($) {
         []
     ]
 	
-	var choices = [
-		[
-			{ id: "choice1", seq: 1, body: "a + 1", answer: 1},
-			{ id: "choice2", seq: 2, body: "x = 4", answer: 0},
-			{ id: "choice3", seq: 3, body: "abc", answer: 0}
-		],
-		[
-			{ id: "choice1", seq: 1, body: "a + 1", answer: 0},
-			{ id: "choice2", seq: 2, body: "x - 4", answer: 0},
-			{ id: "choice3", seq: 3, body: "abc", answer: 1}
-		]
+	var dialogs = [
+		{type: 0, count: 3, 
+			array: 
+			[
+				{body: "%s, 你做对了，真棒！"},
+				{body: "%s,太厉害了！"},
+				{body:"%s,干得好！"}
+			]
+		},
+		{type: 1, count: 1, 
+			array: 
+			[
+				{body: "%s, 做错啦，请认真复习！"}
+			]
+		}
 	]
 	
-	var problem = [
-		[
-			{ seq: 1, body: "下列式子中属于单项式的是", type: 0}
-		],
-		[
-			{ seq: 2, body: "下列式子中不属于单项式的是", type: 1}
-		]
+	var problems = [
+		
+			{ id:"problem1", seq: 1, body: "下列式子中属于单项式的是", type: 0, 
+				choices:
+				[
+					{ id: "choice1", seq: 1, body: "a + 1", answer: 1},
+					{ id: "choice2", seq: 2, body: "x = 4", answer: 0},
+					{ id: "choice3", seq: 3, body: "abc", answer: 0}
+				]
+			},
+			{ id:"problem2", seq: 2, body: "下列式子中不属于单项式的是", type: 1,
+				choices:
+				[
+					{ id: "choice1", seq: 1, body: "a + 1", answer: 0},
+					{ id: "choice2", seq: 2, body: "x - 4", answer: 0},
+					{ id: "choice3", seq: 3, body: "abc", answer: 1}
+				]
+			}
 	]
 	
 	
@@ -58,10 +73,10 @@ jQuery(function($) {
             eval(method)(JSON.stringify(lessons[id-1]));
         },
 		fetchProblem: function(method, seq) {
-            eval(method)(JSON.stringify(problem[seq-1]));
+            eval(method)(JSON.stringify(problems[seq-1]));
         },
-		fetchChoices: function(method, seq) {
-            eval(method)(JSON.stringify(choices[seq-1]));
+		fetchDialogs: function(method, seq) {
+            eval(method)(JSON.stringify(dialogs));
         },
     }
 	

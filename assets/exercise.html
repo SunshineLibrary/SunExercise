@@ -45,13 +45,13 @@
 		</div> -->
 	</div>
 	
-	<div class="foot">
-		<div>
-			
+	<div class="foot" id="footer">
+		<div class="foot_dialog">
+			<span class="foot_span" id="dialog"></span><span class = "foot_span_answer_tip" id="answer_tip"></span>
 		</div>
 		<div class="button_next" id="submit">
-			<button class="btn btn-large" type="button" >
-				确定
+			<button class="btn btn-large" type="button" id="button_next">
+				<%=buttonText%>
 			</button>
 		</div>
 	</div>
@@ -65,16 +65,19 @@
 	
 	<script type="text/template" id="choice_template">
 		<div class="radio">
-			<input type="radio" name="optionsRadios" id="<%=choice_id%>">
-				<label class="raido_label" for="<%=choice_id%>">
+			<input type="radio" name="optionsRadios" id="<%=id%>">
+				<label class="raido_label" for="<%=id%>">
 					<%=body%>
 				</label>
 		</div>
 	</script>
 	
-	<script type="text/template" id="submit_template">
-		<div class="button_next">
-			<button class="btn btn-large" type="button" >
+	<script type="text/template" id="footer_template">
+		<div class="foot_dialog">
+			<span class="foot_span" id="dialog"><%=body%></span><span class = "foot_span_answer_tip" id="answer_tip"></span>
+		</div>
+		<div class="button_next" id="submit">
+			<button class="btn btn-large" type="button" id="button_next">
 				<%=buttonText%>
 			</button>
 		</div>

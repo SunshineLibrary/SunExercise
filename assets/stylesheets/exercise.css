@@ -12,7 +12,7 @@ div.radio{
 
 div.radio label.raido_label{
 	padding-left: 2em; 
-	padding-top: 0.5 em;
+	padding-top: 0.5em;
 	height: 2em;
 	font-size: 18px;
 	background-image: url(../images/exercise_choice_back.png);
@@ -35,18 +35,24 @@ div.radio input[type=radio]:checked + label{
 div.foot{
 	position:fixed;
 	bottom: 0;
-	height: 4 em;
+	height: 4em;
 	width: 100%; 
 	background-color: #F5F5F5;
 	
 }
 
-div.button_next {
-	float: right;
+div.foot div.foot_dialog {
+	float: left;
+	line-height: 4em;
+	padding-left: 2em;
+}
+
+span.foot_span_answer_tip{
+	color: #C0C0C0;
 }
 
 div.button_next  button{
+	float: right;
 	height: 100%;
 }
-choices
-}
+
