@@ -29,40 +29,32 @@ jQuery(function($) {
     ]
     var stages =
     {301:[
-            {
-                "id": "stage1",
-                "seq": 1,
-                "type": 1,
-                "name": "基础巩固",
-                "body": "30-60分钟复习新学的知识点",
-                "user_percentage": 0.5,
-                "user_progress": "section1"
-            },
+            
             {
                 "id": "stage2",
                 "seq": 2,
                 "type": 2,
-                "name": "融会贯通",
-                "body": "你解锁了扩展练习题",
                 "user_percentage": 0,
                 "user_progress": ""
+            },{
+                "id": "stage1",
+                "seq": 1,
+                "type": 1,
+                "user_percentage": 0.5,
+                "user_progress": "section1"
             }
          ],302:[
                   {
                       "id": "stage1",
                       "seq": 1,
                       "type": 1,
-                      "name": "基础",
-                      "body": "这是测试样例的第一个阶段",
                       "user_percentage": 0.5,
-                      "user_progress": "section1"
+                      "user_progress": "done"
                   },
                   {
                       "id": "stage2",
                       "seq": 2,
                       "type": 2,
-                      "name": "进阶",
-                      "body": "你解锁了扩展练习题",
                       "user_percentage": 0,
                       "user_progress": ""
                   },
