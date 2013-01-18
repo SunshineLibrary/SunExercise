@@ -24,22 +24,32 @@ jQuery(function($) {
         $(".circle."+classNames[index]).addClass("active");
 
     }
-    var switchToStage = function(id, step) {
-        if(step==null){
-            step = 1;
+    function getStep(data){
+        for(var i in data){
+            if(data[i].user_progress=="done"){
+                continue;
+            }        
+            return Number(i)+1;
         }
-        if(step>classNames.length)step=classNames.length;
+    }
+    var switchToStage = function(id, step) {
         var container = $("#intro-circles");
         var currentId = container.attr("data_id");
         if(currentId==id){
-            var currentStep = container.attr("data_step");
-            if(currentStep != step){
-                moveToStep(step);
-                container.attr("data_step", step);
+            if(step!=null){
+                var currentStep = container.attr("data_step");
+                if(currentStep != step){
+                    moveToStep(step);
+                    container.attr("data_step", step);
+                }
             }
         }else{
             Sun.fetchStages(function(str){
-                var stages = new Stages(refineData(JSON.parse(str)));
+                var stageData = refineData(JSON.parse(str));
+                if(step==null){
+                    step = getStep(stageData);
+                }
+                var stages = new Stages(stageData);
                 var currentId = container.attr("data_id");
                 var stagesView = new StagesView({
                     model: stages,

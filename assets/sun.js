@@ -49,7 +49,7 @@ jQuery(function($) {
                       "seq": 1,
                       "type": 1,
                       "user_percentage": 0.5,
-                      "user_progress": "section1"
+                      "user_progress": "done"
                   },
                   {
                       "id": "stage2",
