@@ -1,6 +1,7 @@
 package org.sunshine_library.exercise.app.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -35,5 +36,6 @@ public class MainActivity extends Activity {
         });
         
         content.loadUrl("file:///android_asset/index.html");
+        startService(new Intent(MainActivity.this, NotificationService.class));
     }
 }
