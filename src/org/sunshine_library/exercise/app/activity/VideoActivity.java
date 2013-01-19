@@ -1,10 +1,18 @@
 package org.sunshine_library.exercise.app.activity;
 
-/**
- * Created with IntelliJ IDEA.
- * User: linuo
- * Date: 1/9/13
- * Trello:
- */
-public class VideoActivity {
+import org.sunshine_library.exercise.R;
+
+import android.os.Bundle;
+
+public class VideoActivity extends TopActivity {
+	private static final String TAG = "VideoActivity";
+	
+    /**
+     * Called when the activity is first created.
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.video);
+    }
 }
