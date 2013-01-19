@@ -1,9 +1,7 @@
 package org.sunshine_library.exercise.app.activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -38,13 +36,4 @@ public class MainActivity extends Activity {
         
         content.loadUrl("file:///android_asset/index.html");
     }
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-
-	    startService(new Intent(MainActivity.this, NotificationService.class));
-	}
-    
-    
 }
