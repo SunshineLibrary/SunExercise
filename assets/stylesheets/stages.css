@@ -8,7 +8,7 @@
 	height:158px;
 	left:-80px;
 	top:-80px;
-	-webkit-transition: width 500ms, height 500ms, left 500ms, top 500ms, opacity 500ms;
+	-webkit-transition: all 500ms ease;
 }
 
 .circle.lock{
@@ -18,10 +18,10 @@
 .circle div{
 	text-align:center;
 	margin:0 20px;
-	-webkit-transition: font-size 500ms, margin 500ms;
+	-webkit-transition: all 500ms;
 }
 .circle div.circle-id{
-	margin-top:35px;
+	margin-top:30px;
 	font-size:250%;
 }
 .circle div.circle-title{
@@ -29,9 +29,13 @@
 	font-size:150%;
 }
 .circle div.circle-desc{
-	margin-top:15px;
+	margin-top:10px;
 	color:gray;
 }
+.circle.active{
+    -webkit-transform: scale(1.25);
+}
+/*
 .circle.active{
 	width:198px;
 	height:198px;
@@ -55,16 +59,16 @@
 	margin-top:18.75px;
 	color:gray;
 	font-size:125%;
-}
+}*/
 .circle.nth1.lock{
 	display:none;
 }
 .circle.nth2{
 	left:200px;
-}
+}/*
 .circle.nth2.active{
 	left:180px;
-}
+}*/
 .nth2 .circle.nth2.lock{
 	opacity:0;
 }
@@ -73,10 +77,10 @@
 }
 .circle.nth3{
 	left:460px;
-}
+}/*
 .circle.nth3.active{
 	left:440px;
-}
+}*/
 .nth3 .circle.nth3.lock, .nth3 .circle.nth2.lock{
 	opacity:0;
 }

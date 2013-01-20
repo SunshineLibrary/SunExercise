@@ -1,5 +1,18 @@
 jQuery(function($) {
     var classNames=["nth1","nth2","nth3"];
+    var refineData=function(data){
+        data = data.sort(function(a,b){return a.seq>b.seq;});
+        for(var i in data){
+            if(data[i].type==1){
+                if(!data[i].name)data[i].name="基础巩固";
+                if(!data[i].body)data[i].body="30-60分钟复习新学的知识点";                
+            }else if(data[i].type==2){
+                if(!data[1].name)data[1].name="融会贯通";
+                if(!data[1].body)data[1].body="你解锁了扩展练习题";
+            }        
+        }
+        return data;
+    }
     var moveToStep=function(step){
         var index = step-1;
         for(var i=0;i< classNames.length;i++){
@@ -13,22 +26,32 @@ jQuery(function($) {
         $(".circle."+classNames[index]).addClass("active");
 
     }
-    var switchToStage = function(id, step) {
-        if(step==null){
-            step = 1;
+    function getStep(data){
+        for(var i in data){
+            if(data[i].user_progress=="done"){
+                continue;
+            }        
+            return Number(i)+1;
         }
-        if(step>classNames.length)step=classNames.length;
+    }
+    var switchToStage = function(id, step) {
         var container = $("#intro-circles");
         var currentId = container.attr("data_id");
         if(currentId==id){
-            var currentStep = container.attr("data_step");
-            if(currentStep != step){
-                moveToStep(step);
-                container.attr("data_step", step);
+            if(step!=null){
+                var currentStep = container.attr("data_step");
+                if(currentStep != step){
+                    moveToStep(step);
+                    container.attr("data_step", step);
+                }
             }
         }else{
             Sun.fetchStages(function(str){
-                var stages = new Stages(JSON.parse(str));
+                var stageData = refineData(JSON.parse(str));
+                if(step==null){
+                    step = getStep(stageData);
+                }
+                var stages = new Stages(stageData);
                 var currentId = container.attr("data_id");
                 var stagesView = new StagesView({
                     model: stages,
