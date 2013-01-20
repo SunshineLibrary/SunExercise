@@ -19,17 +19,20 @@ import android.text.format.Time;
 import android.util.Log;
 
 public class NotificationService extends Service{
-
+	
+	private static int count = 0;
 	private Timer timer;
+	private NotificationBuilder notificationBuilder;
+	private NotificationManager notiMgr;
 	static Handler handler;
 
 	public void onCreate(){
 		super.onCreate();
-
 		timer = new Timer(true);
-
-
-
+		
+		notiMgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+		notificationBuilder = new NotificationBuilder();
+		
 		handler = new Handler(){
 			public void handleMessage(Message msg) {
 				if (msg.getData().getString("NotificationMsg") == "Notify") {
@@ -76,14 +79,11 @@ public class NotificationService extends Service{
 	}
 
 	public void notificationBar(){
+		
 		Intent intent = new Intent(NotificationService.this, MainActivity.class);
 		PendingIntent pd = PendingIntent.getActivity(NotificationService.this, 0, intent, 0);
-		NotificationManager mgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-		Notification nf = new Notification();
-		nf.icon = R.drawable.ic_notification;
-		nf.tickerText = "hello";
-		nf.flags |= Notification.FLAG_AUTO_CANCEL;  
-		nf.setLatestEventInfo(NotificationService.this, "hello", "world", pd);
-		mgr.notify(0, nf);
+		
+		notificationBuilder.getNotification().setLatestEventInfo(NotificationService.this, "阳光书屋", "该复习了", pd);
+		notiMgr.notify(count++, notificationBuilder.getNotification());
 	}
 }
