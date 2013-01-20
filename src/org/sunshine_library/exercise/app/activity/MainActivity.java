@@ -1,6 +1,8 @@
 package org.sunshine_library.exercise.app.activity;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.view.View;
 import android.os.Bundle;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
@@ -35,5 +37,9 @@ public class MainActivity extends Activity {
         });
         
         content.loadUrl("file:///android_asset/index.html");
+    }
+
+    public void openVideoActivity(View v){
+    	startActivity(new Intent(this, VideoActivity.class));
     }
 }

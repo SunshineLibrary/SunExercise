@@ -1,4 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">MainActivity</string>
+    <string name="app_name">阳光补习班</string>
+    
+    <string name="dialog_exit_main_message">确定退出阳光补习班？</string>
+    <string name="dialog_exit_main_btn_ok">确定</string>
+    <string name="dialog_exit_main_btn_cancel">取消</string>
+    
+    <string name="dialog_exit_normal_message">真的要退出么？老师会知道你没完成哦。</string>
+    <string name="dialog_exit_normal_btn_ok">退出</string>
+    <string name="dialog_exit_normal_btn_cancel">我点错了，继续学习</string>
 </resources>
