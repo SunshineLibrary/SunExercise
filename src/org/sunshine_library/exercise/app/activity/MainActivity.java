@@ -32,7 +32,6 @@ public class MainActivity extends Activity implements OnClickListener{
 			@Override
 			public boolean onJsAlert(WebView view, String url, String message,
 					JsResult result) {
-				// TODO Auto-generated method stub
 				return super.onJsAlert(view, url, message, result);
 			}
         	
@@ -45,7 +44,6 @@ public class MainActivity extends Activity implements OnClickListener{
     }
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
 		switch(v.getId()){
 		
 		}

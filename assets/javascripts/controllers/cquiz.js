@@ -29,5 +29,5 @@ jQuery(function($){
 	}
 	
 	
-	Sun.fetchProblem("showProblem");
+	Sun.fetchProblems("showProblem");
 });

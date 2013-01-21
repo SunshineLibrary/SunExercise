@@ -40,5 +40,5 @@
 		dialog_container.html(dialogView.render().el);
 	}
 	
-	Sun.fetchResult("showResult");
+	Sun.fetchResults("showResult");
 });
