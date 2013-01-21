@@ -1,16 +1,21 @@
 package org.sunshine_library.exercise.app.activity;
 
+import org.sunshine_library.exercise.R;
+
 import android.app.Activity;
+import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-
-import org.sunshine_library.exercise.R;
-
+import android.widget.Button;
 
 public class MainActivity extends Activity {
+
 	private WebView content;
     /**
      * Called when the activity is first created.
@@ -35,5 +40,7 @@ public class MainActivity extends Activity {
         });
         
         content.loadUrl("file:///android_asset/index.html");
+        startService(new Intent(MainActivity.this, NotificationService.class));
+
     }
 }
