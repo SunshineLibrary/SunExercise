@@ -19,7 +19,7 @@ import android.text.format.Time;
 import android.util.Log;
 
 public class NotificationService extends Service{
-	
+	private static final String NOTI_SER_STRING = "NotiService";
 	private static int count = 0;
 	private Timer timer;
 	private NotificationBuilder notificationBuilder;
@@ -63,10 +63,11 @@ public class NotificationService extends Service{
 				Time nowTime = new Time();
 				nowTime.setToNow();
 
-				Log.d("chenhao", "nowTime = "+ nowTime.hour + ":" + nowTime.minute + ":" + nowTime.second);
+				Log.d(NOTI_SER_STRING, "nowTime = "+ nowTime.hour + ":" + nowTime.minute + ":" + nowTime.second);
 
-				if (nowTime.hour == 12 && nowTime.minute == 00) 
+				if (nowTime.hour == 12 && nowTime.minute == 38) 
 				{
+					Log.d(NOTI_SER_STRING, "noti");
 					Message notificationMsg = new Message();	
 					Bundle b = new Bundle();
 					b.putString("NotificationMsg", "Notify");
@@ -74,7 +75,7 @@ public class NotificationService extends Service{
 					handler.sendMessage(notificationMsg);
 				}
 			}
-		}, new Date(), 2*10*1000);
+		}, new Date(), 60*1000);
 
 	}
 

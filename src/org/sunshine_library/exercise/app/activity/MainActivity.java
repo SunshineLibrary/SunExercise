@@ -15,7 +15,7 @@ import android.webkit.WebView;
 import android.widget.Button;
 
 public class MainActivity extends Activity {
-	private Button cleanNotiButton;
+
 	private WebView content;
     /**
      * Called when the activity is first created.
