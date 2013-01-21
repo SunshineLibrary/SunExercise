@@ -20,15 +20,18 @@ import android.util.Log;
 
 public class NotificationService extends Service{
 	
+	private static int count = 0;
 	private Timer timer;
+	private NotificationBuilder notificationBuilder;
+	private NotificationManager notiMgr;
 	static Handler handler;
-	
+
 	public void onCreate(){
 		super.onCreate();
-		
 		timer = new Timer(true);
 		
-		
+		notiMgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+		notificationBuilder = new NotificationBuilder();
 		
 		handler = new Handler(){
 			public void handleMessage(Message msg) {
@@ -38,8 +41,8 @@ public class NotificationService extends Service{
 			}
 		};
 	}
-	
-	
+
+
 	@Override
 	public IBinder onBind(Intent intent) {
 		// TODO Auto-generated method stub
@@ -53,15 +56,15 @@ public class NotificationService extends Service{
 		//super.onStart(intent, startId);
 		Log.d("chenhao", "start service");
 		timer.scheduleAtFixedRate(new TimerTask() {
-			
+
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
 				Time nowTime = new Time();
 				nowTime.setToNow();
-				
+
 				Log.d("chenhao", "nowTime = "+ nowTime.hour + ":" + nowTime.minute + ":" + nowTime.second);
-				
+
 				if (nowTime.hour == 12 && nowTime.minute == 00) 
 				{
 					Message notificationMsg = new Message();	
@@ -72,18 +75,15 @@ public class NotificationService extends Service{
 				}
 			}
 		}, new Date(), 2*10*1000);
-		
+
 	}
-	
+
 	public void notificationBar(){
+		
 		Intent intent = new Intent(NotificationService.this, MainActivity.class);
 		PendingIntent pd = PendingIntent.getActivity(NotificationService.this, 0, intent, 0);
-		NotificationManager mgr = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-		Notification nf = new Notification();
-		nf.icon = R.drawable.ic_notification;
-		nf.tickerText = "hello";
-		nf.flags |= Notification.FLAG_AUTO_CANCEL;  
-		nf.setLatestEventInfo(NotificationService.this, "hello", "world", pd);
-		mgr.notify(0, nf);
+		
+		notificationBuilder.getNotification().setLatestEventInfo(NotificationService.this, "阳光书屋", "该复习了", pd);
+		notiMgr.notify(count++, notificationBuilder.getNotification());
 	}
 }
