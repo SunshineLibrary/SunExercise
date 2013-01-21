@@ -1,16 +1,18 @@
 jQuery(function($) {
-    showSubjects = function(str) {
-        var subjects = new Subjects(JSON.parse(str));
+	showSubjects = function(str) {
+		var subjects = new Subjects(JSON.parse(str).subjects);
         var container = $("#subjects");
         var subjectsView = new SubjectsView({
             collection: subjects,
             container: container
         });
         subjectsView.render();
-    }
-
+		showLessons(str);
+	}
+	
+	
     showLessons = function(str) {
-        var lessons = new Lessons(JSON.parse(str));
+        var lessons = new Lessons(JSON.parse(str).lessons);
         var container = $("#lessons");
         container.empty();
 
@@ -42,9 +44,10 @@ jQuery(function($) {
         initPage: function() {
             Sun.fetchSubjects("showSubjects");
         },
-
-        showSubject: function(id) {
-            Sun.fetchLessons("showLessons", id);
+		
+		//但是你现在没法模拟request，因此这里我就直接展现就好
+        showSubject: function() {
+			Sun.fetchLessons("showLessons");
         },
 
         showLesson: function(id) {
