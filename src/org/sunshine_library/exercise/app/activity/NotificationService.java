@@ -65,7 +65,7 @@ public class NotificationService extends Service{
 
 				Log.d(NOTI_SER_STRING, "nowTime = "+ nowTime.hour + ":" + nowTime.minute + ":" + nowTime.second);
 
-				if (nowTime.hour == 12 && nowTime.minute == 38) 
+				if (nowTime.hour == 12 && nowTime.minute == 00) 
 				{
 					Log.d(NOTI_SER_STRING, "noti");
 					Message notificationMsg = new Message();	
