@@ -1,0 +1,1 @@
+jQuery(function($){	Templates = {		problem : _.template($("#problem_template").html()),		choice : _.template($("#choice_template").html()),		image : _.template($("#image_template").html())	}});
