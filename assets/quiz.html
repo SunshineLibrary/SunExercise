@@ -1,0 +1,47 @@
+﻿<html>
+	<head>
+		<title>Main</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+		<style>
+			body {
+				padding-top: 20px;
+			}
+		</style>
+		<link href="bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" media="screen">
+		<link href="stylesheets/quiz.css" rel="stylesheet" media="screen">
+	</head>
+
+	<body>
+		<div id="content">
+		
+		</div>
+		<div id="button">
+		
+		</div>
+		
+		<script type="text/template" id="problem_template">
+			<%=seq+1%>.&nbsp<%=body%>&nbsp<span id="protype">（<%=type%>）</span>
+		</script>
+		
+		<script type="text/template" id="choice_template">
+			<input type="radio" name="single" id="<%=id%>"><label for="<%=id%>"><%=body%></label>
+		</script>
+		
+		<script type="text/template" id="image_template">
+			<img class="hidden" src="img/ic_next_question.png" id="next">
+		</script>
+
+		<script src="javascripts/libs/jquery-1.8.3.js"></script>
+		<script src="javascripts/libs/underscore.js"></script>
+		<script src="javascripts/libs/backbone.js"></script>
+		<script src="bootstrap/js/bootstrap.js"></script>
+
+		<script src="sun.js" charset="utf-8"></script>
+		<script src="javascripts/templates/tquiz.js"></script>
+		<script src="javascripts/models/mquiz.js"></script>
+		<script src="javascripts/views/vquiz.js"></script>
+		<script src="javascripts/controllers/cquiz.js"></script>
+	</body>
+</html>
