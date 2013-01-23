@@ -19,7 +19,7 @@ import org.sunshine_library.exercise.R;
 import org.sunshine_library.exercise.app.interfaces.HtmlInterface;
 
 
-public class MainActivity extends Activity implements OnClickListener{
+public class MainActivity extends TopActivity implements OnClickListener{
 
 	private WebView content;
     /**

@@ -26,6 +26,8 @@ public class NotificationService extends Service{
 	private NotificationManager notiMgr;
 	static Handler handler;
 
+    private static int requestCode = 0;
+
 	public void onCreate(){
 		super.onCreate();
 		timer = new Timer(true);
@@ -80,9 +82,10 @@ public class NotificationService extends Service{
 	}
 
 	public void notificationBar(){
-		
 		Intent intent = new Intent(NotificationService.this, MainActivity.class);
-		PendingIntent pd = PendingIntent.getActivity(NotificationService.this, 0, intent, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		PendingIntent pd = PendingIntent.getActivity(NotificationService.this, ++requestCode, intent, 0);
 		
 		notificationBuilder.getNotification().setLatestEventInfo(NotificationService.this, "阳光书屋", "该复习了", pd);
 		notiMgr.notify(count++, notificationBuilder.getNotification());
