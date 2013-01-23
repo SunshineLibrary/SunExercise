@@ -1,18 +1,25 @@
 package org.sunshine_library.exercise.app.activity;
 
+import android.util.Log;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.sunshine_library.exercise.R;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 import android.os.Bundle;
-import android.view.View;
 import android.view.View.OnClickListener;
+
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import org.sunshine_library.exercise.R;
 import org.sunshine_library.exercise.app.interfaces.HtmlInterface;
+
+import java.util.Iterator;
 
 
 public class MainActivity extends Activity implements OnClickListener{
@@ -20,12 +27,29 @@ public class MainActivity extends Activity implements OnClickListener{
     /**
      * Called when the activity is first created.
      */
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
-        
+
+
+
+        try {
+            String jsonString = "{\"FDA\" : 2, \"Fad\" : 3}";
+            JSONObject temp = new JSONObject(jsonString);
+            for(Iterator iter = temp.keys(); iter.hasNext(); ){
+                Log.d("TAG", String.valueOf(iter.next().getClass()));
+
+            }
+
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
         content = (WebView) findViewById(R.id.content);
         WebSettings settings = content.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -36,10 +60,10 @@ public class MainActivity extends Activity implements OnClickListener{
 					JsResult result) {
 				return super.onJsAlert(view, url, message, result);
 			}
-        	
+
         });
-        
-        
+
+
         content.loadUrl("file:///android_asset/index.html");
         
         content.addJavascriptInterface(new MyHtmlInterface(), "android");
