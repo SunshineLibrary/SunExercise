@@ -4,6 +4,7 @@
       android:versionCode="1"
       android:versionName="1.0">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-sdk android:minSdkVersion="8"/>
 
     <application android:label="@string/app_name"
@@ -27,6 +28,7 @@
 
         <provider android:name="org.sunshine_library.exercise.metadata.provider.MetadataProvider"
                   android:authorities="org.sunshine_library.exercise.metadata.provider"/>
+
 
     </application>
 

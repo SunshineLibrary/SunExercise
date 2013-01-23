@@ -5,7 +5,7 @@ import org.sunshine_library.exercise.metadata.database.tables.*;
 
 public class MetadataDBHandlerFactory {
 
-    private static final int DB_VERSION = 0;
+    private static final int DB_VERSION = 100;
     private static final String DB_NAME = "metadata";
 
     public static DBHandler newMetadataDBHandler(Context context) {
