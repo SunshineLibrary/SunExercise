@@ -1,8 +1,11 @@
 package org.sunshine_library.exercise.app.activity;
 
+import org.sunshine_library.exercise.R;
+
 import android.app.Activity;
-import android.content.Intent;
 import android.view.View;
+import android.app.NotificationManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -10,12 +13,14 @@ import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Button;
 
 import org.sunshine_library.exercise.R;
 import org.sunshine_library.exercise.app.interfaces.HtmlInterface;
 
 
 public class MainActivity extends Activity implements OnClickListener{
+
 	private WebView content;
     /**
      * Called when the activity is first created.
@@ -41,8 +46,9 @@ public class MainActivity extends Activity implements OnClickListener{
         
         
         content.loadUrl("file:///android_asset/index.html");
-        
         content.addJavascriptInterface(new MyHtmlInterface(), "android");
+
+        startService(new Intent(MainActivity.this, NotificationService.class));
     }
 
     public void openVideoActivity(View v){
