@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">MainActivity</string>
+    <string name="notiTickerText">"阳光书屋"</string>
+    <string name="notiTitle">"阳光补习"</string>
+	<string name="notiSubTitle">"该复习了"</string>
 </resources>
