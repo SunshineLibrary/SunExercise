@@ -1,5 +1,6 @@
 package org.sunshine_library.exercise.metadata;
 
+import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -15,13 +16,15 @@ public class MetadataContract {
             .authority(AUTHORITY).build();
 
     public interface Columns extends BaseColumns {
-        java.lang.String _IDENTIFIER = "identifier";
-        java.lang.String _NAME = "name";
-        java.lang.String _BODY = "body";
-        java.lang.String _SEQUENCE = "seq";
-        java.lang.String _USER_PROGRESS = "user_progress";
-        java.lang.String _USER_RESULT = "user_result";
-        java.lang.String _USER_DURATION = "user_duration";
+        String _IDENTIFIER = "identifier";
+        String _NAME = "name";
+        String _BODY = "body";
+        String _SEQUENCE = "seq";
+        String _USER_PROGRESS = "user_progress";
+        String _USER_RESULT = "user_result";
+        String _USER_DURATION = "user_duration";
+        String _USER_CORRECT = "user_correct";
+
     }
 
     public static final class Subjects {
@@ -37,7 +40,6 @@ public class MetadataContract {
         public static final String _NAME = Columns._NAME;
         public static final String _TIME = "time";
         public static final String _USER_PROGRESS = Columns._USER_PROGRESS;
-        public static final String _USER_PERCENTAGE = "user_percentage";
         public static final String _USER_RESULT = Columns._USER_RESULT;
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("lessons").build();
@@ -48,14 +50,17 @@ public class MetadataContract {
         public static final String _PARENT_IDENTIFIER = "lesson_identifier";
         public static final String _SEQUENCE = Columns._SEQUENCE;
         public static final String _TYPE = "stage_type";
-        public static final String _NAME = Columns._NAME;
-        public static final String _BODY = Columns._BODY;
         public static final String _USER_PROGRESS = Columns._USER_PROGRESS;
+        public static final String _USER_PERCENTAGE = "user_percentage";
 
         public static final int TYPE_BASIC = 0;
         public static final int TYPE_EXTEND = 1;
 
-        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("subjects").build();
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("stages").build();
+
+        public static final Uri getStageUri(int id) {
+            return ContentUris.withAppendedId(CONTENT_URI, id);
+        }
     }
 
     public static final class Sections {
@@ -63,7 +68,6 @@ public class MetadataContract {
         public static final String _PARENT_IDENTIFIER = "stage_identifier";
         public static final String _SEQUENCE = Columns._SEQUENCE;
         public static final String _NAME = Columns._NAME;
-        public static final String _USER_PROGRESS = Columns._USER_PROGRESS;
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("sections").build();
     }
@@ -75,12 +79,12 @@ public class MetadataContract {
         public static final String _TYPE = "activity_type";
         public static final String _NAME = Columns._NAME;
         public static final String _BODY = Columns._BODY;
-        public static final String _WEIGHT = "weight";
         public static final String _JUMP_CONDITION = "jump_condition";
-        // public static final String _REVIEW_TYPE = "review_type";
         public static final String _USER_PROGRESS = Columns._USER_PROGRESS;
         public static final String _USER_DURATION = Columns._USER_DURATION;
-        public static final String _USER_RESULT = Columns._USER_RESULT;
+        public static final String _USER_CORRECT = Columns._USER_CORRECT;
+        public static final String _USER_SCORE = "user_score";
+
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("activities").build();
 
@@ -108,12 +112,9 @@ public class MetadataContract {
         public static final String _SEQUENCE = Columns._SEQUENCE;
         public static final String _TYPE = "problem_type";
         public static final String _BODY = Columns._BODY;
-        // public static final String _WEIGHT = "weight";
         public static final String _ANALYSIS = "analysis";
-//        public static final String _HAS_MEDIA = "has_media";
-//        public static final String _USER_ANSWER = "user_answer";
         public static final String _USER_DURATION = Columns._USER_DURATION;
-        public static final String _USER_IS_CORRECT = "user_is_correct";
+        public static final String _USER_CORRECT = Columns._USER_CORRECT;
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problems").build();
 
@@ -131,8 +132,9 @@ public class MetadataContract {
         public static final String _IDENTIFIER = Columns._IDENTIFIER;
         public static final String _PARENT_IDENTIFIER = "problem_identifier";
         public static final String _SEQUENCE = Columns._SEQUENCE;
-        public static final String _CHOICE = "choice";
-        public static final String _BODY = Columns._BODY;
+        //public static final String _CHOICE = "choice";
+        //public static final String _BODY = Columns._BODY;
+        public static final String _DISPLAY_TEXT = "display_text";
         public static final String _ANSWER = "answer";
         public static final String _USER_CHOICE = "user_choice";
 
@@ -141,10 +143,9 @@ public class MetadataContract {
 
     public static final class Files {
         public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _PARENT_IDENTIFIER = "owner_identifier";
-        public static final String _PARENT_TYPE = "owner_type";
-        // public static final String _SEQUENCE = "seq";
-        public static final String _TYPE = "media_type";
+        public static final String _OWNER_IDENTIFIER = "owner_identifier";
+        public static final String _OWNER_TYPE = "owner_type";
+        public static final String _MEDIA_TYPE = "media_type";
         public static final String _KEY = "key";
 
         public static final int TYPE_PROBLEM = 0;
@@ -153,11 +154,5 @@ public class MetadataContract {
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("files").build();
     }
 
-    public static final class Dialogs {
-        public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _TYPE = "dialog_type";
-        public static final String _BODY = Columns._BODY;
 
-        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("dialogs").build();
-    }
 }

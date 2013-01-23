@@ -14,7 +14,7 @@ public class SubjectTable extends AbstractTable {
     };
 
     private static final String[][] COLUMN_DEFINITIONS = {
-            {Subjects._IDENTIFIER, "TEXT PRIMARY KEY"},
+            {Subjects._IDENTIFIER, "INTEGER PRIMARY KEY"},
             {Subjects._NAME, "TEXT"}
     };
 
