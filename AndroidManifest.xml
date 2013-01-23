@@ -6,7 +6,14 @@
     
     <uses-sdk android:minSdkVersion="8"/>
     
-    <application android:label="@string/app_name" >
+    <application android:label="@string/app_name"
+                 android:name="org.sunshine_library.exercise.app.application.ExerciseApplication"
+                 android:versionCode="1"
+                 android:versionName="1.0"            >
+
+        <provider android:name="org.sunshine_library.exercise.metadata.provider.MetadataProvider"
+                  android:authorities="org.sunshine_library.exercise.metadata.provider"/>
+s
         <activity android:name=".app.activity.MainActivity"
                   android:label="@string/app_name">
             <intent-filter>
@@ -19,6 +26,13 @@
                 android:name=".app.activity.VideoActivity"
                 android:screenOrientation="portrait" >
         </activity>
-        
+
+        <provider android:name="org.sunshine_library.exercise.metadata.provider.MetadataProvider"
+                  android:authorities="org.sunshine_library.exercise.metadata.provider"/>
+
     </application>
-</manifest> 
+
+
+
+
+</manifest>

@@ -2,6 +2,7 @@ package org.sunshine_library.exercise.app.application;
 
 import android.app.Application;
 
+import android.content.Context;
 import org.sunshine_library.exercise.metadata.database.DBHandler;
 import org.sunshine_library.exercise.metadata.database.MetadataDBHandlerFactory;
 
@@ -13,12 +14,20 @@ import org.sunshine_library.exercise.metadata.database.MetadataDBHandlerFactory;
  */
 public class ExerciseApplication  extends Application {
     private DBHandler metadataDBHandler;
+    private static Context context;
+
 
     public synchronized DBHandler getMetadataDBHandler() {
         if (metadataDBHandler == null) {
             metadataDBHandler = MetadataDBHandlerFactory.newMetadataDBHandler(this);
         }
         return metadataDBHandler;
+    }
+
+    @Override
+    public void onCreate(){
+        super.onCreate();
+        ExerciseApplication.context = getApplicationContext();
     }
 
     @Override
@@ -32,4 +41,9 @@ public class ExerciseApplication  extends Application {
             metadataDBHandler.close();
         }
     }
+
+    public static Context getAppContext(){
+        return ExerciseApplication.context;
+    }
+
 }
