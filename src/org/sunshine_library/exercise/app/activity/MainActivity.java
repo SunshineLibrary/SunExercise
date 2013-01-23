@@ -7,15 +7,14 @@ import android.view.View;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.View.OnClickListener;
+
 import android.webkit.JsResult;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 
-import org.sunshine_library.exercise.R;
 import org.sunshine_library.exercise.app.interfaces.HtmlInterface;
 
 
@@ -25,12 +24,16 @@ public class MainActivity extends TopActivity implements OnClickListener{
     /**
      * Called when the activity is first created.
      */
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-        
-        
+
+
+
+
         content = (WebView) findViewById(R.id.content);
         WebSettings settings = content.getSettings();
         settings.setJavaScriptEnabled(true);
@@ -41,10 +44,10 @@ public class MainActivity extends TopActivity implements OnClickListener{
 					JsResult result) {
 				return super.onJsAlert(view, url, message, result);
 			}
-        	
+
         });
-        
-        
+
+
         content.loadUrl("file:///android_asset/index.html");
         content.addJavascriptInterface(new MyHtmlInterface(), "android");
 
