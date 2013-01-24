@@ -9,4 +9,8 @@
     <string name="dialog_exit_normal_message">真的要退出么？老师会知道你没完成哦。</string>
     <string name="dialog_exit_normal_btn_ok">退出</string>
     <string name="dialog_exit_normal_btn_cancel">我点错了，继续学习</string>
+
+    <string name="notiTickerText">"阳光书屋"</string>
+    <string name="notiTitle">"阳光补习"</string>
+    <string name="notiSubTitle">"该复习了"</string>
 </resources>

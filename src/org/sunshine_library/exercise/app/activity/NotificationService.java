@@ -87,7 +87,9 @@ public class NotificationService extends Service{
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		PendingIntent pd = PendingIntent.getActivity(NotificationService.this, ++requestCode, intent, 0);
 		
-		notificationBuilder.getNotification().setLatestEventInfo(NotificationService.this, "阳光书屋", "该复习了", pd);
+		notificationBuilder.getNotification().tickerText = getString(R.string.notiTickerText);
+		notificationBuilder.getNotification().setLatestEventInfo(
+				NotificationService.this, getString(R.string.notiTitle), getString(R.string.notiSubTitle), pd);
 		notiMgr.notify(count++, notificationBuilder.getNotification());
 	}
 }

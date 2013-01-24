@@ -19,7 +19,7 @@ public class NotificationBuilder {
 	
 	public void setByDefualt(){
 		noti.icon = R.drawable.ic_notification;
-		noti.tickerText = "阳光书屋";
+		//noti.tickerText = "阳光书屋";
 		noti.flags |= Notification.FLAG_AUTO_CANCEL;  
 	}
 	
