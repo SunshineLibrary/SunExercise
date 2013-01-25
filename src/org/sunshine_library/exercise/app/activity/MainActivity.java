@@ -1,6 +1,10 @@
 package org.sunshine_library.exercise.app.activity;
 
+import android.content.ContentValues;
+import android.renderscript.Program;
+import android.renderscript.ProgramStore;
 import android.util.Log;
+import org.apache.http.util.EncodingUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,8 +22,19 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import org.sunshine_library.exercise.app.interfaces.HtmlInterface;
+import org.sunshine_library.exercise.metadata.MetadataContract;
+import org.sunshine_library.exercise.metadata.data.DataBack;
+import org.sunshine_library.exercise.metadata.data.DataReceiver;
+import org.sunshine_library.exercise.metadata.sync.Sync;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.MappedByteBuffer;
+import java.nio.channels.FileChannel;
+import java.nio.charset.Charset;
 import java.util.Iterator;
+import java.util.Scanner;
 
 
 public class MainActivity extends Activity implements OnClickListener{
@@ -29,20 +44,39 @@ public class MainActivity extends Activity implements OnClickListener{
      */
 
 
+
+    //读数据
+    public String readFile(String fileName) throws IOException{
+        String res="";
+        try{
+            FileInputStream fin = openFileInput(fileName);
+            int length = fin.available();
+            byte [] buffer = new byte[length];
+            fin.read(buffer);
+            res = EncodingUtils.getString(buffer, "UTF-8");
+            fin.close();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+        return res;
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
 
+       // new Sync().syncTest();
 
         try {
-            String jsonString = "{\"FDA\" : 2, \"Fad\" : 3}";
-            JSONObject temp = new JSONObject(jsonString);
-            for(Iterator iter = temp.keys(); iter.hasNext(); ){
-                Log.d("TAG", String.valueOf(iter.next().getClass()));
+           //String jsonString = readFile("data.txt");
+           //new DataReceiver().onReceive(jsonString);
 
-            }
+          String jsonString = readFile("updata.json");
+          new DataBack().BackData(jsonString);
 
 
         }catch (Exception e){
