@@ -29,6 +29,7 @@ public class MetadataContract {
         String _USER_RESULT = "user_result";
         String _USER_DURATION = "user_duration";
         String _USER_CORRECT = "user_correct";
+        String _FILE_ID="file_id";
 
     }
 
@@ -87,6 +88,7 @@ public class MetadataContract {
         public static final String _USER_DURATION = Columns._USER_DURATION;
         public static final String _USER_CORRECT = Columns._USER_CORRECT;
         public static final String _USER_SCORE = "user_score";
+        public static final String _FILE_ID = Columns._FILE_ID;
 
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("activities").build();
@@ -115,6 +117,8 @@ public class MetadataContract {
         public static final String _ANALYSIS = "analysis";
         public static final String _USER_DURATION = Columns._USER_DURATION;
         public static final String _USER_CORRECT = Columns._USER_CORRECT;
+        public static final String _FILE_ID = Columns._FILE_ID;
+
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problems").build();
 

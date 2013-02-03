@@ -17,7 +17,8 @@ public class ProblemTable extends AbstractTable{
             Problems._BODY,
             Problems._ANALYSIS,
             Problems._USER_DURATION,
-            Problems._USER_CORRECT
+            Problems._USER_CORRECT,
+            Problems._FILE_ID,
     };
 
     public static final String[][] COLUMN_DEFINITIONS = {
@@ -28,7 +29,8 @@ public class ProblemTable extends AbstractTable{
             {Problems._BODY, "TEXT"},
             {Problems._ANALYSIS, "TEXT"},
             {Problems._USER_DURATION, "INTEGER"},
-            {Problems._USER_CORRECT, "FLOAT"}
+            {Problems._USER_CORRECT, "FLOAT"},
+            {Problems._FILE_ID, "INTEGER"}
     };
 
     public ProblemTable(DBHandler db) {
