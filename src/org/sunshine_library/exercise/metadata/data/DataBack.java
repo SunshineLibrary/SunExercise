@@ -102,7 +102,7 @@ public class DataBack {
 
      */
 
-    public void BackData(String back) {
+    public void onRecieve(String back) {
         try {
             JSONObject json = new JSONObject(back);
 

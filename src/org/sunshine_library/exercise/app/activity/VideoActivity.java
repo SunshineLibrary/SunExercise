@@ -1,8 +1,8 @@
 package org.sunshine_library.exercise.app.activity;
 
+import android.os.Bundle;
 import org.sunshine_library.exercise.R;
 
-import android.os.Bundle;
 
 public class VideoActivity extends TopActivity {
 	private static final String TAG = "VideoActivity";

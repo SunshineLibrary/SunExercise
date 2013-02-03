@@ -46,13 +46,12 @@ public class DataReceiver {
     public void onReceive(String json) {
         try {
             data = new JSONObject(json);
-            //JSONObject update = data.getJSONObject(UPDATED);
-            //JSONObject delete = data.getJSONObject(DELETED);
-            JSONObject create = data.getJSONObject(CREATED);
-            HandleCreate(create);
-            //HandleUpdate(update);
-            //HandleDelete(delete);
-            //HandleCreate(create);
+            if (json.contains(CREATED))
+                HandleCreate(data.getJSONObject(CREATED));
+            if (json.contains(UPDATED))
+                HandleUpdate(data.getJSONObject(UPDATED));
+            if (json.contains(DELETED))
+                HandleDelete(data.getJSONObject(DELETED));
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -60,98 +59,90 @@ public class DataReceiver {
 
     }
 
-    private void HandleDelete(JSONObject json) throws JSONException{
+    private void HandleDelete(JSONObject json) throws JSONException {
         JSONArray array;
         JSONObject values;
 
-        for (String table : TABLES){
-            array = json.getJSONArray(table);
+        for (String table : TABLES) {
+            if (json.has(table)) {
+                array = json.getJSONArray(table);
 
-            for (int i = 0; i < array.length(); i++){
-                values = array.getJSONObject(i);
-                int id = values.getInt(IDENTIFIER);
-                resolver.delete(MetadataContract.getUri(table), IDENTIFIER + " = " + id , null);
-            }
-        }
-        Log.d("TAG", "DONE DELETE");
-
-    }
-
-    private void HandleCreate(JSONObject json) throws JSONException{
-        JSONArray array;
-        JSONObject values;
-        ContentValues contentValues;
-
-
-        for (String table : TABLES){
-            array = json.getJSONArray(table);
-
-            for (int i = 0; i < array.length(); i++){
-
-                values = array.getJSONObject(i);
-                contentValues = new ContentValues();
-                for (Iterator iter = values.keys(); iter.hasNext();){
-                    String key = (String)iter.next();
-                    Object value = values.get(key);
-                    if (value instanceof Integer){
-                        contentValues.put(key, (Integer) value);
-                    }else if (value instanceof String){
-
-                        contentValues.put(key, (String) value);
-                    }else if (value instanceof Double){
-
-                        contentValues.put(key, (Double) value); //TODO should be Doube or cast to Float?
-                    }
-                    else if (value instanceof Float) {
-                        contentValues.put(key, (Float) value);
-                    }
+                for (int i = 0; i < array.length(); i++) {
+                    values = array.getJSONObject(i);
+                    int id = values.getInt(IDENTIFIER);
+                    resolver.delete(MetadataContract.getUri(table), IDENTIFIER + " = " + id, null);
                 }
-                resolver.insert(MetadataContract.getUri(table), contentValues);
             }
-
         }
-        Log.d("TAG", "DONE CREATE");
 
     }
 
-
-
-    private void HandleUpdate(JSONObject json) throws JSONException{
+    private void HandleCreate(JSONObject json) throws JSONException {
         JSONArray array;
-        JSONObject values;
         ContentValues contentValues;
 
+        for (String table : TABLES) {
+            if (json.has(table)) {
+                array = json.getJSONArray(table);
 
-        for (String table : TABLES){
-            array = json.getJSONArray(table);
-            for (int i = 0; i < array.length(); i++){
+                for (int i = 0; i < array.length(); i++) {
 
-                values = array.getJSONObject(i);
-                int id = 0;
-                contentValues = new ContentValues();
-                for (Iterator iter = values.keys(); iter.hasNext();){
-                    String key = (String)iter.next();
-                    Object value = values.get(key);
-                    if (value instanceof Integer){
-                        contentValues.put(key, (Integer) value);
-                        if (key.equals(IDENTIFIER)){
-                            id = (Integer) value;
+                    JSONObject values = array.getJSONObject(i);
+                    contentValues = new ContentValues();
+                    for (Iterator iter = values.keys(); iter.hasNext(); ) {
+                        String key = (String) iter.next();
+                        Object value = values.get(key);
+                        if (value instanceof Integer) {
+                            contentValues.put(key, (Integer) value);
+                        } else if (value instanceof String) {
+                            contentValues.put(key, (String) value);
+                        } else if (value instanceof Double) {
+                            contentValues.put(key, (Double) value);
+                        } else if (value instanceof Float) {
+                            contentValues.put(key, (Float) value);
                         }
-                    }else if (value instanceof String){
-                        contentValues.put(key, (String) value);
-                    }else if (value instanceof Double){
-                        contentValues.put(key, (Double) value); //TODO should be Doube or cast to Float?
                     }
-                    else if (value instanceof Float) {
-                        contentValues.put(key, (Float) value);
-                    }
+                    resolver.insert(MetadataContract.getUri(table), contentValues);
                 }
-
-                resolver.update(MetadataContract.getUri(table), contentValues, IDENTIFIER + " = " + id, null);
             }
         }
-        Log.d("TAG", "DONE UPDATE");
 
     }
 
+
+    private void HandleUpdate(JSONObject json) throws JSONException {
+        JSONArray array;
+        JSONObject values;
+        ContentValues contentValues;
+
+
+        for (String table : TABLES) {
+            if (json.has(table)) {
+                array = json.getJSONArray(table);
+                for (int i = 0; i < array.length(); i++) {
+
+                    values = array.getJSONObject(i);
+                    int id = 0;
+                    contentValues = new ContentValues();
+                    for (Iterator iter = values.keys(); iter.hasNext(); ) {
+                        String key = (String) iter.next();
+                        Object value = values.get(key);
+                        if (value instanceof Integer) {
+                            contentValues.put(key, (Integer) value);
+                            if (key.equals(IDENTIFIER)) {
+                                id = (Integer) value;
+                            }
+                        } else if (value instanceof String) {
+                            contentValues.put(key, (String) value);
+                        } else if (value instanceof Double) {
+                            contentValues.put(key, (Double) value);
+                        } else if (value instanceof Float) {
+                            contentValues.put(key, (Float) value);
+                        }
+                    }
+                    resolver.update(MetadataContract.getUri(table), contentValues, IDENTIFIER + " = " + id, null);
+                }
+            }
+        }
+    }
 }
