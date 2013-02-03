@@ -1,54 +1,40 @@
 package org.sunshine_library.exercise.metadata.sync;
 
-import android.net.Uri;
-import android.util.Log;
-
+import android.content.ContentResolver;
 import org.sunshine_library.exercise.app.application.ExerciseApplication;
-import org.sunshinelibrary.support.api.ApiManager;
-import org.sunshinelibrary.support.api.ApiUriBuilder;
-import org.sunshinelibrary.support.api.download.*;
 
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
+import java.util.List;
 
 /**
- * @author Bowen Sun
- * @version 1.0
+ * Created with IntelliJ IDEA.
+ * User: linxiangyu
+ * Date: 13-2-3
+ * Time: 下午3:21
+ * To change this template use File | Settings | File Templates.
  */
-public class SyncFile{
+public class SyncFile {
 
 
-    Downloader downloader;
-    Executor executor;
+    ContentResolver mResolver;
+    SyncFileRequest mSyncFileRequest;
+
 
 
 
     public SyncFile() {
-        downloader = ApiManager.getInstance(ExerciseApplication.getApplication()).getDownloader();
-        executor = Executors.newSingleThreadExecutor();
+        this.mResolver = ExerciseApplication.getApplication().getContentResolver();
+        mSyncFileRequest = new SyncFileRequest();
     }
 
 
-    public void startDownload(final int id) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                Uri uri = ApiUriBuilder.getMediaDownloadUri(id);
-                DownloadMonitor monitor = downloader.createNewDownload(new DownloadRequest(uri));
-                monitor.setProgressListener(new DownloadProgressListener() {
-                    @Override
-                    public boolean handleFinishedDownload(final DownloadStatus downloadStatus, final boolean isSuccess) {
-                        String str;
-                        if (isSuccess) {
-                            str = "Done downloading: " + downloadStatus.getSourceUri().getPath();
-                        } else {
-                            str = "Failed downloading: " + downloadStatus.getSourceUri().getPath();
-                        }
-                        Log.d("TAG", str);
-                        return true;
-                    }
-                });
-            }
-        });
+
+    public void sync(){
+        List<Integer> fileNeedToDownload = new ScanFileForDownload().getAllMediaIDNeedToDownload();
+        for (Integer mediaID : fileNeedToDownload){
+            int downloadID = mediaID;
+            mSyncFileRequest.startDownload(downloadID);
+        }
     }
+
+
 }
