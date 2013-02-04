@@ -19,6 +19,7 @@ local.properties
 .classpath
 .project
 .settings
+.settings/
 
 # IntelliJ project files
 *.iml
