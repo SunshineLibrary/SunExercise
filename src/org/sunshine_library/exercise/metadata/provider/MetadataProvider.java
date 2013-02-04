@@ -141,8 +141,16 @@ public class MetadataProvider extends ContentProvider {
                 }
                 return lessonTable;
             case Matcher.ACTIVITIES:
+                if (activityTable == null){
+                    activityTable = dbHandler.getTableManager(ActivityTable.TABLE_NAME);
+                }
+                return activityTable;
 
-
+            case Matcher.PROBLEMS:
+                if (problemTable == null){
+                    problemTable = dbHandler.getTableManager(ProblemTable.TABLE_NAME);
+                }
+                return problemTable;
             case Matcher.PROBLEM_CHOICES:
                 if (problemChoiceTable == null){
                     problemChoiceTable = dbHandler.getTableManager(ProblemChoiceTable.TABLE_NAME);

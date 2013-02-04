@@ -1,12 +1,13 @@
 package org.sunshine_library.exercise.app.activity;
 
-import org.sunshine_library.exercise.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import org.sunshine_library.exercise.R;
+
+
 
 /**
  * Top Activity for all activities used in SunExercise

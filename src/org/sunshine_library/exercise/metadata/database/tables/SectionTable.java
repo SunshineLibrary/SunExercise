@@ -3,7 +3,6 @@ package org.sunshine_library.exercise.metadata.database.tables;
 import org.sunshine_library.exercise.metadata.database.DBHandler;
 
 import static org.sunshine_library.exercise.metadata.MetadataContract.Sections;
-import static org.sunshine_library.exercise.metadata.MetadataContract.Stages;
 
 public class SectionTable extends AbstractTable {
     public static final String TABLE_NAME = "sections";

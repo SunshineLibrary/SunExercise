@@ -3,7 +3,6 @@ package org.sunshine_library.exercise.metadata.database.tables;
 import org.sunshine_library.exercise.metadata.database.DBHandler;
 
 import static org.sunshine_library.exercise.metadata.MetadataContract.Lessons;
-import static org.sunshine_library.exercise.metadata.MetadataContract.Subjects;
 
 public class    LessonTable extends AbstractTable {
     public static final String TABLE_NAME = "lessons";
