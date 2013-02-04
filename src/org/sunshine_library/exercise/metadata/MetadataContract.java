@@ -15,11 +15,16 @@ public class MetadataContract {
     public static final Uri AUTHORITY_URI = new Uri.Builder().scheme("content")
             .authority(AUTHORITY).build();
 
+
+    public static Uri getUri(String append){
+        return MetadataContract.AUTHORITY_URI.buildUpon().appendPath(append).build();
+    }
+
     public interface Columns extends BaseColumns {
-        String _IDENTIFIER = "identifier";
+        String _IDENTIFIER = "id";
         String _NAME = "name";
         String _BODY = "body";
-        String _SEQUENCE = "seq";
+        String _SEQUENCE = "sequence";
         String _USER_PROGRESS = "user_progress";
         String _USER_RESULT = "user_result";
         String _USER_DURATION = "user_duration";
@@ -36,7 +41,7 @@ public class MetadataContract {
 
     public static final class Lessons {
         public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _PARENT_IDENTIFIER = "subject_identifier";
+        public static final String _PARENT_IDENTIFIER = "subject_id";
         public static final String _NAME = Columns._NAME;
         public static final String _TIME = "time";
         public static final String _USER_PROGRESS = Columns._USER_PROGRESS;
@@ -47,9 +52,9 @@ public class MetadataContract {
 
     public static final class Stages {
         public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _PARENT_IDENTIFIER = "lesson_identifier";
+        public static final String _PARENT_IDENTIFIER = "lesson_id";
         public static final String _SEQUENCE = Columns._SEQUENCE;
-        public static final String _TYPE = "stage_type";
+        public static final String _TYPE = "type";
         public static final String _USER_PROGRESS = Columns._USER_PROGRESS;
         public static final String _USER_PERCENTAGE = "user_percentage";
 
@@ -63,7 +68,7 @@ public class MetadataContract {
 
     public static final class Sections {
         public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _PARENT_IDENTIFIER = "stage_identifier";
+        public static final String _PARENT_IDENTIFIER = "stage_id";
         public static final String _SEQUENCE = Columns._SEQUENCE;
         public static final String _NAME = Columns._NAME;
 
@@ -72,9 +77,9 @@ public class MetadataContract {
 
     public static final class Activities {
         public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _PARENT_IDENTIFIER = "section_identifier";
+        public static final String _PARENT_IDENTIFIER = "section_id";
         public static final String _SEQUENCE = Columns._SEQUENCE;
-        public static final String _TYPE = "activity_type";
+        public static final String _TYPE = "type";
         public static final String _NAME = Columns._NAME;
         public static final String _BODY = Columns._BODY;
         public static final String _JUMP_CONDITION = "jump_condition";
@@ -103,9 +108,9 @@ public class MetadataContract {
 
     public static final class Problems {
         public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _PARENT_IDENTIFIER = "activity_identifier";
+        public static final String _PARENT_IDENTIFIER = "activity_id";
         public static final String _SEQUENCE = Columns._SEQUENCE;
-        public static final String _TYPE = "problem_type";
+        public static final String _TYPE = "type";
         public static final String _BODY = Columns._BODY;
         public static final String _ANALYSIS = "analysis";
         public static final String _USER_DURATION = Columns._USER_DURATION;
@@ -123,7 +128,7 @@ public class MetadataContract {
 
     public static final class ProblemChoices {
         public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _PARENT_IDENTIFIER = "problem_identifier";
+        public static final String _PARENT_IDENTIFIER = "problem_id";
         public static final String _SEQUENCE = Columns._SEQUENCE;
         //public static final String _CHOICE = "choice";
         //public static final String _BODY = Columns._BODY;
@@ -136,7 +141,7 @@ public class MetadataContract {
 
     public static final class Files {
         public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _OWNER_IDENTIFIER = "owner_identifier";
+        public static final String _OWNER_IDENTIFIER = "owner_id";
         public static final String _OWNER_TYPE = "owner_type";
         public static final String _MEDIA_TYPE = "media_type";
         public static final String _KEY = "key";

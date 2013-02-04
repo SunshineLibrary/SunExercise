@@ -20,20 +20,19 @@ import org.sunshine_library.exercise.metadata.MetadataContract;
  * User: linxiangyu
  * Date: 13-1-20
  * Time: 下午12:46
- *
  */
 
 
 public class GetData {
 
     public static final String NOT_FOUND = "not found";
-    public static final String WRONG_MESSAGE = "can not parse json" ;
+    public static final String WRONG_MESSAGE = "can not parse json";
     public static final String REQ_ID = "req_id";
     public static final String SUBJECT_ID = "subject_id";
     public static final String LESSON_ID = "lesson_id";
     public static final String ACTIVITY_ID = "activity_id";
     public static final String STAGE_ID = "stage_id";
-    public static final String LESSONS = "lessons" ;
+    public static final String LESSONS = "lessons";
     public static final String PROBLEMS = "problems";
     public static final String ACTIVITY = "activity";
     public static final String ACTIVITYS = "activities";
@@ -70,12 +69,12 @@ public class GetData {
         resolver = ExerciseApplication.getApplication().getApplicationContext().getContentResolver();
     }
 
-    public String get(String reqJson){
+    public String get(String reqJson) {
 
         try {
             ask = new JSONObject(reqJson);
             int req_id = ask.getInt(REQ_ID);
-            switch (req_id){
+            switch (req_id) {
                 case 201:
                     return get201();
                 case 211:
@@ -102,14 +101,22 @@ public class GetData {
     }
 
     public String get201() {
-            JsonObject answer = new JsonObject();
-            answer.addProperty(REQ_ID, "201");
-            //TODO add User
-            answer.add(SUBJECTS, getAllSubject());
-            answer.add(LESSONS, getLessonsBySubject(1));
-            //TODO now just retrun the number1 subject;
-            return gson.toJson(answer);
+        JsonObject answer = new JsonObject();
+
+        int first_subject_id = 0;
+        Cursor cursor = resolver.query(MetadataContract.Subjects.CONTENT_URI, null, null, null, null);
+        if (cursor.moveToFirst()) {
+            first_subject_id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Subjects._IDENTIFIER));
         }
+
+        answer.addProperty(REQ_ID, "201");
+        answer.add(SUBJECTS, getAllSubject());
+
+        answer.add(LESSONS, getLessonsBySubject(first_subject_id));
+        return gson.toJson(answer);
+
+        //TODO tage_count
+    }
 
     private JsonObject getSubject(Cursor cursor) {
             /*
@@ -118,61 +125,55 @@ public class GetData {
                 "name": "数学",     // 科目名
              }
              */
-            JsonObject subject = new JsonObject();
+        JsonObject subject = new JsonObject();
 
-            int columeID = cursor.getColumnIndex(MetadataContract.Subjects._IDENTIFIER);
-            int columeName = cursor.getColumnIndex(MetadataContract.Subjects._NAME);
+        int columeID = cursor.getColumnIndex(MetadataContract.Subjects._IDENTIFIER);
+        int columeName = cursor.getColumnIndex(MetadataContract.Subjects._NAME);
 
-            int id = cursor.getInt(columeID);
-            String name = cursor.getString(columeName);
+        int id = cursor.getInt(columeID);
+        String name = cursor.getString(columeName);
 
-            subject.addProperty(ID, id);
-            subject.addProperty(NAME, name);
+        subject.addProperty(ID, id);
+        subject.addProperty(NAME, name);
 
-            return subject;
-        }
+        return subject;
+    }
 
     private JsonArray getAllSubject() {
-            JsonArray subjects= new JsonArray();
-            Cursor cursor = resolver.query(MetadataContract.Subjects.CONTENT_URI, null, null, null, null);
-            while (cursor.moveToNext()){
-                subjects.add(getSubject(cursor));
-
-            }
-            return subjects;
+        JsonArray subjects = new JsonArray();
+        Cursor cursor = resolver.query(MetadataContract.Subjects.CONTENT_URI, null, null, null, null);
+        while (cursor.moveToNext()) {
+            subjects.add(getSubject(cursor));
 
         }
+        return subjects;
+
+    }
 
 
-    private JsonArray getLessonsBySubject(int subject_id){
+    private JsonArray getLessonsBySubject(int subject_id) {
 
-            JsonArray lessons = new JsonArray();
-            Cursor cursor = resolver.query(MetadataContract.Lessons.CONTENT_URI, null,
-                    MetadataContract.Lessons._PARENT_IDENTIFIER + " = " + subject_id, null, null);
-            while (cursor.moveToNext()){
-                lessons.add(getLesson(cursor));
-            }
-            return lessons;
+        JsonArray lessons = new JsonArray();
+        Cursor cursor = resolver.query(MetadataContract.Lessons.CONTENT_URI, null,
+                MetadataContract.Lessons._PARENT_IDENTIFIER + " = " + subject_id, null, null);
+        while (cursor.moveToNext()) {
+            lessons.add(getLesson(cursor));
         }
+        return lessons;
+    }
 
-    private JsonObject getLesson(Cursor cursor){
+    private JsonObject getLesson(Cursor cursor) {
 
 
         JsonObject lesson = new JsonObject();
 
-        int columeID = cursor.getColumnIndex(MetadataContract.Lessons._IDENTIFIER);
-        int columnSubjectID = cursor.getColumnIndex(MetadataContract.Lessons._PARENT_IDENTIFIER);
-        int columeName = cursor.getColumnIndex(MetadataContract.Lessons._NAME);
-        int columnTime = cursor.getColumnIndex(MetadataContract.Lessons._TIME);
-        int columnUserProgress = cursor.getColumnIndex(MetadataContract.Lessons._USER_PROGRESS);
-        int columnUserResult = cursor.getColumnIndex(MetadataContract.Lessons._USER_RESULT);
 
-        int id = cursor.getInt(columeID);
-        int subject_id = cursor.getInt(columnSubjectID);
-        String name = cursor.getString(columeName);
-        String datatime = cursor.getString(columnTime);
-        int userProgress = cursor.getInt(columnUserProgress);
-        float userResult = cursor.getFloat(columnUserResult);
+        int id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Lessons._IDENTIFIER));
+        int subject_id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Lessons._PARENT_IDENTIFIER));
+        String name = cursor.getString(cursor.getColumnIndex(MetadataContract.Lessons._NAME));
+        String datatime = cursor.getString(cursor.getColumnIndex(MetadataContract.Lessons._TIME));
+        int userProgress = cursor.getInt(cursor.getColumnIndex(MetadataContract.Lessons._USER_PROGRESS));
+        float userResult = cursor.getFloat(cursor.getColumnIndex(MetadataContract.Lessons._USER_RESULT));
 
 
         Cursor stageCursor = resolver.query(MetadataContract.Stages.CONTENT_URI, null,
@@ -204,7 +205,7 @@ public class GetData {
         return lesson;
     }
 
-    public  String get211(int subject_id){
+    public String get211(int subject_id) {
         JsonObject answer = new JsonObject();
 
         answer.addProperty(REQ_ID, "211");
@@ -215,7 +216,7 @@ public class GetData {
 
     }
 
-    public String get301(int lesson_id){
+    public String get301(int lesson_id) {
 
         JsonObject answer = new JsonObject();
 
@@ -224,21 +225,21 @@ public class GetData {
         answer.addProperty(LESSON_ID, lesson_id);
         answer.add(LESSONS, getStagesByLesson(lesson_id));
 
-        return  gson.toJson(answer);
+        return gson.toJson(answer);
     }
 
     private JsonArray getStagesByLesson(int lesson_id) {
         Cursor cursor = resolver.query(MetadataContract.Stages.CONTENT_URI, null,
-                MetadataContract.Stages._PARENT_IDENTIFIER + " = " + String.valueOf(lesson_id),null,
+                MetadataContract.Stages._PARENT_IDENTIFIER + " = " + String.valueOf(lesson_id), null,
                 MetadataContract.Stages._SEQUENCE);
         JsonArray stages = new JsonArray();
-        while (cursor.moveToNext()){
-                stages.add(getStage(cursor));
+        while (cursor.moveToNext()) {
+            stages.add(getStage(cursor));
         }
         return stages;
     }
 
-    private JsonObject getStage(Cursor cursor){
+    private JsonObject getStage(Cursor cursor) {
         JsonObject stage = new JsonObject();
 
         int columeID = cursor.getColumnIndex(MetadataContract.Stages._IDENTIFIER);
@@ -252,14 +253,8 @@ public class GetData {
         int type = cursor.getInt(columnType);
         int userProgress = cursor.getInt(columnUserProgress);
 
-        float userPrecentage = getStageUserProgress(id, userProgress);
-        ContentValues values = new ContentValues();
-        values.put(MetadataContract.Stages._USER_PERCENTAGE, 110);
-        resolver.update(MetadataContract.Stages.CONTENT_URI, values,
-                MetadataContract.Stages._IDENTIFIER + " = " + id, null);
 
-
-        userPrecentage = cursor.getFloat(cursor.getColumnIndex(MetadataContract.Stages._USER_PERCENTAGE));
+        float userPrecentage = cursor.getFloat(cursor.getColumnIndex(MetadataContract.Stages._USER_PERCENTAGE));
 
 
         stage.addProperty(ID, id);
@@ -280,29 +275,7 @@ public class GetData {
     }
 
 
-    private float getStageUserProgress(int stage_id, int user_progress){
-        float activityCount = 0;
-        int currentActivity = 0;
-        Cursor cursorSection = resolver.query(MetadataContract.Sections.CONTENT_URI, null ,
-                MetadataContract.Sections._IDENTIFIER + " = " + String.valueOf(stage_id),  null,
-                MetadataContract.Sections._SEQUENCE);
-        while(cursorSection.moveToNext()){
-            int sectionID = cursorSection.getInt(cursorSection.getColumnIndex(MetadataContract.Sections._IDENTIFIER));
-            Cursor cursorActivity = resolver.query(MetadataContract.Activities.CONTENT_URI, null ,
-                    MetadataContract.Activities._IDENTIFIER + " = " + String.valueOf(sectionID),  null,
-                    MetadataContract.Activities._SEQUENCE);
-            while (cursorActivity.moveToNext()){
-                activityCount++;
-                int activity_id =  cursorActivity.getInt(cursorSection.getColumnIndex(MetadataContract.Activities._IDENTIFIER));
-                if (user_progress == activity_id){
-                    currentActivity = activity_id;
-                }
-            }
-        }
-        return currentActivity / activityCount;
-    }
-
-    public  String get401(int activity_id, int stage_id){
+    public String get401(int activity_id, int stage_id) {
         JsonObject answer = new JsonObject();
 
         answer.addProperty(REQ_ID, "401");
@@ -311,27 +284,27 @@ public class GetData {
         answer.add(ACTIVITYS, getActivitiesByStage(stage_id));
         answer.add(ACTIVITY, getActivityDetail(activity_id));
         answer.add(PROBLEMS, getProblemsByActivityForType4or7(activity_id));
-        return  gson.toJson(answer);
+        return gson.toJson(answer);
     }
 
     private JsonArray getActivitiesByStage(int stage_id) {
         JsonArray activitys = new JsonArray();
-        Cursor cursorSection = resolver.query(MetadataContract.Sections.CONTENT_URI, null ,
-                MetadataContract.Sections._IDENTIFIER + " = " + String.valueOf(stage_id),  null,
+        Cursor cursorSection = resolver.query(MetadataContract.Sections.CONTENT_URI, null,
+                MetadataContract.Sections._IDENTIFIER + " = " + String.valueOf(stage_id), null,
                 MetadataContract.Sections._SEQUENCE);
-        while(cursorSection.moveToNext()){
-                int sectionID = cursorSection.getInt(cursorSection.getColumnIndex(MetadataContract.Sections._IDENTIFIER));
-                Cursor cursorActivity = resolver.query(MetadataContract.Activities.CONTENT_URI, null ,
-                        MetadataContract.Activities._IDENTIFIER + " = " + String.valueOf(sectionID),  null,
-                        MetadataContract.Activities._SEQUENCE);
-                while (cursorActivity.moveToNext()){
-                        activitys.add(getActivityEssential(cursorActivity));
-                }
+        while (cursorSection.moveToNext()) {
+            int sectionID = cursorSection.getInt(cursorSection.getColumnIndex(MetadataContract.Sections._IDENTIFIER));
+            Cursor cursorActivity = resolver.query(MetadataContract.Activities.CONTENT_URI, null,
+                    MetadataContract.Activities._IDENTIFIER + " = " + String.valueOf(sectionID), null,
+                    MetadataContract.Activities._SEQUENCE);
+            while (cursorActivity.moveToNext()) {
+                activitys.add(getActivityEssential(cursorActivity));
+            }
         }
         return activitys;
     }
 
-    private  JsonObject getActivityEssential(Cursor cursor){
+    private JsonObject getActivityEssential(Cursor cursor) {
         /*
             {
             "id": "activity11", // 活动ID
@@ -363,7 +336,7 @@ public class GetData {
 
         String sectionName = new String();
         Cursor sectionCousur = resolver.query(MetadataContract.Sections.CONTENT_URI, null, MetadataContract.Sections._IDENTIFIER + " = " + String.valueOf(sectionId), null, null);
-        if (sectionCousur.moveToFirst()){
+        if (sectionCousur.moveToFirst()) {
             int columnSectionName = cursor.getColumnIndex(MetadataContract.Sections._NAME);
             sectionName = cursor.getString(columnSectionName);
         }
@@ -379,12 +352,12 @@ public class GetData {
     }
 
     private JsonObject getActivityDetail(int activity_id) {
-        Cursor cursor = resolver.query(MetadataContract.Activities.CONTENT_URI, null , MetadataContract.Activities._IDENTIFIER + " + " + activity_id, null, null);
+        Cursor cursor = resolver.query(MetadataContract.Activities.CONTENT_URI, null, MetadataContract.Activities._IDENTIFIER + " + " + activity_id, null, null);
         cursor.moveToFirst();
         return getActivityDetail(cursor);
     }
 
-    private  JsonObject getActivityDetail(Cursor cursor){
+    private JsonObject getActivityDetail(Cursor cursor) {
 
         JsonObject activity = new JsonObject();
 
@@ -400,11 +373,10 @@ public class GetData {
         Cursor sectionCousur = resolver.query(MetadataContract.Sections.CONTENT_URI, null,
                 MetadataContract.Sections._IDENTIFIER + " = " + String.valueOf(sectionId), null,
                 MetadataContract.Sections._SEQUENCE);
-        if (sectionCousur.moveToFirst()){
+        if (sectionCousur.moveToFirst()) {
             int columnSectionName = cursor.getColumnIndex(MetadataContract.Sections._NAME);
             sectionName = cursor.getString(columnSectionName);
         }
-
 
 
         activity.addProperty(ID, id);
@@ -443,11 +415,11 @@ public class GetData {
     private JsonArray getProblemsByActivityForType4or7(int activity_id) {
         JsonArray problems = new JsonArray();
         String select = MetadataContract.Problems._PARENT_IDENTIFIER + " = " + String.valueOf(activity_id) + " AND " +
-         "(" + MetadataContract.Problems._TYPE + " = " + 4 + " OR " +  MetadataContract.Problems._TYPE + " = " + 7 + " )";
+                "(" + MetadataContract.Problems._TYPE + " = " + 4 + " OR " + MetadataContract.Problems._TYPE + " = " + 7 + " )";
 
         Cursor cursor = resolver.query(MetadataContract.Problems.CONTENT_URI, null, select, null, MetadataContract.ProblemChoices._SEQUENCE);
-        while (cursor.moveToNext()){
-                problems.add(getProblem(cursor));
+        while (cursor.moveToNext()) {
+            problems.add(getProblem(cursor));
 
         }
 
@@ -494,11 +466,11 @@ public class GetData {
 
     }
 
-    private  JsonArray getProblemChoiceByProblem(int problems_id){
+    private JsonArray getProblemChoiceByProblem(int problems_id) {
         Cursor choiceCursor = resolver.query(MetadataContract.ProblemChoices.CONTENT_URI, null,
-                MetadataContract.ProblemChoices._PARENT_IDENTIFIER + " = " + problems_id ,null, MetadataContract.ProblemChoices._SEQUENCE);
+                MetadataContract.ProblemChoices._PARENT_IDENTIFIER + " = " + problems_id, null, MetadataContract.ProblemChoices._SEQUENCE);
         JsonArray choices = new JsonArray();
-        while (choiceCursor.moveToNext()){
+        while (choiceCursor.moveToNext()) {
             choices.add(getProblemChoice(choiceCursor));
         }
         return choices;
@@ -524,7 +496,7 @@ public class GetData {
          */
     }
 
-    public  String get411(int activity_id, int stage_id){
+    public String get411(int activity_id, int stage_id) {
         JsonObject answer = new JsonObject();
 
 
@@ -546,7 +518,7 @@ public class GetData {
             }
          */
 
-        return  gson.toJson(answer);
+        return gson.toJson(answer);
 
     }
 }

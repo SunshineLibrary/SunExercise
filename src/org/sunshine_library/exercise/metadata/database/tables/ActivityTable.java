@@ -7,6 +7,7 @@ import static org.sunshine_library.exercise.metadata.MetadataContract.Activities
 public class ActivityTable extends AbstractTable {
     public static final String TABLE_NAME = "activities";
 
+
     public static final String[] ALL_COLUMNS = {
             Activities._IDENTIFIER,
             Activities._PARENT_IDENTIFIER,

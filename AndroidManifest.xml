@@ -19,10 +19,7 @@
             </intent-filter>
         </activity>
         
-        <activity
-                android:name=".app.activity.VideoActivity"
-                android:screenOrientation="portrait" >
-        </activity>
+
 
         <service android:enabled="true" android:name="org.sunshine_library.exercise.app.activity.NotificationService" />
 
