@@ -6,13 +6,9 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 
-import android.util.Log;
 import org.sunshine_library.exercise.app.application.ExerciseApplication;
-import org.sunshine_library.exercise.metadata.MetadataContract;
 import org.sunshine_library.exercise.metadata.database.DBHandler;
 import org.sunshine_library.exercise.metadata.database.tables.*;
-
-import java.io.FileNotFoundException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,7 +30,7 @@ public class MetadataProvider extends ContentProvider {
     private Table activityTable;
     private Table problemTable;
     private Table problemChoiceTable;
-    private Table fileTable;
+    private Table mediaTable;
 
     @Override
     public boolean onCreate() {
@@ -61,7 +57,7 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.ACTIVITIES:
             case Matcher.PROBLEMS:
             case Matcher.PROBLEM_CHOICES:
-            case Matcher.FILES:
+            case Matcher.MEDIAS:
                 return table.query(uri, projection, selection, selectionArgs, sortOrder);
 
             default:
@@ -110,7 +106,7 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.ACTIVITIES:
             case Matcher.PROBLEMS:
             case Matcher.PROBLEM_CHOICES:
-            case Matcher.FILES:
+            case Matcher.MEDIAS:
                 return table.update(uri, values, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException();
@@ -156,11 +152,11 @@ public class MetadataProvider extends ContentProvider {
                     problemChoiceTable = dbHandler.getTableManager(ProblemChoiceTable.TABLE_NAME);
                 }
                 return problemChoiceTable;
-            case Matcher.FILES:
-                if (fileTable == null){
-                    fileTable = dbHandler.getTableManager(FileTable.TABLE_NAME);
+            case Matcher.MEDIAS:
+                if (mediaTable == null){
+                    mediaTable = dbHandler.getTableManager(MediaTable.TABLE_NAME);
                 }
-                return fileTable;
+                return mediaTable;
 
 
             default:

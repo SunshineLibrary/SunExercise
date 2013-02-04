@@ -1,10 +1,8 @@
 package org.sunshine_library.exercise.metadata.database.tables;
 
-import org.sunshine_library.exercise.metadata.MetadataContract;
 import org.sunshine_library.exercise.metadata.database.DBHandler;
 
 import static org.sunshine_library.exercise.metadata.MetadataContract.Problems;
-import static org.sunshine_library.exercise.metadata.MetadataContract.Activities;
 
 public class ProblemTable extends AbstractTable{
     public static final String TABLE_NAME = "problems";
@@ -18,7 +16,9 @@ public class ProblemTable extends AbstractTable{
             Problems._ANALYSIS,
             Problems._USER_DURATION,
             Problems._USER_CORRECT,
-            Problems._FILE_ID,
+            Problems._MEDIA_ID,
+            Problems._MEDIA_PATH,
+
     };
 
     public static final String[][] COLUMN_DEFINITIONS = {
@@ -30,7 +30,9 @@ public class ProblemTable extends AbstractTable{
             {Problems._ANALYSIS, "TEXT"},
             {Problems._USER_DURATION, "INTEGER"},
             {Problems._USER_CORRECT, "FLOAT"},
-            {Problems._FILE_ID, "INTEGER"}
+            {Problems._MEDIA_ID, "INTEGER"},
+            {Problems._MEDIA_PATH, "TEXT"}
+
     };
 
     public ProblemTable(DBHandler db) {

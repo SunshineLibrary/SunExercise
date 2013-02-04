@@ -4,7 +4,6 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import org.sunshine_library.exercise.app.application.ExerciseApplication;
 import org.sunshine_library.exercise.metadata.MetadataContract;
-import org.sunshine_library.exercise.metadata.data.GetData;
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,7 +33,7 @@ public class CheckAvailable {
     }
 
     private boolean isLessonAvaliable() {
-        return true //TODO
+        return true; //TODO
     }
 
 
@@ -42,7 +41,7 @@ public class CheckAvailable {
         Cursor cursor = mResovler.query(MetadataContract.Problems.CONTENT_URI, null,
                 MetadataContract.Problems._IDENTIFIER + " = " + id , null, null);
         if (cursor.moveToFirst()){
-            if (cursor.isNull(cursor.getColumnIndex(MetadataContract.Problems._FILE_ID)))
+            if (cursor.isNull(cursor.getColumnIndex(MetadataContract.Problems._MEDIA_ID)))
                 return false; //TODO 如何判断是否有文件？
         }
         return true;
@@ -53,7 +52,7 @@ public class CheckAvailable {
         Cursor cursor = mResovler.query(MetadataContract.Activities.CONTENT_URI, null,
                 MetadataContract.Activities._IDENTIFIER + " = " + id , null, null);
         if (cursor.moveToFirst()){
-            if (cursor.isNull(cursor.getColumnIndex(MetadataContract.Activities._FILE_ID)))
+            if (cursor.isNull(cursor.getColumnIndex(MetadataContract.Activities._MEDIA_ID)))
                 return false; //TODO 如何判断是否有文件？
         }
         return true;

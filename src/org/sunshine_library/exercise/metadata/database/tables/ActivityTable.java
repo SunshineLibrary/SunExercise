@@ -20,7 +20,8 @@ public class ActivityTable extends AbstractTable {
             Activities._USER_DURATION,
             Activities._USER_CORRECT,
             Activities._USER_SCORE,
-            Activities._FILE_ID
+            Activities._MEDIA_ID,
+            Activities._MEDIA_PATH
     };
 
     public static final String[][] COLUMN_DEFINITIONS = {
@@ -35,7 +36,9 @@ public class ActivityTable extends AbstractTable {
             {Activities._USER_DURATION, "INTEGER"},
             {Activities._USER_CORRECT, "FLOAT"},
             {Activities._USER_SCORE, "FLOAT"},
-            {Activities._FILE_ID, "INTEGER"}
+            {Activities._MEDIA_ID, "INTEGER"},
+            {Activities._MEDIA_PATH, "INTEGER"}
+
     };
 
     public ActivityTable(DBHandler handler) {

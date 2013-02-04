@@ -50,9 +50,9 @@ public class ScanFile {
 
     public List<Integer> getAllExistFileID() {
         List<Integer> allFile = new ArrayList<Integer>();
-        Cursor cursor = mResolver.query(MetadataContract.Files.CONTENT_URI, null, null, null, null);
+        Cursor cursor = mResolver.query(MetadataContract.Medias.CONTENT_URI, null, null, null, null);
         while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Files._IDENTIFIER));
+            int id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Medias._IDENTIFIER));
             allFile.add(id);
         }
         return allFile;
@@ -63,7 +63,7 @@ public class ScanFile {
         List<Integer> list = new ArrayList<Integer>();
         Cursor cursor = mResolver.query(MetadataContract.Activities.CONTENT_URI, null, null, null, null);
         while (cursor.moveToNext()) {
-            int fileID = cursor.getInt(cursor.getColumnIndex(MetadataContract.Activities._FILE_ID));
+            int fileID = cursor.getInt(cursor.getColumnIndex(MetadataContract.Activities._MEDIA_ID));
             list.add(fileID);
         }
         cursor.close();
@@ -75,7 +75,7 @@ public class ScanFile {
         List<Integer> list = new ArrayList<Integer>();
         Cursor cursor = mResolver.query(MetadataContract.Problems.CONTENT_URI, null, null, null, null);
         while (cursor.moveToNext()) {
-            int fileID = cursor.getInt(cursor.getColumnIndex(MetadataContract.Problems._FILE_ID));
+            int fileID = cursor.getInt(cursor.getColumnIndex(MetadataContract.Problems._MEDIA_ID));
             list.add(fileID);
         }
         cursor.close();
