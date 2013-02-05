@@ -21,39 +21,32 @@ import android.widget.RelativeLayout;
 import android.widget.VideoView;
 import org.sunshine_library.exercise.R;
 import org.sunshine_library.exercise.app.interfaces.HtmlInterface;
+import org.sunshine_library.exercise.app.json.JsonHandler;
 
 
 public class MainActivity extends TopActivity implements OnClickListener{
 
-	private WebView content;
+	private WebView mWebView;
 	private VideoView mVideoView;
+    private RelativeLayout mPlayView;
 	private LinearLayout mLinearLayout;
-	private RelativeLayout play;
 
-	
     /**
      * Called when the activity is first created.
      */
-
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-
-
-
-        content = (WebView) findViewById(R.id.content);
-        
     	mVideoView = (VideoView) findViewById(R.id.vv);
 		mLinearLayout =(LinearLayout)findViewById(R.id.player_loading);
-		play=(RelativeLayout) findViewById(R.id.play);
-        
-        WebSettings settings = content.getSettings();
-        settings.setJavaScriptEnabled(true);
-        content.setWebChromeClient(new WebChromeClient() {
+		mPlayView=(RelativeLayout) findViewById(R.id.play);
 
+        mWebView = (WebView) findViewById(R.id.content);
+        WebSettings settings = mWebView.getSettings();
+        settings.setJavaScriptEnabled(true);
+        mWebView.setWebChromeClient(new WebChromeClient() {
 			@Override
 			public boolean onJsAlert(WebView view, String url, String message,
 					JsResult result) {
@@ -62,10 +55,9 @@ public class MainActivity extends TopActivity implements OnClickListener{
         });
 
         // 过滤调用第三方浏览器。并且解析视频网站播放地址，传给播放器
-        content.setWebViewClient(new WebViewClient() {
+        mWebView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(final WebView view,
                                                     final String url) {
-
                 if (url.contains("3gp") || url.contains("mp4")) {
                     loadurl(view, url, true);// 载入视频
                 } else {
@@ -76,15 +68,14 @@ public class MainActivity extends TopActivity implements OnClickListener{
             }// 重写点击动作,用webview载入
         });
 
-
-        loadurl(content, "file:///android_asset/index.html", false);
-        content.addJavascriptInterface(new MyHtmlInterface(), "android");
+        loadurl(mWebView, "file:///android_asset/index.html", false);
+        mWebView.addJavascriptInterface(new MyHtmlInterface(), "android");
 
         startService(new Intent(MainActivity.this, NotificationService.class));
     }
 
     public void openVideoActivity(View v){
-      loadurl(content,"http://m.youku.com/smartphone/channels?cid=92",false);
+      loadurl(mWebView,"http://m.youku.com/smartphone/channels?cid=92",false);
 
     }
 
@@ -103,7 +94,7 @@ public class MainActivity extends TopActivity implements OnClickListener{
 			if (uris.contains("3gp") || uris.contains("mp4")) {
 				// 转义uri地址
 				Uri uri = Uri.parse(uris);
-				play(uri);
+				playView(uri);
 			}
 		} else {
 			view.loadUrl(url);// 载入网页
@@ -111,9 +102,9 @@ public class MainActivity extends TopActivity implements OnClickListener{
 	}
 	
 	// 播放器的效果
-	public void play(Uri uri) {
+	public void playView(Uri uri) {
 
-		play.setVisibility(View.VISIBLE);
+		mPlayView.setVisibility(View.VISIBLE);
 		
 		// 初始化视频显示控件
 		if (uri != null) {
@@ -147,7 +138,7 @@ public class MainActivity extends TopActivity implements OnClickListener{
 			@Override
 			public void onCompletion(MediaPlayer mp) {
 				mVideoView.stopPlayback();
-				play.setVisibility(View.GONE);
+				mPlayView.setVisibility(View.GONE);
 			}
 		});
 	}
@@ -155,9 +146,9 @@ public class MainActivity extends TopActivity implements OnClickListener{
 	// 捕捉返回键，首先隐藏播放器，然后判断是否能够返回。
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-		     if(play.getVisibility()==View.VISIBLE){
+		     if(mPlayView.getVisibility()==View.VISIBLE){
 		    	 mVideoView.stopPlayback();
-		    	 play.setVisibility(View.GONE);
+		    	 mPlayView.setVisibility(View.GONE);
 		    	 return true;
 		     }
 		}
@@ -177,14 +168,32 @@ public class MainActivity extends TopActivity implements OnClickListener{
 		@Override
 		public void getProblems() {
 			// TODO Auto-generated method stub
-			content.loadUrl("file:///android_asset/quiz.html");
+			mWebView.loadUrl("file:///android_asset/quiz.html");
 		}
 
 		@Override
 		public void getResults() {
 			// TODO Auto-generated method stub
-			content.loadUrl("file:///android_asset/summary.html");
+			mWebView.loadUrl("file:///android_asset/summary.html");
 		}
-		
-	}
+
+        @Override
+        public void requestJson(String reqJson) {
+            JsonHandler jh = new JsonHandler();
+            jh.parseReqId(reqJson);
+            int id = jh.getReqId();
+            switch (id){
+                case 201:
+                    mWebView.loadUrl("file:///android_asset/index.html");
+                    break;
+                case 301:
+                    mWebView.loadUrl("file:///android_asset/stage.html");
+                    break;
+                case 401:
+                case 411:
+                    mWebView.loadUrl("file://");
+
+            }
+        }
+    }
   }

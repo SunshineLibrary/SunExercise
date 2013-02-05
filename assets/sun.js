@@ -734,9 +734,9 @@
             eval(method)(JSON.stringify(total_first));
 		},
 	
-        fetchSubjects: function(method) {
-            eval(method)(JSON.stringify(subjects));
-        },
+//        fetchSubjects: function(method) {
+//            eval(method)(JSON.stringify(subjects));
+//        },
         
         fetchLessons: function(method) {
             eval(method)(JSON.stringify(subject_item));
