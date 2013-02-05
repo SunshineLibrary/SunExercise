@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">阳光补习班</string>
+    <string name="app_name">&#160;阳光提高班&#160;</string>
     
-    <string name="dialog_exit_main_message">确定退出阳光补习班？</string>
+    <string name="dialog_exit_main_message">确定退出阳光提高班？</string>
     <string name="dialog_exit_main_btn_ok">确定</string>
     <string name="dialog_exit_main_btn_cancel">取消</string>
     
