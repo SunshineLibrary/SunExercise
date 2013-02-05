@@ -15,6 +15,7 @@ jQuery(function($) {
         className: "nav",
 
         render : function() {
+//            alert("in");
             this.options.container.empty();
             this.options.container.append(this.el);
 
@@ -35,7 +36,7 @@ jQuery(function($) {
 		},
 		
 		getProblems : function(){
-			android.getProblems();//È»ºó¾ÍÈ¥¼ÓÔØproblems
+			android.getProblems();//È»ï¿½ï¿½ï¿½È¥ï¿½ï¿½ï¿½ï¿½problems
 		}
 		*/
 		
@@ -43,12 +44,12 @@ jQuery(function($) {
 			var progress = this.model.get("user_progress");
 			var stage_count = this.model.get("stage_count");
 			var stage_percentage = this.model.get("stage_percentage");
-			alert("stage_count="+stage_count+"  stage_percentage"+stage_percentage);
+			//alert("stage_count="+stage_count+"  stage_percentage"+stage_percentage);
 			
 			if(stage_count>0){
 				var progress = (stage_percentage/stage_count)*100;
 				this.model.set("progress",progress);
-				alert(progress);
+//				alert("progress:" + progress);
 			}
 			
 			var name;
