@@ -28,9 +28,39 @@
     />
 
         <WebView
-            android:id="@+id/content"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent" />
+                android:id="@+id/lesson"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"/>
+
+        <WebView
+                android:id="@+id/stage"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="gone"/>
+
+        <WebView
+                android:id="@+id/activity"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="gone"/>
+
+        <WebView
+                android:id="@+id/quiz"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="gone"/>
+
+        <WebView
+                android:id="@+id/summery"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="gone"/>
+
+        <WebView
+                android:id="@+id/exercise"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:visibility="gone"/>
     </LinearLayout>
 
     <RelativeLayout

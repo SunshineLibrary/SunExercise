@@ -1,4 +1,4 @@
-package org.sunshine_library.exercise.app.activity;
+package org.sunshine_library.exercise.app.service;
 
 import org.sunshine_library.exercise.R;
 
@@ -13,13 +13,12 @@ public class NotificationBuilder {
 		setByDefualt();
 	}
 	
-	Notification getNotification(){
+	public Notification getNotification(){
 		return noti;
 	}
 	
 	public void setByDefualt(){
 		noti.icon = R.drawable.ic_notification;
-		//noti.tickerText = "阳光书屋";
 		noti.flags |= Notification.FLAG_AUTO_CANCEL;  
 	}
 	
