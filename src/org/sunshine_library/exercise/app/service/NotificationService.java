@@ -1,4 +1,4 @@
-package org.sunshine_library.exercise.app.activity;
+package org.sunshine_library.exercise.app.service;
 
 import java.util.Date;
 import java.util.Timer;
@@ -6,7 +6,6 @@ import java.util.TimerTask;
 
 import org.sunshine_library.exercise.R;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -17,6 +16,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.text.format.Time;
 import android.util.Log;
+import org.sunshine_library.exercise.app.activity.MainActivity;
 
 public class NotificationService extends Service{
 	private static final String NOTI_SER_STRING = "NotiService";
