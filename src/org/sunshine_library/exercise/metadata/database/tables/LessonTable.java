@@ -12,8 +12,10 @@ public class    LessonTable extends AbstractTable {
             Lessons._PARENT_IDENTIFIER,
             Lessons._NAME,
             Lessons._TIME,
+            Lessons._IS_AVALIBLE,
             Lessons._USER_PROGRESS,
-            Lessons._USER_RESULT
+            Lessons._USER_RESULT,
+
     };
 
     private static final String[][] COLUMN_DEFINITIONS = {
@@ -21,6 +23,7 @@ public class    LessonTable extends AbstractTable {
             {Lessons._PARENT_IDENTIFIER, "INTEGER NOT NULL"},
             {Lessons._NAME, "TEXT"},
             {Lessons._TIME, "DATETIME"},
+            {Lessons._IS_AVALIBLE,"INTEGER"},
             {Lessons._USER_PROGRESS, "INTEGER"},
             {Lessons._USER_RESULT, "FLOAT"},
     };

@@ -102,9 +102,8 @@ public class DataBack {
 
      */
 
-    public void onRecieve(String back) {
+    public void onRecieve(JSONObject json ){
         try {
-            JSONObject json = new JSONObject(back);
 
             if (json.has(LESSON))
                 FinisheLesson(json.getJSONObject(LESSON));

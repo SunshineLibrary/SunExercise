@@ -63,7 +63,6 @@ public class MainActivity extends TopActivity {
 
         initWebViews();
         activateWebView("index");
-
         startService(new Intent(MainActivity.this, NotificationService.class));
     }
 
