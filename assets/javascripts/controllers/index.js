@@ -44,14 +44,14 @@ jQuery(function($) {
         initPage: function() {
             Sun.fetchSubjects("showSubjects");
         },
-		
-		//但是你现在没法模拟request，因此这里我就直接展现就好
+
         showSubject: function() {
 			Sun.fetchLessons("showLessons");
         },
 
         showLesson: function(id) {
-            alert("Requested to show lesson " + id);
+            alert("Requested to show lesson's stages. Lesson id: " + id);
+            android.loadHtml("stages");
         }
     });
 
