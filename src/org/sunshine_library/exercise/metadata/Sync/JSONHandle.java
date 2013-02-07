@@ -1,4 +1,4 @@
-package org.sunshine_library.exercise.metadata.data;
+package org.sunshine_library.exercise.metadata.sync;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -19,7 +19,7 @@ import java.util.Iterator;
  * Time: 下午8:35
  */
 
-public class DataReceiver {
+public class JSONHandle {
 
     public static final String CREATED = "created";
     public static final String DELETED = "deleted";
@@ -33,11 +33,11 @@ public class DataReceiver {
     public static final String ACTIVITIES = "activities";
     public static final String PROBLEMS = "problems";
     public static final String PROBLEM_CHOICES = "problem_choices";
-    public static final String FILES = "files";
+    public static final String MEDIAS = "meidas";
 
     public static final String IDENTIFIER = MetadataContract.Columns._IDENTIFIER;
 
-    String[] TABLES = {SUBJECTS, LESSONS, STAGES, SECTIONS, ACTIVITIES, PROBLEMS, PROBLEM_CHOICES, FILES};
+    String[] TABLES = {SUBJECTS, LESSONS, STAGES, SECTIONS, ACTIVITIES, PROBLEMS, PROBLEM_CHOICES, MEDIAS};
 
 
     JSONObject data;
@@ -89,6 +89,7 @@ public class DataReceiver {
 
                     JSONObject values = array.getJSONObject(i);
                     contentValues = new ContentValues();
+
                     for (Iterator iter = values.keys(); iter.hasNext(); ) {
                         String key = (String) iter.next();
                         Object value = values.get(key);

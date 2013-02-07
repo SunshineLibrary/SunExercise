@@ -1,22 +1,14 @@
 package org.sunshine_library.exercise.metadata.sync;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.IntentFilter;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Toast;
 import org.json.JSONObject;
-import org.sunshine_library.exercise.R;
 import org.sunshine_library.exercise.app.application.ExerciseApplication;
-import org.sunshine_library.exercise.metadata.data.DataReceiver;
 import org.sunshinelibrary.support.api.ApiManager;
 import org.sunshinelibrary.support.api.ApiUriBuilder;
 import org.sunshinelibrary.support.api.subscription.*;
+
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -27,6 +19,10 @@ import org.sunshinelibrary.support.api.subscription.*;
  */
 public class SyncSubscription {
 
+
+    public static final String URL = "/api/exercise/updates.json";
+
+
     SubscriptionDataListener mDataListener;
     SubscriptionBroadcastReceiver mReceiver;
     Context context;
@@ -34,18 +30,17 @@ public class SyncSubscription {
     String mSubsciptionUri;
 
 
-    public SyncSubscription(String uri) {
+    public SyncSubscription() {
         this.context = ExerciseApplication.getApplication();
         mManager = ApiManager.getInstance(context).getSubscriptionManager();
-        this.mSubsciptionUri = uri;
+        this.mSubsciptionUri = URL;
         initComponents();
     }
 
 
-
-   public void sync(){
-       fetchExerciseData();
-   }
+    public void sync() {
+        fetchExerciseData();
+    }
 
 
     private void initComponents() {
@@ -53,7 +48,7 @@ public class SyncSubscription {
 
             @Override
             public void onDataReceived(Subscription subscription, JSONObject object) {
-                new DataReceiver().onReceive(object.toString());
+                new Sync().sync(object);
             }
         };
 

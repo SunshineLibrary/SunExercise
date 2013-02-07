@@ -9,7 +9,7 @@ import static org.sunshine_library.exercise.metadata.MetadataContract.AUTHORITY;
  * User: linuo
  * Date: 1/9/13
  */
-public class Matcher {
+public class    Matcher {
     /*
      * Defining constants for matching the content URI
      */
@@ -22,7 +22,7 @@ public class Matcher {
     public static final int ACTIVITIES = 700;
     public static final int PROBLEMS = 800;
     public static final int PROBLEM_CHOICES = 900;
-    public static final int FILES = 1000;
+    public static final int MEDIAS = 1000;
 
 
     public static class Factory {
@@ -37,7 +37,7 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "activities", ACTIVITIES);
             matcher.addURI(AUTHORITY, "problems", PROBLEMS);
             matcher.addURI(AUTHORITY, "problem_choices", PROBLEM_CHOICES);
-            matcher.addURI(AUTHORITY, "files", FILES);
+            matcher.addURI(AUTHORITY, "medias", MEDIAS);
 
             return matcher;
         }
