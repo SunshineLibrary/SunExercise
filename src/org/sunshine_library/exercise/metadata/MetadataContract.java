@@ -1,6 +1,5 @@
 package org.sunshine_library.exercise.metadata;
 
-import android.content.ContentUris;
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -29,6 +28,7 @@ public class MetadataContract {
         String _USER_RESULT = "user_result";
         String _USER_DURATION = "user_duration";
         String _USER_CORRECT = "user_correct";
+        String _MEDIA_ID ="media_id";
 
     }
 
@@ -46,6 +46,11 @@ public class MetadataContract {
         public static final String _TIME = "time";
         public static final String _USER_PROGRESS = Columns._USER_PROGRESS;
         public static final String _USER_RESULT = Columns._USER_RESULT;
+        public static final String _IS_AVALIBLE = "avalible";
+
+        public static final int AVALIABLE = 1;
+        public static final int NOT_AVALIABLE = 0;
+
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("lessons").build();
     }
@@ -87,6 +92,8 @@ public class MetadataContract {
         public static final String _USER_DURATION = Columns._USER_DURATION;
         public static final String _USER_CORRECT = Columns._USER_CORRECT;
         public static final String _USER_SCORE = "user_score";
+        public static final String _MEDIA_ID = Columns._MEDIA_ID;
+
 
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("activities").build();
@@ -115,6 +122,9 @@ public class MetadataContract {
         public static final String _ANALYSIS = "analysis";
         public static final String _USER_DURATION = Columns._USER_DURATION;
         public static final String _USER_CORRECT = Columns._USER_CORRECT;
+        public static final String _MEDIA_ID = Columns._MEDIA_ID;
+
+
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problems").build();
 
@@ -139,11 +149,13 @@ public class MetadataContract {
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problem_choices").build();
     }
 
-    public static final class Files {
+    public static final class Medias {
         public static final String _IDENTIFIER = Columns._IDENTIFIER;
         public static final String _OWNER_IDENTIFIER = "owner_id";
         public static final String _OWNER_TYPE = "owner_type";
         public static final String _MEDIA_TYPE = "media_type";
+        public static final String _PATH = "path";
+        public static final String _FILE_ID = "file_id";
         public static final String _KEY = "key";
 
         public static final int TYPE_PROBLEM = 0;
