@@ -758,6 +758,10 @@
         fetchStages: function(method, id){
             eval(method)(JSON.stringify(stages[id]));
         },
+
+        fetchStage: function(method){
+            eval(method)(JSON.stringify(stages[301]));
+        },
         
 		fetchDialogs: function(method, seq) {
             eval(method)(JSON.stringify(dialogs));
