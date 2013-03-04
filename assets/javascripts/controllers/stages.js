@@ -73,7 +73,21 @@ jQuery(function($) {
         },
 
         initPage: function() {
-
+            var container = $("#intro-circles");
+            Sun.fetchStage(function(str){
+                var stageData = refineData(JSON.parse(str));
+                var step = getStep(stageData);
+                //var currentId = container.attr("data_id");
+                var stages = new Stages(stageData);
+                var stagesView = new StagesView({
+                    model: stages,
+                    container: container
+                });
+                stagesView.render();
+                //container.attr("data_id", id);
+                moveToStep(step);
+                container.attr("data_step", step);
+            });
         },
 
         routeSwitchToStage: function(id, step) {
