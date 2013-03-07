@@ -8,8 +8,8 @@ public class ProblemTable extends AbstractTable{
     public static final String TABLE_NAME = "problems";
 
     public static final String[] ALL_COLUMNS = {
-            Problems._IDENTIFIER,
-            Problems._PARENT_IDENTIFIER,
+            Problems._STRING_ID,
+            Problems._PARENT_ID,
             Problems._SEQUENCE,
             Problems._TYPE,
             Problems._BODY,
@@ -21,8 +21,8 @@ public class ProblemTable extends AbstractTable{
     };
 
     public static final String[][] COLUMN_DEFINITIONS = {
-            {Problems._IDENTIFIER, "INTEGER PRIMARY KEY"},
-            {Problems._PARENT_IDENTIFIER, "INTEGER NOT NULL"},
+            {Problems._STRING_ID, "INTEGER PRIMARY KEY"},
+            {Problems._PARENT_ID, "INTEGER NOT NULL"},
             {Problems._SEQUENCE, "INTEGER"},
             {Problems._TYPE, "INTEGER"},
             {Problems._BODY, "TEXT"},

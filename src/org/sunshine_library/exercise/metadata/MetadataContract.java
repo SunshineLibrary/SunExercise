@@ -20,7 +20,7 @@ public class MetadataContract {
     }
 
     public interface Columns extends BaseColumns {
-        String _IDENTIFIER = "id";
+        String _STRING_ID = "id";
         String _NAME = "name";
         String _BODY = "body";
         String _SEQUENCE = "sequence";
@@ -33,15 +33,15 @@ public class MetadataContract {
     }
 
     public static final class Subjects {
-        public static final String _IDENTIFIER = Columns._IDENTIFIER;
+        public static final String _STRING_ID = Columns._STRING_ID;
         public static final String _NAME = Columns._NAME;
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("subjects").build();
     }
 
     public static final class Lessons {
-        public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _PARENT_IDENTIFIER = "subject_id";
+        public static final String _STRING_ID = Columns._STRING_ID;
+        public static final String _PARENT_ID = "subject_id";
         public static final String _NAME = Columns._NAME;
         public static final String _TIME = "time";
         public static final String _USER_PROGRESS = Columns._USER_PROGRESS;
@@ -56,8 +56,8 @@ public class MetadataContract {
     }
 
     public static final class Stages {
-        public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _PARENT_IDENTIFIER = "lesson_id";
+        public static final String _STRING_ID = Columns._STRING_ID;
+        public static final String _PARENT_ID = "lesson_id";
         public static final String _SEQUENCE = Columns._SEQUENCE;
         public static final String _TYPE = "type";
         public static final String _USER_PROGRESS = Columns._USER_PROGRESS;
@@ -72,8 +72,8 @@ public class MetadataContract {
     }
 
     public static final class Sections {
-        public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _PARENT_IDENTIFIER = "stage_id";
+        public static final String _STRING_ID = Columns._STRING_ID;
+        public static final String _PARENT_ID = "stage_id";
         public static final String _SEQUENCE = Columns._SEQUENCE;
         public static final String _NAME = Columns._NAME;
 
@@ -81,8 +81,8 @@ public class MetadataContract {
     }
 
     public static final class Activities {
-        public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _PARENT_IDENTIFIER = "section_id";
+        public static final String _STRING_ID = Columns._STRING_ID;
+        public static final String _PARENT_ID = "section_id";
         public static final String _SEQUENCE = Columns._SEQUENCE;
         public static final String _TYPE = "type";
         public static final String _NAME = Columns._NAME;
@@ -114,8 +114,8 @@ public class MetadataContract {
     }
 
     public static final class Problems {
-        public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _PARENT_IDENTIFIER = "activity_id";
+        public static final String _STRING_ID = Columns._STRING_ID;
+        public static final String _PARENT_ID = "activity_id";
         public static final String _SEQUENCE = Columns._SEQUENCE;
         public static final String _TYPE = "type";
         public static final String _BODY = Columns._BODY;
@@ -137,8 +137,8 @@ public class MetadataContract {
     }
 
     public static final class ProblemChoices {
-        public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _PARENT_IDENTIFIER = "problem_id";
+        public static final String _STRING_ID = Columns._STRING_ID;
+        public static final String _PARENT_ID = "problem_id";
         public static final String _SEQUENCE = Columns._SEQUENCE;
         //public static final String _CHOICE = "choice";
         //public static final String _BODY = Columns._BODY;
@@ -150,16 +150,9 @@ public class MetadataContract {
     }
 
     public static final class Medias {
-        public static final String _IDENTIFIER = Columns._IDENTIFIER;
-        public static final String _OWNER_IDENTIFIER = "owner_id";
-        public static final String _OWNER_TYPE = "owner_type";
-        public static final String _MEDIA_TYPE = "media_type";
+        public static final String _STRING_ID = Columns._STRING_ID;
         public static final String _PATH = "path";
         public static final String _FILE_ID = "file_id";
-        public static final String _KEY = "key";
-
-        public static final int TYPE_PROBLEM = 0;
-        public static final int TYPE_ACTIVITY = 1;
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("files").build();
     }

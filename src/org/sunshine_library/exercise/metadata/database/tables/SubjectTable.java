@@ -9,12 +9,12 @@ public class SubjectTable extends AbstractTable {
     public static final String TABLE_NAME = "subjects";
 
     private static final String[] ALL_COLUMNS = {
-            Subjects._IDENTIFIER,
+            Subjects._STRING_ID,
             Subjects._NAME,
     };
 
     private static final String[][] COLUMN_DEFINITIONS = {
-            {Subjects._IDENTIFIER, "INTEGER PRIMARY KEY"},
+            {Subjects._STRING_ID, "INTEGER PRIMARY KEY"},
             {Subjects._NAME, "TEXT"}
     };
 

@@ -9,7 +9,6 @@ import org.sunshine_library.exercise.app.application.ExerciseApplication;
 import org.sunshine_library.exercise.metadata.MetadataContract;
 import org.sunshinelibrary.support.utils.CursorUtils;
 
-
 /**
  * Created with IntelliJ IDEA.
  * User: linxiangyu
@@ -98,7 +97,7 @@ public class GetData {
         int first_subject_id = 0;
         Cursor cursor = mResovler.query(MetadataContract.Subjects.CONTENT_URI, null, null, null, null);
         if (cursor.moveToFirst()) {
-            first_subject_id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Subjects._IDENTIFIER));
+            first_subject_id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Subjects._STRING_ID));
         }
         cursor.close();
 
@@ -119,7 +118,7 @@ public class GetData {
              */
         JSONObject subject = new JSONObject();
 
-        int columeID = cursor.getColumnIndex(MetadataContract.Subjects._IDENTIFIER);
+        int columeID = cursor.getColumnIndex(MetadataContract.Subjects._STRING_ID);
         int columeName = cursor.getColumnIndex(MetadataContract.Subjects._NAME);
 
         int id = cursor.getInt(columeID);
@@ -149,7 +148,7 @@ public class GetData {
 
         JSONArray lessons = new JSONArray();
         Cursor cursor = mResovler.query(MetadataContract.Lessons.CONTENT_URI, null,
-                MetadataContract.Lessons._PARENT_IDENTIFIER + " = " + subject_id, null, null);
+                MetadataContract.Lessons._PARENT_ID + " = " + subject_id, null, null);
         while (cursor.moveToNext()) {
             lessons.put(getLesson(cursor));
         }
@@ -163,8 +162,8 @@ public class GetData {
         JSONObject lesson = new JSONObject();
 
 
-        int id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Lessons._IDENTIFIER));
-        int subject_id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Lessons._PARENT_IDENTIFIER));
+        int id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Lessons._STRING_ID));
+        int subject_id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Lessons._PARENT_ID));
         String name = cursor.getString(cursor.getColumnIndex(MetadataContract.Lessons._NAME));
         String datatime = cursor.getString(cursor.getColumnIndex(MetadataContract.Lessons._TIME));
         int userProgress = cursor.getInt(cursor.getColumnIndex(MetadataContract.Lessons._USER_PROGRESS));
@@ -172,7 +171,7 @@ public class GetData {
 
 
         Cursor stageCursor = mResovler.query(MetadataContract.Stages.CONTENT_URI, null,
-                MetadataContract.Stages._PARENT_IDENTIFIER + " = " + id, null,
+                MetadataContract.Stages._PARENT_ID + " = " + id, null,
                 MetadataContract.Stages._SEQUENCE);
         int stageCount = stageCursor.getCount();
         stageCursor.close();
@@ -226,7 +225,7 @@ public class GetData {
 
     private JSONArray getStagesByLesson(int lesson_id)throws JSONException {
         Cursor cursor = mResovler.query(MetadataContract.Stages.CONTENT_URI, null,
-                MetadataContract.Stages._PARENT_IDENTIFIER + " = " + String.valueOf(lesson_id), null,
+                MetadataContract.Stages._PARENT_ID + " = " + String.valueOf(lesson_id), null,
                 MetadataContract.Stages._SEQUENCE);
         JSONArray stages = new JSONArray();
         while (cursor.moveToNext()) {
@@ -239,7 +238,7 @@ public class GetData {
     private JSONObject getStage(Cursor cursor) throws JSONException{
         JSONObject stage = new JSONObject();
 
-        int columeID = cursor.getColumnIndex(MetadataContract.Stages._IDENTIFIER);
+        int columeID = cursor.getColumnIndex(MetadataContract.Stages._STRING_ID);
         int columeSequence = cursor.getColumnIndex(MetadataContract.Stages._SEQUENCE);
         int columnType = cursor.getColumnIndex(MetadataContract.Stages._TYPE);
         int columnUserProgress = cursor.getColumnIndex(MetadataContract.Stages._USER_PROGRESS);
@@ -287,12 +286,12 @@ public class GetData {
     private JSONArray getActivitiesByStage(int stage_id) throws JSONException{
         JSONArray activitys = new JSONArray();
         Cursor cursorSection = mResovler.query(MetadataContract.Sections.CONTENT_URI, null,
-                MetadataContract.Sections._IDENTIFIER + " = " + String.valueOf(stage_id), null,
+                MetadataContract.Sections._STRING_ID + " = " + String.valueOf(stage_id), null,
                 MetadataContract.Sections._SEQUENCE);
         while (cursorSection.moveToNext()) {
-            int sectionID = cursorSection.getInt(cursorSection.getColumnIndex(MetadataContract.Sections._IDENTIFIER));
+            int sectionID = cursorSection.getInt(cursorSection.getColumnIndex(MetadataContract.Sections._STRING_ID));
             Cursor cursorActivity = mResovler.query(MetadataContract.Activities.CONTENT_URI, null,
-                    MetadataContract.Activities._IDENTIFIER + " = " + String.valueOf(sectionID), null,
+                    MetadataContract.Activities._STRING_ID + " = " + String.valueOf(sectionID), null,
                     MetadataContract.Activities._SEQUENCE);
             while (cursorActivity.moveToNext()) {
                 activitys.put(getActivityEssential(cursorActivity));
@@ -319,8 +318,8 @@ public class GetData {
 
         JSONObject activity = new JSONObject();
 
-        int columeID = cursor.getColumnIndex(MetadataContract.Activities._IDENTIFIER);
-        int columnSection = cursor.getColumnIndex(MetadataContract.Activities._PARENT_IDENTIFIER);
+        int columeID = cursor.getColumnIndex(MetadataContract.Activities._STRING_ID);
+        int columnSection = cursor.getColumnIndex(MetadataContract.Activities._PARENT_ID);
         int columeSeq = cursor.getColumnIndex(MetadataContract.Activities._SEQUENCE);
         int columeName = cursor.getColumnIndex(MetadataContract.Activities._NAME);
         int columnType = cursor.getColumnIndex(MetadataContract.Activities._TYPE);
@@ -334,7 +333,7 @@ public class GetData {
         int userProgress = cursor.getInt(columnUserProgress);
 
         String sectionName = new String();
-        Cursor sectionCousur = mResovler.query(MetadataContract.Sections.CONTENT_URI, null, MetadataContract.Sections._IDENTIFIER + " = " + String.valueOf(sectionId), null, null);
+        Cursor sectionCousur = mResovler.query(MetadataContract.Sections.CONTENT_URI, null, MetadataContract.Sections._STRING_ID + " = " + String.valueOf(sectionId), null, null);
         if (sectionCousur.moveToFirst()) {
             int columnSectionName = cursor.getColumnIndex(MetadataContract.Sections._NAME);
             sectionName = cursor.getString(columnSectionName);
@@ -354,7 +353,7 @@ public class GetData {
     }
 
     private JSONObject getActivityDetail(int activity_id)throws JSONException {
-        Cursor cursor = mResovler.query(MetadataContract.Activities.CONTENT_URI, null, MetadataContract.Activities._IDENTIFIER + " + " + activity_id, null, null);
+        Cursor cursor = mResovler.query(MetadataContract.Activities.CONTENT_URI, null, MetadataContract.Activities._STRING_ID + " + " + activity_id, null, null);
         cursor.moveToFirst();
         return getActivityDetail(cursor);
     }
@@ -364,8 +363,8 @@ public class GetData {
         JSONObject activity = new JSONObject();
 
 
-        int id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Activities._IDENTIFIER));
-        int sectionId = cursor.getInt(cursor.getColumnIndex(MetadataContract.Activities._PARENT_IDENTIFIER));
+        int id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Activities._STRING_ID));
+        int sectionId = cursor.getInt(cursor.getColumnIndex(MetadataContract.Activities._PARENT_ID));
         int seq = cursor.getInt(cursor.getColumnIndex(MetadataContract.Activities._SEQUENCE));
         int type = cursor.getInt(cursor.getColumnIndex(MetadataContract.Activities._NAME));
         String name = cursor.getString(cursor.getColumnIndex(MetadataContract.Activities._TYPE));
@@ -373,7 +372,7 @@ public class GetData {
 
         String sectionName = new String();
         Cursor sectionCousur = mResovler.query(MetadataContract.Sections.CONTENT_URI, null,
-                MetadataContract.Sections._IDENTIFIER + " = " + String.valueOf(sectionId), null,
+                MetadataContract.Sections._STRING_ID + " = " + String.valueOf(sectionId), null,
                 MetadataContract.Sections._SEQUENCE);
         if (sectionCousur.moveToFirst()) {
             int columnSectionName = cursor.getColumnIndex(MetadataContract.Sections._NAME);
@@ -421,7 +420,7 @@ public class GetData {
 
     private JSONArray getProblemsByActivityForType4or7(int activity_id) throws JSONException{
         JSONArray problems = new JSONArray();
-        String select = MetadataContract.Problems._PARENT_IDENTIFIER + " = " + String.valueOf(activity_id) + " AND " +
+        String select = MetadataContract.Problems._PARENT_ID + " = " + String.valueOf(activity_id) + " AND " +
                 "(" + MetadataContract.Problems._TYPE + " = " + 4 + " OR " + MetadataContract.Problems._TYPE + " = " + 7 + " )";
 
         Cursor cursor = mResovler.query(MetadataContract.Problems.CONTENT_URI, null, select, null, MetadataContract.ProblemChoices._SEQUENCE);
@@ -438,7 +437,7 @@ public class GetData {
 
         JSONObject problem = new JSONObject();
 
-        int id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Problems._IDENTIFIER));
+        int id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Problems._STRING_ID));
 
         problem.put(ID, id);
         problem.put(SEQ, cursor.getInt(cursor.getColumnIndex(MetadataContract.Problems._SEQUENCE)));
@@ -482,7 +481,7 @@ public class GetData {
 
     private JSONArray getProblemChoiceByProblem(int problems_id) throws JSONException{
         Cursor choiceCursor = mResovler.query(MetadataContract.ProblemChoices.CONTENT_URI, null,
-                MetadataContract.ProblemChoices._PARENT_IDENTIFIER + " = " + problems_id, null, MetadataContract.ProblemChoices._SEQUENCE);
+                MetadataContract.ProblemChoices._PARENT_ID + " = " + problems_id, null, MetadataContract.ProblemChoices._SEQUENCE);
         JSONArray choices = new JSONArray();
         while (choiceCursor.moveToNext()) {
             choices.put(getProblemChoice(choiceCursor));
@@ -494,7 +493,7 @@ public class GetData {
     private JSONObject getProblemChoice(Cursor cursor)throws JSONException {
         JSONObject choice = new JSONObject();
 
-        choice.put(ID, cursor.getInt(cursor.getColumnIndex(MetadataContract.ProblemChoices._IDENTIFIER)));
+        choice.put(ID, cursor.getInt(cursor.getColumnIndex(MetadataContract.ProblemChoices._STRING_ID)));
         choice.put(SEQ, cursor.getInt(cursor.getColumnIndex(MetadataContract.ProblemChoices._SEQUENCE)));
         choice.put(BODY, cursor.getString(cursor.getColumnIndex(MetadataContract.ProblemChoices._DISPLAY_TEXT)));
         choice.put(ANSWER, cursor.getInt(cursor.getColumnIndex(MetadataContract.ProblemChoices._ANSWER)));
@@ -538,7 +537,7 @@ public class GetData {
     }
 
     private String getMediaPath(int id){
-        Cursor cursor = mResovler.query(MetadataContract.Medias.CONTENT_URI, null, MetadataContract.Medias._IDENTIFIER + " = " + id, null,   null);
+        Cursor cursor = mResovler.query(MetadataContract.Medias.CONTENT_URI, null, MetadataContract.Medias._STRING_ID + " = " + id, null,   null);
         cursor.moveToFirst();
         if (!cursor.isNull(cursor.getColumnIndex(MetadataContract.Medias._PATH)))
             return CursorUtils.getString(cursor, MetadataContract.Medias._PATH);

@@ -8,15 +8,15 @@ public class SectionTable extends AbstractTable {
     public static final String TABLE_NAME = "sections";
 
     private static final String[] ALL_COLUMNS = {
-            Sections._IDENTIFIER,
-            Sections._PARENT_IDENTIFIER,
+            Sections._STRING_ID,
+            Sections._PARENT_ID,
             Sections._SEQUENCE,
             Sections._NAME,
     };
 
     private static final String[][] COLUMN_DEFINITIONS = {
-            {Sections._IDENTIFIER, "INTEGER PRIMARY KEY"},
-            {Sections._PARENT_IDENTIFIER, "INTEGER NOT NULL"},
+            {Sections._STRING_ID, "INTEGER PRIMARY KEY"},
+            {Sections._PARENT_ID, "INTEGER NOT NULL"},
             {Sections._SEQUENCE, "INTEGER"},
             {Sections._NAME, "TEXT"},
 
