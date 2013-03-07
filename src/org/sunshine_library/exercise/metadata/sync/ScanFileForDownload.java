@@ -50,9 +50,9 @@ public class ScanFileForDownload {
 
     public List<Integer> getAllExistMediaID() {
         List<Integer> allMedia = new ArrayList<Integer>();
-        Cursor cursor = mResolver.query(MetadataContract.Medias.CONTENT_URI, null, null, null, null);
+        Cursor cursor = mResolver.query(MetadataContract.Media.CONTENT_URI, null, null, null, null);
         while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Medias._STRING_ID));
+            int id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Media._STRING_ID));
             allMedia.add(id);
         }
         return allMedia;

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import org.sunshine_library.exercise.metadata.database.tables.Table;
-import org.sunshine_library.exercise.metadata.database.tables.TableView;
 
 import java.util.HashMap;
 
@@ -15,7 +14,7 @@ import java.util.HashMap;
  */
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 100;
     private static final String DB_NAME = "metadb";
     private HashMap<String, Table> tableManagers;
 

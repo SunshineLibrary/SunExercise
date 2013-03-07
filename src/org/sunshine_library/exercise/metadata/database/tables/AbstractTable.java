@@ -85,11 +85,11 @@ public abstract class AbstractTable implements Table {
          * it can be used to upgrade from version 113. For previous versions, we
          * must drop and recreate the table instead.
          */
-        if (oldVersion < 113) {
-            createTable(db);
-        } else {
-            upgradeTableInSteps(db, oldVersion, newVersion);
-        }
+//        if (oldVersion > 1) {
+//            createTable(db);
+//        } else {
+        upgradeTableInSteps(db, oldVersion, newVersion);
+//        }
     }
 
     public void upgradeTableInSteps(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -119,7 +119,6 @@ public abstract class AbstractTable implements Table {
         Cursor cursor = dbHandler.getReadableDatabase().query(getTableName(),
                 projection, selection, selectionArgs, null, null, sortOrder);
         return cursor;
-
     }
 
     public Uri insert(Uri uri, ContentValues values) {

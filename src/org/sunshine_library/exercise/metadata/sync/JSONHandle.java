@@ -33,11 +33,10 @@ public class JSONHandle {
     public static final String ACTIVITIES = "activities";
     public static final String PROBLEMS = "problems";
     public static final String PROBLEM_CHOICES = "problem_choices";
-    public static final String MEDIAS = "meidas";
 
-    public static final String IDENTIFIER = MetadataContract.Columns._STRING_ID;
+    public static final String _STRING_ID = MetadataContract.Columns._STRING_ID;
 
-    String[] TABLES = {SUBJECTS, LESSONS, STAGES, SECTIONS, ACTIVITIES, PROBLEMS, PROBLEM_CHOICES, MEDIAS};
+    String[] TABLES = {SUBJECTS, LESSONS, STAGES, SECTIONS, ACTIVITIES, PROBLEMS, PROBLEM_CHOICES};
 
 
     JSONObject data;
@@ -69,8 +68,8 @@ public class JSONHandle {
 
                 for (int i = 0; i < array.length(); i++) {
                     values = array.getJSONObject(i);
-                    int id = values.getInt(IDENTIFIER);
-                    resolver.delete(MetadataContract.getUri(table), IDENTIFIER + " = " + id, null);
+                    int id = values.getInt(_STRING_ID);
+                    resolver.delete(MetadataContract.getUri(table), _STRING_ID + " = " + id, null);
                 }
             }
         }
@@ -130,7 +129,7 @@ public class JSONHandle {
                         Object value = values.get(key);
                         if (value instanceof Integer) {
                             contentValues.put(key, (Integer) value);
-                            if (key.equals(IDENTIFIER)) {
+                            if (key.equals(_STRING_ID)) {
                                 id = (Integer) value;
                             }
                         } else if (value instanceof String) {
@@ -141,7 +140,7 @@ public class JSONHandle {
                             contentValues.put(key, (Float) value);
                         }
                     }
-                    resolver.update(MetadataContract.getUri(table), contentValues, IDENTIFIER + " = " + id, null);
+                    resolver.update(MetadataContract.getUri(table), contentValues, _STRING_ID + " = " + id, null);
                 }
             }
         }

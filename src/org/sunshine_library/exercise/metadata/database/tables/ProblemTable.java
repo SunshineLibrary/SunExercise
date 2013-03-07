@@ -29,7 +29,7 @@ public class ProblemTable extends AbstractTable{
             {Problems._ANALYSIS, "TEXT"},
             {Problems._USER_DURATION, "INTEGER"},
             {Problems._USER_CORRECT, "FLOAT"},
-            {Problems._MEDIA_ID, "INTEGER"},
+            {Problems._MEDIA_ID, "TEXT DEFAULT \"\""},
 
     };
 
