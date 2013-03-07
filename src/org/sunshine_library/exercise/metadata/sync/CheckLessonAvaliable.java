@@ -84,15 +84,22 @@ public class CheckLessonAvaliable {
 
     private boolean isActivityAvailable(Cursor activityCursor) {
         // 在Contract的所有表中Media_ID的定义上设置了默认为""的空字符串作为默认值
-        if (activityCursor.isNull(activityCursor.getColumnIndex(MetadataContract.Activities._MEDIA_ID)))          //TODO
+        // 判断MediaID是否为“”
+        // TODO
+        if (activityCursor.isNull(activityCursor.getColumnIndex(MetadataContract.Activities._MEDIA_ID)))
             return false;
+
         int activity_id = activityCursor.getInt(activityCursor.getColumnIndex(MetadataContract.Activities._STRING_ID));
         Cursor problemCursor = mResovler.query(MetadataContract.Problems.CONTENT_URI, null,
                 MetadataContract.Problems._PARENT_ID + " = " + activity_id, null, null);
         while (problemCursor.moveToNext()) {
-            if (problemCursor.isNull(problemCursor.getColumnIndex(MetadataContract.Problems._MEDIA_ID)))   //TODO
+            // TODO
+            if (problemCursor.isNull(problemCursor.getColumnIndex(MetadataContract.Problems._MEDIA_ID))){
+                problemCursor.close();
                 return false;
+            }
         }
+        problemCursor.close();
         return true;
     }
 }

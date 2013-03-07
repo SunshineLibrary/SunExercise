@@ -55,10 +55,10 @@ public class SyncFileRequest {
 
 
                             ContentValues values = new ContentValues();
-                            values.put(MetadataContract.Medias._STRING_ID, id);
-                            values.put(MetadataContract.Medias._FILE_ID, fileInfo.getId());
-                            values.put(MetadataContract.Medias._PATH, fileInfo.getAbsolutePath());
-                            mResolver.insert(MetadataContract.Medias.CONTENT_URI, values);
+                            values.put(MetadataContract.Media._STRING_ID, id);
+                            values.put(MetadataContract.Media._FILE_ID, fileInfo.getId());
+                            values.put(MetadataContract.Media._PATH, fileInfo.getAbsolutePath());
+                            mResolver.insert(MetadataContract.Media.CONTENT_URI, values);
                         }
                         return true;
                     }
