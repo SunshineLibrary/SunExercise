@@ -23,7 +23,7 @@ public class MetadataContract {
         String _STRING_ID = "id";
         String _NAME = "name";
         String _BODY = "body";
-        String _SEQUENCE = "sequence";
+        String _SEQUENCE = "seq";
         String _USER_PROGRESS = "user_progress";
         String _USER_RESULT = "user_result";
         String _USER_DURATION = "user_duration";
@@ -149,12 +149,20 @@ public class MetadataContract {
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problem_choices").build();
     }
 
-    public static final class Medias {
+    public static final class Media {
         public static final String _STRING_ID = Columns._STRING_ID;
         public static final String _PATH = "path";
         public static final String _FILE_ID = "file_id";
 
-        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("files").build();
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("media").build();
+
+        public static Uri getMediaUri(String id) {
+            return CONTENT_URI.buildUpon().appendPath(id).build();
+        }
+
+        public static Uri getMediaDeleteUnusedFileUri() {
+            return AUTHORITY_URI.buildUpon().appendPath("delete").build();
+        }
     }
 
 

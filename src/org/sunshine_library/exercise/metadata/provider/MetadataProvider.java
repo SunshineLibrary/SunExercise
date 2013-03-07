@@ -51,13 +51,14 @@ public class MetadataProvider extends ContentProvider {
 
         switch (uriMatch) {
             case Matcher.SUBJECTS:
-            case Matcher.STAGE:
+            case Matcher.STAGES:
             case Matcher.SECTIONS:
             case Matcher.LESSONS:
             case Matcher.ACTIVITIES:
             case Matcher.PROBLEMS:
             case Matcher.PROBLEM_CHOICES:
-            case Matcher.MEDIAS:
+            case Matcher.MEDIA:
+            case Matcher.DELETE_UNUSED_FILE:
                 return table.query(uri, projection, selection, selectionArgs, sortOrder);
 
             default:
@@ -100,13 +101,13 @@ public class MetadataProvider extends ContentProvider {
         switch (uriMatch) {
 
             case Matcher.SUBJECTS:
-            case Matcher.STAGE:
+            case Matcher.STAGES:
             case Matcher.SECTIONS:
             case Matcher.LESSONS:
             case Matcher.ACTIVITIES:
             case Matcher.PROBLEMS:
             case Matcher.PROBLEM_CHOICES:
-            case Matcher.MEDIAS:
+            case Matcher.MEDIA:
                 return table.update(uri, values, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException();
@@ -121,7 +122,7 @@ public class MetadataProvider extends ContentProvider {
                     subjectTable= dbHandler.getTableManager(SubjectTable.TABLE_NAME);
                 }
                 return subjectTable;
-            case Matcher.STAGE:
+            case Matcher.STAGES:
                 if (stageTable== null) {
                     stageTable= dbHandler.getTableManager(StageTable.TABLE_NAME);
                 }
@@ -152,7 +153,8 @@ public class MetadataProvider extends ContentProvider {
                     problemChoiceTable = dbHandler.getTableManager(ProblemChoiceTable.TABLE_NAME);
                 }
                 return problemChoiceTable;
-            case Matcher.MEDIAS:
+            case Matcher.MEDIA:
+            case Matcher.DELETE_UNUSED_FILE:
                 if (mediaTable == null){
                     mediaTable = dbHandler.getTableManager(MediaTable.TABLE_NAME);
                 }

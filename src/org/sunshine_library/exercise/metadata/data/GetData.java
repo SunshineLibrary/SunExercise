@@ -537,10 +537,10 @@ public class GetData {
     }
 
     private String getMediaPath(int id){
-        Cursor cursor = mResovler.query(MetadataContract.Medias.CONTENT_URI, null, MetadataContract.Medias._STRING_ID + " = " + id, null,   null);
+        Cursor cursor = mResovler.query(MetadataContract.Media.CONTENT_URI, null, MetadataContract.Media._STRING_ID + " = " + id, null,   null);
         cursor.moveToFirst();
-        if (!cursor.isNull(cursor.getColumnIndex(MetadataContract.Medias._PATH)))
-            return CursorUtils.getString(cursor, MetadataContract.Medias._PATH);
+        if (!cursor.isNull(cursor.getColumnIndex(MetadataContract.Media._PATH)))
+            return CursorUtils.getString(cursor, MetadataContract.Media._PATH);
         else
             return "";
     }
