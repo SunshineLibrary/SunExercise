@@ -195,13 +195,14 @@ public class MainActivity extends TopActivity {
         }
 
         @Override
-        public void loadHtml(final String page) {
+        public void loadHtml(final String page, String reqJson) {
             MainActivity.this.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     activateWebView(page);
                 }
             });
+            Log.i(TAG, "receive req json:" + reqJson);
         }
     }
   }

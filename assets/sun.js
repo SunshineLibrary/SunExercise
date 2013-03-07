@@ -734,10 +734,6 @@
             eval(method)(JSON.stringify(total_first));
             alert(android.requestJson(null));
 		},
-	
-//        fetchSubjects: function(method) {
-//            eval(method)(JSON.stringify(subjects));
-//        },
         
         fetchLessons: function(method) {
             eval(method)(JSON.stringify(subject_item));
@@ -767,5 +763,32 @@
             eval(method)(JSON.stringify(dialogs));
         }
 	}
+
+	reqSubjectsAndLessons = {
+        // 第一次请求包含：1. 用户基本信息 2. 对话 3. 所有科目信息 4. 所有科目所对应的的课程信息
+        "req_id": 201   // 请求ID
+    }
+
+    reqStages = {
+        // 请求某个课程的所有阶段
+        "req_id": 301,  // 请求ID
+        "lesson_id": "" // 请求的课程ID
+    }
+
+    reqActivitys = {
+        "req_id": 401,      // 请求ID
+        "lesson_id": "",    // 请求的课程ID
+        "stage_id": "",     // 请求的阶段ID
+        "section_id": "",   // 请求的环节ID
+        "activity_id": ""   // 请求的活动ID
+    }
+
+    reqOneActivity = {
+        "req_id": 411,      // 请求ID
+        "lesson_id": "",    // 请求的课程ID
+        "stage_id": "",     // 请求的阶段ID
+        "section_id": "",   // 请求的环节ID
+        "activity_id": ""   // 请求的活动ID
+    }
 });
 
