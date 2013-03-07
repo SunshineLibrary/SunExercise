@@ -9,8 +9,8 @@ public class StageTable extends AbstractTable {
     public static final String TABLE_NAME = "stages";
 
     public static final String[] ALL_COLUMNS = {
-            Stages._IDENTIFIER,
-            Stages._PARENT_IDENTIFIER,
+            Stages._STRING_ID,
+            Stages._PARENT_ID,
             Stages._SEQUENCE,
             Stages._TYPE,
             Stages._USER_PROGRESS,
@@ -18,8 +18,8 @@ public class StageTable extends AbstractTable {
     };
 
     public static final String[][] COLUMN_DEFINITIONS = {
-            {Stages._IDENTIFIER, "INTEGER PRIMARY KEY"},
-            {Stages._PARENT_IDENTIFIER, "INTEGER NOT NULL"},
+            {Stages._STRING_ID, "INTEGER PRIMARY KEY"},
+            {Stages._PARENT_ID, "INTEGER NOT NULL"},
             {Stages._SEQUENCE, "INTEGER"},
             {Stages._TYPE, "INTEGER"},
             {Stages._USER_PROGRESS, "INTEGER"},

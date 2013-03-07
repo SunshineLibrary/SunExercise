@@ -50,6 +50,11 @@ public class SyncSubscription {
             public void onDataReceived(Subscription subscription, JSONObject object) {
                 new Sync().sync(object);
             }
+
+            @Override
+            public void onSyncComplete(Subscription subscription, boolean isSuccess) {
+                //To change body of implemented methods use File | Settings | File Templates.
+            }
         };
 
 

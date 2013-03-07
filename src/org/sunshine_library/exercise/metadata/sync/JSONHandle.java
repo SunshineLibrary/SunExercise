@@ -35,7 +35,7 @@ public class JSONHandle {
     public static final String PROBLEM_CHOICES = "problem_choices";
     public static final String MEDIAS = "meidas";
 
-    public static final String IDENTIFIER = MetadataContract.Columns._IDENTIFIER;
+    public static final String IDENTIFIER = MetadataContract.Columns._STRING_ID;
 
     String[] TABLES = {SUBJECTS, LESSONS, STAGES, SECTIONS, ACTIVITIES, PROBLEMS, PROBLEM_CHOICES, MEDIAS};
 

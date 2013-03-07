@@ -52,7 +52,7 @@ public class ScanFileForDownload {
         List<Integer> allMedia = new ArrayList<Integer>();
         Cursor cursor = mResolver.query(MetadataContract.Medias.CONTENT_URI, null, null, null, null);
         while (cursor.moveToNext()) {
-            int id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Medias._IDENTIFIER));
+            int id = cursor.getInt(cursor.getColumnIndex(MetadataContract.Medias._STRING_ID));
             allMedia.add(id);
         }
         return allMedia;
