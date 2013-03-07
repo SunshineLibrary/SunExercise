@@ -30,7 +30,7 @@ public class JsonHandler {
 
 
 
-    public static final String ID = MetadataContract.Columns._IDENTIFIER;
+    public static final String ID = MetadataContract.Columns._STRING_ID;
     public static final String ID_EQ = ID + " = ";
 
 

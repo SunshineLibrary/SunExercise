@@ -43,7 +43,7 @@ public class SyncFileRequest {
         mExecutor.execute(new Runnable() {
             @Override
             public void run() {
-                Uri uri = ApiUriBuilder.getMediaDownloadUri(id);
+                Uri uri = ApiUriBuilder.getMediaDownloadUri(String.valueOf(id));
                 DownloadMonitor monitor = mDownloader.createNewDownload(new DownloadRequest(uri));
                 monitor.setProgressListener(new DownloadProgressListener() {
                     @Override
@@ -55,7 +55,7 @@ public class SyncFileRequest {
 
 
                             ContentValues values = new ContentValues();
-                            values.put(MetadataContract.Medias._IDENTIFIER, id);
+                            values.put(MetadataContract.Medias._STRING_ID, id);
                             values.put(MetadataContract.Medias._FILE_ID, fileInfo.getId());
                             values.put(MetadataContract.Medias._PATH, fileInfo.getAbsolutePath());
                             mResolver.insert(MetadataContract.Medias.CONTENT_URI, values);

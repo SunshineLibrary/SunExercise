@@ -15,8 +15,8 @@ public class ProblemChoiceTable extends  AbstractTable{
     public static final String TABLE_NAME = "problem_choices";
 
     public static final String[] ALL_COLUMNS = {
-            ProblemChoices._IDENTIFIER,
-            ProblemChoices._PARENT_IDENTIFIER,
+            ProblemChoices._STRING_ID,
+            ProblemChoices._PARENT_ID,
             ProblemChoices._SEQUENCE,
             ProblemChoices._DISPLAY_TEXT,
             ProblemChoices._ANSWER,
@@ -26,8 +26,8 @@ public class ProblemChoiceTable extends  AbstractTable{
 
 
     public static final String[][] COLUMN_DEFINITIONS = {
-        {ProblemChoices._IDENTIFIER, "INTEGER PRIMARY KEY"},
-        {ProblemChoices._PARENT_IDENTIFIER, "INTEGER NOT NULL"},
+        {ProblemChoices._STRING_ID, "INTEGER PRIMARY KEY"},
+        {ProblemChoices._PARENT_ID, "INTEGER NOT NULL"},
         {ProblemChoices._SEQUENCE, "INTEGER"},
         {ProblemChoices._DISPLAY_TEXT,"TEXT"},
         {ProblemChoices._ANSWER, "TEXT"},

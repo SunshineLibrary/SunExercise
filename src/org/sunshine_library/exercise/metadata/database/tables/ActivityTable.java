@@ -9,8 +9,8 @@ public class ActivityTable extends AbstractTable {
 
 
     public static final String[] ALL_COLUMNS = {
-            Activities._IDENTIFIER,
-            Activities._PARENT_IDENTIFIER,
+            Activities._STRING_ID,
+            Activities._PARENT_ID,
             Activities._SEQUENCE,
             Activities._TYPE,
             Activities._NAME,
@@ -24,8 +24,8 @@ public class ActivityTable extends AbstractTable {
     };
 
     public static final String[][] COLUMN_DEFINITIONS = {
-            {Activities._IDENTIFIER, "INTEGER PRIMARY KEY"},
-            {Activities._PARENT_IDENTIFIER, "INTEGER NOT NULL"},
+            {Activities._STRING_ID, "INTEGER PRIMARY KEY"},
+            {Activities._PARENT_ID, "INTEGER NOT NULL"},
             {Activities._SEQUENCE, "INTEGER"},
             {Activities._TYPE, "INTEGER"},
             {Activities._NAME, "TEXT"},
@@ -35,7 +35,7 @@ public class ActivityTable extends AbstractTable {
             {Activities._USER_DURATION, "INTEGER"},
             {Activities._USER_CORRECT, "FLOAT"},
             {Activities._USER_SCORE, "FLOAT"},
-            {Activities._MEDIA_ID, "INTEGER"},
+            {Activities._MEDIA_ID, "TEXT DEFAULT \"\""},
 
     };
 

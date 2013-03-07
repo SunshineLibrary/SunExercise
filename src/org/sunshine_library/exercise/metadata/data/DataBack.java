@@ -38,7 +38,7 @@ public class DataBack {
     public static final String PROBLEMS = "problems";
     public static final String PROBLEM_CHOICES = "problem_choices";
 
-    public static final String IDENTIFIER = MetadataContract.Columns._IDENTIFIER;
+    public static final String IDENTIFIER = MetadataContract.Columns._STRING_ID;
     private static final String PROBLEM = "problem";
     private static final String STAGE = "stage";
     private static final String LESSON = "lesson";
@@ -215,16 +215,16 @@ public class DataBack {
         float activityCount = 0;
         int currentActivity = 0;
         Cursor cursorSection = resolver.query(MetadataContract.Sections.CONTENT_URI, null,
-                MetadataContract.Sections._IDENTIFIER + " = " + stage_id, null,
+                MetadataContract.Sections._STRING_ID + " = " + stage_id, null,
                 MetadataContract.Sections._SEQUENCE);
         while (cursorSection.moveToNext()) {
-            int sectionID = cursorSection.getInt(cursorSection.getColumnIndex(MetadataContract.Sections._IDENTIFIER));
+            int sectionID = cursorSection.getInt(cursorSection.getColumnIndex(MetadataContract.Sections._STRING_ID));
             Cursor cursorActivity = resolver.query(MetadataContract.Activities.CONTENT_URI, null,
-                    MetadataContract.Activities._IDENTIFIER + " = " + sectionID, null,
+                    MetadataContract.Activities._STRING_ID + " = " + sectionID, null,
                     MetadataContract.Activities._SEQUENCE);
             while (cursorActivity.moveToNext()) {
                 activityCount++;
-                int activity_id = cursorActivity.getInt(cursorSection.getColumnIndex(MetadataContract.Activities._IDENTIFIER));
+                int activity_id = cursorActivity.getInt(cursorSection.getColumnIndex(MetadataContract.Activities._STRING_ID));
                 if (user_progress == activity_id) {
                     currentActivity = activity_id;
                 }

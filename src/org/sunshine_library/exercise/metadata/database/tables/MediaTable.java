@@ -11,14 +11,10 @@ import org.sunshine_library.exercise.metadata.database.DBHandler;
  */
 public class MediaTable extends AbstractTable{
 
-    public static final String TABLE_NAME = "files";
+    public static final String TABLE_NAME = "media";
 
     private static final String[] ALL_COLUMNS = {
-            MetadataContract.Medias._IDENTIFIER,
-            MetadataContract.Medias._OWNER_IDENTIFIER,
-            MetadataContract.Medias._OWNER_TYPE,
-            MetadataContract.Medias._MEDIA_TYPE,
-            MetadataContract.Medias._KEY,
+            MetadataContract.Medias._STRING_ID,
             MetadataContract.Medias._FILE_ID,
             MetadataContract.Medias._PATH,
 
@@ -26,11 +22,7 @@ public class MediaTable extends AbstractTable{
     };
 
     private static final String[][] COLUMN_DEFINITIONS = {
-            {MetadataContract.Medias._IDENTIFIER, "INTEGER"},
-            {MetadataContract.Medias._OWNER_IDENTIFIER, "INTEGER"},
-            {MetadataContract.Medias._OWNER_TYPE, "INTEGER"},
-            {MetadataContract.Medias._MEDIA_TYPE, "INTEGER"},
-            {MetadataContract.Medias._KEY, "INTEGER"},
+            {MetadataContract.Medias._STRING_ID, "TEXT NOT NULL"},
             {MetadataContract.Medias._FILE_ID, "INTEGER"},
             {MetadataContract.Medias._PATH, "TEXT"},
 

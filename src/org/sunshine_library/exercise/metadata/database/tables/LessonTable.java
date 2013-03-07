@@ -8,8 +8,8 @@ public class    LessonTable extends AbstractTable {
     public static final String TABLE_NAME = "lessons";
 
     private static final String[] ALL_COLUMNS = {
-            Lessons._IDENTIFIER,
-            Lessons._PARENT_IDENTIFIER,
+            Lessons._STRING_ID,
+            Lessons._PARENT_ID,
             Lessons._NAME,
             Lessons._TIME,
             Lessons._IS_AVALIBLE,
@@ -19,8 +19,8 @@ public class    LessonTable extends AbstractTable {
     };
 
     private static final String[][] COLUMN_DEFINITIONS = {
-            {Lessons._IDENTIFIER, "INTEGER PRIMARY KEY"},
-            {Lessons._PARENT_IDENTIFIER, "INTEGER NOT NULL"},
+            {Lessons._STRING_ID, "INTEGER PRIMARY KEY"},
+            {Lessons._PARENT_ID, "INTEGER NOT NULL"},
             {Lessons._NAME, "TEXT"},
             {Lessons._TIME, "DATETIME"},
             {Lessons._IS_AVALIBLE,"INTEGER"},
