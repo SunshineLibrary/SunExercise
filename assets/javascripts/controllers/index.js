@@ -51,7 +51,8 @@ jQuery(function($) {
 
         showLesson: function(id) {
             alert("Requested to show lesson's stages. Lesson id: " + id);
-            android.loadHtml("stages");
+            reqStages.lesson_id=id;
+            android.loadHtml("stages", JSON.stringify(reqStages));
         }
     });
 
