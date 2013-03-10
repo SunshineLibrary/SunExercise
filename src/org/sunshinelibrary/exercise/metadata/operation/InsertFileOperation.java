@@ -1,7 +1,7 @@
 package org.sunshinelibrary.exercise.metadata.operation;
 
 import android.content.ContentValues;
-import org.sunshinelibrary.exercise.metadata.MetadataContract;
+import static org.sunshinelibrary.exercise.metadata.MetadataContract.Media;
 import org.sunshinelibrary.support.api.file.FileInfo;
 
 /**
@@ -22,9 +22,9 @@ public class InsertFileOperation extends ExerciseOperation {
 
     public void execute() {
         ContentValues values = new ContentValues();
-        values.put(MetadataContract.Media._STRING_ID, mMediaID);
-        values.put(MetadataContract.Media._FILE_ID, mFileInfo.getId());
-        values.put(MetadataContract.Media._PATH, mFileInfo.getAbsolutePath());
-        mContext.getContentResolver().insert(MetadataContract.Media.CONTENT_URI, values);
+        values.put(Media._STRING_ID, mMediaID);
+        values.put(Media._FILE_ID, mFileInfo.getId());
+        values.put(Media._PATH, mFileInfo.getAbsolutePath());
+        mContext.getContentResolver().insert(Media.CONTENT_URI, values);
     }
 }

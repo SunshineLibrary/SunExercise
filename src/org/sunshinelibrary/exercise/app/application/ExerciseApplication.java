@@ -3,6 +3,7 @@ package org.sunshinelibrary.exercise.app.application;
 import android.app.Application;
 
 import org.sunshinelibrary.exercise.metadata.database.MetadataDBHandlerFactory;
+import org.sunshinelibrary.exercise.metadata.sync.ExerciseSyncManager;
 import org.sunshinelibrary.support.utils.ApplicationInterface;
 import org.sunshinelibrary.support.utils.database.DBHandler;
 
@@ -14,12 +15,14 @@ import org.sunshinelibrary.support.utils.database.DBHandler;
  */
 public class ExerciseApplication  extends Application {
     private DBHandler metadataDBHandler;
+    private ExerciseSyncManager mSyncManager;
     static  ExerciseApplication application;
 
     public ExerciseApplication() {
         super();
         application = this;
         ApplicationInterface.setApplication(this);
+        mSyncManager = new ExerciseSyncManager();
     }
 
     public synchronized DBHandler getMetadataDBHandler() {
@@ -29,6 +32,9 @@ public class ExerciseApplication  extends Application {
         return metadataDBHandler;
     }
 
+    public synchronized ExerciseSyncManager getSyncManager() {
+        return mSyncManager;
+    }
 
     @Override
     public void onCreate() {
@@ -47,7 +53,7 @@ public class ExerciseApplication  extends Application {
         }
     }
 
-    public static Application getInstance(){
+    public static ExerciseApplication getInstance(){
         return application;
     }
 
