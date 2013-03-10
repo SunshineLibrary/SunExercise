@@ -17,7 +17,7 @@ public class SectionTable extends CustomizedAbstractTable {
     private static final String[][] COLUMN_DEFINITIONS = {
             {Sections._STRING_ID, "TEXT NOT NULL"},
             {Sections._PARENT_ID, "TEXT NOT NULL"},
-            {Sections._SEQUENCE, "INTEGER DEFAULT 0"},
+            {Sections._SEQUENCE, "INTEGER NOT NULL"},
             {Sections._NAME, "TEXT DEFAULT \"\""}
     };
 
