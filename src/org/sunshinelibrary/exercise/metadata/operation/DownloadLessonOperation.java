@@ -3,6 +3,8 @@ package org.sunshinelibrary.exercise.metadata.operation;
 import android.database.Cursor;
 import static org.sunshinelibrary.exercise.metadata.MetadataContract.Media;
 
+import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
+import org.sunshinelibrary.support.api.ApiManager;
 import org.sunshinelibrary.support.utils.CursorUtils;
 import org.sunshinelibrary.support.utils.sync.FileRequest;
 
@@ -31,11 +33,12 @@ public class DownloadLessonOperation extends ExerciseOperation implements FileRe
 
         if (mediaIDs.size() <= 0) {
             updateDownloadFinish(mLessonId, true);
-//            PackApplication.getInstance().getSyncManager().notifyFolderComplete(mLessonId);
+            ExerciseApplication.getInstance().getSyncManager().notifyCollectionDownloaded(mLessonId);
             return;
         }
-//        FileRequest fr = new FileRequest(PackApplication.getInstance().getSyncManager().getApiManager(), this);
-//        fr.addAll(mediaIDs);
+        FileRequest fr = new FileRequest(ApiManager.getInstance(ExerciseApplication.getInstance().getBaseContext()),
+                this, Media.CONTENT_URI);
+        fr.addAll(mediaIDs);
 
         Cursor cursor = mContext.getContentResolver().query(Media.CONTENT_URI, new String[]{Media._STRING_ID,
                 Media._PATH}, CursorUtils.generateSelectionStringForStringID(Media._STRING_ID, mediaIDs).toString(),
@@ -47,13 +50,13 @@ public class DownloadLessonOperation extends ExerciseOperation implements FileRe
             if (f.exists()) {
                 int idIndex = cursor.getColumnIndex(Media._STRING_ID);
                 String id = cursor.getString(idIndex);
-//                fr.remove(id);
+                fr.remove(id);
                 continue;
             }
         }
         cursor.close();
 
-//        fr.requestDownload();
+        fr.requestDownload();
     }
 
     @Override
@@ -61,6 +64,6 @@ public class DownloadLessonOperation extends ExerciseOperation implements FileRe
         CheckAvailableOperation co = new CheckAvailableOperation();
         co.add(mLessonId);
         co.execute();
-//        PackApplication.getInstance().getSyncManager().notifyFolderComplete(mLessonId);
+        ExerciseApplication.getInstance().getSyncManager().notifyCollectionDownloaded(mLessonId);
     }
 }

@@ -1,9 +1,6 @@
 package org.sunshinelibrary.exercise.metadata.operation;
 
-import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
-import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
 import org.sunshinelibrary.support.utils.CursorUtils;
 import org.sunshinelibrary.support.utils.operation.Operation;
 
