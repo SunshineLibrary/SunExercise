@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.webkit.JsResult;
@@ -22,11 +24,16 @@ import android.widget.VideoView;
 import org.sunshinelibrary.exercise.R;
 import org.sunshinelibrary.exercise.app.interfaces.HtmlInterface;
 import org.sunshinelibrary.exercise.app.service.NotificationService;
+import org.sunshinelibrary.exercise.metadata.TestCase;
 
 import java.util.HashMap;
 
 
 public class MainActivity extends TopActivity {
+
+    // TODO
+    private static final boolean DEBUG = true;
+    private static final int MENU_DEBUG = 33;
 
     private static final String TAG = "Main";
     private static final String ASSETS = "file:///android_asset/";
@@ -205,4 +212,25 @@ public class MainActivity extends TopActivity {
             Log.i(TAG, "receive req json:" + reqJson);
         }
     }
-  }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if(DEBUG) {
+            menu.add(0, MENU_DEBUG, 0, "Debug");
+            return true;
+        } else {
+            return super.onCreateOptionsMenu(menu);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case MENU_DEBUG:
+                TestCase.run();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+}

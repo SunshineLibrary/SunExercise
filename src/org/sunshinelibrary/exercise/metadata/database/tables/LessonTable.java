@@ -22,7 +22,7 @@ public class LessonTable extends CustomizedAbstractTable {
             {Lessons._STRING_ID, "TEXT NOT NULL"},
             {Lessons._PARENT_ID, "TEXT NOT NULL"},
             {Lessons._NAME, "TEXT DEFAULT \"\""},
-            {Lessons._SEQUENCE, "INTEGER DEFAULT 0"},
+            {Lessons._SEQUENCE, "INTEGER NOT NULL"},
             {Lessons._TIME, "DATETIME DEFAULT '2013-1-1'"},
             {Lessons._USER_PROGRESS, "TEXT DEFAULT \"\""},
             {Lessons._USER_RESULT, "FLOAT DEFAULT 0"},
