@@ -31,6 +31,7 @@ public class MetadataProvider extends ContentProvider {
     private Table problemTable;
     private Table problemChoiceTable;
     private Table mediaTable;
+    private Table userDataTable;
 
     @Override
     public boolean onCreate() {
@@ -58,6 +59,7 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.PROBLEMS:
             case Matcher.PROBLEM_CHOICES:
             case Matcher.MEDIA:
+            case Matcher.USER_DATA:
                 return table.query(projection, selection, selectionArgs, sortOrder);
             case Matcher.DELETE_UNUSED_FILE:
                 String query = "SELECT * FROM "
@@ -115,6 +117,7 @@ public class MetadataProvider extends ContentProvider {
             case Matcher.PROBLEMS:
             case Matcher.PROBLEM_CHOICES:
             case Matcher.MEDIA:
+            case Matcher.USER_DATA:
                 return table.update(values, selection, selectionArgs);
             default:
                 throw new IllegalArgumentException();
@@ -166,6 +169,11 @@ public class MetadataProvider extends ContentProvider {
                     mediaTable = dbHandler.getTable(MediaTable.TABLE_NAME);
                 }
                 return mediaTable;
+            case Matcher.USER_DATA:
+                if (userDataTable == null) {
+                    userDataTable = dbHandler.getTable(UserDataTable.TABLE_NAME);
+                }
+                return userDataTable;
             default:
                 return null;
         }
