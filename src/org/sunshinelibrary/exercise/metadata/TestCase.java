@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
 import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
+import org.sunshinelibrary.exercise.metadata.json.ServerData;
+import org.sunshinelibrary.exercise.metadata.json.UndefinedMayBeProxy;
 import org.sunshinelibrary.exercise.metadata.operation.CheckAvailableOperation;
 import org.sunshinelibrary.exercise.metadata.operation.ExerciseOperation;
 import org.sunshinelibrary.support.utils.CursorUtils;
@@ -37,6 +39,8 @@ public class TestCase {
         testActivity();
         testProblemAndChoice();
         testMedia();
+        testUserData();
+        testServerJson();
     }
 
     public static void testSubject() {
@@ -205,7 +209,7 @@ public class TestCase {
 
         values.clear();
         values.put(ProblemChoices._STRING_ID, "pc" + random.nextInt(1000000));
-        values.put(ProblemChoices._PARENT_ID, CS);
+        values.put(ProblemChoices._PARENT_ID, "p" + CS);
         values.put(ProblemChoices._SEQUENCE, 0);
         values.put(ProblemChoices._DISPLAY_TEXT, "wrong choice1");
         values.put(ProblemChoices._ANSWER, "no");
@@ -213,7 +217,7 @@ public class TestCase {
 
         values.clear();
         values.put(ProblemChoices._STRING_ID, "pc" + random.nextInt(1000000));
-        values.put(ProblemChoices._PARENT_ID, CS);
+        values.put(ProblemChoices._PARENT_ID, "p" + CS);
         values.put(ProblemChoices._SEQUENCE, 1);
         values.put(ProblemChoices._DISPLAY_TEXT, "wrong choice2");
         values.put(ProblemChoices._ANSWER, "no");
@@ -221,7 +225,7 @@ public class TestCase {
 
         values.clear();
         values.put(ProblemChoices._STRING_ID, "pc" + random.nextInt(1000000));
-        values.put(ProblemChoices._PARENT_ID, CS);
+        values.put(ProblemChoices._PARENT_ID, "p" + CS);
         values.put(ProblemChoices._SEQUENCE, 2);
         values.put(ProblemChoices._DISPLAY_TEXT, "correct choice");
         values.put(ProblemChoices._ANSWER, "yes");
@@ -229,7 +233,7 @@ public class TestCase {
 
         values.clear();
         values.put(ProblemChoices._STRING_ID, "pc" + random.nextInt(1000000));
-        values.put(ProblemChoices._PARENT_ID, CS);
+        values.put(ProblemChoices._PARENT_ID, "p" + CS);
         values.put(ProblemChoices._SEQUENCE, 3);
         values.put(ProblemChoices._DISPLAY_TEXT, "wrong choice4");
         values.put(ProblemChoices._ANSWER, "no");
@@ -237,7 +241,7 @@ public class TestCase {
 
         values.clear();
         values.put(ProblemChoices._STRING_ID, "pc" + random.nextInt(1000000));
-        values.put(ProblemChoices._PARENT_ID, FBS);
+        values.put(ProblemChoices._PARENT_ID, "p" + FBS);
         values.put(ProblemChoices._SEQUENCE, 0);
         values.put(ProblemChoices._ANSWER, "fb answer");
         uri = resolver.insert(ProblemChoices.CONTENT_URI, values);
@@ -272,6 +276,101 @@ public class TestCase {
         logTable(Lessons.CONTENT_URI);
     }
 
+    public static void testUserData() {
+        resolver.delete(UserData.CONTENT_URI, null, null);
+
+        ArrayList<String> collection = new ArrayList<String>();
+        collectIDs(Subjects.CONTENT_URI, collection);
+        collectIDs(Lessons.CONTENT_URI, collection);
+        collectIDs(Stages.CONTENT_URI, collection);
+        collectIDs(Sections.CONTENT_URI, collection);
+        collectIDs(Activities.CONTENT_URI, collection);
+        collectIDs(Problems.CONTENT_URI, collection);
+        collectIDs(ProblemChoices.CONTENT_URI, collection);
+
+        for (String id : collection) {
+            values.clear();
+            values.put(UserData._STRING_ID, id);
+            values.put(UserData._USER_DATA, "{\"key\":\"value\"}");
+            uri = resolver.insert(UserData.CONTENT_URI, values);
+        }
+
+        logTable(UserData.CONTENT_URI);
+
+    }
+
+    public static void testServerJson() {
+        UndefinedMayBeProxy p = new UndefinedMayBeProxy();
+
+        ServerData sd = new ServerData();
+        sd.type = "subjects";
+        sd.id = String.valueOf(random.nextInt(1000000));
+        sd.user_id = "unknown";
+        logJSON(sd.toJsonString());
+        p.requestData(sd.toJsonString());
+
+
+        sd.type = "lessons";
+        cursor = resolver.query(Subjects.CONTENT_URI, null, null, null, null);
+        cursor.moveToFirst();
+        String parentId = CursorUtils.getString(cursor, Subjects._STRING_ID);
+        cursor.close();
+        sd.id = parentId;
+        logJSON(sd.toJsonString());
+        p.requestData(sd.toJsonString());
+
+        sd.type = "stages";
+        cursor = resolver.query(Lessons.CONTENT_URI, null, null, null, null);
+        cursor.moveToFirst();
+        parentId = CursorUtils.getString(cursor, Lessons._STRING_ID);
+        cursor.close();
+        sd.id = parentId;
+        logJSON(sd.toJsonString());
+        p.requestData(sd.toJsonString());
+
+        sd.type = "sections";
+        cursor = resolver.query(Stages.CONTENT_URI, null, null, null, null);
+        cursor.moveToFirst();
+        parentId = CursorUtils.getString(cursor, Stages._STRING_ID);
+        cursor.close();
+        sd.id = parentId;
+        logJSON(sd.toJsonString());
+        p.requestData(sd.toJsonString());
+
+        sd.type = "activities";
+        cursor = resolver.query(Sections.CONTENT_URI, null, null, null, null);
+        cursor.moveToFirst();
+        parentId = CursorUtils.getString(cursor, Sections._STRING_ID);
+        cursor.close();
+        sd.id = parentId;
+        logJSON(sd.toJsonString());
+        p.requestData(sd.toJsonString());
+
+        sd.type = "problems";
+        cursor = resolver.query(Activities.CONTENT_URI, null, null, null, null);
+        cursor.moveToFirst();
+        parentId = CursorUtils.getString(cursor, Activities._STRING_ID);
+        cursor.close();
+        sd.id = parentId;
+        logJSON(sd.toJsonString());
+        p.requestData(sd.toJsonString());
+
+    }
+
+    private static void collectIDs(Uri uri, ArrayList<String> collection) {
+        cursor = resolver.query(Subjects.CONTENT_URI, null, null, null, null);
+        while (cursor.moveToNext()) {
+            collection.add(CursorUtils.getString(cursor, Columns._STRING_ID));
+        }
+        cursor.close();
+    }
+
+    public static void logJSON(String json) {
+        Log.d(TAG, "************* JSON String Start *****************");
+        Log.d(TAG, json);
+        Log.d(TAG, "************* JSON String END *******************");
+    }
+
 
     public static void logTable(Uri uri) {
 
@@ -302,7 +401,6 @@ public class TestCase {
             }
             Log.d(TAG, log.toString());
         }
-
         cursor.close();
     }
 }

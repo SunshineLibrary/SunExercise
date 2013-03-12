@@ -13,8 +13,8 @@ import org.json.JSONObject;
 public class JsonInterface {
 
     public static final String REQ_ID = "req_id";
-    public static final String SUCESS =  "{ \"status\" : \"success\" }";
-    public static final String FAILD =    "{ \"status\" : \"failed\" }";
+    public static final String SUCCESS =  "{ \"status\" : \"success\" }";
+    public static final String FAILED =    "{ \"status\" : \"failed\" }";
 
     //TODO 处理多个json请求、查询
 
@@ -25,11 +25,10 @@ public class JsonInterface {
             return new GetData().get(jsonObject);
         else if (req < 10000) {
              new DataBack().onRecieve(jsonObject);
-             return SUCESS;
+             return SUCCESS;
         }else{
 //             SyncRequest.sync();
-             return SUCESS;
+             return SUCCESS;
         }
     }
-
 }

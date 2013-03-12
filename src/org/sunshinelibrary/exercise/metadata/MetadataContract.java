@@ -125,4 +125,8 @@ public class MetadataContract extends Contract {
             return AUTHORITY_URI.buildUpon().appendPath("delete").build();
         }
     }
+
+    public static final class UserData extends UserDataTableDefinition {
+        public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("user_data").build();
+    }
 }

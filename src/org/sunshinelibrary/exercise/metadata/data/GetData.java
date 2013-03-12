@@ -83,11 +83,11 @@ public class GetData {
                     activity_id = mRequestJson.getInt(ACTIVITY_ID);
                     return get411(activity_id, stage_id);
                 default:
-                    return JsonInterface.FAILD;
+                    return JsonInterface.FAILED;
             }
         } catch (JSONException e) {
             e.printStackTrace();
-            return JsonInterface.FAILD;
+            return JsonInterface.FAILED;
         }
     }
 

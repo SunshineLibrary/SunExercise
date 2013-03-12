@@ -21,6 +21,7 @@ public class Matcher {
     public static final int ACTIVITIES = 600;
     public static final int PROBLEMS = 700;
     public static final int PROBLEM_CHOICES = 800;
+    public static final int USER_DATA = 900;
     public static final int MEDIA = 1000;
     public static final int DELETE_UNUSED_FILE = 1100;
 
@@ -38,6 +39,7 @@ public class Matcher {
             matcher.addURI(AUTHORITY, "problem_choices", PROBLEM_CHOICES);
             matcher.addURI(AUTHORITY, "media", MEDIA);
             matcher.addURI(AUTHORITY, "delete", DELETE_UNUSED_FILE);
+            matcher.addURI(AUTHORITY, "user_data", USER_DATA);
             return matcher;
         }
     }
