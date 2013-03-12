@@ -24,6 +24,7 @@ public class MetadataDBHandlerFactory {
         dbHandler.addTable(ProblemTable.TABLE_NAME, new ProblemTable(dbHandler));
         dbHandler.addTable(ProblemChoiceTable.TABLE_NAME, new ProblemChoiceTable(dbHandler));
         dbHandler.addTable(MediaTable.TABLE_NAME, new MediaTable(dbHandler));
+        dbHandler.addTable(UserDataTable.TABLE_NAME, new UserDataTable(dbHandler));
 
     }
 }

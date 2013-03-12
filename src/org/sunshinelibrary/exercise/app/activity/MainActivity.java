@@ -211,6 +211,16 @@ public class MainActivity extends TopActivity {
             });
             Log.i(TAG, "receive req json:" + reqJson);
         }
+
+        @Override
+        public String uploadUserData(String userData) {
+            return null;
+        }
+
+        @Override
+        public String requestData(String data) {
+            return null;
+        }
     }
 
     @Override
