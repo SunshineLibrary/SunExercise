@@ -304,7 +304,7 @@ public class TestCase {
 
         ServerData sd = new ServerData();
         sd.type = "subjects";
-        sd.id = String.valueOf(random.nextInt(1000000));
+        sd.param.id = String.valueOf(random.nextInt(1000000));
         sd.user_id = "unknown";
         logJSON(sd.toJsonString());
         p.requestData(sd.toJsonString());
@@ -315,7 +315,7 @@ public class TestCase {
         cursor.moveToFirst();
         String parentId = CursorUtils.getString(cursor, Subjects._STRING_ID);
         cursor.close();
-        sd.id = parentId;
+        sd.param.id = parentId;
         logJSON(sd.toJsonString());
         p.requestData(sd.toJsonString());
 
@@ -324,7 +324,7 @@ public class TestCase {
         cursor.moveToFirst();
         parentId = CursorUtils.getString(cursor, Lessons._STRING_ID);
         cursor.close();
-        sd.id = parentId;
+        sd.param.id = parentId;
         logJSON(sd.toJsonString());
         p.requestData(sd.toJsonString());
 
@@ -333,7 +333,7 @@ public class TestCase {
         cursor.moveToFirst();
         parentId = CursorUtils.getString(cursor, Stages._STRING_ID);
         cursor.close();
-        sd.id = parentId;
+        sd.param.id = parentId;
         logJSON(sd.toJsonString());
         p.requestData(sd.toJsonString());
 
@@ -342,7 +342,7 @@ public class TestCase {
         cursor.moveToFirst();
         parentId = CursorUtils.getString(cursor, Sections._STRING_ID);
         cursor.close();
-        sd.id = parentId;
+        sd.param.id = parentId;
         logJSON(sd.toJsonString());
         p.requestData(sd.toJsonString());
 
@@ -351,7 +351,7 @@ public class TestCase {
         cursor.moveToFirst();
         parentId = CursorUtils.getString(cursor, Activities._STRING_ID);
         cursor.close();
-        sd.id = parentId;
+        sd.param.id = parentId;
         logJSON(sd.toJsonString());
         p.requestData(sd.toJsonString());
 

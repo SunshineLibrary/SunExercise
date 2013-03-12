@@ -32,8 +32,8 @@ public class UndefinedMayBeProxy implements HtmlInterface{
     public String requestData(String string) {
         Log.i(TAG, "requestData: " + string);
         ServerData serverData = ServerData.create(string, ServerData.class);
-        serverData.fill();
-        Log.i(TAG, "returnData: " + serverData.toJsonString());
-        return serverData.toJsonString();
+        String result = serverData.request();
+        Log.i(TAG, "returnData: " + result);
+        return result;
     }
 }
