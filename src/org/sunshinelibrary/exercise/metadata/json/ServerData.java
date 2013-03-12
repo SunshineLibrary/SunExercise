@@ -26,17 +26,17 @@ public class ServerData extends Data {
     public String param = "";
 
     public void fill() {
-        if(type.equals(SubjectTable.TABLE_NAME)) {
-            param = query(type, null, null, null);
-        } else if (type.equals(LessonTable.TABLE_NAME)) {
-            param = query(type, Lessons._PARENT_ID, id, Lessons._SEQUENCE);
-        } else if (type.equals(StageTable.TABLE_NAME)) {
-            param = query(type, Stages._PARENT_ID, id, Stages._SEQUENCE);
-        } else if (type.equals(SectionTable.TABLE_NAME)) {
-            param = query(type, Sections._PARENT_ID, id, Sections._SEQUENCE);
-        } else if (type.equals(ActivityTable.TABLE_NAME)) {
-            param = query(type, Activities._PARENT_ID, id, Activities._SEQUENCE);
-        } else if (type.equals(ProblemTable.TABLE_NAME)) {
+        if(type.equals("subjects")) {
+            param = query(SubjectTable.TABLE_NAME, null, null, null);
+        } else if (type.equals("subject")) {
+            param = query(LessonTable.TABLE_NAME, Lessons._PARENT_ID, id, Lessons._SEQUENCE);
+        } else if (type.equals("lesson")) {
+            param = query(StageTable.TABLE_NAME, Stages._PARENT_ID, id, Stages._SEQUENCE);
+        } else if (type.equals("stage")) {
+            param = query(SectionTable.TABLE_NAME, Sections._PARENT_ID, id, Sections._SEQUENCE);
+        } else if (type.equals("section")) {
+            param = query(ActivityTable.TABLE_NAME, Activities._PARENT_ID, id, Activities._SEQUENCE);
+        } else if (type.equals("activity")) {
             param = queryProblemAndChoices(id);
         } else {
             Log.e(TAG, "wrong type: " + type);

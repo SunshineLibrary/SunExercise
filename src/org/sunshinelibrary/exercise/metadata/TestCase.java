@@ -310,7 +310,7 @@ public class TestCase {
         p.requestData(sd.toJsonString());
 
 
-        sd.type = "lessons";
+        sd.type = "subject";
         cursor = resolver.query(Subjects.CONTENT_URI, null, null, null, null);
         cursor.moveToFirst();
         String parentId = CursorUtils.getString(cursor, Subjects._STRING_ID);
@@ -319,7 +319,7 @@ public class TestCase {
         logJSON(sd.toJsonString());
         p.requestData(sd.toJsonString());
 
-        sd.type = "stages";
+        sd.type = "lesson";
         cursor = resolver.query(Lessons.CONTENT_URI, null, null, null, null);
         cursor.moveToFirst();
         parentId = CursorUtils.getString(cursor, Lessons._STRING_ID);
@@ -328,7 +328,7 @@ public class TestCase {
         logJSON(sd.toJsonString());
         p.requestData(sd.toJsonString());
 
-        sd.type = "sections";
+        sd.type = "stage";
         cursor = resolver.query(Stages.CONTENT_URI, null, null, null, null);
         cursor.moveToFirst();
         parentId = CursorUtils.getString(cursor, Stages._STRING_ID);
@@ -337,7 +337,7 @@ public class TestCase {
         logJSON(sd.toJsonString());
         p.requestData(sd.toJsonString());
 
-        sd.type = "activities";
+        sd.type = "section";
         cursor = resolver.query(Sections.CONTENT_URI, null, null, null, null);
         cursor.moveToFirst();
         parentId = CursorUtils.getString(cursor, Sections._STRING_ID);
@@ -346,7 +346,7 @@ public class TestCase {
         logJSON(sd.toJsonString());
         p.requestData(sd.toJsonString());
 
-        sd.type = "problems";
+        sd.type = "activity";
         cursor = resolver.query(Activities.CONTENT_URI, null, null, null, null);
         cursor.moveToFirst();
         parentId = CursorUtils.getString(cursor, Activities._STRING_ID);
