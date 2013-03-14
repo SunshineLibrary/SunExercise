@@ -10,12 +10,14 @@ public class UserDataTable extends CustomizedAbstractTable {
 
     private static final String[] ALL_COLUMNS = {
             UserData._STRING_ID,
-            UserData._USER_DATA
+            UserData._USER_DATA,
+            UserData._TYPE
     };
 
     private static final String[][] COLUMN_DEFINITIONS = {
             {UserData._STRING_ID, "TEXT NOT NULL"},
-            {UserData._USER_DATA, "TEXT DEFAULT \"\""}
+            {UserData._USER_DATA, "TEXT DEFAULT \"\""},
+            {UserData._TYPE, "TEXT NOT NULL"}
     };
 
 
