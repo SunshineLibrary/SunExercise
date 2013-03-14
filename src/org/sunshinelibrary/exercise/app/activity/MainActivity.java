@@ -1,5 +1,6 @@
 package org.sunshinelibrary.exercise.app.activity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
@@ -17,14 +18,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.LinearLayout;
-import android.widget.MediaController;
-import android.widget.RelativeLayout;
-import android.widget.VideoView;
+import android.widget.*;
 import org.sunshinelibrary.exercise.R;
 import org.sunshinelibrary.exercise.app.interfaces.HtmlInterface;
 import org.sunshinelibrary.exercise.app.service.NotificationService;
 import org.sunshinelibrary.exercise.metadata.TestCase;
+import org.sunshinelibrary.support.api.UserInfo;
 
 import java.util.HashMap;
 
@@ -71,6 +70,16 @@ public class MainActivity extends TopActivity {
         initWebViews();
         activateWebView("index");
         startService(new Intent(MainActivity.this, NotificationService.class));
+
+        Intent intent = new Intent(UserInfo.ACTION_SIGN_IN_ACTIVITY);
+        intent.addCategory(Intent.CATEGORY_DEFAULT);
+        try {
+            startActivityForResult(intent, UserInfo.SIGN_IN_REQUEST);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, "没有安装正确版本的更新晓书(SunDaemon)", Toast.LENGTH_LONG)
+                    .show();
+            finish();
+        }
     }
 
     public void openVideoActivity(View v){
@@ -213,7 +222,7 @@ public class MainActivity extends TopActivity {
         }
 
         @Override
-        public String uploadUserData(String userData) {
+        public String requestUserData(String userData) {
             return null;
         }
 

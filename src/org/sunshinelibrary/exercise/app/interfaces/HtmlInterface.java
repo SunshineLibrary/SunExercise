@@ -7,10 +7,10 @@ public interface HtmlInterface {
 
     // upload user data
     // so far will return the parameter.
-    // plz refer to the json.UserData class
-    public String uploadUserData(String userData);
+    // plz refer to the json.Request class
+    public String requestUserData(String userData);
 
     // request sever and user data
-    // plz refer to json.ServerData class, the return value will fill the "param" field of data.
+    // plz refer to json.Request class, the return value will fill the "param" field of data.
     public String requestData(String data);
 }
