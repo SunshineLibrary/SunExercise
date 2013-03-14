@@ -8,8 +8,8 @@ import org.sunshinelibrary.exercise.app.interfaces.HtmlInterface;
  * @version 1.0
  * @date 3/12/13
  */
-public class UndefinedMayBeProxy implements HtmlInterface{
-    private static final String TAG = "UndefinedMayBeProxy";
+public class Proxy implements HtmlInterface{
+    private static final String TAG = "Proxy";
 
     @Override
     public String requestJson(String reqJson) {
@@ -21,18 +21,19 @@ public class UndefinedMayBeProxy implements HtmlInterface{
     }
 
     @Override
-    public String uploadUserData(String string) {
-        Log.i(TAG, "uploadUserData: " + string);
-        UserData userData = UserData.create(string, UserData.class);
-        userData.save();
-        return userData.toJsonString();
+    public String requestUserData(String string) {
+        Log.i(TAG, "requestUserData: " + string);
+        Request userData = Request.create(string, Request.class);
+        String result = userData.request();
+        Log.i(TAG, "returnData: " + result);
+        return result;
     }
 
     @Override
     public String requestData(String string) {
         Log.i(TAG, "requestData: " + string);
-        ServerData serverData = ServerData.create(string, ServerData.class);
-        String result = serverData.request();
+        Request materialData = Request.create(string, Request.class);
+        String result = materialData.request();
         Log.i(TAG, "returnData: " + result);
         return result;
     }

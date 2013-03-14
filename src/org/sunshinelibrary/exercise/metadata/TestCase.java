@@ -5,11 +5,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
+import android.util.Pair;
 import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
-import org.sunshinelibrary.exercise.metadata.json.ServerData;
-import org.sunshinelibrary.exercise.metadata.json.UndefinedMayBeProxy;
+import org.sunshinelibrary.exercise.metadata.json.Request;
+import org.sunshinelibrary.exercise.metadata.json.Proxy;
 import org.sunshinelibrary.exercise.metadata.operation.CheckAvailableOperation;
-import org.sunshinelibrary.exercise.metadata.operation.ExerciseOperation;
 import org.sunshinelibrary.support.utils.CursorUtils;
 import static org.sunshinelibrary.exercise.metadata.MetadataContract.*;
 
@@ -40,7 +40,7 @@ public class TestCase {
         testProblemAndChoice();
         testMedia();
         testUserData();
-        testServerJson();
+        testProxy();
     }
 
     public static void testSubject() {
@@ -279,19 +279,20 @@ public class TestCase {
     public static void testUserData() {
         resolver.delete(UserData.CONTENT_URI, null, null);
 
-        ArrayList<String> collection = new ArrayList<String>();
-        collectIDs(Subjects.CONTENT_URI, collection);
-        collectIDs(Lessons.CONTENT_URI, collection);
-        collectIDs(Stages.CONTENT_URI, collection);
-        collectIDs(Sections.CONTENT_URI, collection);
-        collectIDs(Activities.CONTENT_URI, collection);
-        collectIDs(Problems.CONTENT_URI, collection);
-        collectIDs(ProblemChoices.CONTENT_URI, collection);
+        ArrayList<Pair<String, String>> collection = new ArrayList<Pair<String, String>>();
+        collectIDs(Subjects.CONTENT_URI, collection, "subject");
+        collectIDs(Lessons.CONTENT_URI, collection, "lesson");
+        collectIDs(Stages.CONTENT_URI, collection, "stage");
+        collectIDs(Sections.CONTENT_URI, collection, "section");
+        collectIDs(Activities.CONTENT_URI, collection, "activity");
+        collectIDs(Problems.CONTENT_URI, collection, "problem");
+        collectIDs(ProblemChoices.CONTENT_URI, collection, "problem_choice");
 
-        for (String id : collection) {
+        for (Pair<String,String> item : collection) {
             values.clear();
-            values.put(UserData._STRING_ID, id);
+            values.put(UserData._STRING_ID, item.first);
             values.put(UserData._USER_DATA, "{\"key\":\"value\"}");
+            values.put(UserData._TYPE, item.second);
             uri = resolver.insert(UserData.CONTENT_URI, values);
         }
 
@@ -299,76 +300,132 @@ public class TestCase {
 
     }
 
-    public static void testServerJson() {
-        UndefinedMayBeProxy p = new UndefinedMayBeProxy();
+    public static void testProxy() {
+        Log.d(TAG, "------------------TEST USER DATA------------------------");
+        Log.d(TAG, "-----------------------POST-----------------------------");
+        resolver.delete(UserData.CONTENT_URI, null, null);
+        Proxy p = new Proxy();
+        String FakeUserData = "{\"key\":\"value\"}";
 
-        ServerData sd = new ServerData();
-        sd.type = "subjects";
-        sd.param.id = String.valueOf(random.nextInt(1000000));
-        sd.user_id = "unknown";
-        logJSON(sd.toJsonString());
-        p.requestData(sd.toJsonString());
+        Request userDataReq = new Request();
+        userDataReq.api = "user_data";
+        userDataReq.method = "post";
+        userDataReq.param.user_data = FakeUserData;
+        userDataReq.user_id = "unknown";
 
+        ArrayList<Pair<String, String>> collection = new ArrayList<Pair<String, String>>();
+        collectIDs(Subjects.CONTENT_URI, collection, "subject");
+        collectIDs(Lessons.CONTENT_URI, collection, "lesson");
+        collectIDs(Stages.CONTENT_URI, collection, "stage");
+        collectIDs(Sections.CONTENT_URI, collection, "section");
+        collectIDs(Activities.CONTENT_URI, collection, "activity");
+        collectIDs(Problems.CONTENT_URI, collection, "problem");
+        collectIDs(ProblemChoices.CONTENT_URI, collection, "problem_choice");
 
-        sd.type = "subject";
+        for (Pair<String,String> item : collection) {
+            userDataReq.param.id = item.first;
+            userDataReq.param.type = item.second;
+            logJSON(userDataReq.toJsonString());
+            p.requestUserData(userDataReq.toJsonString());
+        }
+        logTable(UserData.CONTENT_URI);
+
+        Log.d(TAG, "------------------TEST USER DATA------------------------");
+        Log.d(TAG, "-----------------------GET------------------------------");
+        userDataReq.method = "get";
+        userDataReq.param.user_data = "";
+        for (Pair<String,String> item : collection) {
+            userDataReq.param.id = item.first;
+            userDataReq.param.type = item.second;
+            logJSON(userDataReq.toJsonString());
+            p.requestData(userDataReq.toJsonString());
+        }
+
+        Log.d(TAG, "-------------------TEST MATERIAL------------------------");
+        Request materialReq = new Request();
+        materialReq.api = "material";
+        materialReq.param.type = "subjects";
+        materialReq.param.id = String.valueOf(random.nextInt(1000000));
+        materialReq.user_id = "unknown";
+        logJSON(materialReq.toJsonString());
+
+        p.requestData(materialReq.toJsonString());
+        p.requestData("{\"api\":\"\",\"param\":{\"id\":\"882821\",\"type\":\"subjects\"},\"user_id\":\"unknown\"}");
+
+        materialReq.param.type = "subject";
         cursor = resolver.query(Subjects.CONTENT_URI, null, null, null, null);
         cursor.moveToFirst();
         String parentId = CursorUtils.getString(cursor, Subjects._STRING_ID);
         cursor.close();
-        sd.param.id = parentId;
-        logJSON(sd.toJsonString());
-        p.requestData(sd.toJsonString());
+        materialReq.param.id = parentId;
+        logJSON(materialReq.toJsonString());
+        p.requestData(materialReq.toJsonString());
 
-        sd.type = "lesson";
+        materialReq.param.type = "lesson";
         cursor = resolver.query(Lessons.CONTENT_URI, null, null, null, null);
         cursor.moveToFirst();
         parentId = CursorUtils.getString(cursor, Lessons._STRING_ID);
         cursor.close();
-        sd.param.id = parentId;
-        logJSON(sd.toJsonString());
-        p.requestData(sd.toJsonString());
+        materialReq.param.id = parentId;
+        logJSON(materialReq.toJsonString());
+        p.requestData(materialReq.toJsonString());
 
-        sd.type = "stage";
+        materialReq.param.type = "stage";
         cursor = resolver.query(Stages.CONTENT_URI, null, null, null, null);
         cursor.moveToFirst();
         parentId = CursorUtils.getString(cursor, Stages._STRING_ID);
         cursor.close();
-        sd.param.id = parentId;
-        logJSON(sd.toJsonString());
-        p.requestData(sd.toJsonString());
+        materialReq.param.id = parentId;
+        logJSON(materialReq.toJsonString());
+        p.requestData(materialReq.toJsonString());
 
-        sd.type = "section";
+        materialReq.param.type = "section";
         cursor = resolver.query(Sections.CONTENT_URI, null, null, null, null);
         cursor.moveToFirst();
         parentId = CursorUtils.getString(cursor, Sections._STRING_ID);
         cursor.close();
-        sd.param.id = parentId;
-        logJSON(sd.toJsonString());
-        p.requestData(sd.toJsonString());
+        materialReq.param.id = parentId;
+        logJSON(materialReq.toJsonString());
+        p.requestData(materialReq.toJsonString());
 
-        sd.type = "activity";
+        materialReq.param.type = "activity";
         cursor = resolver.query(Activities.CONTENT_URI, null, null, null, null);
         cursor.moveToFirst();
         parentId = CursorUtils.getString(cursor, Activities._STRING_ID);
         cursor.close();
-        sd.param.id = parentId;
-        logJSON(sd.toJsonString());
-        p.requestData(sd.toJsonString());
+        materialReq.param.id = parentId;
+        logJSON(materialReq.toJsonString());
+        p.requestData(materialReq.toJsonString());
 
+        materialReq.param.type = "problem";
+        cursor = resolver.query(Problems.CONTENT_URI, null, null, null, null);
+        cursor.moveToFirst();
+        parentId = CursorUtils.getString(cursor, Problems._STRING_ID);
+        cursor.close();
+        materialReq.param.id = parentId;
+        logJSON(materialReq.toJsonString());
+        p.requestData(materialReq.toJsonString());
+
+
+        Request userInfoReq = new Request();
+        userInfoReq.api = "material";
+        userInfoReq.param.type = "user_info";
+        logJSON(userInfoReq.toJsonString());
+        p.requestData(userInfoReq.toJsonString());
     }
 
-    private static void collectIDs(Uri uri, ArrayList<String> collection) {
-        cursor = resolver.query(Subjects.CONTENT_URI, null, null, null, null);
+    private static void collectIDs(Uri uri, ArrayList<Pair<String,String>> collection, String type) {
+        cursor = resolver.query(uri, null, null, null, null);
         while (cursor.moveToNext()) {
-            collection.add(CursorUtils.getString(cursor, Columns._STRING_ID));
+            collection.add(new Pair<String, String>(CursorUtils.getString(cursor, Columns._STRING_ID), type));
         }
         cursor.close();
     }
 
     public static void logJSON(String json) {
-        Log.d(TAG, "************* JSON String Start *****************");
-        Log.d(TAG, json);
-        Log.d(TAG, "************* JSON String END *******************");
+//        Log.d(TAG, "************* JSON String Start *****************");
+//        Log.d(TAG, json);
+//        Log.d(TAG, "************* JSON String END *******************");
     }
 
 

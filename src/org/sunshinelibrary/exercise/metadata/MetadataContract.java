@@ -45,7 +45,7 @@ public class MetadataContract extends Contract {
     public static final class Stages extends TableDefinition {
         public static final String _PARENT_ID = "lesson_id";
         public static final String _SEQUENCE = Columns._SEQUENCE;
-        public static final String _TYPE = "type";
+        public static final String _TYPE = Columns._TYPE;
         public static final String _USER_PROGRESS = Columns._USER_PROGRESS;
         public static final String _USER_PERCENTAGE = "user_percentage";
 
@@ -66,7 +66,7 @@ public class MetadataContract extends Contract {
     public static final class Activities extends TableDefinition {
         public static final String _PARENT_ID = "section_id";
         public static final String _SEQUENCE = Columns._SEQUENCE;
-        public static final String _TYPE = "type";
+        public static final String _TYPE = Columns._TYPE;
         public static final String _NAME = Columns._NAME;
         public static final String _BODY = Columns._BODY;
         public static final String _JUMP_CONDITION = "jump_condition";
@@ -93,7 +93,7 @@ public class MetadataContract extends Contract {
     public static final class Problems extends TableDefinition {
         public static final String _PARENT_ID = "activity_id";
         public static final String _SEQUENCE = Columns._SEQUENCE;
-        public static final String _TYPE = "type";
+        public static final String _TYPE = Columns._TYPE;
         public static final String _BODY = Columns._BODY;
         public static final String _ANALYSIS = "analysis";
         public static final String _USER_DURATION = Columns._USER_DURATION;

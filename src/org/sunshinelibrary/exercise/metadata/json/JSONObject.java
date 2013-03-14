@@ -10,8 +10,8 @@ import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
  * @version 1.0
  * @date 3/12/13
  */
-public class Data {
-    private static final String TAG = "Data";
+public class JSONObject {
+    private static final String TAG = "JSONObject";
 
     ContentResolver mResolver = ExerciseApplication.getInstance().getBaseContext().getContentResolver();
 
