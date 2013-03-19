@@ -2,9 +2,13 @@ package org.sunshinelibrary.exercise.app.application;
 
 import android.app.Application;
 
+import android.util.Log;
+import org.sunshinelibrary.exercise.metadata.MetadataContract;
 import org.sunshinelibrary.exercise.metadata.database.MetadataDBHandlerFactory;
-import org.sunshinelibrary.exercise.metadata.sync.ExerciseSyncManager;
+import org.sunshinelibrary.exercise.metadata.sync.ExerciseDeprecatedSyncManager;
+import org.sunshinelibrary.exercise.metadata.sync.Proxy;
 import org.sunshinelibrary.support.utils.ApplicationInterface;
+import org.sunshinelibrary.support.utils.database.Contract;
 import org.sunshinelibrary.support.utils.database.DBHandler;
 
 /**
@@ -15,14 +19,15 @@ import org.sunshinelibrary.support.utils.database.DBHandler;
  */
 public class ExerciseApplication  extends Application {
     private DBHandler metadataDBHandler;
-    private ExerciseSyncManager mSyncManager;
+    private Proxy mSyncManager;
     static  ExerciseApplication application;
 
     public ExerciseApplication() {
         super();
         application = this;
         ApplicationInterface.setApplication(this);
-        mSyncManager = new ExerciseSyncManager();
+        mSyncManager = new Proxy();
+        Contract.setAuthorityUri(MetadataContract.AUTHORITY_URI);
     }
 
     public synchronized DBHandler getMetadataDBHandler() {
@@ -32,7 +37,7 @@ public class ExerciseApplication  extends Application {
         return metadataDBHandler;
     }
 
-    public synchronized ExerciseSyncManager getSyncManager() {
+    public synchronized Proxy getSyncManager() {
         return mSyncManager;
     }
 
