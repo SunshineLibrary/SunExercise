@@ -7,8 +7,9 @@ import android.net.Uri;
 import android.util.Log;
 import android.util.Pair;
 import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
+import org.sunshinelibrary.exercise.app.interfaces.HtmlInteraction;
 import org.sunshinelibrary.exercise.metadata.json.Request;
-import org.sunshinelibrary.exercise.metadata.json.Proxy;
+import org.sunshinelibrary.exercise.metadata.sync.Proxy;
 import org.sunshinelibrary.exercise.metadata.operation.CheckAvailableOperation;
 import org.sunshinelibrary.support.utils.CursorUtils;
 import static org.sunshinelibrary.exercise.metadata.MetadataContract.*;
@@ -22,7 +23,7 @@ import java.util.Random;
  * Date: 3/10/13
  * Trello:
  */
-public class TestCase {
+public class TestCase extends Thread{
     static private final String TAG = "TestCase";
 
     static ContentResolver resolver = ExerciseApplication.getInstance().getContentResolver();
@@ -31,16 +32,54 @@ public class TestCase {
     static Uri uri;
     static Cursor cursor;
 
-    public static void run() {
-        testSubject();
-        testLesson();
-        testStage();
-        testSection();
-        testActivity();
-        testProblemAndChoice();
-        testMedia();
-        testUserData();
-        testProxy();
+    public static final int RUN_CASE = 0;
+    public static final int CLEAN = 1;
+    public static final int SYNC_DOWNLOAD = 2;
+    public static final int LOG_DB = 3;
+
+    static int command = RUN_CASE;
+
+
+    @Override
+    public void run() {
+        switch (command) {
+            case RUN_CASE:
+                testSubject();
+                testLesson();
+                testStage();
+                testSection();
+                testActivity();
+                testProblemAndChoice();
+                testMedia();
+                testUserData();
+                testProxy();
+                clean();
+                break;
+            case CLEAN:
+                clean();
+                logDatabase();
+                break;
+            case SYNC_DOWNLOAD:
+                testSyncAndDownload();
+                break;
+            case LOG_DB:
+                logDatabase();
+                break;
+            default:
+                throw new RuntimeException("illegal argument");
+        }
+    }
+
+    public void start(int comm) {
+        command = comm;
+        start();
+    }
+
+    public static void testSyncAndDownload() {
+        Proxy proxy = ExerciseApplication.getInstance().getSyncManager();
+        HtmlInteraction interaction = new HtmlInteraction();
+        proxy.register(interaction);
+        proxy.sync();
     }
 
     public static void testSubject() {
@@ -459,5 +498,27 @@ public class TestCase {
             Log.d(TAG, log.toString());
         }
         cursor.close();
+    }
+
+    public static void clean() {
+        resolver.delete(Subjects.CONTENT_URI, null, null);
+        resolver.delete(Lessons.CONTENT_URI, null, null);
+        resolver.delete(Stages.CONTENT_URI, null, null);
+        resolver.delete(Sections.CONTENT_URI, null, null);
+        resolver.delete(Activities.CONTENT_URI, null, null);
+        resolver.delete(Problems.CONTENT_URI, null, null);
+        resolver.delete(ProblemChoices.CONTENT_URI, null, null);
+        resolver.delete(Media.CONTENT_URI, null, null);
+    }
+
+    public static void logDatabase() {
+        logTable(Subjects.CONTENT_URI);
+        logTable(Lessons.CONTENT_URI);
+        logTable(Stages.CONTENT_URI);
+        logTable(Sections.CONTENT_URI);
+        logTable(Activities.CONTENT_URI);
+        logTable(Problems.CONTENT_URI);
+        logTable(ProblemChoices.CONTENT_URI);
+        logTable(Media.CONTENT_URI);
     }
 }
