@@ -11,6 +11,7 @@ import static org.sunshinelibrary.exercise.metadata.MetadataContract.*;
 
 import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
 import org.sunshinelibrary.exercise.metadata.database.tables.*;
+import org.sunshinelibrary.support.api.ApiManager;
 import org.sunshinelibrary.support.api.UserInfo;
 import org.sunshinelibrary.support.utils.CursorUtils;
 import org.sunshinelibrary.support.utils.JSONStringBuilder;
@@ -30,7 +31,7 @@ public class Request extends JSONObject {
     public String user_id = "";
     public Parameter param = new Parameter();
 
-    public class Parameter {
+    public class Parameter extends JSONObject {
         public String id = "";
         public String type = "";
         public String user_data = "";
@@ -151,6 +152,8 @@ public class Request extends JSONObject {
             Uri uri = mResolver.insert(UserData.CONTENT_URI, c);
         }
         cursor.close();
+        ApiManager.getInstance(ExerciseApplication.getInstance().getBaseContext()).getUserRecordUploader()
+            .uploadRecord(param.toJsonString());
         return UserRecordResponse.SUCCESS;
     }
 

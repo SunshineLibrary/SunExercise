@@ -52,7 +52,7 @@ jQuery(function($) {
         showLesson: function(id) {
             alert("Requested to show lesson's stages. Lesson id: " + id);
             reqStages.lesson_id=id;
-            android.loadHtml("stages", JSON.stringify(reqStages));
+//            android.loadHtml("stages", JSON.stringify(reqStages));
         }
     });
 

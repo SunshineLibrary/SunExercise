@@ -35,7 +35,7 @@ import java.util.ArrayList;
  * @version 1.0
  * @date 3/12/13
  */
-public class Proxy implements HtmlInterface, StateMachine, SubscriptionDataListener {
+public class Proxy implements HtmlInterface, SubscriptionDataListener {
     private static final String TAG = "Proxy";
     private static final String PATH = "/api/exercise/updates.json";
 
@@ -48,11 +48,14 @@ public class Proxy implements HtmlInterface, StateMachine, SubscriptionDataListe
     Subscription mSubscription;
     SyncObserver mObserver;
 
+    // deprecated
     @Override
     public String requestJson(String reqJson) {
-        return null;
+        Log.i(TAG, "request Json" + reqJson);
+        return "hahaha";
     }
 
+    // deprecated
     @Override
     public void loadHtml(String page, String reqJson) {
     }

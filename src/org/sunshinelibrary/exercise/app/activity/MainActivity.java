@@ -20,6 +20,8 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.*;
 import org.sunshinelibrary.exercise.R;
+import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
+import org.sunshinelibrary.exercise.app.interfaces.HtmlInteraction;
 import org.sunshinelibrary.exercise.app.interfaces.HtmlInterface;
 import org.sunshinelibrary.exercise.app.service.NotificationService;
 import org.sunshinelibrary.exercise.metadata.TestCase;
@@ -47,6 +49,7 @@ public class MainActivity extends TopActivity {
     private RelativeLayout mPlayView;
 	private LinearLayout mLinearLayout;
     private HtmlInterface mInterface;
+    private HtmlInteraction mInteraction;
 
     /**
      * Called when the activity is first created.
@@ -68,7 +71,11 @@ public class MainActivity extends TopActivity {
         mWebViewCollection.put("exercise", (WebView)findViewById(R.id.exercise));
         mWebViewCollection.put("quiz", (WebView)findViewById(R.id.quiz));
         mWebViewCollection.put("summery", (WebView) findViewById(R.id.summery));
-        mInterface = new MyHtmlInterface();
+
+        mInterface = ExerciseApplication.getInstance().getSyncManager();
+        mInteraction = new HtmlInteraction();
+        mInterface.register(mInteraction);
+
 
         initWebViews();
         activateWebView("index");
@@ -202,37 +209,6 @@ public class MainActivity extends TopActivity {
             }
         }
         super.onBackPressed();
-    }
-
-	private class MyHtmlInterface implements HtmlInterface{
-
-        @Override
-        public String requestJson(String reqJson) {
-            // 非UI线程
-            Log.i(TAG, "request Json" + reqJson);
-            return "hahaha";
-        }
-
-        @Override
-        public void loadHtml(final String page, String reqJson) {
-            MainActivity.this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    activateWebView(page);
-                }
-            });
-            Log.i(TAG, "receive req json:" + reqJson);
-        }
-
-        @Override
-        public String requestUserData(String userData) {
-            return null;
-        }
-
-        @Override
-        public String requestData(String data) {
-            return null;
-        }
     }
 
     @Override
