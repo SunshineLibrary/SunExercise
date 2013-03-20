@@ -732,7 +732,6 @@
 	Sun = {
 		fetchSubjects: function(method) {
             eval(method)(JSON.stringify(total_first));
-            alert(android.requestJson(null));
 		},
         
         fetchLessons: function(method) {
