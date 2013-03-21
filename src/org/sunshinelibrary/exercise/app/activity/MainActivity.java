@@ -8,16 +8,10 @@ import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.webkit.JsResult;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.webkit.*;
 import android.widget.*;
 import org.sunshinelibrary.exercise.R;
 import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
@@ -44,10 +38,10 @@ public class MainActivity extends TopActivity {
     private static final String HTML = ".html";
 
     private HashMap<String, WebView> mWebViewCollection;
-	private VideoView mVideoView;
+    private VideoView mVideoView;
     private String mCurrentView = null;
     private RelativeLayout mPlayView;
-	private LinearLayout mLinearLayout;
+    private LinearLayout mLinearLayout;
     private HtmlInterface mInterface;
     private HtmlInteraction mInteraction;
 
@@ -60,16 +54,16 @@ public class MainActivity extends TopActivity {
         setContentView(R.layout.main);
         mWebViewCollection = new HashMap<String, WebView>();
 
-    	mVideoView = (VideoView) findViewById(R.id.vv);
-		mLinearLayout =(LinearLayout)findViewById(R.id.player_loading);
-		mPlayView=(RelativeLayout) findViewById(R.id.play);
+        mVideoView = (VideoView) findViewById(R.id.vv);
+        mLinearLayout = (LinearLayout) findViewById(R.id.player_loading);
+        mPlayView = (RelativeLayout) findViewById(R.id.play);
 
 
-        mWebViewCollection.put("index", (WebView)findViewById(R.id.lesson));
-        mWebViewCollection.put("stages", (WebView)findViewById(R.id.stage));
+        mWebViewCollection.put("index", (WebView) findViewById(R.id.lesson));
+        mWebViewCollection.put("stages", (WebView) findViewById(R.id.stage));
 //        mWebViewCollection.put("section", (WebView)findViewById(R.id.lesson));
-        mWebViewCollection.put("exercise", (WebView)findViewById(R.id.exercise));
-        mWebViewCollection.put("quiz", (WebView)findViewById(R.id.quiz));
+        mWebViewCollection.put("exercise", (WebView) findViewById(R.id.exercise));
+        mWebViewCollection.put("quiz", (WebView) findViewById(R.id.quiz));
         mWebViewCollection.put("summery", (WebView) findViewById(R.id.summery));
 
         mInterface = ExerciseApplication.getInstance().getSyncManager();
@@ -92,25 +86,37 @@ public class MainActivity extends TopActivity {
         }
     }
 
-    public void openVideoActivity(View v){
+    public void openVideoActivity(View v) {
         mWebViewCollection.get("index").loadUrl("http://m.youku.com/smartphone/channels?cid=92");
     }
 
-    public void activateWebView(String s){
+    public void activateWebView(String s) {
         WebView previousView = mWebViewCollection.get(mCurrentView);
-        if(previousView != null)
+        if (previousView != null)
             previousView.setVisibility(View.GONE);
         mCurrentView = s;
         WebView currentView = mWebViewCollection.get(mCurrentView);
         currentView.setVisibility(View.VISIBLE);
 
-        if(s.equals("index")){
+        // In order to debug javascript
+        // redirect all debug log to console
+        currentView.setWebChromeClient(new WebChromeClient() {
+            public boolean onConsoleMessage(ConsoleMessage cm) {
+                Log.d("sunlibrary", cm.message() + " -- From line "
+                        + cm.lineNumber() + " of "
+                        + cm.sourceId());
+                return true;
+            }
+        });
+
+
+        if (s.equals("index")) {
             currentView.loadUrl("javascript:Sun.fetchSubjects(\"showSubjects\")");
         }
 
     }
 
-    private void initWebViews(){
+    private void initWebViews() {
         WebChromeClient wcc = new WebChromeClient() {
             @Override
             public boolean onJsAlert(WebView view, String url, String message,
@@ -141,57 +147,57 @@ public class MainActivity extends TopActivity {
 
             // 过滤调用第三方浏览器。并且解析视频网站播放地址，传给播放器
             webView.setWebViewClient(wvc);
-            webView.loadUrl(ASSETS+name+HTML);
+            webView.loadUrl(ASSETS + name + HTML);
 
             webView.addJavascriptInterface(mInterface, "android");
         }
     }
-	
-	// 播放器的效果
-	public void playView(Uri uri) {
 
-		mPlayView.setVisibility(View.VISIBLE);
-		mWebViewCollection.get(mCurrentView).setVisibility(View.GONE);
+    // 播放器的效果
+    public void playView(Uri uri) {
 
-		// 初始化视频显示控件
-		if (uri != null) {
+        mPlayView.setVisibility(View.VISIBLE);
+        mWebViewCollection.get(mCurrentView).setVisibility(View.GONE);
 
-			if (mVideoView != null) {
-				// 加载播放地址
-				mVideoView.setVideoURI(uri);
-			}
-		}
-		if (mVideoView != null)
-			mVideoView.setOnPreparedListener(new OnPreparedListener() {
+        // 初始化视频显示控件
+        if (uri != null) {
 
-				@Override
-				public void onPrepared(MediaPlayer mp) {
-					if (mVideoView != null) {
-						// 开始播放
-						mVideoView.start();
-						mLinearLayout.setVisibility(View.GONE);
-					}
+            if (mVideoView != null) {
+                // 加载播放地址
+                mVideoView.setVideoURI(uri);
+            }
+        }
+        if (mVideoView != null)
+            mVideoView.setOnPreparedListener(new OnPreparedListener() {
 
-				}
-			});
-		if (mVideoView != null) {
-			// 显示控制栏
-			mVideoView.setMediaController(new MediaController(this));
-		}
+                @Override
+                public void onPrepared(MediaPlayer mp) {
+                    if (mVideoView != null) {
+                        // 开始播放
+                        mVideoView.start();
+                        mLinearLayout.setVisibility(View.GONE);
+                    }
 
-		// 监听播放完的事件。
-		mVideoView.setOnCompletionListener(new OnCompletionListener() {
+                }
+            });
+        if (mVideoView != null) {
+            // 显示控制栏
+            mVideoView.setMediaController(new MediaController(this));
+        }
 
-			@Override
-			public void onCompletion(MediaPlayer mp) {
-				mVideoView.stopPlayback();
-				mPlayView.setVisibility(View.GONE);
+        // 监听播放完的事件。
+        mVideoView.setOnCompletionListener(new OnCompletionListener() {
+
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+                mVideoView.stopPlayback();
+                mPlayView.setVisibility(View.GONE);
                 mWebViewCollection.get(mCurrentView).setVisibility(View.VISIBLE);
-			}
-		});
-	}
-	
-	// 捕捉返回键，首先隐藏播放器，然后判断是否能够返回。
+            }
+        });
+    }
+
+    // 捕捉返回键，首先隐藏播放器，然后判断是否能够返回。
     public void onBackPressed() {
         Log.i(TAG, "in" + mPlayView.getVisibility() + mCurrentView);
         if (mPlayView.getVisibility() == View.VISIBLE) {
@@ -213,7 +219,7 @@ public class MainActivity extends TopActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if(DEBUG) {
+        if (DEBUG) {
             menu.add(0, MENU_DEBUG, 0, "Debug");
             menu.add(0, MENU_CLEAN, 0, "Clean");
             menu.add(0, MENU_SYNC_DOWNLOAD, 0, "Sync&DL");
