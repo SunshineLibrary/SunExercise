@@ -41,6 +41,7 @@ public class Proxy implements HtmlInterface, SubscriptionDataListener {
 
     static private final String SP_SYNC = "sync";
     static private final String SP_LAST_TIME = "last_time";
+    static public final String FAILED_JSON = "{}";
     static private final int DURATION = 2*60*60*1000;//2*60*60*1000;  // 2 hours
 
     boolean mIsSynchronizing = false;
@@ -64,6 +65,10 @@ public class Proxy implements HtmlInterface, SubscriptionDataListener {
     public String requestUserData(String string) {
         Log.i(TAG, "requestUserData: " + string);
         Request userData = Request.create(string, Request.class);
+        if (userData == null) {
+            Log.e(TAG, "requestUserData: wrong format");
+            return FAILED_JSON;
+        }
         String result = userData.request();
         Log.i(TAG, "returnData: " + result);
         return result;
@@ -73,6 +78,10 @@ public class Proxy implements HtmlInterface, SubscriptionDataListener {
     public String requestData(String string) {
         Log.i(TAG, "requestData: " + string);
         Request materialData = Request.create(string, Request.class);
+        if (materialData == null) {
+            Log.e(TAG, "requestData: wrong format");
+            return FAILED_JSON;
+        }
         String result = materialData.request();
         Log.i(TAG, "returnData: " + result);
         return result;

@@ -11,6 +11,7 @@ import static org.sunshinelibrary.exercise.metadata.MetadataContract.*;
 
 import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
 import org.sunshinelibrary.exercise.metadata.database.tables.*;
+import org.sunshinelibrary.exercise.metadata.sync.Proxy;
 import org.sunshinelibrary.support.api.ApiManager;
 import org.sunshinelibrary.support.api.UserInfo;
 import org.sunshinelibrary.support.utils.CursorUtils;
@@ -45,7 +46,7 @@ public class Request extends JSONObject {
                 return queryUserRecord(UserDataTable.TABLE_NAME, UserData._USER_DATA, UserData._STRING_ID);
             } else {
                 Log.e(TAG, "wrong param.type: " + param.type);
-                return null;
+                return Proxy.FAILED_JSON;
             }
         } else if(param.type.equals("subjects")) {
             return queryCollection(SubjectTable.TABLE_NAME, "subjects");
@@ -71,7 +72,7 @@ public class Request extends JSONObject {
             return queryUserInfo();
         } else {
             Log.e(TAG, "wrong param.type: " + param.type);
-            return null;
+            return Proxy.FAILED_JSON;
         }
     }
     protected String queryUserRecord(String table, String recordColumn, String idColumn) {
