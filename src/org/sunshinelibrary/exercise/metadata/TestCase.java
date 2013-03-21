@@ -53,7 +53,6 @@ public class TestCase extends Thread{
                 testMedia();
                 testUserData();
                 testProxy();
-                clean();
                 break;
             case CLEAN:
                 clean();
