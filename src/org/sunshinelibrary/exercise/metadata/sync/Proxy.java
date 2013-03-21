@@ -122,8 +122,8 @@ public class Proxy implements HtmlInterface, SubscriptionDataListener {
 
     @Override
     public boolean isSynchronizing() {
-        throw new RuntimeException();
-//        return false;
+//        throw new RuntimeException();
+        return mIsSynchronizing;
     }
 
     @Override

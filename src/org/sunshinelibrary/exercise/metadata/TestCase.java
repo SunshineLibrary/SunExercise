@@ -11,6 +11,7 @@ import org.sunshinelibrary.exercise.app.interfaces.HtmlInteraction;
 import org.sunshinelibrary.exercise.metadata.json.Request;
 import org.sunshinelibrary.exercise.metadata.sync.Proxy;
 import org.sunshinelibrary.exercise.metadata.operation.CheckAvailableOperation;
+import org.sunshinelibrary.support.api.ApiManager;
 import org.sunshinelibrary.support.utils.CursorUtils;
 import static org.sunshinelibrary.exercise.metadata.MetadataContract.*;
 
@@ -34,8 +35,9 @@ public class TestCase extends Thread{
 
     public static final int RUN_CASE = 0;
     public static final int CLEAN = 1;
-    public static final int SYNC_DOWNLOAD = 2;
-    public static final int LOG_DB = 3;
+    public static final int SYNC = 2;
+    public static final int DOWNLOAD = 3;
+    public static final int LOG_DB = 4;
 
     static int command = RUN_CASE;
 
@@ -58,9 +60,11 @@ public class TestCase extends Thread{
                 clean();
                 logDatabase();
                 break;
-            case SYNC_DOWNLOAD:
-                testSyncAndDownload();
+            case SYNC:
+                testSync();
                 break;
+            case DOWNLOAD:
+                testDownload();
             case LOG_DB:
                 logDatabase();
                 break;
@@ -74,11 +78,22 @@ public class TestCase extends Thread{
         start();
     }
 
-    public static void testSyncAndDownload() {
+    public static void testSync() {
         Proxy proxy = ExerciseApplication.getInstance().getSyncManager();
         HtmlInteraction interaction = new HtmlInteraction();
         proxy.register(interaction);
         proxy.sync();
+    }
+
+    public static void testDownload() {
+        Cursor cursor = ExerciseApplication.getInstance().getContentResolver().query(Lessons.CONTENT_URI,
+                new String[]{Lessons._STRING_ID}, Lessons._DOWNLOAD_FINISH + "=?",
+                new String[]{String.valueOf(DOWNLOAD_STATUS.NONE)}, null);
+        while (cursor.moveToNext()) {
+            String lessonId = CursorUtils.getString(cursor, Lessons._STRING_ID);
+            ExerciseApplication.getInstance().getSyncManager().download(lessonId);
+        }
+        cursor.close();
     }
 
     public static void testSubject() {

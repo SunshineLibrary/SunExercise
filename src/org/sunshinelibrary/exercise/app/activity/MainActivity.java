@@ -30,8 +30,9 @@ public class MainActivity extends TopActivity {
     private static final boolean DEBUG = true;
     private static final int MENU_DEBUG = 33;
     private static final int MENU_CLEAN = 34;
-    private static final int MENU_SYNC_DOWNLOAD = 35;
-    private static final int MENU_LOG_DB = 36;
+    private static final int MENU_SYNC = 35;
+    private static final int MENU_DOWNLOAD = 36;
+    private static final int MENU_LOG_DB = 37;
 
     private static final String TAG = "Main";
     private static final String ASSETS = "file:///android_asset/";
@@ -220,9 +221,10 @@ public class MainActivity extends TopActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (DEBUG) {
-            menu.add(0, MENU_DEBUG, 0, "Debug");
+            menu.add(1, MENU_DEBUG, 0, "Debug");
             menu.add(0, MENU_CLEAN, 0, "Clean");
-            menu.add(0, MENU_SYNC_DOWNLOAD, 0, "Sync&DL");
+            menu.add(2, MENU_SYNC, 0, "Sync");
+            menu.add(2, MENU_DOWNLOAD, 0, "Download");
             menu.add(0, MENU_LOG_DB, 0, "Log DB");
             return true;
         } else {
@@ -239,8 +241,11 @@ public class MainActivity extends TopActivity {
             case MENU_CLEAN:
                 new TestCase().start(TestCase.CLEAN);
                 return true;
-            case MENU_SYNC_DOWNLOAD:
-                new TestCase().start(TestCase.SYNC_DOWNLOAD);
+            case MENU_SYNC:
+                new TestCase().start(TestCase.SYNC);
+                return true;
+            case MENU_DOWNLOAD:
+                new TestCase().start(TestCase.DOWNLOAD);
                 return true;
             case MENU_LOG_DB:
                 new TestCase().start(TestCase.LOG_DB);

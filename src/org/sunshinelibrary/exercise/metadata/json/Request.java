@@ -35,7 +35,7 @@ public class Request extends JSONObject {
         public String id = "";
         public String type = "";
         public String user_data = "";
-    };
+    }
 
     public String request() {
         if(api.equals("user_data")) {
