@@ -91,7 +91,7 @@ public class Request extends JSONObject {
     protected String queryCollection(String table, String collectionName){
         JSONStringBuilder jsb = new JSONStringBuilder();
         Cursor cursor = mResolver.query(AUTHORITY_URI.buildUpon().appendPath(table).build(), null, null, null, null);
-        jsb.append('{').appendWithQuota(collectionName).append(':').appendTable(cursor, null);
+        jsb.append('{').appendWithQuota(collectionName).append(':').appendTable(cursor, null).append("}");
         cursor.close();
         return jsb.toString();
     }
@@ -167,8 +167,6 @@ public class Request extends JSONObject {
             Log.e(TAG, e.getStackTrace().toString());
             return "{}";
         }
-        JSONStringBuilder jsb = new JSONStringBuilder();
-        jsb.append('{');
         SharedPreferences pref = context.getSharedPreferences(UserInfo.SP_NAME, Context.MODE_WORLD_READABLE);
         UserInfoResponse response = new UserInfoResponse(pref);
         return response.toJsonString();
