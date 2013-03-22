@@ -5,8 +5,10 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Looper;
 import android.util.Log;
 import android.util.Pair;
+import android.widget.Toast;
 import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
 import org.sunshinelibrary.exercise.app.interfaces.HtmlInteraction;
 import org.sunshinelibrary.exercise.metadata.json.Request;
@@ -23,6 +25,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -554,22 +559,35 @@ public class TestCase extends Thread{
         tables.add(new Pair(Sections.CONTENT_URI, "section"));
         tables.add(new Pair(Activities.CONTENT_URI, "activity"));
         tables.add(new Pair(Problems.CONTENT_URI, "problem"));
+        Looper.prepare();
 
         File sdCard = Environment.getExternalStorageDirectory();
         File dir = new File (sdCard,  "exercise");
         dir.mkdirs();
-        File file = new File(dir, "MockData.js");
         try {
-            FileOutputStream f = new FileOutputStream(file);
-            f.write("\nMaterial = [\n".getBytes());
+            FileOutputStream f = new FileOutputStream(new File(dir, "material.js"));
+            f.write("{\nmaterial = {\n".getBytes());
             dumpMaterials(tables, f);
-            f.write("]\n\nUser_Data = [\n".getBytes());
-            dumpUserData(tables, f);
-            f.write("]\n\nUser_Info = ".getBytes());
-            dumpUserInfo(f);
+            f.write("\n}\n}".getBytes());
             f.flush();
             f.close();
+
+            f = new FileOutputStream(new File(dir, "user_data.js"));
+            f.write("{\nuser_data = {\n".getBytes());
+            dumpUserData(tables, f);
+            f.write("\n}\n}".getBytes());
+            f.flush();
+            f.close();
+
+            f = new FileOutputStream(new File(dir, "user_info.js"));
+            f.write("{\nuser_info = ".getBytes());
+            dumpUserInfo(f);
+            f.write("\n}".getBytes());
+            f.flush();
+            f.close();
+            Toast.makeText(ExerciseApplication.getInstance().getBaseContext(), "Dump成功", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
+            Toast.makeText(ExerciseApplication.getInstance().getBaseContext(), "Dump失败", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
     }
@@ -586,8 +604,8 @@ public class TestCase extends Thread{
         req.param.type = Request.SUBJECTS;
         req.param.id = "";
         jsb = new JSONStringBuilder().append("    ");
-        jsb.appendNameAndValue(Request.SUBJECTS, ExerciseApplication.getInstance().getSyncManager().requestData(
-                req.toJsonString()));
+        jsb.appendNameAndValue(Request.SUBJECTS, StringEscapeUtils.escapeJava(ExerciseApplication.getInstance()
+                .getSyncManager().requestData(req.toJsonString())));
         stream.write(jsb.toString().getBytes());
 
 
@@ -597,8 +615,8 @@ public class TestCase extends Thread{
             while (cursor.moveToNext()) {
                 jsb = new JSONStringBuilder().append(",\n    ");
                 req.param.id = CursorUtils.getString(cursor, Columns._STRING_ID);
-                jsb.appendNameAndValue(req.param.id, ExerciseApplication.getInstance().getSyncManager().requestData(
-                        req.toJsonString()));
+                jsb.appendNameAndValue(req.param.id, StringEscapeUtils.escapeJava(ExerciseApplication.getInstance()
+                        .getSyncManager().requestData(req.toJsonString())));
                 stream.write(jsb.toString().getBytes());
             }
             cursor.close();
@@ -627,8 +645,8 @@ public class TestCase extends Thread{
                     jsb.append(",\n");
                 jsb.append("    ");
                 req.param.id = CursorUtils.getString(cursor, Columns._STRING_ID);
-                jsb.appendNameAndValue(req.param.id, ExerciseApplication.getInstance().getSyncManager()
-                        .requestUserData(req.toJsonString()));
+                jsb.appendNameAndValue(req.param.id, StringEscapeUtils.escapeJava(ExerciseApplication.getInstance()
+                        .getSyncManager().requestUserData(req.toJsonString())));
                 stream.write(jsb.toString().getBytes());
             }
             cursor.close();
