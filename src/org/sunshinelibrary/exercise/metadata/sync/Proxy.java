@@ -41,7 +41,7 @@ public class Proxy implements HtmlInterface, SubscriptionDataListener {
 
     static private final String SP_SYNC = "sync";
     static private final String SP_LAST_TIME = "last_time";
-    static public final String FAILED_JSON = "{}";
+    static private final String FAILED_JSON = "{}";
     static private final int DURATION = 2*60*60*1000;//2*60*60*1000;  // 2 hours
 
     boolean mIsSynchronizing = false;

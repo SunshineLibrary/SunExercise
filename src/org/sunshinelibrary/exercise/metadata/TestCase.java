@@ -396,6 +396,9 @@ public class TestCase extends Thread{
             logJSON(userDataReq.toJsonString());
             p.requestUserData(userDataReq.toJsonString());
         }
+        // test wrong id
+        userDataReq.param.id = "0";
+        p.requestData(userDataReq.toJsonString());
         logTable(UserData.CONTENT_URI);
 
         Log.d(TAG, "------------------TEST USER DATA------------------------");
@@ -408,6 +411,9 @@ public class TestCase extends Thread{
             logJSON(userDataReq.toJsonString());
             p.requestData(userDataReq.toJsonString());
         }
+        // test wrong id
+        userDataReq.param.id = "0";
+        p.requestData(userDataReq.toJsonString());
 
         Log.d(TAG, "-------------------TEST MATERIAL------------------------");
         Request materialReq = new Request();
@@ -416,6 +422,9 @@ public class TestCase extends Thread{
         materialReq.param.id = String.valueOf(random.nextInt(1000000));
         materialReq.user_id = Request.UNKNOWN;
         logJSON(materialReq.toJsonString());
+        // test wrong id
+        userDataReq.param.id = "0";
+        p.requestData(userDataReq.toJsonString());
 
         p.requestData(materialReq.toJsonString());
         p.requestData("{\"api\":\"\",\"param\":{\"id\":\"882821\",\"type\":\"subjects\"},\"user_id\":\"unknown\"}");
@@ -428,6 +437,9 @@ public class TestCase extends Thread{
         materialReq.param.id = parentId;
         logJSON(materialReq.toJsonString());
         p.requestData(materialReq.toJsonString());
+        // test wrong id
+        materialReq.param.id = "0";
+        p.requestData(materialReq.toJsonString());
 
         materialReq.param.type = "lesson";
         cursor = resolver.query(Lessons.CONTENT_URI, null, null, null, null);
@@ -436,6 +448,9 @@ public class TestCase extends Thread{
         cursor.close();
         materialReq.param.id = parentId;
         logJSON(materialReq.toJsonString());
+        p.requestData(materialReq.toJsonString());
+        // test wrong id
+        materialReq.param.id = "0";
         p.requestData(materialReq.toJsonString());
 
         materialReq.param.type = "stage";
@@ -446,6 +461,9 @@ public class TestCase extends Thread{
         materialReq.param.id = parentId;
         logJSON(materialReq.toJsonString());
         p.requestData(materialReq.toJsonString());
+        // test wrong id
+        materialReq.param.id = "0";
+        p.requestData(materialReq.toJsonString());
 
         materialReq.param.type = "section";
         cursor = resolver.query(Sections.CONTENT_URI, null, null, null, null);
@@ -454,6 +472,9 @@ public class TestCase extends Thread{
         cursor.close();
         materialReq.param.id = parentId;
         logJSON(materialReq.toJsonString());
+        p.requestData(materialReq.toJsonString());
+        // test wrong id
+        materialReq.param.id = "0";
         p.requestData(materialReq.toJsonString());
 
         materialReq.param.type = "activity";
@@ -464,6 +485,9 @@ public class TestCase extends Thread{
         materialReq.param.id = parentId;
         logJSON(materialReq.toJsonString());
         p.requestData(materialReq.toJsonString());
+        // test wrong id
+        materialReq.param.id = "0";
+        p.requestData(materialReq.toJsonString());
 
         materialReq.param.type = "problem";
         cursor = resolver.query(Problems.CONTENT_URI, null, null, null, null);
@@ -472,6 +496,9 @@ public class TestCase extends Thread{
         cursor.close();
         materialReq.param.id = parentId;
         logJSON(materialReq.toJsonString());
+        p.requestData(materialReq.toJsonString());
+        // test wrong id
+        materialReq.param.id = "0";
         p.requestData(materialReq.toJsonString());
 
         materialReq.param.type = "media";
@@ -482,11 +509,16 @@ public class TestCase extends Thread{
         materialReq.param.id = id;
         logJSON(materialReq.toJsonString());
         p.requestData(materialReq.toJsonString());
+        // test wrong id
+        materialReq.param.id = "0";
+        p.requestData(materialReq.toJsonString());
 
         Request userInfoReq = new Request();
         userInfoReq.api = Request.MATERIAL;
         userInfoReq.param.type = Request.USER_INFO;
         logJSON(userInfoReq.toJsonString());
+        p.requestData(userInfoReq.toJsonString());
+        userInfoReq.param.id = "0";
         p.requestData(userInfoReq.toJsonString());
     }
 

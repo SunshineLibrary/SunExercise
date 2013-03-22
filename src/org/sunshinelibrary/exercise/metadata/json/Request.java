@@ -34,6 +34,7 @@ public class Request extends JSONObject {
     public static final String UNKNOWN = "unknown";
     public static final String USER_INFO = "user_info";
     public static final String SUBJECTS = "subjects";
+    public static final String EMPTY = "{}";
 
     public String api = "";
     public String method = "";
@@ -54,7 +55,7 @@ public class Request extends JSONObject {
                 return queryUserRecord(UserDataTable.TABLE_NAME, UserData._USER_DATA, UserData._STRING_ID);
             } else {
                 Log.e(TAG, "wrong param.type: " + param.type);
-                return Proxy.FAILED_JSON;
+                return EMPTY;
             }
         } else if(param.type.equals(SUBJECTS)) {
             return queryCollection(SubjectTable.TABLE_NAME, "subjects");
@@ -82,7 +83,7 @@ public class Request extends JSONObject {
             return queryUserInfo();
         } else {
             Log.e(TAG, "wrong param.type: " + param.type);
-            return Proxy.FAILED_JSON;
+            return EMPTY;
         }
     }
     protected String queryUserRecord(String table, String recordColumn, String idColumn) {
@@ -93,7 +94,7 @@ public class Request extends JSONObject {
             cursor.moveToFirst();
             jsb.appendJSONObjectBySingleLine(cursor);
         } else {
-            jsb.append("{}");
+            jsb.append(EMPTY);
         }
         cursor.close();
         return jsb.toString();
@@ -111,10 +112,14 @@ public class Request extends JSONObject {
         JSONStringBuilder jsb = new JSONStringBuilder();
         Cursor cursor = mResolver.query(AUTHORITY_URI.buildUpon().appendPath(table).build(), null,
                 Columns._STRING_ID + "=?", new String[]{id}, null);
-        cursor.moveToFirst();
-        jsb.append('{').appendKeyValuesBySingleLine(cursor).append('}');
-        cursor.close();
-        return jsb.toString();
+        if (cursor.moveToFirst()) {
+            jsb.append('{').appendKeyValuesBySingleLine(cursor).append('}');
+            cursor.close();
+            return jsb.toString();
+        } else {
+            cursor.close();
+            return EMPTY;
+        }
     }
 
     protected String querySingeFatherAndItsChildren(String fatherTable, String childTable, String childKeyName,
@@ -122,14 +127,18 @@ public class Request extends JSONObject {
         String[] selectionArgs = new String[]{fatherId};
         Cursor father = mResolver.query(AUTHORITY_URI.buildUpon().appendPath(fatherTable).build(),
                 null, fatherColumn + "=?", selectionArgs, null);
-        father.moveToFirst();
-        Cursor child = mResolver.query(AUTHORITY_URI.buildUpon().appendPath(childTable).build(),
-                null, childColumn + "=?", selectionArgs, sortOrder);
-        JSONStringBuilder jsb = new JSONStringBuilder();
-        jsb.appendJSONObjectBySingleFatherAndItsChildren(father, child, childKeyName, fatherColumn, childColumn);
-        father.close();
-        child.close();
-        return jsb.toString();
+        if (father.moveToFirst()) {
+            Cursor child = mResolver.query(AUTHORITY_URI.buildUpon().appendPath(childTable).build(),
+                    null, childColumn + "=?", selectionArgs, sortOrder);
+            JSONStringBuilder jsb = new JSONStringBuilder();
+            jsb.appendJSONObjectBySingleFatherAndItsChildren(father, child, childKeyName, fatherColumn, childColumn);
+            father.close();
+            child.close();
+            return jsb.toString();
+        } else {
+            father.close();
+            return EMPTY;
+        }
     }
 
     protected String queryProblemAndChoices(String activityId) {
@@ -186,7 +195,7 @@ public class Request extends JSONObject {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
             Log.e(TAG, e.getStackTrace().toString());
-            return "{}";
+            return EMPTY;
         }
         SharedPreferences pref = context.getSharedPreferences(UserInfo.SP_NAME, Context.MODE_WORLD_READABLE);
         UserInfoResponse response = new UserInfoResponse(pref);
