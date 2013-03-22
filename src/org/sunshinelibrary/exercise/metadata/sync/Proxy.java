@@ -270,7 +270,7 @@ public class Proxy implements HtmlInterface, SubscriptionDataListener {
         return ids;
     }
 
-    static protected void updateDownloadFinish(Uri uri, int from, int to) {
+    static public void updateDownloadFinish(Uri uri, int from, int to) {
         ContentValues values = new ContentValues();
         values.put(Contract.Columns._DOWNLOAD_FINISH, from);
         ExerciseApplication.getInstance().getContentResolver().update(uri, values,

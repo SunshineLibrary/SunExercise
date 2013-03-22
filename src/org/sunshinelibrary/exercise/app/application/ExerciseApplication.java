@@ -4,6 +4,8 @@ import android.app.Application;
 
 import android.util.Log;
 import org.sunshinelibrary.exercise.metadata.MetadataContract;
+import static org.sunshinelibrary.exercise.metadata.MetadataContract.Lessons;
+import static org.sunshinelibrary.support.utils.database.Contract.DOWNLOAD_STATUS;
 import org.sunshinelibrary.exercise.metadata.database.MetadataDBHandlerFactory;
 import org.sunshinelibrary.exercise.metadata.sync.ExerciseDeprecatedSyncManager;
 import org.sunshinelibrary.exercise.metadata.sync.Proxy;
@@ -44,6 +46,8 @@ public class ExerciseApplication  extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Proxy.updateDownloadFinish(Lessons.CONTENT_URI, DOWNLOAD_STATUS.DOWNLOADING, DOWNLOAD_STATUS.NONE);
+        Proxy.updateDownloadFinish(Lessons.CONTENT_URI, DOWNLOAD_STATUS.WAITING, DOWNLOAD_STATUS.NONE);
     }
 
     @Override
