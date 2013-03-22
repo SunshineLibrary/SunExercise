@@ -27,6 +27,14 @@ import java.util.ArrayList;
  */
 public class Request extends JSONObject {
     private static final String TAG = "Request";
+    public static final String GET = "get";
+    public static final String POST = "post";
+    public static final String MATERIAL = "material";
+    public static final String USER_DATA = "user_data";
+    public static final String UNKNOWN = "unknown";
+    public static final String USER_INFO = "user_info";
+    public static final String SUBJECTS = "subjects";
+
     public String api = "";
     public String method = "";
     public String user_id = "";
@@ -39,16 +47,16 @@ public class Request extends JSONObject {
     }
 
     public String request() {
-        if(api.equals("user_data")) {
-            if(method.equals("post")) {
+        if(api.equals(USER_DATA)) {
+            if(method.equals(POST)) {
                 return uploadUserRecord();
-            } else if (method.equals("get")) {
+            } else if (method.equals(GET)) {
                 return queryUserRecord(UserDataTable.TABLE_NAME, UserData._USER_DATA, UserData._STRING_ID);
             } else {
                 Log.e(TAG, "wrong param.type: " + param.type);
                 return Proxy.FAILED_JSON;
             }
-        } else if(param.type.equals("subjects")) {
+        } else if(param.type.equals(SUBJECTS)) {
             return queryCollection(SubjectTable.TABLE_NAME, "subjects");
         } else if (param.type.equals("subject")) {
             return querySingeFatherAndItsChildren(SubjectTable.TABLE_NAME, LessonTable.TABLE_NAME, "lessons",
@@ -68,7 +76,7 @@ public class Request extends JSONObject {
         } else if (param.type.equals("problem")) {
             return querySingeFatherAndItsChildren(ProblemTable.TABLE_NAME, ProblemChoiceTable.TABLE_NAME, "choices",
                     Problems._STRING_ID, ProblemChoices._PARENT_ID, param.id, ProblemChoices._SEQUENCE);
-        } else if (param.type.equals("user_info")) {
+        } else if (param.type.equals(USER_INFO)) {
             return queryUserInfo();
         } else {
             Log.e(TAG, "wrong param.type: " + param.type);

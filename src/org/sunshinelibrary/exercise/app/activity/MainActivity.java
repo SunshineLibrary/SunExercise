@@ -33,6 +33,7 @@ public class MainActivity extends TopActivity {
     private static final int MENU_SYNC = 35;
     private static final int MENU_DOWNLOAD = 36;
     private static final int MENU_LOG_DB = 37;
+    private static final int MENU_DUMP = 38;
 
     private static final String TAG = "Main";
     private static final String ASSETS = "file:///android_asset/";
@@ -221,11 +222,12 @@ public class MainActivity extends TopActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (DEBUG) {
-            menu.add(1, MENU_DEBUG, 0, "Debug");
+            menu.add(1, MENU_DEBUG, 0, "TestCase");
             menu.add(0, MENU_CLEAN, 0, "Clean");
             menu.add(2, MENU_SYNC, 0, "Sync");
             menu.add(2, MENU_DOWNLOAD, 0, "Download");
-            menu.add(0, MENU_LOG_DB, 0, "Log DB");
+            menu.add(0, MENU_LOG_DB, 0, "LogDB");
+            menu.add(0, MENU_DUMP, 0 , "Dump");
             return true;
         } else {
             return super.onCreateOptionsMenu(menu);
@@ -249,6 +251,9 @@ public class MainActivity extends TopActivity {
                 return true;
             case MENU_LOG_DB:
                 new TestCase().start(TestCase.LOG_DB);
+                return true;
+            case MENU_DUMP:
+                new TestCase().start(TestCase.DUMP);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

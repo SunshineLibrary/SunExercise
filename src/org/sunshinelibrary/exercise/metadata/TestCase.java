@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Log;
 import android.util.Pair;
 import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
@@ -13,8 +14,13 @@ import org.sunshinelibrary.exercise.metadata.sync.Proxy;
 import org.sunshinelibrary.exercise.metadata.operation.CheckAvailableOperation;
 import org.sunshinelibrary.support.api.ApiManager;
 import org.sunshinelibrary.support.utils.CursorUtils;
+import org.sunshinelibrary.support.utils.JSONStringBuilder;
+
 import static org.sunshinelibrary.exercise.metadata.MetadataContract.*;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -38,6 +44,7 @@ public class TestCase extends Thread{
     public static final int SYNC = 2;
     public static final int DOWNLOAD = 3;
     public static final int LOG_DB = 4;
+    public static final int DUMP = 5;
 
     static int command = RUN_CASE;
 
@@ -67,6 +74,9 @@ public class TestCase extends Thread{
                 testDownload();
             case LOG_DB:
                 logDatabase();
+                break;
+            case DUMP:
+                dumpToJS();
                 break;
             default:
                 throw new RuntimeException("illegal argument");
@@ -361,10 +371,10 @@ public class TestCase extends Thread{
         String FakeUserData = "{\"key\":\"value\"}";
 
         Request userDataReq = new Request();
-        userDataReq.api = "user_data";
-        userDataReq.method = "post";
+        userDataReq.api = Request.USER_DATA;
+        userDataReq.method = Request.USER_DATA;
         userDataReq.param.user_data = FakeUserData;
-        userDataReq.user_id = "unknown";
+        userDataReq.user_id = Request.UNKNOWN;
 
         ArrayList<Pair<String, String>> collection = new ArrayList<Pair<String, String>>();
         collectIDs(Subjects.CONTENT_URI, collection, "subject");
@@ -385,7 +395,7 @@ public class TestCase extends Thread{
 
         Log.d(TAG, "------------------TEST USER DATA------------------------");
         Log.d(TAG, "-----------------------GET------------------------------");
-        userDataReq.method = "get";
+        userDataReq.method = Request.GET;
         userDataReq.param.user_data = "";
         for (Pair<String,String> item : collection) {
             userDataReq.param.id = item.first;
@@ -396,10 +406,10 @@ public class TestCase extends Thread{
 
         Log.d(TAG, "-------------------TEST MATERIAL------------------------");
         Request materialReq = new Request();
-        materialReq.api = "material";
+        materialReq.api = Request.MATERIAL;
         materialReq.param.type = "subjects";
         materialReq.param.id = String.valueOf(random.nextInt(1000000));
-        materialReq.user_id = "unknown";
+        materialReq.user_id = Request.UNKNOWN;
         logJSON(materialReq.toJsonString());
 
         p.requestData(materialReq.toJsonString());
@@ -461,8 +471,8 @@ public class TestCase extends Thread{
 
 
         Request userInfoReq = new Request();
-        userInfoReq.api = "material";
-        userInfoReq.param.type = "user_info";
+        userInfoReq.api = Request.MATERIAL;
+        userInfoReq.param.type = Request.USER_INFO;
         logJSON(userInfoReq.toJsonString());
         p.requestData(userInfoReq.toJsonString());
     }
@@ -534,5 +544,105 @@ public class TestCase extends Thread{
         logTable(Problems.CONTENT_URI);
         logTable(ProblemChoices.CONTENT_URI);
         logTable(Media.CONTENT_URI);
+    }
+
+    public static void dumpToJS() {
+        ArrayList<Pair<Uri, String>> tables = new ArrayList<Pair<Uri, String>>();
+        tables.add(new Pair(Subjects.CONTENT_URI, "subject"));
+        tables.add(new Pair(Lessons.CONTENT_URI, "lesson"));
+        tables.add(new Pair(Stages.CONTENT_URI, "stage"));
+        tables.add(new Pair(Sections.CONTENT_URI, "section"));
+        tables.add(new Pair(Activities.CONTENT_URI, "activity"));
+        tables.add(new Pair(Problems.CONTENT_URI, "problem"));
+
+        File sdCard = Environment.getExternalStorageDirectory();
+        File dir = new File (sdCard,  "exercise");
+        dir.mkdirs();
+        File file = new File(dir, "MockData.js");
+        try {
+            FileOutputStream f = new FileOutputStream(file);
+            f.write("\nMaterial = [\n".getBytes());
+            dumpMaterials(tables, f);
+            f.write("]\n\nUser_Data = [\n".getBytes());
+            dumpUserData(tables, f);
+            f.write("]\n\nUser_Info = ".getBytes());
+            dumpUserInfo(f);
+            f.flush();
+            f.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void dumpMaterials(ArrayList<Pair<Uri, String>> data, FileOutputStream stream) throws IOException {
+        Cursor cursor;
+        JSONStringBuilder jsb;
+        Request req = new Request();
+        req.api = Request.MATERIAL;
+        req.method = Request.GET;
+        req.user_id = Request.UNKNOWN;
+        req.param.user_data = "";
+
+        req.param.type = Request.SUBJECTS;
+        req.param.id = "";
+        jsb = new JSONStringBuilder().append("    ");
+        jsb.appendNameAndValue(Request.SUBJECTS, ExerciseApplication.getInstance().getSyncManager().requestData(
+                req.toJsonString()));
+        stream.write(jsb.toString().getBytes());
+
+
+        for (Pair<Uri, String> item : data) {
+            req.param.type = item.second;
+            cursor = ExerciseApplication.getInstance().getContentResolver().query(item.first, null, null, null, null);
+            while (cursor.moveToNext()) {
+                jsb = new JSONStringBuilder().append(",\n    ");
+                req.param.id = CursorUtils.getString(cursor, Columns._STRING_ID);
+                jsb.appendNameAndValue(req.param.id, ExerciseApplication.getInstance().getSyncManager().requestData(
+                        req.toJsonString()));
+                stream.write(jsb.toString().getBytes());
+            }
+            cursor.close();
+        }
+    }
+
+    public static void dumpUserData(ArrayList<Pair<Uri, String>> data, FileOutputStream stream) throws IOException {
+        Cursor cursor;
+        boolean firstLine = true;
+        JSONStringBuilder jsb;
+        Request req = new Request();
+        req.api = Request.USER_DATA;
+        req.method = Request.GET;
+        req.user_id = Request.UNKNOWN;
+        req.param.user_data = "";
+
+
+        for (Pair<Uri, String> item : data) {
+            req.param.type = item.second;
+            cursor = ExerciseApplication.getInstance().getContentResolver().query(item.first, null, null, null, null);
+            while (cursor.moveToNext()) {
+                jsb = new JSONStringBuilder();
+                if (firstLine)
+                    firstLine = false;
+                else
+                    jsb.append(",\n");
+                jsb.append("    ");
+                req.param.id = CursorUtils.getString(cursor, Columns._STRING_ID);
+                jsb.appendNameAndValue(req.param.id, ExerciseApplication.getInstance().getSyncManager()
+                        .requestUserData(req.toJsonString()));
+                stream.write(jsb.toString().getBytes());
+            }
+            cursor.close();
+        }
+    }
+
+    public static void dumpUserInfo(FileOutputStream stream) throws IOException {
+        Request req = new Request();
+        req.api = Request.MATERIAL;
+        req.method = Request.GET;
+        req.user_id = Request.UNKNOWN;
+        req.param.user_data = "";
+        req.param.id = "";
+        req.param.type = Request.USER_INFO;
+        stream.write(ExerciseApplication.getInstance().getSyncManager().requestData(req.toJsonString()).getBytes());
     }
 }
