@@ -474,6 +474,14 @@ public class TestCase extends Thread{
         logJSON(materialReq.toJsonString());
         p.requestData(materialReq.toJsonString());
 
+        materialReq.param.type = "media";
+        cursor = resolver.query(Media.CONTENT_URI, null, null, null, null);
+        cursor.moveToFirst();
+        String id = CursorUtils.getString(cursor, Media._STRING_ID);
+        cursor.close();
+        materialReq.param.id = id;
+        logJSON(materialReq.toJsonString());
+        p.requestData(materialReq.toJsonString());
 
         Request userInfoReq = new Request();
         userInfoReq.api = Request.MATERIAL;
@@ -559,6 +567,7 @@ public class TestCase extends Thread{
         tables.add(new Pair(Sections.CONTENT_URI, "section"));
         tables.add(new Pair(Activities.CONTENT_URI, "activity"));
         tables.add(new Pair(Problems.CONTENT_URI, "problem"));
+        tables.add(new Pair(Media.CONTENT_URI, "media"));
         Looper.prepare();
 
         File sdCard = Environment.getExternalStorageDirectory();

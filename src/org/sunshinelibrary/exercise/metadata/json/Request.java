@@ -76,6 +76,8 @@ public class Request extends JSONObject {
         } else if (param.type.equals("problem")) {
             return querySingeFatherAndItsChildren(ProblemTable.TABLE_NAME, ProblemChoiceTable.TABLE_NAME, "choices",
                     Problems._STRING_ID, ProblemChoices._PARENT_ID, param.id, ProblemChoices._SEQUENCE);
+        } else if (param.type.equals("media")) {
+            return querySingleRecord(MediaTable.TABLE_NAME, param.id);
         } else if (param.type.equals(USER_INFO)) {
             return queryUserInfo();
         } else {
@@ -101,6 +103,16 @@ public class Request extends JSONObject {
         JSONStringBuilder jsb = new JSONStringBuilder();
         Cursor cursor = mResolver.query(AUTHORITY_URI.buildUpon().appendPath(table).build(), null, null, null, null);
         jsb.append('{').appendWithQuota(collectionName).append(':').appendTable(cursor, null).append("}");
+        cursor.close();
+        return jsb.toString();
+    }
+
+    protected String querySingleRecord(String table, String id) {
+        JSONStringBuilder jsb = new JSONStringBuilder();
+        Cursor cursor = mResolver.query(AUTHORITY_URI.buildUpon().appendPath(table).build(), null,
+                Columns._STRING_ID + "=?", new String[]{id}, null);
+        cursor.moveToFirst();
+        jsb.append('{').appendKeyValuesBySingleLine(cursor).append('}');
         cursor.close();
         return jsb.toString();
     }
