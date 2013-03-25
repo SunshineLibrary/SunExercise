@@ -7,6 +7,8 @@
  */
 jQuery(function () {
 
+    USER_DATA = new Object()
+
     MATERIAL_TYPES = {
         "subjects": function (json) {
             return new Subjects(json.subjects)
@@ -65,6 +67,7 @@ jQuery(function () {
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
                     function (data) {
+                        console.log("data:" + JSON.stringify(data))
                         result = Sun.createMaterial(data, type)
                         eval(callback)(result, options)
                     }
@@ -79,16 +82,28 @@ jQuery(function () {
 
         },
 
-        setuserdata: function (callback, target, type, options) {
-            console.log("setuserdata," + target + "," + type + "," + JSON.stringify(options))
+        setuserdata: function (callback, type, id, options) {
+            USER_DATA[id] = JSON.stringify(options)
+            console.log("setuserdata," + type + "," + id + "," + USER_DATA[id])
             eval(callback)()
         },
 
-        getuserdata: function (target, type) {
-            console.log("getuserdata," + target + "," + type)
-            return get_user_data_1
+        getuserdata: function (id) {
+            var data = USER_DATA[id]
+            if (data == undefined) {
+                data = "{}"
+            }
+            console.log("getuserdata," + id + "," + data)
+            return JSON.parse(data)
+        },
+
+        resetuserdata: function () {
+            alert("before reset," + $.keys(USER_DATA))
+            new Object()
+            alert("after reset," + $.keys(USER_DATA))
         }
     }
+
 })
 
 

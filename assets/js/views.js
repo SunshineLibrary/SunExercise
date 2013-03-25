@@ -26,13 +26,14 @@ jQuery(function () {
             activity: _.template($("#tc_activity").html()),
             section: _.template($("#tc_section").html()),
             problem_sc: _.template($("#tc_problem_singlechoice").html()),
+            problem_sf: _.template($("#tc_problem_singlefilling").html()),
             problem_mc: _.template($("#tc_problem_multichoice").html()),
             video: _.template($("#tc_video").html())
         },
         Footer: {
             lesson: _.template($("#tf_lesson").html()),
             subject: _.template($("#tf_subject").html()),
-            problem_sc: _.template($("#tf_problem_singlechoice").html())
+            problem_sc: _.template($("#tf_problem_singlechoice").html()),
         }
     }
 
@@ -105,6 +106,14 @@ jQuery(function () {
 
     SingleChoiceProblemFooterView = Backbone.View.extend({
         template: Templates.Footer.problem_sc,
+        render: function () {
+            this.el = this.template({target: this.model})
+            return this
+        }
+    })
+
+    SingleFillingProblemView = Backbone.View.extend({
+        template: Templates.Content.problem_sf,
         render: function () {
             this.el = this.template({target: this.model})
             return this

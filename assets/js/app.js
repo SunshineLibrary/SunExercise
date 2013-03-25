@@ -105,9 +105,12 @@ jQuery(function () {
         })
         app_router.on('route:problem', function (id) {
             Sun.fetch("problem", {id: id}, function (problem) {
-                if (problem.get("type") == 0) {
+                console.log("problem," + problem.get("type"))
+                if (problem.get("type") == "0") {
                     setBody(new SingleChoiceProblemView({model: problem}))
                     setFooter(new SingleChoiceProblemFooterView({model: problem}))
+                } else if (problem.get("type") == "2") {
+                    setBody(new SingleFillingProblemView({model: problem}))
                 }
                 reloadPage()
             })
@@ -136,7 +139,7 @@ jQuery(function () {
                 if (problem.get("type") == 0) {
                     console.log("grading problem," + problem.get("id"))
                     var completeOk = true
-                    var user_data = problem.get("user_data")
+                    var user_data = Sun.getuserdata(problem.get("id"))
                     var answer_btn = $("#submit_answer")
                     var grading_result = $("#grading_result")
                     var correct_answers = []
@@ -166,7 +169,7 @@ jQuery(function () {
                     }
 
                     // After set user data, set button heading to next problem
-                    user_data.push({"completed": true})
+                    user_data["completed"] = true
                     Sun.setuserdata(function () {
                         console.log("complete set userdata")
                         answer_btn.html("下一道题")

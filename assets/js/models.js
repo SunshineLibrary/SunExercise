@@ -114,19 +114,11 @@ jQuery(function () {
     }
 
     function isComplete(target) {
-        var user_data = target.get("user_data")
-        if (user_data == undefined) {
-            return false
-        }
+        var user_data = Sun.getuserdata(target.get("id"))
         var completed = user_data["completed"]
-        if (completed == true) {
-            return true
-        }
-        return false
+        return completed == true;
     }
 
-    UserData = Backbone.Model.extend({
-
-    })
+    UserData = Backbone.Model.extend({})
 
 })

@@ -4,6 +4,9 @@
     <title>阳光提高班</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
+    <link href="js/libs/videojs/video-js.css" rel="stylesheet">
+    <script src="js/libs/videojs/video.js"></script>
+
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="css/app.css" rel="stylesheet">
     <script src="js/libs/jquery/jquery-1.9.1.js"></script>
@@ -30,10 +33,18 @@
 <div class="container" id="content_container">
     <div id="content">loading content</div>
 </div>
-<div class="navbar navbar-inverse navbar-fixed-bottom" style="display: none">
+
+<!--<video id="my_video_1" class="video-js vjs-default-skin" controls-->
+<!--preload="auto" width="640" height="264"-->
+<!--data-setup="{}">-->
+<!--<source src="file://sdcard/Movies/video.mp4" type='video/mp4'>-->
+<!--</video>-->
+
+<div class="navbar navbar-inverse navbar-fixed-bottom">
     <div class="navbar-inner">
         <div class="container">
-            <div id="footer" style="height:60px;margin-top:15px">loading footer</div>
+            <div id="footer" class="pull-left" style="height:60px;margin-top:15px">loading footer</div>
+            <button class="btn pull-right" onclick="Sun.resetuserdata()">reset user data</button>
         </div>
     </div>
 </div>
@@ -138,6 +149,10 @@
         </div>
     </div>
 
+</script>
+
+<script type="text/template" id="tc_problem_singlefilling">
+    not implemented. singlefilling
 </script>
 
 <script type="text/template" id="tc_stages"></script>
