@@ -192,4 +192,8 @@ jQuery(function () {
     currentPageView = new PageView({model: currentPage, el: $("body")})
 
     initRoute()
+
+    backpage = function () {
+        window.history.back()
+    }
 })
