@@ -101,7 +101,7 @@
 </script>
 
 <script type="text/template" id="tc_problem_singlechoice">
-    <div class="span8 offset2">
+    <div class="span10">
         <h3><%=target.get('id')%></h3>
 
         <p>
@@ -109,13 +109,18 @@
         </p>
 
         <p>
-            <% for(var i =0 ; i < target.get("choices").length; i++) { %>
+            <%
+            for(var i =0 ; i < target.get("choices").length; i++) {
+            var choice = target.get("choices")[i]
+            %>
 
         <div class="palette palette-clouds">
             <label class="radio">
-                <input class="answer" id="<%= target.get('choices')[i].id %>"
-                       answer="<%= target.get('choices').answer%>" type="radio" name="optionsRadios"
-                       answer_id="<%= target.get('choices')[i].id %>" value="<%= target.get('choices')[i].id %>">
+                <input class="answer"
+                       id="<%=choice.id%>"
+                       answer="<%= choice.answer%>"
+                       type="radio"
+                       name="optionsRadios">
                 <%= target.get('choices')[i].display_text %>
             </label>
         </div>
@@ -123,7 +128,10 @@
         </p>
 
         <div class="">
-            <div style="text-align:right">
+            <div id="grading_result" class="pull-left">
+
+            </div>
+            <div class="pull-right">
                 <a id="submit_answer" class="btn btn-large  btn-primary"
                    onclick="grading('<%=target.get('id')%>')">提交答案</a>
             </div>

@@ -23,15 +23,15 @@ jQuery(function () {
         // Instantiate the router
         var app_router = new AppRouter
         app_router.on('route:subjects', function () {
-            console.log("subjects")
-            Sun.fetch("subjects", function (subjects) {
+            Sun.fetch("subjects", null, function (subjects) {
+                console.log("subjects," + JSON.stringify(subjects))
                 app_router.navigate("subject/" + subjects.models[0].id, {trigger: true, replace: true})
             })
         })
         app_router.on('route:subject', function (id) {
             console.log("subject " + id)
-            Sun.fetch("subjects", function (subjects) {
-                Sun.fetch("subject", function (subject) {
+            Sun.fetch("subjects", null, function (subjects) {
+                Sun.fetch("subject", {id: id}, function (subject) {
                     setHeader(
                         new SubjecsHeaderView({
                             model: subjects,
@@ -43,12 +43,12 @@ jQuery(function () {
                         })
                     )
                     reloadPage()
-                }, {id: id})
+                })
             })
         })
         app_router.on('route:lesson', function (id) {
             console.log("lesson " + id)
-            Sun.fetch("lesson", function (lesson) {
+            Sun.fetch("lesson", {id: id}, function (lesson) {
                 setHeader(
                     new LessonHeaderView({
                         model: lesson
@@ -59,11 +59,11 @@ jQuery(function () {
                     })
                 )
                 reloadPage()
-            }, {id: id})
+            })
         })
         app_router.on('route:stage', function (id) {
             console.log("stage " + id)
-            Sun.fetch("stage", function (stage) {
+            Sun.fetch("stage", {id: id}, function (stage) {
                 for (var i = 0; i < stage.get("sections").length; i++) {
                     var section = stage.get("sections").models[i]
                     if (!section.isComplete()) {
@@ -71,10 +71,10 @@ jQuery(function () {
                         break;
                     }
                 }
-            }, {id: id})
+            })
         })
         app_router.on('route:section', function (id) {
-            Sun.fetch("section", function (section) {
+            Sun.fetch("section", {id: id}, function (section) {
                 for (var i = 0; i < section.get("activities").length; i++) {
                     var activity = section.get("activities").models[i]
                     if (!activity.isComplete()) {
@@ -82,11 +82,11 @@ jQuery(function () {
                         break
                     }
                 }
-            }, {id: id})
+            })
         })
         app_router.on('route:activity', function (id) {
             console.log("activity " + id)
-            Sun.fetch("activity", function (activity) {
+            Sun.fetch("activity", {id: id}, function (activity) {
                 // activity with problems
                 if (activity.get("type") == 4) {
                     for (var i = 0; i < activity.get("problems").length; i++) {
@@ -101,16 +101,16 @@ jQuery(function () {
                     // TODO other acitivities, like video
                     console.log("unsupported activity," + JSON.stringify(activity))
                 }
-            }, {id: id})
+            })
         })
         app_router.on('route:problem', function (id) {
-            Sun.fetch("problem", function (problem) {
+            Sun.fetch("problem", {id: id}, function (problem) {
                 if (problem.get("type") == 0) {
                     setBody(new SingleChoiceProblemView({model: problem}))
                     setFooter(new SingleChoiceProblemFooterView({model: problem}))
                 }
                 reloadPage()
-            }, {id: id})
+            })
         })
 
         Backbone.history.start()
@@ -132,18 +132,25 @@ jQuery(function () {
         }
 
         grading = function (problemId) {
-            Sun.fetch("problem", function (problem) {
+            Sun.fetch("problem", {id: problemId}, function (problem) {
                 if (problem.get("type") == 0) {
                     console.log("grading problem," + problem.get("id"))
                     var completeOk = true
                     var user_data = problem.get("user_data")
-                    answer_btn = $("#submit_answer")
+                    var answer_btn = $("#submit_answer")
+                    var grading_result = $("#grading_result")
+                    var correct_answers = []
+
                     _.each(problem.get('choices'), function (choice) {
                         var choiceId = "#" + choice['id']
-                        answer = $(choiceId)
-                        if (answer.attr('checked') == "checked" && choice['answer'] == "yes") {
+                        var answer = $(choiceId)
+                        console.log("problemchoice," + choiceId + ","
+                            + answer.attr("id") + ","
+                            + answer[0].checked + ","
+                            + choice['answer'])
+                        if (answer[0].checked == true && choice['answer'] == "yes") {
                             console.log(choiceId + " right")
-                        } else if (answer.attr('checked') != "checked" && choice['answer'] == "no") {
+                        } else if (answer[0].checked != true && choice['answer'] == "no") {
                             console.log(choiceId + " right")
                         } else {
                             console.log(choiceId + " wrong")
@@ -152,6 +159,11 @@ jQuery(function () {
                     })
 
                     console.log("grading result:" + completeOk)
+                    if (completeOk) {
+                        grading_result.html("做对啦")
+                    } else {
+                        grading_result.html("做错啦")
+                    }
 
                     // After set user data, set button heading to next problem
                     user_data.push({"completed": true})
@@ -169,7 +181,7 @@ jQuery(function () {
                     console.log("not supported problem grading")
                 }
 
-            }, {id: problemId})
+            })
         }
     }
 
