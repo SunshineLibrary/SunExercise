@@ -268,7 +268,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
 
     @Override
     public void showExitDialog() {
-        super.onBackPressed();
+        super.showExitDialog();
     }
 
     @Override

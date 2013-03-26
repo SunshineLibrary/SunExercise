@@ -20,22 +20,22 @@ public class WebInteraction implements SyncObserver{
 
     @Override
     public void onSyncStart() {
-        Log.i(TAG, "onSyncStart");
+        mWebView.loadUrl("javascript:Interfaces.onSyncStart()");
     }
 
     @Override
     public void onJsonReceived() {
-        Log.i(TAG, "onJsonReceived");
+        mWebView.loadUrl("javascript:Interfaces.onJsonReceived()");
     }
 
     @Override
     public void onJsonParsed() {
-        Log.i(TAG, "onJsonParsed");
+        mWebView.loadUrl("javascript:Interfaces.onJsonParsed()");
     }
 
     @Override
     public void onSyncCompleted(boolean isSuccess) {
-        Log.i(TAG, "onSyncCompleted");
+        mWebView.loadUrl("javascript:Interfaces.onSyncCompleted()");
     }
 
     @Override
@@ -49,7 +49,6 @@ public class WebInteraction implements SyncObserver{
     }
 
     public void backPressed(){
-        Log.i(TAG, "backPressed");
         mWebView.loadUrl("javascript:Interfaces.backpage()");
     }
 }
