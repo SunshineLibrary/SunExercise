@@ -81,6 +81,7 @@ jQuery(function () {
                 console.log("[ANDROID]try to fetch a material," + type + "," + JSON.stringify(options))
 
                 var result = Sun.requestMaterial(type, options["id"])
+                console.log("result," + JSON.stringify(result))
                 if (callback != undefined) {
                     eval(callback)(result, options)
                 }
@@ -144,12 +145,35 @@ jQuery(function () {
             delete USER_DATA
             USER_DATA = new Object()
             alert("reset completed\r\n" + Object.keys(USER_DATA))
+        },
+
+        adduserdata: function (type, id, data) {
+            userdata = Sun.getuserdata(type, id)
+
+        },
+
+        setcomplete: function (type, id) {
+            userdata = Sun.getuserdata(type, id)
+            userdata['completed'] = true
+            Sun.setuserdata['']
+        },
+
+        iscomplete: function () {
+
         }
+
     }
 
     Interfaces = {
         backpage: function () {
-            window.history.back()
+            url = window.location.href
+            // TODO change it to a "REAL" index judgement
+            console.log("back pressed, current url," + url)
+            if (url.indexOf("subject") >= 0) {
+                android.showExitDialog()
+            } else {
+                window.history.back()
+            }
         },
 
         onSyncStart: function () {
@@ -161,15 +185,19 @@ jQuery(function () {
         },
 
         onJsonParsed: function () {
-            console.log("onJsonReceived")
+            console.log("onJsonParsed")
         },
 
         onSyncCompleted: function () {
-            console.log("onJsonReceived")
+            console.log("onSyncCompleted")
         },
 
-        onCollectionDownloaded: function () {
-            console.log("onJsonReceived")
+        onCollectionProgress: function (collectionId, percentage) {
+            console.log("onCollectionProgress," + collectionId + "," + percentage)
+        },
+
+        onCollectionDownloaded: function (lessonId, downloaded) {
+            console.log("onCollectionDownloaded," + lessonId + "," + downloaded)
         },
 
         sync: function () {

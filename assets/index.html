@@ -46,8 +46,10 @@
     <div class="navbar-inner">
         <div class="container">
             <div id="footer" class="pull-left" style="height:60px;margisn-top:15px">loading footer</div>
-            <button class="btn pull-right" onclick="Sun.resetuserdata()">reset user data</button>
-            <button class="btn pull-right" onclick="Sun.showuserdata()">show user data</button>
+            <div style="text-align: right">
+                <button class="btn" onclick="Sun.resetuserdata()">reset user data</button>
+                <button class="btn" onclick="Sun.showuserdata()">show user data</button>
+            </div>
         </div>
     </div>
 </div>
@@ -177,8 +179,14 @@
 <script type="text/template" id="tc_problem_singlefilling">
     <p><%=target.get("body")%></p>
     <%=JSON.stringify(target)%>
+    <% userdata = target.get('userdata') %>
+    <% if(userdata.completed == true) { %>
+    <a class="btn btn-large"
+       onclick="nextMaterial('problem','<%=target.get('id')%>')">继续</a>
+    <% }else{ %>
     <a id="submit_answer" class="btn btn-large  btn-primary"
        onclick="grading('<%=target.get('id')%>')">提交答案</a>
+    <% } %>
 </script>
 
 <script type="text/template" id="tc_stages"></script>
@@ -187,6 +195,10 @@
 <script type="text/template" id="tc_section"></script>
 <script type="text/template" id="tc_summary">
     summary
+    <%=JSON.stringify(target)%>
+    <% %>
+    <a class="btn btn-large" href="#section/<%=target.get('section_id')%>">继续</a>
+
 </script>
 <script type="text/template" id="tc_problem_multichoice"></script>
 <script type="text/template" id="tc_video"></script>

@@ -83,11 +83,19 @@ jQuery(function () {
         })
         app_router.on('route:section', function (id) {
             Sun.fetch("section", {id: id}, function (section) {
+                console.log("call!!!!"+JSON)
+
                 for (var i = 0; i < section.get("activities").length; i++) {
                     var activity = section.get("activities").models[i]
+                    var completed = true
                     if (!activity.isComplete()) {
                         app_router.navigate("activity/" + activity.id, {trigger: true, replace: true})
+                        completed = false
                         break
+                    }
+                    if (completed) {
+
+                        app_router.navigate("stage/" + section.get("stage_id"), {trigger: true, replace: true})
                     }
                 }
             })
@@ -126,6 +134,7 @@ jQuery(function () {
                 $.each(activity.get("problems").models, function (number, problem) {
                     console.log("p," + number + "," + JSON.stringify(problem.get("userdata")))
                 })
+                reloadPage()
             })
         })
         Backbone.history.start()
@@ -165,7 +174,6 @@ jQuery(function () {
                 if (problem.get("type") == 0) {
                     console.log("grading problem," + problem.get("id"))
                     var completeOk = true
-                    var user_data = Sun.getuserdata("problem", problem.get("id"))
                     var grading_result = $("#grading_result")
 
                     for (var i = 0; i < problem.get('choices').length; i++) {
@@ -188,6 +196,7 @@ jQuery(function () {
                         }
                     }
 
+                    var user_data = Sun.getuserdata("problem", problem.get("id"))
                     user_data["completed"] = true
                     user_data["correct"] = completeOk
                     Sun.setuserdata("problem", problem.get('id'), user_data, function () {
@@ -196,7 +205,14 @@ jQuery(function () {
                         loadProblem(problem.get('id'))
                     })
                 } else if (problem.get("type") == 2) {
-
+                    var user_data = Sun.getuserdata("problem", problem.get("id"))
+                    user_data["completed"] = true
+                    user_data["correct"] = true
+                    Sun.setuserdata("problem", problem.get('id'), user_data, function () {
+                        checkin("activity", problem.get('activity_id'))
+                        problem.set("userdata", user_data)
+                        loadProblem(problem.get('id'))
+                    })
                 } else {
                     // TODO add different problem grading code
                     console.log("not supported problem grading")
