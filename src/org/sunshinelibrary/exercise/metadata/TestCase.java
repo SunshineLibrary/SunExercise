@@ -50,6 +50,7 @@ public class TestCase extends Thread{
     public static final int DOWNLOAD = 3;
     public static final int LOG_DB = 4;
     public static final int DUMP = 5;
+    public static final int CLEAN_USER_DATA = 6;
 
     static int command = RUN_CASE;
 
@@ -71,6 +72,9 @@ public class TestCase extends Thread{
             case CLEAN:
                 clean();
                 logDatabase();
+                break;
+            case CLEAN_USER_DATA:
+                cleanUserData();
                 break;
             case SYNC:
                 testSync();
@@ -578,6 +582,12 @@ public class TestCase extends Thread{
         resolver.delete(Problems.CONTENT_URI, null, null);
         resolver.delete(ProblemChoices.CONTENT_URI, null, null);
         resolver.delete(Media.CONTENT_URI, null, null);
+        resolver.delete(UserData.CONTENT_URI, null, null);
+    }
+
+
+    public static void cleanUserData() {
+        resolver.delete(UserData.CONTENT_URI, null, null);
     }
 
     public static void logDatabase() {
