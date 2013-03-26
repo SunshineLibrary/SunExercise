@@ -8,11 +8,14 @@ import android.net.Uri;
 import android.util.Log;
 import org.json.JSONObject;
 import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
-import org.sunshinelibrary.exercise.app.interfaces.HtmlInterface;
+import org.sunshinelibrary.exercise.app.interfaces.AndroidDataInterface;
+import org.sunshinelibrary.exercise.app.interfaces.AndroidInterface;
+import org.sunshinelibrary.exercise.app.interfaces.AndroidUIInterface;
+
 import static org.sunshinelibrary.exercise.metadata.MetadataContract.Lessons;
+
 import org.sunshinelibrary.exercise.metadata.json.Request;
 import org.sunshinelibrary.exercise.metadata.operation.CheckAvailableOperation;
-import org.sunshinelibrary.exercise.metadata.operation.ExerciseOperation;
 import org.sunshinelibrary.support.api.ApiManager;
 import org.sunshinelibrary.support.api.ApiUriBuilder;
 import org.sunshinelibrary.support.api.subscription.Subscription;
@@ -23,9 +26,6 @@ import org.sunshinelibrary.support.utils.ApplicationInterface;
 import org.sunshinelibrary.support.utils.CursorUtils;
 import org.sunshinelibrary.support.utils.database.Contract;
 import org.sunshinelibrary.support.utils.json.JsonHandler;
-import org.sunshinelibrary.support.utils.operation.Operation;
-import org.sunshinelibrary.support.utils.sync.FileRequest;
-import org.sunshinelibrary.support.utils.sync.StateMachine;
 import org.sunshinelibrary.support.utils.sync.SyncObserver;
 
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import java.util.ArrayList;
  * @version 1.0
  * @date 3/12/13
  */
-public class Proxy implements HtmlInterface, SubscriptionDataListener {
+public class Proxy implements AndroidInterface, SubscriptionDataListener {
     private static final String TAG = "Proxy";
     private static final String PATH = "/api/exercise/updates.json";
 
@@ -45,21 +45,10 @@ public class Proxy implements HtmlInterface, SubscriptionDataListener {
     static private final int DURATION = 2*60*60*1000;//2*60*60*1000;  // 2 hours
 
     boolean mIsSynchronizing = false;
+    AndroidUIInterface mUIInterface = null;
 
     Subscription mSubscription;
     SyncObserver mObserver;
-
-    // deprecated
-    @Override
-    public String requestJson(String reqJson) {
-        Log.i(TAG, "request Json" + reqJson);
-        return "hahaha";
-    }
-
-    // deprecated
-    @Override
-    public void loadHtml(String page, String reqJson) {
-    }
 
     @Override
     public String requestUserData(String string) {
@@ -85,6 +74,16 @@ public class Proxy implements HtmlInterface, SubscriptionDataListener {
         String result = materialData.request();
         Log.i(TAG, "returnData: " + result);
         return result;
+    }
+
+    @Override
+    public void showExitDialog() {
+        if (mUIInterface == null)
+            mUIInterface.showExitDialog();
+    }
+
+    @Override
+    public void log(int priority, String tag, String msg) {
     }
 
     @Override
@@ -201,14 +200,18 @@ public class Proxy implements HtmlInterface, SubscriptionDataListener {
                 Contract.DOWNLOAD_STATUS.DOWNLOADING);
     }
 
-    public void notifyCollectionDownloaded(String collectionId) {
+    public void notifyCollectionDownloadProgress(String collectionId, float percentage) {
+        mObserver.onCollectionDownloadProgress(collectionId, percentage);
+    }
+
+    public void notifyCollectionDownloaded(String collectionId, boolean available) {
 //        Cursor cursor = ExerciseApplication.getInstance().getContentResolver().query(Lessons.CONTENT_URI,
 //                new String[]{Lessons._DOWNLOAD_FINISH}, Lessons._STRING_ID + "=?", new String[]{Lessons._STRING_ID},
 //                null);
 //        cursor.moveToFirst();
 //        int status = CursorUtils.getInt(cursor, Lessons._DOWNLOAD_FINISH);
 //        cursor.close();
-        mObserver.onCollectionDownloaded(collectionId);
+        mObserver.onCollectionDownloaded(collectionId, available);
     }
 
     static protected boolean timeToSync() {
@@ -275,5 +278,10 @@ public class Proxy implements HtmlInterface, SubscriptionDataListener {
         values.put(Contract.Columns._DOWNLOAD_FINISH, from);
         ExerciseApplication.getInstance().getContentResolver().update(uri, values,
                 Contract.Columns._DOWNLOAD_FINISH + "=?", new String[]{String.valueOf(to)});
+    }
+
+    @Override
+    public void setUIInterface(AndroidUIInterface a) {
+        mUIInterface = a;
     }
 }

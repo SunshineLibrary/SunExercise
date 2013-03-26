@@ -20,6 +20,7 @@ public class CheckAvailableOperation extends ExerciseOperation {
     private static final String TAG = "CheckAvailableOperation";
 
     ArrayList<String> mLessonIDs;
+    boolean mAvailable = false;
 
     public CheckAvailableOperation() {
         mLessonIDs = new ArrayList<String>();
@@ -38,6 +39,10 @@ public class CheckAvailableOperation extends ExerciseOperation {
             mLessonIDs.add(lessonId);
     }
 
+    public boolean available(){
+        return mAvailable;
+    }
+
 
     // 接在Json数据处理完成后执行，执行后直接通知前端，必须同步执行。
     public void execute() {
@@ -46,7 +51,6 @@ public class CheckAvailableOperation extends ExerciseOperation {
             return;
         }
 
-        boolean available;
         ArrayList<String> mediaIDs;
         Cursor cursor;
 
@@ -59,7 +63,7 @@ public class CheckAvailableOperation extends ExerciseOperation {
                 continue;
             }
 
-            available = true;
+            mAvailable = true;
 
             cursor = mContext.getContentResolver().query(Media.CONTENT_URI, new String[]{Media._PATH},
                     CursorUtils.generateSelectionStringForStringID(Media._STRING_ID, mediaIDs), null, null);
@@ -70,15 +74,15 @@ public class CheckAvailableOperation extends ExerciseOperation {
                     File f = new File(path);
                     if (!f.exists()) {
                         Log.i(TAG, "file not exist:" + path);
-                        available = false;
+                        mAvailable = false;
                         break;
                     }
                 }
             } else {
-                available = false;
+                mAvailable = false;
             }
             cursor.close();
-            updateDownloadFinish(lessonId, available);
+            updateDownloadFinish(lessonId, mAvailable);
         }
     }
 }

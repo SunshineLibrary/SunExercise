@@ -33,7 +33,7 @@ public class DownloadLessonOperation extends ExerciseOperation implements FileRe
 
         if (mediaIDs.size() <= 0) {
             updateDownloadFinish(mLessonId, true);
-            ExerciseApplication.getInstance().getSyncManager().notifyCollectionDownloaded(mLessonId);
+            ExerciseApplication.getInstance().getSyncManager().notifyCollectionDownloaded(mLessonId, true);
             return;
         }
         FileRequest fr = new FileRequest(ApiManager.getInstance(ExerciseApplication.getInstance().getBaseContext()),
@@ -60,10 +60,15 @@ public class DownloadLessonOperation extends ExerciseOperation implements FileRe
     }
 
     @Override
+    public void onProgressUpdate(float percentage) {
+        ExerciseApplication.getInstance().getSyncManager().notifyCollectionDownloadProgress(mLessonId, percentage);
+    }
+
+    @Override
     public void onAllComplete() {
         CheckAvailableOperation co = new CheckAvailableOperation();
         co.add(mLessonId);
         co.execute();
-        ExerciseApplication.getInstance().getSyncManager().notifyCollectionDownloaded(mLessonId);
+        ExerciseApplication.getInstance().getSyncManager().notifyCollectionDownloaded(mLessonId, co.available());
     }
 }

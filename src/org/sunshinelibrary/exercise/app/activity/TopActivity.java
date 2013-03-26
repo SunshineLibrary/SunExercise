@@ -30,12 +30,11 @@ public class TopActivity extends Activity {
 		return getIntent().getAction() != null && 
 					getIntent().getAction().equals(Intent.ACTION_MAIN);
 	}
-	
-	@Override
-	public void onBackPressed() {
-		/* show dialog based on the current intent type */
-		showDialog(isMainIntent() ? DIALOG_EXIT_MAIN : DIALOG_EXIT_NORMAL);
-	}
+
+    protected void showExitDialog(){
+        /* show dialog based on the current intent type */
+        showDialog(isMainIntent() ? DIALOG_EXIT_MAIN : DIALOG_EXIT_NORMAL);
+    }
 
 	@Override
 	public Dialog onCreateDialog(int id) {

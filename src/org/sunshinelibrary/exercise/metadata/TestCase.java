@@ -10,11 +10,10 @@ import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
 import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
-import org.sunshinelibrary.exercise.app.interfaces.HtmlInteraction;
+import org.sunshinelibrary.exercise.app.interfaces.WebInteraction;
 import org.sunshinelibrary.exercise.metadata.json.Request;
 import org.sunshinelibrary.exercise.metadata.sync.Proxy;
 import org.sunshinelibrary.exercise.metadata.operation.CheckAvailableOperation;
-import org.sunshinelibrary.support.api.ApiManager;
 import org.sunshinelibrary.support.utils.CursorUtils;
 import org.sunshinelibrary.support.utils.JSONStringBuilder;
 
@@ -99,7 +98,7 @@ public class TestCase extends Thread{
 
     public static void testSync() {
         Proxy proxy = ExerciseApplication.getInstance().getSyncManager();
-        HtmlInteraction interaction = new HtmlInteraction();
+        WebInteraction interaction = new WebInteraction(null);
         proxy.register(interaction);
         proxy.sync();
     }

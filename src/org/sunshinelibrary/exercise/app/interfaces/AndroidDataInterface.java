@@ -2,12 +2,7 @@ package org.sunshinelibrary.exercise.app.interfaces;
 
 import org.sunshinelibrary.support.utils.sync.StateMachine;
 
-public interface HtmlInterface extends StateMachine {
-    // deprecated
-    public String requestJson(String reqJson);
-
-    // deprecated
-    public void loadHtml(String page, String reqJson);
+public interface AndroidDataInterface {
 
     // upload/send user data
     // so far will return the parameter.
