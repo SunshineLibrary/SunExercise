@@ -23,11 +23,14 @@ jQuery(function () {
      */
     Subject = Backbone.Model.extend({
         initialize: function (options) {
-            this.lessons = new Lessons(options.lessons)
-            var monthLessons = this.lessons.groupBy(function (lesson) {
+            var lessons = new Lessons(options.lessons)
+            var monthLessons = lessons.groupBy(function (lesson) {
                 return lesson.get("year") * 100 + lesson.get("month")
             })
-            this.set({monthLessons: monthLessons})
+            this.set({
+                lessons: lessons,
+                monthLessons: monthLessons
+            })
         }
     })
     Subjects = Backbone.Collection.extend({
@@ -59,7 +62,10 @@ jQuery(function () {
      */
     Stage = Backbone.Model.extend({
         initialize: function (options) {
-            this.set({sections: new Sections(options.sections)})
+            this.set({
+                sections: new Sections(options.sections),
+                userdata: Sun.getuserdata("stage", options.id)
+            })
         }
     })
     Stages = Backbone.Collection.extend({model: Stage})
@@ -97,7 +103,18 @@ jQuery(function () {
      */
     Problem = Backbone.Model.extend({
         initialize: function (options) {
-            fillUp(options, this)
+            this.set("userdata", Sun.getuserdata("problem", options.id))
+            if (this.get('choices') != undefined) {
+                var ANSWERS = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F"}
+                var correct_answers = []
+                for (var i = 0; i < this.get('choices').length; i++) {
+                    var choice = this.get('choices')[i]
+                    if (choice['answer'] == "yes") {
+                        correct_answers.push(ANSWERS[i])
+                    }
+                }
+                this.correct_answers = correct_answers
+            }
         },
         isComplete: function () {
             return isComplete(this)
@@ -105,16 +122,9 @@ jQuery(function () {
     })
     Problems = Backbone.Collection.extend({model: Problem})
 
-    function fillUp(options, target) {
-        if (options["user_data"] == undefined) {
-            target.set("user_data", [])
-        } else {
-            target.user_data = JSON.parse(options["user_data"])
-        }
-    }
 
     function isComplete(target) {
-        var user_data = Sun.getuserdata(target.get("id"))
+        var user_data = Sun.getuserdata("problem", target.get("id"))
         var completed = user_data["completed"]
         return completed == true;
     }

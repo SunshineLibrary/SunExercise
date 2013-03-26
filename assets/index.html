@@ -7,13 +7,15 @@
     <link href="js/libs/videojs/video-js.css" rel="stylesheet">
     <script src="js/libs/videojs/video.js"></script>
 
-    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
-    <link href="css/app.css" rel="stylesheet">
     <script src="js/libs/jquery/jquery-1.9.1.js"></script>
-    <script src="js/libs/underscore/underscore.js"></script>
-    <script src="js/libs/backbone/backbone.js"></script>
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
     <script src="js/libs/bootstrap/bootstrap.min.js"></script>
 
+    <link href="css/app.css" rel="stylesheet">
+    <script src="js/libs/underscore/underscore.js"></script>
+    <script src="js/libs/backbone/backbone.js"></script>
+
+    <script src="js/utils.js"></script>
     <script src="js/views.js"></script>
     <script src="js/models.js"></script>
     <script src="js/sun.js"></script>
@@ -43,8 +45,9 @@
 <div class="navbar navbar-inverse navbar-fixed-bottom">
     <div class="navbar-inner">
         <div class="container">
-            <div id="footer" class="pull-left" style="height:60px;margin-top:15px">loading footer</div>
+            <div id="footer" class="pull-left" style="height:60px;margisn-top:15px">loading footer</div>
             <button class="btn pull-right" onclick="Sun.resetuserdata()">reset user data</button>
+            <button class="btn pull-right" onclick="Sun.showuserdata()">show user data</button>
         </div>
     </div>
 </div>
@@ -64,6 +67,11 @@
         </li>
         <% } %>
     </ul>
+    <ul class="nav pull-right">
+        <li>
+            <div class="btn" onclick="Interfaces.sync()">同步数据</div>
+        </li>
+    </ul>
 </script>
 
 <script type="text/template" id="th_lesson">
@@ -76,47 +84,53 @@
 
 <script type="text/template" id="tc_subject">
     <% _.each(target.get('monthLessons'),function(monthLesson){ %>
-    <%=monthLesson[0].get('month')%>月
-    <div>
+    <h2><%=monthLesson[0].get('month')%>月</h2>
 
-        <div class="row">
-            <% _.each(monthLesson,function(lesson){ %>
-            <div class="span3">
-                <div class="tile">
-                    <h3 class="tile-title"><%=lesson.name%></h3>
+    <div class="row">
+        <% _.each(monthLesson,function(lesson){ %>
+        <div class="span3">
+            <div class="well">
+                <h4 style="text-wrap:pre-line"><%=lesson.get("name")%></h4>
 
-                    <p>课程描述</p>
-                    <a class="btn btn-primary btn-large btn-block" href="#lesson/<%=lesson.id%>">Start</a>
-                </div>
+                <div class="btn btn-large" onclick="Interfaces.download('<%=lesson.id%>')">下载</div>
+                <a class="btn btn-primary btn-large" href="#lesson/<%=lesson.id%>">进入</a>
             </div>
-            <% }) %>
         </div>
-
+        <% }) %>
     </div>
     <% }) %>
 </script>
 
 <script type="text/template" id="tc_lesson">
-    <div>
-        <% _.each(target.get("stages"),function(stage){ %>
-        <div class="span3">
-            <div class="tile">
-                <h3 class="tile-title"><%=stage.id%></h3>
+    <% _.each(target.get("stages"),function(stage){ %>
+    <div class="span3">
+        <div class="stage_circle_0">
+            <h3 class="tile-title"><%=stage.id%></h3>
 
-                <p>阶段描述</p>
-                <a class="btn btn-primary btn-large btn-block" href="#stage/<%=stage.id%>">Start</a>
-            </div>
+            <p class="wrap-text"><%=JSON.stringify(stage)%></p>
+            <a class="btn btn-primary btn-large btn-block" href="#stage/<%=stage.id%>">进入</a>
         </div>
-        <% }) %>
     </div>
+    <% }) %>
 </script>
 
 <script type="text/template" id="tc_problem_singlechoice">
     <div class="span10">
-        <h3><%=target.get('id')%></h3>
+        <h3><%=target.get('id')%>
+            <% if(target.get('userdata')==true){%>(completed)<%}%>
+        </h3>
 
         <p>
-            <%=target.get('body')%>
+            <% userdata = target.get('userdata') %>
+            userdata: <%=JSON.stringify(userdata) %>
+        </p>
+
+        <p>
+            correct answers: <%=target.correct_answers %>
+        </p>
+
+        <p>
+            body: <%=target.get('body')%>
         </p>
 
         <p>
@@ -140,11 +154,20 @@
 
         <div class="">
             <div id="grading_result" class="pull-left">
-
+                <% if(userdata.correct==true) { %>
+                Right:)
+                <% } else if (userdata.correct==false) { %>
+                WRONG!!!
+                <% } %>
             </div>
             <div class="pull-right">
+                <% if(userdata.completed == true) { %>
+                <a class="btn btn-large"
+                   onclick="nextMaterial('problem','<%=target.get('id')%>')">继续</a>
+                <% }else{ %>
                 <a id="submit_answer" class="btn btn-large  btn-primary"
                    onclick="grading('<%=target.get('id')%>')">提交答案</a>
+                <% } %>
             </div>
         </div>
     </div>
@@ -159,6 +182,9 @@
 <script type="text/template" id="tc_month"></script>
 <script type="text/template" id="tc_activity"></script>
 <script type="text/template" id="tc_section"></script>
+<script type="text/template" id="tc_summary">
+    summary
+</script>
 <script type="text/template" id="tc_problem_multichoice"></script>
 <script type="text/template" id="tc_video"></script>
 

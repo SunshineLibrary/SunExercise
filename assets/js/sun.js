@@ -34,23 +34,25 @@ jQuery(function () {
     }
 
     Sun = {
-        request: function (api, method, type, id, user_id) {
-            var requestContent = JSON.stringify({
-                "api": "",
-                "method": "get",
+        createrequest: function (api, method, type, id, user_data, user_id) {
+            return {
+                "api": api,
+                "method": method,
                 "param": {
                     "type": type,
-                    "id": id
+                    "id": id,
+                    "user_data": user_data
                 },
-                "user_id": user_id})
-            return JSON.parse(android.requestData(requestContent))
+                "user_id": user_id}
         },
         requestMaterial: function (type, id) {
-            var json = Sun.request("material", "get", type, id, "testuser")
-            return Sun.createMaterial(json, type)
+            var req = Sun.createrequest("material", "get", type, id, undefined, Sun.getuserid())
+            var resp = android.requestData(JSON.stringify(req))
+            return Sun.createMaterial(JSON.parse(resp), type)
         },
         createMaterial: function (json, type) {
-            return MATERIAL_TYPES[type](json)
+            var result = MATERIAL_TYPES[type](json)
+            return result
         },
 
         fetch: function (type, options, callback) {
@@ -69,7 +71,9 @@ jQuery(function () {
                     function (data) {
                         console.log("data:" + JSON.stringify(data))
                         result = Sun.createMaterial(data, type)
-                        eval(callback)(result, options)
+                        if (callback != undefined) {
+                            eval(callback)(result, options)
+                        }
                     }
                 )
             } else {
@@ -77,30 +81,113 @@ jQuery(function () {
                 console.log("[ANDROID]try to fetch a material," + type + "," + JSON.stringify(options))
 
                 var result = Sun.requestMaterial(type, options["id"])
-                eval(callback)(result, options)
+                if (callback != undefined) {
+                    eval(callback)(result, options)
+                }
             }
-
         },
 
-        setuserdata: function (callback, type, id, options) {
-            USER_DATA[id] = JSON.stringify(options)
-            console.log("setuserdata," + type + "," + id + "," + USER_DATA[id])
-            eval(callback)()
+        setuserdata: function (type, id, options, callback) {
+            // "post" method means set user data
+            var req = Sun.createrequest(
+                "user_data",
+                "post",
+                type,
+                id,
+                JSON.stringify(options),
+                Sun.getuserid())
+            if (typeof android == "undefined") {
+                // web dev mode
+                console.log("[WEB]set user data")
+                USER_DATA[id] = JSON.stringify(options)
+            } else {
+                // android dev mode
+                var reqText = JSON.stringify(req)
+                console.log("[ANDROID]set user data," + reqText)
+                var resp = android.requestUserData(reqText)
+                options["result"] = resp
+            }
+            if (callback != undefined) {
+                eval(callback)(type, id, options)
+            }
         },
 
-        getuserdata: function (id) {
-            var data = USER_DATA[id]
-            if (data == undefined) {
-                data = "{}"
+        getuserdata: function (type, id) {
+            // "get" method means get user data
+            req = Sun.createrequest("user_data", "get", type, id, Sun.getuserid())
+            var userdata = undefined
+            if (typeof android == "undefined") {
+                // web dev mode
+                console.log("[WEB]set user data")
+                userdata = USER_DATA[id]
+            } else {
+                // android dev mode
+                console.log("[ANDROID]set user data," + JSON.stringify(req))
+                userdata = android.requestUserData(JSON.stringify(req))
+                console.log("got userdata!!!!!!," + userdata)
             }
-            console.log("getuserdata," + id + "," + data)
-            return JSON.parse(data)
+            userdata = (userdata == undefined) ? "{}" : userdata
+            console.log("got userdata," + id + "," + userdata)
+            return JSON.parse(userdata)
+        },
+
+        getuserid: function () {
+            return "testuser"
+        },
+
+        showuserdata: function () {
+            console.log("current userdata:" + JSON.stringify(USER_DATA))
         },
 
         resetuserdata: function () {
-            alert("before reset," + $.keys(USER_DATA))
-            new Object()
-            alert("after reset," + $.keys(USER_DATA))
+            alert("before reset\r\n" + Object.keys(USER_DATA))
+            delete USER_DATA
+            USER_DATA = new Object()
+            alert("reset completed\r\n" + Object.keys(USER_DATA))
+        }
+    }
+
+    Interfaces = {
+        backpage: function () {
+            window.history.back()
+        },
+
+        onSyncStart: function () {
+            console.log("onSyncStart")
+        },
+
+        onJsonReceived: function () {
+            console.log("onJsonReceived")
+        },
+
+        onJsonParsed: function () {
+            console.log("onJsonReceived")
+        },
+
+        onSyncCompleted: function () {
+            console.log("onJsonReceived")
+        },
+
+        onCollectionDownloaded: function () {
+            console.log("onJsonReceived")
+        },
+
+        sync: function () {
+            if (typeof android == "undefined") {
+                console.log("[WEB]sync")
+            } else {
+                console.log("[ANDROID]sync")
+                android.sync();
+            }
+        },
+
+        download: function (id) {
+            if (typeof android == "undefined") {
+                console.log("[WEB]download," + id)
+            } else {
+                console.log("[ANDROID]download," + id)
+                android.download(id);
+            }
         }
     }
 

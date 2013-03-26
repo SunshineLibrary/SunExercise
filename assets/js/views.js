@@ -25,6 +25,7 @@ jQuery(function () {
             stages: _.template($("#tc_stages").html()),
             activity: _.template($("#tc_activity").html()),
             section: _.template($("#tc_section").html()),
+            summary: _.template($("#tc_summary").html()),
             problem_sc: _.template($("#tc_problem_singlechoice").html()),
             problem_sf: _.template($("#tc_problem_singlefilling").html()),
             problem_mc: _.template($("#tc_problem_multichoice").html()),
@@ -33,7 +34,7 @@ jQuery(function () {
         Footer: {
             lesson: _.template($("#tf_lesson").html()),
             subject: _.template($("#tf_subject").html()),
-            problem_sc: _.template($("#tf_problem_singlechoice").html()),
+            problem_sc: _.template($("#tf_problem_singlechoice").html())
         }
     }
 
@@ -114,6 +115,14 @@ jQuery(function () {
 
     SingleFillingProblemView = Backbone.View.extend({
         template: Templates.Content.problem_sf,
+        render: function () {
+            this.el = this.template({target: this.model})
+            return this
+        }
+    })
+
+    SummaryView = Backbone.View.extend({
+        template: Templates.Content.summary,
         render: function () {
             this.el = this.template({target: this.model})
             return this

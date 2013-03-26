@@ -6,3 +6,12 @@
     margin-top: 70px;
     margin-bottom: 70px;
 }
+
+.stage_circle_0 {
+    background-image: url(../img/circle.png);
+    background-repeat: no-repeat;
+}
+
+.wrap-text{
+    word-wrap: break-word;
+}

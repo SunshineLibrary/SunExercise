@@ -16,7 +16,8 @@ jQuery(function () {
                 "stage/:id": "stage",
                 "section/:id": "section",
                 "activity/:id": "activity",
-                "problem/:id": "problem"
+                "problem/:id": "problem",
+                "summary/:aid": "summary"
             }
         })
 
@@ -64,12 +65,19 @@ jQuery(function () {
         app_router.on('route:stage', function (id) {
             console.log("stage " + id)
             Sun.fetch("stage", {id: id}, function (stage) {
-                for (var i = 0; i < stage.get("sections").length; i++) {
-                    var section = stage.get("sections").models[i]
-                    if (!section.isComplete()) {
-                        app_router.navigate("section/" + section.id, {trigger: true, replace: true})
-                        break;
+                userdata = Sun.getuserdata("stage", id)
+                if (userdata.current == undefined) {
+                    console.log("never entered this stage")
+                    for (var i = 0; i < stage.get("sections").length; i++) {
+                        var section = stage.get("sections").models[i]
+                        if (!section.isComplete()) {
+                            app_router.navigate("section/" + section.id, {trigger: true, replace: true})
+                            break;
+                        }
                     }
+                } else {
+                    console.log("resume activity," + userdata.current)
+                    app_router.navigate("activity/" + userdata.current, {trigger: true, replace: true})
                 }
             })
         })
@@ -89,13 +97,18 @@ jQuery(function () {
             Sun.fetch("activity", {id: id}, function (activity) {
                 // activity with problems
                 if (activity.get("type") == 4) {
+                    var completed = true
                     for (var i = 0; i < activity.get("problems").length; i++) {
                         console.log("problems:" + JSON.stringify(activity.get("problems")))
                         var problem = activity.get("problems").models[i]
                         if (!problem.isComplete()) {
                             app_router.navigate("problem/" + problem.id, {trigger: true, replace: true})
+                            completed = false
                             break;
                         }
+                    }
+                    if (completed) {
+                        app_router.navigate("summary/" + problem.get("activity_id"), {trigger: true, replace: true})
                     }
                 } else {
                     // TODO other acitivities, like video
@@ -104,8 +117,23 @@ jQuery(function () {
             })
         })
         app_router.on('route:problem', function (id) {
+            loadProblem(id)
+        })
+        app_router.on('route:summary', function (aid) {
+            Sun.fetch("activity", {id: aid}, function (activity) {
+                console.log("summary for activity," + JSON.stringify(activity))
+                setBody(new SummaryView({model: activity}))
+                $.each(activity.get("problems").models, function (number, problem) {
+                    console.log("p," + number + "," + JSON.stringify(problem.get("userdata")))
+                })
+            })
+        })
+        Backbone.history.start()
+
+        function loadProblem(id) {
             Sun.fetch("problem", {id: id}, function (problem) {
                 console.log("problem," + problem.get("type"))
+
                 if (problem.get("type") == "0") {
                     setBody(new SingleChoiceProblemView({model: problem}))
                     setFooter(new SingleChoiceProblemFooterView({model: problem}))
@@ -114,9 +142,7 @@ jQuery(function () {
                 }
                 reloadPage()
             })
-        })
-
-        Backbone.history.start()
+        }
 
         function setHeader(header) {
             currentPage.header = header
@@ -139,52 +165,52 @@ jQuery(function () {
                 if (problem.get("type") == 0) {
                     console.log("grading problem," + problem.get("id"))
                     var completeOk = true
-                    var user_data = Sun.getuserdata(problem.get("id"))
-                    var answer_btn = $("#submit_answer")
+                    var user_data = Sun.getuserdata("problem", problem.get("id"))
                     var grading_result = $("#grading_result")
-                    var correct_answers = []
 
-                    _.each(problem.get('choices'), function (choice) {
+                    for (var i = 0; i < problem.get('choices').length; i++) {
+                        choice = problem.get('choices')[i]
                         var choiceId = "#" + choice['id']
                         var answer = $(choiceId)
                         console.log("problemchoice," + choiceId + ","
                             + answer.attr("id") + ","
                             + answer[0].checked + ","
                             + choice['answer'])
-                        if (answer[0].checked == true && choice['answer'] == "yes") {
-                            console.log(choiceId + " right")
+                        if (choice['answer'] == "yes") {
+                            if (answer[0].checked == true) {
+                                console.log(choiceId + " right")
+                            }
                         } else if (answer[0].checked != true && choice['answer'] == "no") {
                             console.log(choiceId + " right")
                         } else {
                             console.log(choiceId + " wrong")
                             completeOk = false
                         }
-                    })
-
-                    console.log("grading result:" + completeOk)
-                    if (completeOk) {
-                        grading_result.html("做对啦")
-                    } else {
-                        grading_result.html("做错啦")
                     }
 
-                    // After set user data, set button heading to next problem
                     user_data["completed"] = true
-                    Sun.setuserdata(function () {
-                        console.log("complete set userdata")
-                        answer_btn.html("下一道题")
-                        answer_btn.attr("onclick", "")
-                        answer_btn.click(function () {
-                            console.log("click answer, next problem")
-                            app_router.navigate("activity/" + problem.get('activity_id'), {trigger: true, replace: true})
-                        })
-                    }, "problem", problem.get('id'), user_data)
+                    user_data["correct"] = completeOk
+                    Sun.setuserdata("problem", problem.get('id'), user_data, function () {
+                        checkin("activity", problem.get('activity_id'))
+                        problem.set("userdata", user_data)
+                        loadProblem(problem.get('id'))
+                    })
                 } else {
                     // TODO add different problem grading code
                     console.log("not supported problem grading")
                 }
 
             })
+        }
+
+        nextMaterial = function (type, id) {
+            if (type == "problem") {
+                Sun.fetch("problem", {id: id}, function (problem) {
+                    app_router.navigate("activity/" + problem.get('activity_id'), {trigger: true, replace: true})
+                })
+            } else {
+                console.log("unsupported material")
+            }
         }
     }
 
@@ -193,7 +219,4 @@ jQuery(function () {
 
     initRoute()
 
-    backpage = function () {
-        window.history.back()
-    }
 })
