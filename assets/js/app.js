@@ -195,6 +195,8 @@ jQuery(function () {
                         problem.set("userdata", user_data)
                         loadProblem(problem.get('id'))
                     })
+                } else if (problem.get("type") == 2) {
+
                 } else {
                     // TODO add different problem grading code
                     console.log("not supported problem grading")
