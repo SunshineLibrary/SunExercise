@@ -76,7 +76,7 @@ public class WebInteraction implements SyncObserver{
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                mWebView.loadUrl("javascript:Interfaces.onCollectionDownloaded('" + collectionId + "', '" + percentage + "')");
+                mWebView.loadUrl("javascript:Interfaces.onCollectionProgress('" + collectionId + "', '" + percentage + "')");
             }
         });
     }
