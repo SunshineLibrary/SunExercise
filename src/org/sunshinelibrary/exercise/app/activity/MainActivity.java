@@ -34,6 +34,7 @@ public class MainActivity extends TopActivity {
     private static final int MENU_DOWNLOAD = 36;
     private static final int MENU_LOG_DB = 37;
     private static final int MENU_DUMP = 38;
+    private static final int MENU_CLEAN_USER_DATA = 39;
 
     private static final String TAG = "Main";
     private static final String ASSETS = "file:///android_asset/";
@@ -226,6 +227,7 @@ public class MainActivity extends TopActivity {
             menu.add(0, MENU_CLEAN, 0, "Clean");
             menu.add(2, MENU_SYNC, 0, "Sync");
             menu.add(2, MENU_DOWNLOAD, 0, "Download");
+            menu.add(0, MENU_CLEAN_USER_DATA, 0, "Reset");
             menu.add(0, MENU_LOG_DB, 0, "LogDB");
             menu.add(0, MENU_DUMP, 0 , "Dump");
             return true;
@@ -248,6 +250,9 @@ public class MainActivity extends TopActivity {
                 return true;
             case MENU_DOWNLOAD:
                 new TestCase().start(TestCase.DOWNLOAD);
+                return true;
+            case MENU_CLEAN_USER_DATA:
+                new TestCase().start(TestCase.CLEAN_USER_DATA);
                 return true;
             case MENU_LOG_DB:
                 new TestCase().start(TestCase.LOG_DB);
