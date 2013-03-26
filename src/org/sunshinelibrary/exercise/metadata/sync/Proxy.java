@@ -78,7 +78,7 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
 
     @Override
     public void showExitDialog() {
-        if (mUIInterface == null)
+        if (mUIInterface != null)
             mUIInterface.showExitDialog();
     }
 
