@@ -1,5 +1,6 @@
 package org.sunshinelibrary.exercise.app.interfaces;
 
+import android.app.Activity;
 import android.util.Log;
 import android.webkit.WebView;
 import org.sunshinelibrary.support.utils.sync.SyncObserver;
@@ -12,43 +13,80 @@ import org.sunshinelibrary.support.utils.sync.SyncObserver;
 public class WebInteraction implements SyncObserver{
     private static final String TAG = "WebInteraction";
 
-    WebView mWebView;
+    WebView mWebView = null;
+    Activity mActivity = null;
 
-    public WebInteraction(WebView webView) {
+    public WebInteraction(WebView webView, Activity a) {
         mWebView = webView;
+        mActivity = a;
     }
 
     @Override
     public void onSyncStart() {
-        mWebView.loadUrl("javascript:Interfaces.onSyncStart()");
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mWebView.loadUrl("javascript:Interfaces.onSyncStart()");
+            }
+        });
     }
 
     @Override
     public void onJsonReceived() {
-        mWebView.loadUrl("javascript:Interfaces.onJsonReceived()");
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mWebView.loadUrl("javascript:Interfaces.onJsonReceived()");
+            }
+        });
     }
 
     @Override
     public void onJsonParsed() {
-        mWebView.loadUrl("javascript:Interfaces.onJsonParsed()");
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mWebView.loadUrl("javascript:Interfaces.onJsonParsed()");
+            }
+        });
     }
 
     @Override
     public void onSyncCompleted(boolean isSuccess) {
-        mWebView.loadUrl("javascript:Interfaces.onSyncCompleted()");
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mWebView.loadUrl("javascript:Interfaces.onSyncCompleted()");
+            }
+        });
     }
 
     @Override
-    public void onCollectionDownloaded(String collectionId, boolean available) {
-        Log.i(TAG, "onCollectionDownloaded: " + collectionId + " " + available);
+    public void onCollectionDownloaded(final String collectionId, final boolean available) {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, "onCollectionDownloaded: " + collectionId + " " + available);
+            }
+        });
     }
 
     @Override
-    public void onCollectionDownloadProgress(String collectionId, float percentage) {
-        Log.i(TAG, "onCollectionDownloadProgress: " + collectionId + " " + percentage);
+    public void onCollectionDownloadProgress(final String collectionId, final float percentage) {
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Log.i(TAG, "onCollectionDownloadProgress: " + collectionId + " " + percentage);
+            }
+        });
     }
 
     public void backPressed(){
-        mWebView.loadUrl("javascript:Interfaces.backpage()");
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                mWebView.loadUrl("javascript:Interfaces.backpage()");
+            }
+        });
     }
 }

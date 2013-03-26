@@ -97,10 +97,10 @@ public class TestCase extends Thread{
     }
 
     public static void testSync() {
-        Proxy proxy = ExerciseApplication.getInstance().getSyncManager();
-        WebInteraction interaction = new WebInteraction(null);
-        proxy.register(interaction);
-        proxy.sync();
+//        Proxy proxy = ExerciseApplication.getInstance().getSyncManager();
+//        WebInteraction interaction = new WebInteraction(null, null);
+//        proxy.register(interaction);
+//        proxy.sync();
     }
 
     public static void testDownload() {

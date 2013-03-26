@@ -69,7 +69,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
 //        mWebViewCollection.put("summery", (WebView) findViewById(R.id.summery));
 
         mInterface = ExerciseApplication.getInstance().getSyncManager();
-        mInteraction = new WebInteraction(mWebView);
+        mInteraction = new WebInteraction(mWebView, this);
         mInterface.setUIInterface(this);
         mInterface.register(mInteraction);
 
@@ -247,7 +247,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
                 new TestCase().start(TestCase.CLEAN);
                 return true;
             case MENU_SYNC:
-                new TestCase().start(TestCase.SYNC);
+                mInterface.sync();
                 return true;
             case MENU_DOWNLOAD:
                 new TestCase().start(TestCase.DOWNLOAD);
@@ -268,7 +268,13 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
 
     @Override
     public void showExitDialog() {
-        super.showExitDialog();
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                MainActivity.this.openExitDialog();
+            }
+        });
+
     }
 
     @Override

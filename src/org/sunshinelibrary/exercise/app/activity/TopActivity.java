@@ -31,7 +31,7 @@ public class TopActivity extends Activity {
 					getIntent().getAction().equals(Intent.ACTION_MAIN);
 	}
 
-    protected void showExitDialog(){
+    protected void openExitDialog(){
         /* show dialog based on the current intent type */
         showDialog(isMainIntent() ? DIALOG_EXIT_MAIN : DIALOG_EXIT_NORMAL);
     }
