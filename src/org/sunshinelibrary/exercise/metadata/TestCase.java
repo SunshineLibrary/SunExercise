@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.apache.commons.lang3.StringEscapeUtils;
 
 
 /**
@@ -654,8 +653,8 @@ public class TestCase extends Thread{
         req.param.type = Request.SUBJECTS;
         req.param.id = "";
         jsb = new JSONStringBuilder().append("    ");
-        jsb.appendNameAndValue(Request.SUBJECTS, StringEscapeUtils.escapeJava(ExerciseApplication.getInstance()
-                .getSyncManager().requestData(req.toJsonString())));
+        jsb.appendNameAndValue(Request.SUBJECTS, ExerciseApplication.getInstance().getSyncManager()
+                .requestData(req.toJsonString()));
         stream.write(jsb.toString().getBytes());
 
 
@@ -665,8 +664,8 @@ public class TestCase extends Thread{
             while (cursor.moveToNext()) {
                 jsb = new JSONStringBuilder().append(",\n    ");
                 req.param.id = CursorUtils.getString(cursor, Columns._STRING_ID);
-                jsb.appendNameAndValue(req.param.id, StringEscapeUtils.escapeJava(ExerciseApplication.getInstance()
-                        .getSyncManager().requestData(req.toJsonString())));
+                jsb.appendNameAndValue(req.param.id, ExerciseApplication.getInstance().getSyncManager()
+                        .requestData(req.toJsonString()));
                 stream.write(jsb.toString().getBytes());
             }
             cursor.close();
@@ -695,8 +694,8 @@ public class TestCase extends Thread{
                     jsb.append(",\n");
                 jsb.append("    ");
                 req.param.id = CursorUtils.getString(cursor, Columns._STRING_ID);
-                jsb.appendNameAndValue(req.param.id, StringEscapeUtils.escapeJava(ExerciseApplication.getInstance()
-                        .getSyncManager().requestUserData(req.toJsonString())));
+                jsb.appendNameAndValue(req.param.id, ExerciseApplication.getInstance().getSyncManager()
+                        .requestUserData(req.toJsonString()));
                 stream.write(jsb.toString().getBytes());
             }
             cursor.close();
