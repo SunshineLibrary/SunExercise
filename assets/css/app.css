@@ -1,8 +1,48 @@
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+}
 .tile {
     margin-bottom: 20px;
 }
 
 #content_container {
-    margin-top: 70px;
-    margin-bottom: 70px;
+  margin-top: 40px;
+  /* margin-bottom: 70px; */
+  padding: 30px 0 10px;
+  background-color: #eee;
+  height: 100%;
+}
+.single-choice {
+  margin: 0 auto;
+  width: 904px;
+}
+.single-choice p {
+  font-size: 18sp;
+  color: #555;
+}
+.question {
+  line-height: 20sp;
+  margin-bottom: 20px;
+}
+.quest-type {
+  color: #999;
+}
+.palette {
+  padding: 16px 0;
+  margin-bottom: 15px;
+}
+.palette .radio {
+  padding-left: 0;
+}
+.even {
+  background-color: #fff;
+}
+.odd {
+  background-color: #E0E0E0;
+}
+.radio input[type="radio"].answer {
+  margin: 4px 16px;
 }

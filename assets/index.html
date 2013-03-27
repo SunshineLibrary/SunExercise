@@ -112,20 +112,22 @@
 </script>
 
 <script type="text/template" id="tc_problem_singlechoice">
-    <div class="span10">
-        <h3><%=target.get('id')%></h3>
+    <div class="single-choice">
+        <!--<h3></h3>-->
 
-        <p>
+        <p class="question">
+            <%=target.get('id')%>.
+            <span class="quest-type">(单选题)</span>
             <%=target.get('body')%>
         </p>
 
-        <p>
+        <div class="answers">
             <%
             for(var i =0 ; i < target.get("choices").length; i++) {
             var choice = target.get("choices")[i]
             %>
 
-        <div class="palette palette-clouds">
+        <div class="palette palette-clouds <%= (i%2==0)? 'even': 'odd' %>">
             <label class="radio">
                 <input class="answer"
                        id="<%=choice.id%>"
@@ -135,8 +137,7 @@
                 <%= target.get('choices')[i].display_text %>
             </label>
         </div>
-        <% } %>
-        </p>
+        <% }/* for */ %></div>
 
         <div class="">
             <div id="grading_result" class="pull-left">
