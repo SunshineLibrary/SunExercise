@@ -9,4 +9,6 @@ public interface AndroidUIInterface {
     public void showExitDialog();
 
     public void log(int priority, String tag, String msg);
+
+    public void onReady();
 }

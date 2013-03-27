@@ -87,6 +87,12 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
     }
 
     @Override
+    public void onReady() {
+        if (mUIInterface != null)
+            mUIInterface.onReady();
+    }
+
+    @Override
     public boolean autoSync() {
         boolean sync = timeToSync();
         if (sync)
@@ -96,6 +102,10 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
 
     @Override
     public void sync() {
+        if(mIsSynchronizing) {
+            Log.w(TAG, "duplicate sync");
+            return;
+        }
         new Thread(new Runnable() {
             @Override
             public void run() {

@@ -48,6 +48,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     private AndroidInterface mInterface;
     private WebInteraction mInteraction;
     private boolean mSignIn = false;
+    private boolean mLoadReady = false;
 
     /**
      * Called when the activity is first created.
@@ -97,7 +98,6 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
             } else {
                 finish();
             }
-
         }
     }
 
@@ -110,8 +110,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
         } catch (PackageManager.NameNotFoundException e) {
             Log.i(TAG, "onResume");
         }
-
-        if (mSignIn)
+        if (mSignIn && mLoadReady)
             mInterface.autoSync();
 
     }
@@ -274,11 +273,17 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
                 MainActivity.this.openExitDialog();
             }
         });
-
     }
 
     @Override
     public void log(int priority, String tag, String msg) {
         Log.println(priority, tag, msg);
+    }
+
+    @Override
+    public void onReady() {
+        mLoadReady = true;
+        if (mSignIn)
+            mInterface.autoSync();
     }
 }
