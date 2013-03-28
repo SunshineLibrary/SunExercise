@@ -4,8 +4,8 @@
     <title>阳光提高班</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
-    <link href="js/libs/videojs/video-js.css" rel="stylesheet">
-    <script src="js/libs/videojs/video.js"></script>
+    <!--<link href="js/libs/videojs/video-js.css" rel="stylesheet">-->
+    <!--<script src="js/libs/videojs/video.js"></script>-->
 
     <script src="js/libs/jquery/jquery-1.9.1.js"></script>
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -14,6 +14,9 @@
     <link href="css/app.css" rel="stylesheet">
     <script src="js/libs/underscore/underscore.js"></script>
     <script src="js/libs/backbone/backbone.js"></script>
+    <script src="js/libs/tv4/tv4.min.js"></script>
+
+    <script src="js/sampledata.js"></script>
 
     <script src="js/utils.js"></script>
     <script src="js/views.js"></script>
@@ -35,12 +38,6 @@
 <div class="container" id="content_container">
     <div id="content">loading content</div>
 </div>
-
-<!--<video id="my_video_1" class="video-js vjs-default-skin" controls-->
-<!--preload="auto" width="640" height="264"-->
-<!--data-setup="{}">-->
-<!--<source src="file://sdcard/Movies/video.mp4" type='video/mp4'>-->
-<!--</video>-->
 
 <div class="navbar navbar-inverse navbar-fixed-bottom">
     <div class="navbar-inner">
@@ -176,6 +173,68 @@
 
 </script>
 
+
+<script type="text/template" id="tc_problem_multichoice">
+    <div class="span10">
+        <h3><%=target.get('id')%>
+            <% if(target.get('userdata')==true){%>(completed)<%}%>
+        </h3>
+
+        <p>
+            <% userdata = target.get('userdata') %>
+            userdata: <%=JSON.stringify(userdata) %>
+        </p>
+
+        <p>
+            correct answers: <%=target.correct_answers %>
+        </p>
+
+        <p>
+            body: <%=target.get('body')%>
+        </p>
+
+        <p>
+            <%
+            for(var i =0 ; i < target.get("choices").length; i++) {
+            var choice = target.get("choices")[i]
+            %>
+
+        <div class="palette palette-clouds">
+            <label class="checkbox">
+                <input class="answer"
+                       id="<%=choice.id%>"
+                       answer="<%= choice.answer%>"
+                       type="checkbox"
+                       name="optionsRadios">
+                <%= target.get('choices')[i].display_text %>
+            </label>
+        </div>
+        <% } %>
+        </p>
+
+        <div class="">
+            <div id="grading_result" class="pull-left">
+                <% if(userdata.correct==true) { %>
+                Right:)
+                <% } else if (userdata.correct==false) { %>
+                WRONG!!!
+                <% } %>
+            </div>
+            <div class="pull-right">
+                <% if(userdata.completed == true) { %>
+                <a class="btn btn-large"
+                   onclick="nextMaterial('problem','<%=target.get('id')%>')">继续</a>
+                <% }else{ %>
+                <a id="submit_answer" class="btn btn-large  btn-primary"
+                   onclick="grading('<%=target.get('id')%>')">提交答案</a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+</script>
+
+
 <script type="text/template" id="tc_problem_singlefilling">
     <p><%=target.get("body")%></p>
     <%=JSON.stringify(target)%>
@@ -200,8 +259,18 @@
     <a class="btn btn-large" href="#section/<%=target.get('section_id')%>">继续</a>
 
 </script>
-<script type="text/template" id="tc_problem_multichoice"></script>
-<script type="text/template" id="tc_video"></script>
+<script type="text/template" id="tc_video">
+    video
+    <p><%=JSON.stringify(target)%></p>
+
+    <video id="my_video_1" class="video-js vjs-default-skin" controls
+           preload="auto" width="640" height="264" poster="my_video_poster.png"
+           data-setup="{}">
+        <source src="file:///sdcard/Movies/oceans-clip.mp4<" type='video/mp4'>
+    </video>
+
+    <p>/sdcard/Movies/oceans-clip.mp4</p>
+</script>
 
 <script type="text/template" id="tf_lesson"></script>
 <script type="text/template" id="tf_subject"></script>

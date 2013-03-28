@@ -9,6 +9,8 @@ jQuery(function () {
 
     USER_DATA = new Object()
 
+    MATERIAL_CACHE = new Object()
+
     MATERIAL_TYPES = {
         "subjects": function (json) {
             return new Subjects(json.subjects)
@@ -48,7 +50,8 @@ jQuery(function () {
         requestMaterial: function (type, id) {
             var req = Sun.createrequest("material", "get", type, id, undefined, Sun.getuserid())
             var resp = android.requestData(JSON.stringify(req))
-            return Sun.createMaterial(JSON.parse(resp), type)
+            var material = Sun.createMaterial(JSON.parse(resp), type)
+            return material
         },
         createMaterial: function (json, type) {
             var result = MATERIAL_TYPES[type](json)
@@ -60,17 +63,32 @@ jQuery(function () {
                 options = {}
             }
 
+            // Remove this blog to disable cache
+//            if (options["id"] != undefined) {
+//                var id = options["id"]
+//                var cached = MATERIAL_CACHE[id]
+//                if (cached != undefined) {
+//                    console.log("[CACHED]id," + id)
+//                    if (callback != undefined) {
+//                        eval(callback)(cached, options)
+//                    }
+//                }
+//            }
+
             options["target"] = type
             if (typeof android == "undefined") {
                 // web dev mode, request data from sundata server
                 console.log("[WEB]try to fetch a material," + type + "," + JSON.stringify(options))
 
-                mockMaterial = "http://42.121.65.247:9000/api/material"
+//                mockMaterial = "http://42.121.65.247:9000/api/material"
+                mockMaterial = "http://127.0.0.1:9000/api/material"
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
                     function (data) {
                         console.log("data:" + JSON.stringify(data))
                         result = Sun.createMaterial(data, type)
+                        // Remove this blog to disable cache
+//                        MATERIAL_CACHE[id] = result
                         if (callback != undefined) {
                             eval(callback)(result, options)
                         }
@@ -155,11 +173,12 @@ jQuery(function () {
         setcomplete: function (type, id) {
             userdata = Sun.getuserdata(type, id)
             userdata['completed'] = true
-            Sun.setuserdata['']
+            Sun.setuserdata(type, id, userdata)
         },
 
-        iscomplete: function () {
-
+        iscomplete: function (type, id) {
+            userdata = Sun.getuserdata(type, id)
+            return userdata['completed'] == true;
         }
 
     }
@@ -168,11 +187,18 @@ jQuery(function () {
         backpage: function () {
             url = window.location.href
             // TODO change it to a "REAL" index judgement
-            console.log("back pressed, current url," + url)
-            if (url.indexOf("subject") >= 0) {
+            if (url.lastIndexOf("#") < 0) {
+                // not in route, like index.html
+                console.log("not in route now, maybe there is no data right now")
                 android.showExitDialog()
             } else {
-                window.history.back()
+                console.log("back pressed, current url," + url)
+                if (url.indexOf("subject") >= 0) {
+                    console.log("ready to exit")
+                    android.showExitDialog()
+                } else {
+                    window.history.back()
+                }
             }
         },
 

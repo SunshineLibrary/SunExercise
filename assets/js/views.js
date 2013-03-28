@@ -105,6 +105,14 @@ jQuery(function () {
         }
     })
 
+    MultiChoiceProblemView = Backbone.View.extend({
+        template: Templates.Content.problem_mc,
+        render: function () {
+            this.el = this.template({target: this.model})
+            return this
+        }
+    })
+
     SingleChoiceProblemFooterView = Backbone.View.extend({
         template: Templates.Footer.problem_sc,
         render: function () {
@@ -128,5 +136,17 @@ jQuery(function () {
             return this
         }
     })
+
+    /**
+     * Activity
+     */
+    VideoView = Backbone.View.extend({
+        template: Templates.Content.video,
+        render: function () {
+            this.el = this.template({target: this.model})
+            return this
+        }
+    })
+
 
 })
