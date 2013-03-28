@@ -142,7 +142,14 @@ jQuery(function () {
                     var user_data = Sun.getuserdata(problem.get("id"))
                     var answer_btn = $("#submit_answer")
                     var grading_result = $("#grading_result")
-                    var correct_answers = []
+                    // Add the correct result object
+                    var correct_result = $("#correct_result")
+                    // var correct_answers = []
+
+                    // maximum: 6 for a single-choice problem
+                    var choice_mark = ['A','B','C','D','E','F']
+                    var i=0 // iterator
+                    var correct_answer = 'undefined'
 
                     _.each(problem.get('choices'), function (choice) {
                         var choiceId = "#" + choice['id']
@@ -151,6 +158,13 @@ jQuery(function () {
                             + answer.attr("id") + ","
                             + answer[0].checked + ","
                             + choice['answer'])
+                        // detect if this option is correct
+                        if (choice['answer'] == 'yes') {
+                          correct_answer = choice_mark[i]
+                        }
+
+                        i++ // iterate
+
                         if (answer[0].checked == true && choice['answer'] == "yes") {
                             console.log(choiceId + " right")
                         } else if (answer[0].checked != true && choice['answer'] == "no") {
@@ -165,7 +179,8 @@ jQuery(function () {
                     if (completeOk) {
                         grading_result.html("做对啦")
                     } else {
-                        grading_result.html("做错啦")
+                        correct_result.html("正确答案: " + correct_answer)
+                        grading_result.html("回答错误")
                     }
 
                     // After set user data, set button heading to next problem

@@ -20,11 +20,11 @@ body {
   width: 904px;
 }
 .single-choice p {
-  font-size: 18sp;
+  font-size: 18px;
   color: #555;
 }
 .question {
-  line-height: 20sp;
+  line-height: 20px;
   margin-bottom: 20px;
 }
 .quest-type {
@@ -45,4 +45,27 @@ body {
 }
 .radio input[type="radio"].answer {
   margin: 4px 16px;
+}
+
+/* result */
+.result {
+  overflow: hidden;
+  margin-top: 30px;
+  font-size: 24px;
+}
+#correct_result {
+  color: #999;
+  margin-top: 10px;
+}
+#grading_result {
+  margin: 10px 32px 0 0;
+  /*font-size: 24px;*/
+  line-height: 24px;
+  color: #dd6622;
+}
+
+#submit_answer {
+  background: #77BB55;
+  width: 110px;
+  padding: 13px 19px;
 }
