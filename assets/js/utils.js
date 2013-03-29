@@ -23,22 +23,28 @@ jQuery(function () {
     StageHelper = {
         init: function() {
             this.start_lock = false
+            this.is_first = true
+        },
+
+        is_just_unlock: function(stage) {
+            return (parseInt(stage.user_percentage) < 100);
         },
 
         get_image_name: function(stage) {
+            this.is_first = false
             var img_name = parseInt(stage.type) + 1 + ""
-            if (this.start_lock == true) 
+            if (this.start_lock == true)
             {
                 img_name = "00" + img_name
-            } 
-            else 
-            {            
-                if (parseInt(stage.user_percentage) < 100) 
+            }
+            else
+            {
+                if (this.is_just_unlock(stage))
                 {
-                    this.start_lock = true 
-                    img_name = "0" + img_name                     
-                } 
-            } 
+                    this.start_lock = true
+                    img_name = "0" + img_name
+                }
+            }
             return img_name
         }
     }

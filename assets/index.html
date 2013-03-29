@@ -101,18 +101,26 @@
     <% }) %>
 </script>
 
-            <!-- <a class="btn btn-primary btn-large btn-block" href="#stage/<%=stage.id%>">进入</a> -->
 <!-- Stages -->
 <script type="text/template" id="tc_lesson">
     <% StageHelper.init() %>
-    <% _.each(target.get("stages"),function(stage){ %>
-    <div class="span3">
-        <%var img_name = StageHelper.get_image_name(stage)%>        
-        <div class="stage_circle_0">
-            <img src="./img/<%=img_name%>.png" alt="background image of stages">            
-        </div>
+    <div class="circle_wrap">
+        <% _.each(target.get("stages"),function(stage){ %>
+            <% if (StageHelper.is_first == false) {%>
+                <img src="./img/line.png" alt="line" class="line"/>
+            <% } %>
+            <%var img_name = StageHelper.get_image_name(stage)%>
+            <%var choose_circle = img_name.split('0').length - 1%>
+            <div class="stage_circle circle_<%=choose_circle%>">
+                <% if (choose_circle != 1) {%>
+                    <img src="./img/<%=img_name%>.png" alt="circle background">
+                <% } else {%>
+                    <a href="#stage/<%=stage.id%>"><img src="./img/<%=img_name%>.png" alt="circle background"></a>
+                <% } %>
+                <p><%=parseInt(stage.seq)+1%></p>
+            </div>
+        <% }) %>
     </div>
-    <% }) %>
 </script>
 
 <script type="text/template" id="tc_problem_singlechoice">
