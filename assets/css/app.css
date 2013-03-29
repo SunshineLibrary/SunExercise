@@ -33,6 +33,9 @@ body {
 .palette {
   padding: 16px 0;
   margin-bottom: 15px;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
 }
 .palette .radio {
   padding-left: 0;
@@ -42,6 +45,9 @@ body {
 }
 .odd {
   background-color: #E0E0E0;
+  box-shadow: inset 0 2px 2px rgba(0,0,0, 0.1);
+  -moz-box-shadow: inset 0 2px 2px rgba(0,0,0, 0.1);
+  -webkit-box-shadow: inset 0 2px 2px rgba(0,0,0, 0.1);
 }
 .radio input[type="radio"].answer {
   margin: 4px 16px;

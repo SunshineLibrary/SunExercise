@@ -177,10 +177,10 @@ jQuery(function () {
 
                     console.log("grading result:" + completeOk)
                     if (completeOk) {
-                        grading_result.html("做对啦")
+                        grading_result.html("做对啦 \u2713")
                     } else {
                         correct_result.html("正确答案: " + correct_answer)
-                        grading_result.html("回答错误")
+                        grading_result.html("回答错误 \u2717")
                     }
 
                     // After set user data, set button heading to next problem
