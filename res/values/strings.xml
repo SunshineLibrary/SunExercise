@@ -13,4 +13,6 @@
     <string name="notiTickerText">"阳光书屋"</string>
     <string name="notiTitle">"阳光补习"</string>
     <string name="notiSubTitle">"该复习了"</string>
+
+    <string name="txt_loading_video">加载视频中...</string>
 </resources>

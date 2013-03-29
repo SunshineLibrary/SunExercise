@@ -1,119 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+             android:layout_width="fill_parent"
+             android:layout_height="fill_parent"
+             android:orientation="vertical">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" >
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/web"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
         <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="欢迎来到阳光书屋"
-            android:textColor="#00ff00"
-            android:textSize="30sp" />
-
-<Button
-    android:id="@+id/TestBtn"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Open Video Activity" 
-    android:onClick="openVideoActivity"
-    />
-
-        <WebView
-                android:id="@+id/lesson"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"/>
-
-        <WebView
-                android:id="@+id/stage"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:visibility="gone"/>
-
-        <WebView
-                android:id="@+id/activity"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:visibility="gone"/>
-
-        <WebView
-                android:id="@+id/quiz"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:visibility="gone"/>
-
-        <WebView
-                android:id="@+id/summery"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:visibility="gone"/>
-
-        <WebView
-                android:id="@+id/exercise"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:visibility="gone"/>
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/play"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="vertical" 
-        android:visibility="gone"
-        >
-
-        <VideoView
-            android:id="@+id/vv"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_centerInParent="true" />
-
-        <LinearLayout
-            android:id="@+id/player_loading"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:orientation="vertical" >
-
-            <TextView
-                android:id="@+id/loading_video_name"
-                android:layout_width="200dip"
-                android:layout_height="wrap_content"
-                android:ellipsize="start"
-                android:gravity="center"
-                android:singleLine="true"
-                android:text="阳光播放器加载中..."
-                android:textColor="#ffffff"
-                android:textSize="18.6sp" />
-
-            <LinearLayout
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10.5dip"
-                android:gravity="center"
-                android:orientation="horizontal" >
+                android:layout_gravity="center_horizontal"
+                android:text="欢迎来到阳光书屋"
+                android:textColor="#00ff00"
+                android:textSize="30sp"/>
 
-                <ProgressBar
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+        <Button
+                android:id="@+id/TestBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="测试视频"
+                android:onClick="testVideo"
+                />
 
-                <TextView
-                    android:id="@+id/loading_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="7.0dip"
-                    android:textSize="12.6sp" />
-            </LinearLayout>
-        </LinearLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
 </FrameLayout>
