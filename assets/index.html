@@ -37,6 +37,7 @@
 </div>
 <div class="container" id="content_container">
     <div id="content">loading content</div>
+
 </div>
 
 <div class="navbar navbar-inverse navbar-fixed-bottom">
@@ -100,14 +101,15 @@
     <% }) %>
 </script>
 
+            <!-- <a class="btn btn-primary btn-large btn-block" href="#stage/<%=stage.id%>">进入</a> -->
+<!-- Stages -->
 <script type="text/template" id="tc_lesson">
+    <% StageHelper.init() %>
     <% _.each(target.get("stages"),function(stage){ %>
     <div class="span3">
+        <%var img_name = StageHelper.get_image_name(stage)%>        
         <div class="stage_circle_0">
-            <h3 class="tile-title"><%=stage.id%></h3>
-
-            <p class="wrap-text"><%=JSON.stringify(stage)%></p>
-            <a class="btn btn-primary btn-large btn-block" href="#stage/<%=stage.id%>">进入</a>
+            <img src="./img/<%=img_name%>.png" alt="background image of stages">            
         </div>
     </div>
     <% }) %>

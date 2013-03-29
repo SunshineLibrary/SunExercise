@@ -19,4 +19,27 @@ jQuery(function () {
             })
         })
     }
+
+    StageHelper = {
+        init: function() {
+            this.start_lock = false
+        },
+
+        get_image_name: function(stage) {
+            var img_name = parseInt(stage.type) + 1 + ""
+            if (this.start_lock == true) 
+            {
+                img_name = "00" + img_name
+            } 
+            else 
+            {            
+                if (parseInt(stage.user_percentage) < 100) 
+                {
+                    this.start_lock = true 
+                    img_name = "0" + img_name                     
+                } 
+            } 
+            return img_name
+        }
+    }
 })
