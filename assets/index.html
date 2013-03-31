@@ -37,6 +37,7 @@
 </div>
 <div class="container" id="content_container">
     <div id="content">loading content</div>
+
 </div>
 
 <div class="navbar navbar-inverse navbar-fixed-bottom">
@@ -100,17 +101,26 @@
     <% }) %>
 </script>
 
+<!-- Stages -->
 <script type="text/template" id="tc_lesson">
-    <% _.each(target.get("stages"),function(stage){ %>
-    <div class="span3">
-        <div class="stage_circle_0">
-            <h3 class="tile-title"><%=stage.id%></h3>
-
-            <p class="wrap-text"><%=JSON.stringify(stage)%></p>
-            <a class="btn btn-primary btn-large btn-block" href="#stage/<%=stage.id%>">进入</a>
-        </div>
+    <% StageHelper.init() %>
+    <div class="circle_wrap">
+        <% _.each(target.get("stages"),function(stage){ %>
+            <% if (StageHelper.is_first == false) {%>
+                <img src="./img/line.png" alt="line" class="line"/>
+            <% } %>
+            <%var img_name = StageHelper.get_image_name(stage)%>
+            <%var choose_circle = img_name.split('0').length - 1%>
+            <div class="stage_circle circle_<%=choose_circle%>">
+                <% if (choose_circle != 1) {%>
+                    <img src="./img/<%=img_name%>.png" alt="circle background">
+                <% } else {%>
+                    <a href="#stage/<%=stage.id%>"><img src="./img/<%=img_name%>.png" alt="circle background"></a>
+                <% } %>
+                <p><%=parseInt(stage.seq)+1%></p>
+            </div>
+        <% }) %>
     </div>
-    <% }) %>
 </script>
 
 <script type="text/template" id="tc_problem_singlechoice">
