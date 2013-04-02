@@ -30,6 +30,11 @@ jQuery(function () {
                 })
             })
             app_router.on('route:subject', function (id) {
+                for (var i = 0; i < 10; i++) {
+                    Log.i("data:" + JSON.stringify(Sun.getuserdata('stage', id)))
+                    Sun.setcomplete('stage', id)
+                }
+
                 Log.i("subject " + id)
                 Sun.fetch("subjects", null, function (subjects) {
                     Sun.fetch("subject", {id: id}, function (subject) {

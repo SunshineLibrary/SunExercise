@@ -64,7 +64,7 @@ jQuery(function () {
             }
 
             // Remove this blog to disable cache
-//            if (options["id"] != undefined) {
+//            if (options["i d"] != undefined) {
 //                var id = options["id"]
 //                var cached = MATERIAL_CACHE[id]
 //                if (cached != undefined) {
@@ -117,7 +117,7 @@ jQuery(function () {
                 id,
                 JSON.stringify(options),
                 Sun.getuserid())
-            if (typeof android1 == "undefined") {
+            if (typeof android == "undefined") {
                 // web dev mode
                 console.log("[WEB]set user data")
                 USER_DATA[id] = JSON.stringify(options)
@@ -145,7 +145,7 @@ jQuery(function () {
                 id,
                 JSON.stringify(userdata),
                 Sun.getuserid())
-            if (typeof android1 == "undefined") {
+            if (typeof android == "undefined") {
                 // web dev mode
                 console.log("[WEB]set user data")
                 USER_DATA[id] = JSON.stringify(userdata)
@@ -162,9 +162,9 @@ jQuery(function () {
 
         getuserdata: function (type, id) {
             // "get" method means get user data
-            req = Sun.createrequest("user_data", "get", type, id, Sun.getuserid())
+            req = Sun.createrequest("user_data", "get", type, id, undefined, Sun.getuserid())
             var userdata = undefined
-            if (typeof android1 == "undefined") {
+            if (typeof android == "undefined") {
                 // web dev mode
                 console.log("[WEB]set user data")
                 userdata = USER_DATA[id]
