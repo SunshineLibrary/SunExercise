@@ -10,6 +10,7 @@
     <script src="js/libs/jquery/jquery-1.9.1.js"></script>
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
     <script src="js/libs/bootstrap/bootstrap.min.js"></script>
+    <script src="js/libs/logger/Logger.js"></script>
 
     <link href="css/app.css" rel="stylesheet">
     <script src="js/libs/underscore/underscore.js"></script>
@@ -40,7 +41,7 @@
 
 </div>
 
-<div class="navbar navbar-inverse navbar-fixed-bottom">
+<div class="navbar navbar-inverse navbar-fixed-bottom" style="display: none">
     <div class="navbar-inner">
         <div class="container">
             <div id="footer" class="pull-left" style="height:60px;margisn-top:15px">loading footer</div>
@@ -103,22 +104,42 @@
 
 <!-- Stages -->
 <script type="text/template" id="tc_lesson">
-    <% StageHelper.init() %>
     <div class="circle_wrap">
-        <% _.each(target.get("stages"),function(stage){ %>
-            <% if (StageHelper.is_first == false) {%>
-                <img src="./img/line.png" alt="line" class="line"/>
+        <%
+        var meetUnlocked = false
+        $.each(target.get("stages").models,function(index,stage){
+        var circleClassNum = 0
+        var type = parseInt(stage.get('type'))+1
+        var imgPath = ""
+        var status = StageHelper.get_status(stage)
+        if(!meetUnlocked){
+        if(status!='EOF'){
+        circleClassNum = 1
+        imgPath = '0'+type
+        meetUnlocked = true
+        }else{
+        circleClassNum = 0
+        imgPath = type
+        }
+        }else{
+        circleClassNum = 2
+        imgPath = '00'+type
+        }
+        imgPath= './img/'+imgPath+'.png'
+        Log.i('stage,'+type)
+        %>
+        <% if (index !=0) {%>
+        <img src="./img/line.png" alt="line" class="line"/>
+        <% } %>
+        <%var choose_circle = 0%>
+        <div class="stage_circle circle_<%=circleClassNum%>">
+            <% if (circleClassNum != 1) {%>
+            <a onclick="viewStage('<%=stage.get('id')%>')"><img src="<%=imgPath%>" alt="circle background"></a>
+            <% } else {%>
+            <a href="#stage/<%=stage.id%>"><img src="<%=imgPath%>" alt="circle background"></a>
             <% } %>
-            <%var img_name = StageHelper.get_image_name(stage)%>
-            <%var choose_circle = img_name.split('0').length - 1%>
-            <div class="stage_circle circle_<%=choose_circle%>">
-                <% if (choose_circle != 1) {%>
-                    <img src="./img/<%=img_name%>.png" alt="circle background">
-                <% } else {%>
-                    <a href="#stage/<%=stage.id%>"><img src="./img/<%=img_name%>.png" alt="circle background"></a>
-                <% } %>
-                <p><%=parseInt(stage.seq)+1%></p>
-            </div>
+            <p><%=parseInt(stage.get('seq'))+1%></p>
+        </div>
         <% }) %>
     </div>
 </script>
@@ -126,7 +147,6 @@
 <script type="text/template" id="tc_problem_singlechoice">
     <div class="span10">
         <h3><%=target.get('id')%>
-            <% if(target.get('userdata')==true){%>(completed)<%}%>
         </h3>
 
         <p>
@@ -169,13 +189,19 @@
                 WRONG!!!
                 <% } %>
             </div>
+
             <div class="pull-right">
-                <% if(userdata.completed == true) { %>
-                <a class="btn btn-large"
-                   onclick="nextMaterial('problem','<%=target.get('id')%>')">继续</a>
+                <% if(currentMode != MODE.VIEW_ONLY){
+                if(userdata.current == 'EOF') { %>
+                <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
                 <% }else{ %>
                 <a id="submit_answer" class="btn btn-large  btn-primary"
                    onclick="grading('<%=target.get('id')%>')">提交答案</a>
+                <% } %>
+                <% } else { %>
+                <div>
+                    <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+                </div>
                 <% } %>
             </div>
         </div>
@@ -231,12 +257,18 @@
                 <% } %>
             </div>
             <div class="pull-right">
-                <% if(userdata.completed == true) { %>
-                <a class="btn btn-large"
-                   onclick="nextMaterial('problem','<%=target.get('id')%>')">继续</a>
+                <%=currentMode%>
+                <% if(currentMode != MODE.VIEW_ONLY) { %>
+                <% if(userdata.current == 'EOF') { %>
+                <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
                 <% }else{ %>
                 <a id="submit_answer" class="btn btn-large  btn-primary"
                    onclick="grading('<%=target.get('id')%>')">提交答案</a>
+                <% } %>
+                <% }else{ %>
+                <div>
+                    <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+                </div>
                 <% } %>
             </div>
         </div>
@@ -247,14 +279,21 @@
 
 <script type="text/template" id="tc_problem_singlefilling">
     <p><%=target.get("body")%></p>
-    <%=JSON.stringify(target)%>
     <% userdata = target.get('userdata') %>
-    <% if(userdata.completed == true) { %>
-    <a class="btn btn-large"
-       onclick="nextMaterial('problem','<%=target.get('id')%>')">继续</a>
+
+    <p>userdata: <%=JSON.stringify(userdata)%></p>
+
+    <p><%=JSON.stringify(target)%></p>
+    <% if(currentMode != MODE.VIEW_ONLY) { %>
+
+    <% if(userdata.current == 'EOF') { %>
+    <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
     <% }else{ %>
     <a id="submit_answer" class="btn btn-large  btn-primary"
        onclick="grading('<%=target.get('id')%>')">提交答案</a>
+    <% } %>
+    <% } else { %>
+    <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
     <% } %>
 </script>
 
@@ -265,21 +304,30 @@
 <script type="text/template" id="tc_summary">
     summary
     <%=JSON.stringify(target)%>
-    <% %>
+    <% if(target.get('next_activity')!=undefined) {%>
+    <a class="btn btn-large" href="#activity/<%=target.get('next_activity')%>">跳转继续</a>
+    <% }else if(target.get('next_lesson')!=undefined) { %>
+    <a class="btn btn-large" href="#lesson/<%=target.get('next_lesson')%>">返回课程</a>
+    <% }else{ %>
     <a class="btn btn-large" href="#section/<%=target.get('section_id')%>">继续</a>
-
+    <% } %>
 </script>
 <script type="text/template" id="tc_video">
     video
     <p><%=JSON.stringify(target)%></p>
+    <%
+    id = target.get("id")
+    %>
 
-    <video id="my_video_1" class="video-js vjs-default-skin" controls
-           preload="auto" width="640" height="264" poster="my_video_poster.png"
-           data-setup="{}">
-        <source src="file:///sdcard/Movies/oceans-clip.mp4<" type='video/mp4'>
-    </video>
+    <div>
+        <video id="my_video_1" class="video-js vjs-default-skin" controls
+               preload="auto" width="640" height="264" poster="my_video_poster.png"
+               data-setup="{}">
+            <source src="file:///sdcard/Movies/oceans-clip.mp4<" type='video/mp4'>
+        </video>
+    </div>
+    <div class="btn btn-primary" onclick="completeVideo('<%=id%>')">看完啦</div>
 
-    <p>/sdcard/Movies/oceans-clip.mp4</p>
 </script>
 
 <script type="text/template" id="tf_lesson"></script>

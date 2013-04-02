@@ -25,12 +25,12 @@ jQuery(function () {
             var app_router = new AppRouter
             app_router.on('route:subjects', function () {
                 Sun.fetch("subjects", null, function (subjects) {
-                    console.log("subjects," + JSON.stringify(subjects))
+                    Log.i("subjects," + JSON.stringify(subjects))
                     app_router.navigate("subject/" + subjects.models[0].id, {trigger: true, replace: true})
                 })
             })
             app_router.on('route:subject', function (id) {
-                console.log("subject " + id)
+                Log.i("subject " + id)
                 Sun.fetch("subjects", null, function (subjects) {
                     Sun.fetch("subject", {id: id}, function (subject) {
                         setHeader(
@@ -48,7 +48,7 @@ jQuery(function () {
                 })
             })
             app_router.on('route:lesson', function (id) {
-                console.log("lesson " + id)
+                Log.i("lesson " + id)
                 Sun.fetch("lesson", {id: id}, function (lesson) {
                     setHeader(
                         new LessonHeaderView({
@@ -63,7 +63,7 @@ jQuery(function () {
                 })
             })
             app_router.on('route:stage', function (id) {
-                console.log("stage " + id)
+                Log.i("stage " + id)
                 Sun.fetch("stage", {id: id}, function (stage) {
                     var userdata = Sun.getuserdata("stage", id)
                     var sections = stage.get("sections").models
@@ -144,7 +144,7 @@ jQuery(function () {
                 })
             })
             app_router.on('route:activity', function (id) {
-                console.log("activity " + id)
+                Log.i("activity " + id)
                 Sun.fetch("activity", {id: id}, function (activity) {
                         var userdata = Sun.getuserdata("activity", id)
                         if (currentMode == MODE.NORMAL) {
@@ -152,7 +152,7 @@ jQuery(function () {
                             if (activity.get("type") == 4 || activity.get("type") == 7) {
                                 var completed = true
                                 for (var i = 0; i < activity.get("problems").length; i++) {
-                                    console.log("problems:" + JSON.stringify(activity.get("problems")))
+                                    Log.i("problems:" + JSON.stringify(activity.get("problems")))
                                     var problem = activity.get("problems").models[i]
                                     if (!problem.isComplete()) {
                                         app_router.navigate("problem/" + problem.id, {trigger: true, replace: true})
@@ -165,12 +165,12 @@ jQuery(function () {
                                     app_router.navigate("summary/" + problem.get("activity_id"), {trigger: true, replace: true})
                                 }
                             } else if (activity.get("type") == 2) {
-                                console.log("video activity type 2")
+                                Log.i("video activity type 2")
                                 setBody(new VideoView({model: activity}))
                                 reloadPage()
                             } else {
                                 // TODO other acitivities, like video
-                                console.log("unsupported activity," + JSON.stringify(activity))
+                                Log.i("unsupported activity," + JSON.stringify(activity))
                             }
                         } else {
                             // View only mode
@@ -189,7 +189,7 @@ jQuery(function () {
                                     app_router.navigate("section/" + activity.get('section_id'), {trigger: true, replace: true})
                                 }
                             } else if (activity.get("type") == 2) {
-                                console.log("video activity type 2")
+                                Log.i("video activity type 2")
                                 setBody(new VideoView({model: activity}))
                                 reloadPage()
                             }
@@ -202,14 +202,14 @@ jQuery(function () {
             })
             app_router.on('route:summary', function (aid) {
                 Sun.fetch("activity", {id: aid}, function (activity) {
-                    console.log("summary for activity," + JSON.stringify(activity))
+                    Log.i("summary for activity," + JSON.stringify(activity))
 
                     var correctCount = 0
                     $.each(activity.get("problems").models, function (number, problem) {
                         if (problem.get('userdata')['correct'] == true) {
                             correctCount++
                         }
-                        console.log("p," + number + "," + JSON.stringify(problem.get("userdata")))
+                        Log.i("p," + number + "," + JSON.stringify(problem.get("userdata")))
                     })
 
                     var jump = sample_data.jump_condition
@@ -241,7 +241,7 @@ jQuery(function () {
 
             function loadProblem(id) {
                 Sun.fetch("problem", {id: id}, function (problem) {
-                    console.log("problem," + problem.get("type"))
+                    Log.i("problem," + problem.get("type"))
 
                     if (currentMode == MODE.VIEW_ONLY) {
                         Sun.setviewed('problem', id)
@@ -255,7 +255,7 @@ jQuery(function () {
                     } else if (problem.get("type") == "2") {
                         setBody(new SingleFillingProblemView({model: problem}))
                     } else {
-                        console.log("unsupported problem," + id + "," + problem.get("type"))
+                        Log.i("unsupported problem," + id + "," + problem.get("type"))
                     }
                     reloadPage()
                 })
@@ -283,7 +283,7 @@ jQuery(function () {
                         Sun.setviewed('activity', id)
                         app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
                     } else {
-                        console.log("complete video," + id)
+                        Log.i("complete video," + id)
                         activity.complete(null, function () {
                             app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
                         })
@@ -294,7 +294,7 @@ jQuery(function () {
             grading = function (problemId) {
                 Sun.fetch("problem", {id: problemId}, function (problem) {
                     if (problem.get("type") == 0 || problem.get("type") == 1) {
-                        console.log("grading problem," + problem.get("id"))
+                        Log.i("grading problem," + problem.get("id"))
                         var completeOk = true
                         var grading_result = $("#grading_result")
 
@@ -302,21 +302,21 @@ jQuery(function () {
                             choice = problem.get('choices')[i]
                             var choiceId = "#" + choice['id']
                             var answer = $(choiceId)
-                            console.log("problemchoice," + choiceId + ","
+                            Log.i("problemchoice," + choiceId + ","
                                 + answer.attr("id") + ","
                                 + answer[0].checked + ","
                                 + choice['answer'])
                             if (choice['answer'] == "yes") {
                                 if (answer[0].checked == true) {
-                                    console.log(choiceId + " right")
+                                    Log.i(choiceId + " right")
                                 } else {
-                                    console.log(choiceId + " wrong")
+                                    Log.i(choiceId + " wrong")
                                     completeOk = false
                                 }
                             } else if (answer[0].checked != true && choice['answer'] == "no") {
-                                console.log(choiceId + " right")
+                                Log.i(choiceId + " right")
                             } else {
-                                console.log(choiceId + " wrong")
+                                Log.i(choiceId + " wrong")
                                 completeOk = false
                             }
                         }
@@ -334,7 +334,7 @@ jQuery(function () {
                         })
                     } else {
                         // TODO add different problem grading code
-                        console.log("unsupported problem grading")
+                        Log.i("unsupported problem grading")
                     }
                 })
             }
@@ -343,8 +343,6 @@ jQuery(function () {
                 currentMode = MODE.VIEW_ONLY
                 app_router.navigate("stage/" + id, {trigger: true, replace: true})
             }
-
-            Logger.show()
         }
 
         currentMode = MODE.NORMAL

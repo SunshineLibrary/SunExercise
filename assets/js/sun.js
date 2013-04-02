@@ -82,6 +82,7 @@ jQuery(function () {
 
                 mockMaterial = "http://42.121.65.247:9000/api/material"
                 // mockMaterial = "http://127.0.0.1:9000/api/material"
+                $.ajaxSetup({ "async": false });
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
                     function (data) {
@@ -94,6 +95,7 @@ jQuery(function () {
                         }
                     }
                 )
+                $.ajaxSetup({ "async": true});
             } else {
                 // android dev mode
                 console.log("[ANDROID]try to fetch a material," + type + "," + JSON.stringify(options))
@@ -115,7 +117,7 @@ jQuery(function () {
                 id,
                 JSON.stringify(options),
                 Sun.getuserid())
-            if (typeof android == "undefined") {
+            if (typeof android1 == "undefined") {
                 // web dev mode
                 console.log("[WEB]set user data")
                 USER_DATA[id] = JSON.stringify(options)
@@ -131,11 +133,38 @@ jQuery(function () {
             }
         },
 
+        adduserdata: function (type, id, key, value) {
+            // "post" method means set user data
+            var userdata = Sun.getuserdata(type, id)
+            userdata[key] = value
+
+            var req = Sun.createrequest(
+                "user_data",
+                "post",
+                type,
+                id,
+                JSON.stringify(userdata),
+                Sun.getuserid())
+            if (typeof android1 == "undefined") {
+                // web dev mode
+                console.log("[WEB]set user data")
+                USER_DATA[id] = JSON.stringify(userdata)
+            } else {
+                // android dev mode
+                var reqText = JSON.stringify(req)
+                console.log("[ANDROID]set user data," + reqText)
+                android.requestUserData(reqText)
+            }
+            if (callback != undefined) {
+                eval(callback)(type, id)
+            }
+        },
+
         getuserdata: function (type, id) {
             // "get" method means get user data
             req = Sun.createrequest("user_data", "get", type, id, Sun.getuserid())
             var userdata = undefined
-            if (typeof android == "undefined") {
+            if (typeof android1 == "undefined") {
                 // web dev mode
                 console.log("[WEB]set user data")
                 userdata = USER_DATA[id]
@@ -165,20 +194,42 @@ jQuery(function () {
             alert("reset completed\r\n" + Object.keys(USER_DATA))
         },
 
-        adduserdata: function (type, id, data) {
+        setcomplete: function (type, id, options, callback) {
             userdata = Sun.getuserdata(type, id)
-
+            userdata['current'] = "EOF"
+            if (options != undefined) {
+                $.each(Object.keys(options), function (key, value) {
+                    userdata[value] = options[value]
+                })
+            }
+            Sun.setuserdata(type, id, userdata)
+            if (callback != undefined) {
+                eval(callback)(type, id, options)
+            }
         },
 
-        setcomplete: function (type, id) {
-            userdata = Sun.getuserdata(type, id)
-            userdata['completed'] = true
+        setviewed: function (type, id) {
+            var userdata = Sun.getuserdata(type, id)
+            userdata['current_viewed'] = 'EOF'
             Sun.setuserdata(type, id, userdata)
         },
 
+        setunviewed: function (type, id) {
+            console.log('setunviewed,' + type + ',' + id)
+            var userdata = Sun.getuserdata(type, id)
+            userdata['current_viewed'] = undefined
+            Sun.setuserdata(type, id, userdata)
+        },
+
+        isviewed: function (type, id) {
+            var userdata = Sun.getuserdata(type, id)
+            return userdata['current_viewed'] == 'EOF'
+        },
+
+
         iscomplete: function (type, id) {
             userdata = Sun.getuserdata(type, id)
-            return userdata['completed'] == true;
+            return userdata['current'] == "EOF"
         }
 
     }
@@ -242,6 +293,21 @@ jQuery(function () {
                 console.log("[ANDROID]download," + id)
                 android.download(id);
             }
+        }
+    }
+
+    Log = {
+        d: function (content) {
+            log("[DEBUG]" + content)
+        },
+        i: function (content) {
+            log("[INFO]" + content)
+        },
+        e: function (content) {
+            log("[ERROR]" + content)
+        },
+        w: function (content) {
+            log("[WARNING]" + content)
         }
     }
 
