@@ -47,20 +47,31 @@ public class HTML5WebView extends WebView {
 
         // Configure the webview
         WebSettings s = getSettings();
-        s.setBuiltInZoomControls(true);
+        s.setAllowFileAccess(true);
+        s.setAllowContentAccess(false);
+        s.setBuiltInZoomControls(false);
+        s.setDisplayZoomControls(false);
+        // enable Web Storage: localStorage, sessionStorage
+        s.setDomStorageEnabled(true);
+        s.setJavaScriptEnabled(true);
         s.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-        s.setUseWideViewPort(true);
         s.setLoadWithOverviewMode(true);
         s.setSavePassword(true);
         s.setSaveFormData(true);
-        s.setJavaScriptEnabled(true);
+        s.setSupportZoom(false);
+        s.setUseWideViewPort(false);
 
         // enable navigator.geolocation
 //        s.setGeolocationEnabled(true);
 //        s.setGeolocationDatabasePath("/data/data/org.itri.html5webview/databases/");
 
-        // enable Web Storage: localStorage, sessionStorage
-        s.setDomStorageEnabled(true);
+        setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                return true;
+            }
+        });
+        setLongClickable(false);
 
         mContentView.addView(this);
     }
