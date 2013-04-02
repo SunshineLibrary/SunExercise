@@ -30,11 +30,6 @@ jQuery(function () {
                 })
             })
             app_router.on('route:subject', function (id) {
-                for (var i = 0; i < 10; i++) {
-                    Log.i("data:" + JSON.stringify(Sun.getuserdata('stage', id)))
-                    Sun.setcomplete('stage', id)
-                }
-
                 Log.i("subject " + id)
                 Sun.fetch("subjects", null, function (subjects) {
                     Sun.fetch("subject", {id: id}, function (subject) {
@@ -75,6 +70,14 @@ jQuery(function () {
 
                     // Check if stage completed
                     if (currentMode == MODE.NORMAL) {
+                        if (sections.length == 0) {
+                            Sun.setcomplete('stage', id)
+                            stage.complete(null, function () {
+                                Log.e("no sections in this stage")
+                                app_router.navigate("lesson/" + section.get("lesson_id"), {trigger: true, replace: true})
+                            })
+                        }
+
                         if (!Sun.iscomplete("stage", id)) {
                             var current = userdata['current']
                             if (current == undefined) {
