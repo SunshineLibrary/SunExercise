@@ -14,6 +14,16 @@
  */
 
 jQuery(function () {
+
+    MODE = {
+        NORMAL: 'NORMAL_MODE',
+        VIEW_ONLY: 'VIEW_MODE'
+    }
+
+    MATERIAL_STATE = {
+        COMPLETE: 'complete'
+    }
+
     Page = Backbone.Model.extend()
 
     DAYS_OF_WEEK = ["日", "一", "二", "三", "四", "五", "六"]
@@ -43,13 +53,16 @@ jQuery(function () {
      */
     Lesson = Backbone.Model.extend({
         initialize: function (options) {
-            var date = new Date()
-            date = new Date(Date.parse(options.time))
+            var date = new Date(Date.parse(options.time))
+            var stages = new Stages(options["stages"])
+            Log.i("stages of lesson," + JSON.stringify(stages))
             this.set({
+                parent_id: options['subject_id'],
                 day_week: "星期" + DAYS_OF_WEEK[date.getDay()],
                 day: date.getDate(),
                 month: date.getMonth() + 1,
-                year: date.getYear() + 1900
+                year: date.getYear() + 1900,
+                stages: stages
             })
         }
     })
@@ -63,9 +76,42 @@ jQuery(function () {
     Stage = Backbone.Model.extend({
         initialize: function (options) {
             this.set({
+                parent_id: options['lesson_id'],
                 sections: new Sections(options.sections),
                 userdata: Sun.getuserdata("stage", options.id)
             })
+        },
+        isComplete: function () {
+            var completed = true
+            for (var i = 0; i < this.get('sections').models.length; i++) {
+                var section = this.get('sections').models[i]
+                if (!Sun.iscomplete("section", section.get('id'))) {
+                    completed = false
+                    break
+                }
+            }
+            return completed
+        },
+        complete: function (options, callback) {
+            if (this.isComplete()) {
+                Sun.setcomplete('stage', this.get('id'))
+                if (callback != undefined) {
+                    eval(callback)(options)
+                }
+            } else {
+                for (var i = 0; i < this.get('sections').length; i++) {
+                    var section = this.get('sections').models[i]
+                    if (!Sun.iscomplete("section", section.get('id'))) {
+                        var userdata = Sun.getuserdata('stage', this.get('id'))
+                        userdata['current'] = section.get('id')
+                        Sun.setuserdata('stage', this.get('id'), userdata)
+                        if (callback != undefined) {
+                            eval(callback)(options)
+                        }
+                        break
+                    }
+                }
+            }
         }
     })
     Stages = Backbone.Collection.extend({model: Stage})
@@ -75,10 +121,46 @@ jQuery(function () {
      */
     Section = Backbone.Model.extend({
         initialize: function (options) {
-            this.set({activities: new Activities(options.activities)})
+            this.set({
+                parent_id: options['stage_id'],
+                activities: new Activities(options.activities)
+            })
         },
         isComplete: function () {
-            return isComplete(this)
+            var completed = true
+            for (var i = 0; i < this.get('activities').length; i++) {
+                var activity = this.get('activities').models[i]
+                if (!Sun.iscomplete("activity", activity.get('id'))) {
+                    completed = false
+                    break
+                }
+            }
+            return completed
+        },
+        complete: function (options, callback) {
+            if (this.isComplete()) {
+                Sun.setcomplete('section', this.get('id'))
+                Sun.fetch("stage", {id: this.get('parent_id')}, function (stage) {
+                    stage.complete(options, function () {
+                        if (callback != undefined) {
+                            eval(callback)(options)
+                        }
+                    })
+                })
+            } else {
+                for (var i = 0; i < this.get('activities').length; i++) {
+                    var activity = this.get('activities').models[i]
+                    if (!Sun.iscomplete("activity", activity.get('id'))) {
+                        var userdata = Sun.getuserdata('section', this.get('id'))
+                        userdata['current'] = activity.get('id')
+                        Sun.setuserdata('section', this.get('id'), userdata)
+                        if (callback != undefined) {
+                            eval(callback)(options)
+                        }
+                        break
+                    }
+                }
+            }
         }
     })
     Sections = Backbone.Collection.extend({model: Section})
@@ -89,11 +171,43 @@ jQuery(function () {
     Activity = Backbone.Model.extend({
         initialize: function (options) {
             if (options["problems"] != undefined) {
-                this.set({problems: new Problems(options.problems)})
+                this.set({
+                    parent_id: options['section_id'],
+                    problems: new Problems(options.problems)
+                })
             }
         },
         isComplete: function () {
-            return isComplete(this)
+            var completed = true
+            for (var i = 0; i < this.get('problems').length; i++) {
+                var problem = this.get('problems').models[i]
+                if (!Sun.iscomplete("problem", problem.get('id'))) {
+                    completed = false
+                    break
+                }
+            }
+            return completed
+        },
+        complete: function (options, callback) {
+            var type = this.get('type')
+            var completed = false
+            if (type == 4 || type == 7) {
+                // activity with problems
+                // If all problem has completed, complete this activity
+                if (this.isComplete()) {
+                    Sun.setcomplete('activity', this.get('id'))
+                    completed = true
+                }
+            } else if (type == 2) {
+                // video activity
+                Sun.setcomplete('activity', this.get('id'))
+                completed = true
+            }
+            if (completed) {
+                Sun.fetch('section', {id: this.get('parent_id')}, function (section) {
+                    section.complete(options, callback)
+                })
+            }
         }
     })
     Activities = Backbone.Collection.extend({model: Activity})
@@ -113,22 +227,41 @@ jQuery(function () {
                         correct_answers.push(ANSWERS[i])
                     }
                 }
-                this.correct_answers = correct_answers
+                this.set({
+                    parent_id: options['activity_id'],
+                    correct_answers: correct_answers
+                })
             }
         },
+        grading: function (options) {
+            var type = this.get('type')
+            Log.w("start grading," + type)
+            Log.w("grading not supported," + type)
+        },
         isComplete: function () {
-            return isComplete(this)
+            var userdata = Sun.getuserdata('problem', this.get('id'))
+            return userdata['current'] == 'EOF'
+        },
+        complete: function (options, callback) {
+            Sun.setcomplete('problem', this.get('id'), options)
+            Sun.fetch('activity', {id: this.get('parent_id')}, function (activity) {
+                activity.complete(options)
+            })
+            if (callback != undefined) {
+                eval(callback)()
+            }
+        },
+        changestate: function (state, options) {
+            if (state == MATERIAL_STATE.COMPLETE) {
+                this.complete()
+            }
         }
     })
+
     Problems = Backbone.Collection.extend({model: Problem})
 
-
-    function isComplete(target) {
-        var user_data = Sun.getuserdata("problem", target.get("id"))
-        var completed = user_data["completed"]
-        return completed == true;
-    }
-
     UserData = Backbone.Model.extend({})
+
+    Error = Backbone.Model.extend({})
 
 })

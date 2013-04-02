@@ -6885,7 +6885,7 @@ jQuery.extend({
 		}
 
 		//convert "normal" to computed value
-		if ( val === "normal" && name in cssNormalTransform ) {
+		if ( val === "NORMAL" && name in cssNormalTransform ) {
 			val = cssNormalTransform[ name ];
 		}
 

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>阳光提高班</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <!--<link href="js/libs/videojs/video-js.css" rel="stylesheet">-->
+    <!--<script src="js/libs/videojs/video.js"></script>-->
+
+    <script src="js/libs/jquery/jquery-1.9.1.js"></script>
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <script src="js/libs/bootstrap/bootstrap.min.js"></script>
+    <script src="js/libs/logger/Logger.js"></script>
+
+    <link href="css/app.css" rel="stylesheet">
+    <script src="js/libs/underscore/underscore.js"></script>
+    <script src="js/libs/backbone/backbone.js"></script>
+    <script src="js/libs/tv4/tv4.min.js"></script>
+
+    <script src="js/sampledata.js"></script>
+
+    <script src="js/utils.js"></script>
+    <script src="js/views2.js"></script>
+    <script src="js/models.js"></script>
+    <script src="js/sun.js"></script>
+    <script src="js/app2.js"></script>
+</head>
+<body>
+
+<div id="header"></div>
+<hr>
+<div id="content"></div>
+<hr>
+<div id="footer"></div>
+
+<!--Headers-->
+<script type="text/template" id="th_subjects">
+    th_subjects: <%=JSON.stringify(target)%>
+</script>
+<script type="text/template" id="th_lesson">
+    th_lesson: <%=JSON.stringify(target)%>
+</script>
+
+<!--Content-->
+<script type="text/template" id="tc_subject">
+    <%
+    monthLessons = target.get("monthLessons")
+    _.each(monthLessons,function(monthLesson){
+    %>
+    <div>
+        <%
+        _.each(monthLesson,function(lesson){
+        %>
+        <div>
+            <a href="#lesson/<%=lesson.get('id')%>">lesson</a>
+        </div>
+        <% }) %>
+    </div>
+    <% }) %>
+</script>
+<script type="text/template" id="tc_month">
+    tc_month: <%=JSON.stringify(target)%>
+</script>
+<script type="text/template" id="tc_lesson">
+    <%
+    _.each(target.get("stages").models,function(stage){
+    %>
+    <div>
+        <a href="#stage/<%=stage.get('id')%>">stage</a>
+    </div>
+    <% }) %>
+</script>
+<script type="text/template" id="tc_stages">
+    tc_stages: <%=JSON.stringify(target)%>
+</script>
+<script type="text/template" id="tc_activity">
+    tc_activity: <%=JSON.stringify(target)%>
+</script>
+<script type="text/template" id="tc_section">
+    tc_section: <%=JSON.stringify(target)%>
+</script>
+<script type="text/template" id="tc_summary">
+    tc_summary: <%=JSON.stringify(target)%>
+</script>
+<script type="text/template" id="tc_problem_singlechoice">
+    tc_problem_singlechoice: <%=JSON.stringify(target)%>
+</script>
+<script type="text/template" id="tc_problem_singlefilling">
+    tc_problem_singlefilling: <%=JSON.stringify(target)%>
+</script>
+<script type="text/template" id="tc_problem_multichoice">
+    tc_problem_multichoice: <%=JSON.stringify(target)%>
+</script>
+<script type="text/template" id="tc_video">
+    tc_video: <%=JSON.stringify(target)%>
+</script>
+<script type="text/template" id="tc_error">
+    tc_error: <%=JSON.stringify(target)%>
+</script>
+
+<!--Footer-->
+<script type="text/template" id="tf_lesson">
+    tf_lesson: <%=JSON.stringify(target)%>
+</script>
+<script type="text/template" id="tf_subject">
+    tf_subject: <%=JSON.stringify(target)%>
+</script>
+<script type="text/template" id="tf_problem_singlechoice">
+    tf_problem_singlechoice: <%=JSON.stringify(target)%>
+</script>
+
+</body>
+</html>

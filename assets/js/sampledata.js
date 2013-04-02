@@ -347,7 +347,7 @@ sample_schema = {
         "properties": {
             "condition": {
                 "type": "object",
-                "required": ["type"],
+                "required": ["type", "min", "max"],
                 "properties": {
                     "max": {
                         "type": "number"
@@ -405,7 +405,16 @@ sample_data = {
         {"id": "c3", "problem_id": "p1", "seq": "2", "display_text": "正确选项三", "answer": "yes"},
         {"id": "c4", "problem_id": "p1", "seq": "3", "display_text": "错误选项四", "answer": "no"}
     ]},
-    jump_condition: {"to_activity_id": "string", "condition": {"type": "CorrectCount", "min": 1, "max": 3}}
+    jump_condition: {
+        "to_activity_id": "-1",
+        "condition": {
+            "type": "CorrectCount",
+            "min": 2, "max": 3
+        }
+    },
+    userdata: {
+        "current": ""
+    }
 }
 
 jQuery(function () {
