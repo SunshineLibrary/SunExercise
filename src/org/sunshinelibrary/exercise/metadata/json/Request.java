@@ -93,17 +93,15 @@ public class Request extends JSONObject {
     }
 
     protected String queryUserRecord(String table, String recordColumn, String idColumn) {
-        JSONStringBuilder jsb = new JSONStringBuilder();
         Cursor cursor = mResolver.query(AUTHORITY_URI.buildUpon().appendPath(table).build(), new String[]{recordColumn},
                 idColumn + "=?", new String[]{param.id}, null);
+        String user_data = EMPTY;
         if (cursor.getCount()> 0) {
             cursor.moveToFirst();
-            jsb.appendJSONObjectBySingleLine(cursor);
-        } else {
-            jsb.startObject().endObject();
+            user_data = CursorUtils.getString(cursor, recordColumn);
         }
         cursor.close();
-        return jsb.toString();
+        return user_data;
     }
 
     protected String queryCollection(String table, String collectionName){
