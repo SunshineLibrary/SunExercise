@@ -375,11 +375,11 @@ public class TestCase extends Thread{
         Log.d(TAG, "-----------------------POST-----------------------------");
         resolver.delete(UserData.CONTENT_URI, null, null);
         Proxy p = new Proxy();
-        String FakeUserData = "{\"key\":\"value\"}";
+        String FakeUserData = "{\"key\":\"value\"}" ;
 
         Request userDataReq = new Request();
         userDataReq.api = Request.USER_DATA;
-        userDataReq.method = Request.USER_DATA;
+        userDataReq.method = Request.POST;
         userDataReq.param.user_data = FakeUserData;
         userDataReq.user_id = Request.UNKNOWN;
 
@@ -614,24 +614,18 @@ public class TestCase extends Thread{
         File dir = new File (sdCard,  "exercise");
         dir.mkdirs();
         try {
-            FileOutputStream f = new FileOutputStream(new File(dir, "material.js"));
-            f.write("{\nmaterial = {\n".getBytes());
+            FileOutputStream f = new FileOutputStream(new File(dir, "material.json"));
             dumpMaterials(tables, f);
-            f.write("\n}\n}".getBytes());
             f.flush();
             f.close();
 
-            f = new FileOutputStream(new File(dir, "user_data.js"));
-            f.write("{\nuser_data = {\n".getBytes());
+            f = new FileOutputStream(new File(dir, "user_data.json"));
             dumpUserData(tables, f);
-            f.write("\n}\n}".getBytes());
             f.flush();
             f.close();
 
-            f = new FileOutputStream(new File(dir, "user_info.js"));
-            f.write("{\nuser_info = ".getBytes());
+            f = new FileOutputStream(new File(dir, "user_info.json"));
             dumpUserInfo(f);
-            f.write("\n}".getBytes());
             f.flush();
             f.close();
             Toast.makeText(ExerciseApplication.getInstance().getBaseContext(), "Dump成功", Toast.LENGTH_LONG).show();
@@ -652,29 +646,29 @@ public class TestCase extends Thread{
 
         req.param.type = Request.SUBJECTS;
         req.param.id = "";
-        jsb = new JSONStringBuilder().append("    ");
+        jsb = new JSONStringBuilder().startObject().writeRaw("\n    ");
         jsb.appendNameAndValue(Request.SUBJECTS, ExerciseApplication.getInstance().getSyncManager()
                 .requestData(req.toJsonString()));
-        stream.write(jsb.toString().getBytes());
+
 
 
         for (Pair<Uri, String> item : data) {
             req.param.type = item.second;
             cursor = ExerciseApplication.getInstance().getContentResolver().query(item.first, null, null, null, null);
             while (cursor.moveToNext()) {
-                jsb = new JSONStringBuilder().append(",\n    ");
+                jsb.writeRaw("    ");
                 req.param.id = CursorUtils.getString(cursor, Columns._STRING_ID);
                 jsb.appendNameAndValue(req.param.id, ExerciseApplication.getInstance().getSyncManager()
                         .requestData(req.toJsonString()));
-                stream.write(jsb.toString().getBytes());
+                jsb.writeRaw("\n");
             }
             cursor.close();
         }
+        stream.write(jsb.toString().getBytes());
     }
 
     public static void dumpUserData(ArrayList<Pair<Uri, String>> data, FileOutputStream stream) throws IOException {
         Cursor cursor;
-        boolean firstLine = true;
         JSONStringBuilder jsb;
         Request req = new Request();
         req.api = Request.USER_DATA;
@@ -682,24 +676,19 @@ public class TestCase extends Thread{
         req.user_id = Request.UNKNOWN;
         req.param.user_data = "";
 
-
+        jsb = new JSONStringBuilder().startObject();
         for (Pair<Uri, String> item : data) {
             req.param.type = item.second;
             cursor = ExerciseApplication.getInstance().getContentResolver().query(item.first, null, null, null, null);
             while (cursor.moveToNext()) {
-                jsb = new JSONStringBuilder();
-                if (firstLine)
-                    firstLine = false;
-                else
-                    jsb.append(",\n");
-                jsb.append("    ");
+                jsb.writeRaw("\n    ");
                 req.param.id = CursorUtils.getString(cursor, Columns._STRING_ID);
                 jsb.appendNameAndValue(req.param.id, ExerciseApplication.getInstance().getSyncManager()
                         .requestUserData(req.toJsonString()));
-                stream.write(jsb.toString().getBytes());
             }
             cursor.close();
         }
+        stream.write(jsb.writeRaw("\n").toString().getBytes());
     }
 
     public static void dumpUserInfo(FileOutputStream stream) throws IOException {

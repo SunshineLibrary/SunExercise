@@ -9,6 +9,9 @@ import android.util.Log;
 
 import static org.sunshinelibrary.exercise.metadata.MetadataContract.*;
 
+import com.fasterxml.jackson.core.JsonEncoding;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonGenerator;
 import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
 import org.sunshinelibrary.exercise.metadata.database.tables.*;
 import org.sunshinelibrary.exercise.metadata.sync.Proxy;
@@ -17,6 +20,8 @@ import org.sunshinelibrary.support.api.UserInfo;
 import org.sunshinelibrary.support.utils.CursorUtils;
 import org.sunshinelibrary.support.utils.JSONStringBuilder;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 /**
@@ -86,6 +91,7 @@ public class Request extends JSONObject {
             return EMPTY;
         }
     }
+
     protected String queryUserRecord(String table, String recordColumn, String idColumn) {
         JSONStringBuilder jsb = new JSONStringBuilder();
         Cursor cursor = mResolver.query(AUTHORITY_URI.buildUpon().appendPath(table).build(), new String[]{recordColumn},
@@ -94,18 +100,18 @@ public class Request extends JSONObject {
             cursor.moveToFirst();
             jsb.appendJSONObjectBySingleLine(cursor);
         } else {
-            jsb.append(EMPTY);
+            jsb.startObject().endObject();
         }
         cursor.close();
         return jsb.toString();
     }
 
     protected String queryCollection(String table, String collectionName){
-        JSONStringBuilder jsb = new JSONStringBuilder();
+        JSONStringBuilder jsb = new JSONStringBuilder().startObject();
         Cursor cursor = mResolver.query(AUTHORITY_URI.buildUpon().appendPath(table).build(), null, null, null, null);
-        jsb.append('{').appendWithQuota(collectionName).append(':').appendTable(cursor, null).append("}");
+        jsb.appendTableField(cursor, null, collectionName);
         cursor.close();
-        return jsb.toString();
+        return jsb.endObject().toString();
     }
 
     protected String querySingleRecord(String table, String id) {
@@ -113,7 +119,7 @@ public class Request extends JSONObject {
         Cursor cursor = mResolver.query(AUTHORITY_URI.buildUpon().appendPath(table).build(), null,
                 Columns._STRING_ID + "=?", new String[]{id}, null);
         if (cursor.moveToFirst()) {
-            jsb.append('{').appendKeyValuesBySingleLine(cursor).append('}');
+            jsb.startObject().appendKeyValuesBySingleLine(cursor).endObject();
             cursor.close();
             return jsb.toString();
         } else {
@@ -147,7 +153,7 @@ public class Request extends JSONObject {
                 selectionArgs, null);
         activity.moveToFirst();
         JSONStringBuilder jsb = new JSONStringBuilder();
-        jsb.append('{').appendKeyValuesBySingleLine(activity).append(',').appendWithQuota("problems").append(':');
+        jsb.startObject().appendKeyValuesBySingleLine(activity);
 
         Cursor problem = mResolver.query(Problems.CONTENT_URI, null, Problems._PARENT_ID + "=?",
                 selectionArgs, Problems._SEQUENCE);
@@ -160,11 +166,11 @@ public class Request extends JSONObject {
         Cursor choices = mResolver.query(ProblemChoices.CONTENT_URI, null,
                 CursorUtils.generateSelectionStringForStringID(ProblemChoices._PARENT_ID, problemIDs), null,
                 ProblemChoices._SEQUENCE);
-        jsb.appendJSONArrayByMultipleFathersAndTheirChildren(problem, choices, "choices",
+        jsb.appendJSONArrayByMultipleFathersAndTheirChildren(problem, choices, "problems", "choices",
                 Problems._STRING_ID, ProblemChoices._PARENT_ID);
         problem.close();
         choices.close();
-        return jsb.toString();
+        return jsb.endObject().toString();
     }
 
     protected String uploadUserRecord() {
