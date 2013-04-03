@@ -298,16 +298,16 @@ jQuery(function () {
 
     Log = {
         d: function (content) {
-            log("[DEBUG]" + content)
+            console.log("[DEBUG]" + content)
         },
         i: function (content) {
-            log("[INFO]" + content)
+            console.log("[INFO]" + content)
         },
         e: function (content) {
-            log("[ERROR]" + content)
+            console.log("[ERROR]" + content)
         },
         w: function (content) {
-            log("[WARNING]" + content)
+            console.log("[WARNING]" + content)
         }
     }
 
