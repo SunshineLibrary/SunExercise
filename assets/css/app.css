@@ -1,3 +1,6 @@
+body {
+  background-color: #eee;
+}
 .tile {
     margin-bottom: 20px;
 }
@@ -5,6 +8,51 @@
 #content_container {
     margin-top: 70px;
     margin-bottom: 70px;
+    background-color: #eee;
+}
+
+/* Single Choice */
+.single-choice {
+  margin: 0 auto;
+  width: 904px;
+}
+.single-choice p {
+  font-size: 18px;
+  color: #555;
+}
+.question {
+  line-height: 20px;
+  margin-bottom: 20px;
+}
+.quest-type {
+  color: #999;
+}
+.palette {
+  padding: 16px 0;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  -moz-border-radius: 6px;
+  -webkit-border-radius: 6px;
+}
+.palette .radio {
+  padding-left: 0;
+}
+.even {
+  background-color: #fff;
+}
+.odd {
+  background-color: #E0E0E0;
+  box-shadow: inset 0 2px 2px rgba(0,0,0, 0.1);
+  -moz-box-shadow: inset 0 2px 2px rgba(0,0,0, 0.1);
+  -webkit-box-shadow: inset 0 2px 2px rgba(0,0,0, 0.1);
+}
+.radio input[type="radio"].answer {
+  margin: 4px 16px;
+}
+#submit_answer {
+  background: #77BB55;
+  width: 110px;
+  padding: 13px 19px;
 }
 
 .circle_wrap {

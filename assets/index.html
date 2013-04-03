@@ -168,7 +168,7 @@
             var choice = target.get("choices")[i]
             %>
 
-        <div class="palette palette-clouds">
+        <div class="palette palette-clouds <%= (i%2==0)? 'even': 'odd' %>">
             <label class="radio">
                 <input class="answer"
                        id="<%=choice.id%>"
