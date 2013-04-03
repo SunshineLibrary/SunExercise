@@ -168,7 +168,7 @@
             var choice = target.get("choices")[i]
             %>
 
-        <div class="palette palette-clouds">
+        <div class="palette palette-clouds <%= (i%2==0)? 'even': 'odd' %>">
             <label class="radio">
                 <input class="answer"
                        id="<%=choice.id%>"
@@ -181,7 +181,7 @@
         <% } %>
         </p>
 
-        <div class="">
+        <div class="result">
             <div id="grading_result" class="pull-left">
                 <% if(userdata.correct==true) { %>
                 Right:)
@@ -193,7 +193,7 @@
             <div class="pull-right">
                 <% if(currentMode != MODE.VIEW_ONLY){
                 if(userdata.current == 'EOF') { %>
-                <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+                <a id="next-question" class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
                 <% }else{ %>
                 <a id="submit_answer" class="btn btn-large  btn-primary"
                    onclick="grading('<%=target.get('id')%>')">提交答案</a>
