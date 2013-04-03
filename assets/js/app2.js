@@ -130,7 +130,6 @@ jQuery(function () {
                     }
                 }
             )
-
         })
         app_router.on('route:problem', function (id) {
             Log.i("problem," + id)

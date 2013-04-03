@@ -114,16 +114,16 @@
         var status = StageHelper.get_status(stage)
         if(!meetUnlocked){
         if(status!='EOF'){
-                circleClassNum = 1
-                imgPath = '0'+type
-                meetUnlocked = true
-            }else{
-                circleClassNum = 0
-                imgPath = type
-            }
+        circleClassNum = 1
+        imgPath = '0'+type
+        meetUnlocked = true
         }else{
-            circleClassNum = 2
-            imgPath = '00'+type
+        circleClassNum = 0
+        imgPath = type
+        }
+        }else{
+        circleClassNum = 2
+        imgPath = '00'+type
         }
         imgPath= './img/'+imgPath+'.png'
         Log.i('stage,'+type+","+circleClassNum)
@@ -138,7 +138,7 @@
             <% } else {%>
             <a href="#stage/<%=stage.id%>"><img src="<%=imgPath%>" alt="circle background"></a>
             <% } %>
-            <p><%=parseInt(stage.get('seq'))%></p>
+            <p><%=parseInt(stage.get('seq'))+1%></p>
         </div>
         <% }) %>
     </div>
