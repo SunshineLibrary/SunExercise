@@ -210,39 +210,48 @@ jQuery(function () {
             })
             app_router.on('route:summary', function (aid) {
                 Sun.fetch("activity", {id: aid}, function (activity) {
-                    Log.i("summary for activity," + JSON.stringify(activity))
+                    Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
+                        Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
+                            Log.i("summary for activity," + JSON.stringify(activity))
 
-                    var correctCount = 0
-                    $.each(activity.get("problems").models, function (number, problem) {
-                        if (problem.get('userdata')['correct'] == true) {
-                            correctCount++
-                        }
-                        Log.i("p," + number + "," + JSON.stringify(problem.get("userdata")))
-                    })
+                            var correctCount = 0
+                            $.each(activity.get("problems").models, function (number, problem) {
+                                if (problem.get('userdata')['correct'] == true) {
+                                    correctCount++
+                                }
+                                Log.i("p," + number + "," + JSON.stringify(problem.get("userdata")))
+                            })
 
-                    var jump = sample_data.jump_condition
-                    if (jump != undefined && jump != "" && jump != null) {
-                        if (correctCount >= jump.condition.min && correctCount <= jump.condition.max) {
-                            Log.i("right jump!")
-                            if (jump.to_activity_id == -1) {
-                                endStage(aid, function (id) {
-                                    activity.set({next_lesson: id})
+                            setHeader(new SummaryHeaderView({
+                                section: section,
+                                stage: stage
+                            }))
+
+                            var jump = sample_data.jump_condition
+                            if (jump != undefined && jump != "" && jump != null) {
+                                if (correctCount >= jump.condition.min && correctCount <= jump.condition.max) {
+                                    Log.i("right jump!")
+                                    if (jump.to_activity_id == -1) {
+                                        endStage(aid, function (id) {
+                                            activity.set({next_lesson: id})
+                                            setBody(new SummaryView({model: activity}))
+                                            reloadPage()
+                                        })
+                                    } else {
+                                        checkin('activity', jump.to_activity_id)
+                                        activity.set({next_activity: jump.to_activity_id})
+//                                app_router.navigate("activity/" + jump.to_activity_id, {trigger: true, replace: true})
+                                        setBody(new SummaryView({model: activity}))
+                                        reloadPage()
+                                    }
+                                } else {
+                                    Log.i("don't jump!")
                                     setBody(new SummaryView({model: activity}))
                                     reloadPage()
-                                })
-                            } else {
-                                checkin('activity', jump.to_activity_id)
-                                activity.set({next_activity: jump.to_activity_id})
-//                                app_router.navigate("activity/" + jump.to_activity_id, {trigger: true, replace: true})
-                                setBody(new SummaryView({model: activity}))
-                                reloadPage()
+                                }
                             }
-                        } else {
-                            Log.i("don't jump!")
-                            setBody(new SummaryView({model: activity}))
-                            reloadPage()
-                        }
-                    }
+                        })
+                    })
                 })
             })
             Backbone.history.start()
@@ -250,22 +259,34 @@ jQuery(function () {
             function loadProblem(id) {
                 Sun.fetch("problem", {id: id}, function (problem) {
                     Log.i("problem," + problem.get("type"))
+                    Sun.fetch("activity", {id: problem.get('activity_id')}, function (activity) {
+                        Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
+                            Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
+                                if (currentMode == MODE.VIEW_ONLY) {
+                                    Sun.setviewed('problem', id)
+                                }
 
-                    if (currentMode == MODE.VIEW_ONLY) {
-                        Sun.setviewed('problem', id)
-                    }
+                                setHeader(new ProblemHeaderView({
+                                    problem: problem,
+                                    activity: activity,
+                                    section: section,
+                                    stage: stage
+                                }))
 
-                    if (problem.get("type") == "0") {
-                        setBody(new SingleChoiceProblemView({model: problem}))
-                        setFooter(new SingleChoiceProblemFooterView({model: problem}))
-                    } else if (problem.get("type") == "1") {
-                        setBody(new MultiChoiceProblemView({model: problem}))
-                    } else if (problem.get("type") == "2") {
-                        setBody(new SingleFillingProblemView({model: problem}))
-                    } else {
-                        Log.i("unsupported problem," + id + "," + problem.get("type"))
-                    }
-                    reloadPage()
+                                if (problem.get("type") == "0") {
+                                    setBody(new SingleChoiceProblemView({model: problem}))
+                                    setFooter(new SingleChoiceProblemFooterView({model: problem}))
+                                } else if (problem.get("type") == "1") {
+                                    setBody(new MultiChoiceProblemView({model: problem}))
+                                } else if (problem.get("type") == "2") {
+                                    setBody(new SingleFillingProblemView({model: problem}))
+                                } else {
+                                    Log.i("unsupported problem," + id + "," + problem.get("type"))
+                                }
+                                reloadPage()
+                            })
+                        })
+                    })
                 })
             }
 
@@ -345,6 +366,14 @@ jQuery(function () {
                         Log.i("unsupported problem grading")
                     }
                 })
+            }
+
+            makeSelection = function (id) {
+                $('.pcontainer').each(function (i, p) {
+                    $(p).removeClass('odd')
+                })
+                $('#'+id).prop('checked', true)
+                $('#pcontainer_'+id).addClass('odd')
             }
 
             viewStage = function (id) {

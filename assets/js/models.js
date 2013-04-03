@@ -137,6 +137,18 @@ jQuery(function () {
             }
             return completed
         },
+        completeRate: function () {
+            var completeCount = 0
+            for (var i = 0; i < this.get('activities').length; i++) {
+                var activity = this.get('activities').models[i]
+                if (Sun.iscomplete("activity", activity.get('id'))) {
+                    completeCount++
+                }
+            }
+            var rate = completeCount / this.get('activities').length
+            console.log('complete rate:' + rate)
+            return rate
+        },
         complete: function (options, callback) {
             if (this.isComplete()) {
                 Sun.setcomplete('section', this.get('id'))

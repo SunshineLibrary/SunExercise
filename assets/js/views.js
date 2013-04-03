@@ -16,7 +16,9 @@ jQuery(function () {
     Templates = {
         Header: {
             subjects: _.template($("#th_subjects").html()),
-            lesson: _.template($("#th_lesson").html())
+            lesson: _.template($("#th_lesson").html()),
+            problem: _.template($("#th_problem").html()),
+            summary: _.template($("#th_summary").html())
         },
         Content: {
             subject: _.template($("#tc_subject").html()),
@@ -97,6 +99,18 @@ jQuery(function () {
     /**
      * Problem
      */
+    ProblemHeaderView = Backbone.View.extend({
+        template: Templates.Header.problem,
+
+        render: function () {
+            this.el = this.template({
+                section: this.options['section'],
+                stage: this.options['stage']
+            })
+            return this
+        }
+    })
+
     SingleChoiceProblemView = Backbone.View.extend({
         template: Templates.Content.problem_sc,
         render: function () {
@@ -125,6 +139,17 @@ jQuery(function () {
         template: Templates.Content.problem_sf,
         render: function () {
             this.el = this.template({target: this.model})
+            return this
+        }
+    })
+
+    SummaryHeaderView = Backbone.View.extend({
+        template: Templates.Header.problem,
+        render: function () {
+            this.el = this.template({
+                section: this.options['section'],
+                stage: this.options['stage']
+            })
             return this
         }
     })

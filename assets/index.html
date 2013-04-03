@@ -13,6 +13,7 @@
     <script src="js/libs/logger/Logger.js"></script>
 
     <link href="css/app.css" rel="stylesheet">
+    <link href="css/progress.css" rel="stylesheet">
     <script src="js/libs/underscore/underscore.js"></script>
     <script src="js/libs/backbone/backbone.js"></script>
     <script src="js/libs/tv4/tv4.min.js"></script>
@@ -27,15 +28,9 @@
 </head>
 <body>
 
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="navbar-inner">
-        <div class="container">
-            <div class="nav-collapse collapse" id="header">
-                loading header
-            </div>
-        </div>
-    </div>
+<div id="header">
 </div>
+
 <div class="container" id="content_container">
     <div id="content">loading content</div>
 
@@ -55,32 +50,91 @@
 
 <!--Many templates-->
 <script type="text/template" id="th_subjects">
-    <ul class="nav">
-        <li>
-            <a>阳光提高班</a>
-        </li>
-        <%
-        for(var i=0 ; i < target.length ; i++){
-        subject = target.at(i)
-        %>
-        <li class="<% if(currentSubjectId == subject.get('id')){ %>active<% } %>">
-            <a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>
-        </li>
-        <% } %>
-    </ul>
-    <ul class="nav pull-right">
-        <li>
-            <div class="btn" onclick="Interfaces.sync()">同步数据</div>
-        </li>
-    </ul>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        <li>
+                            <a>阳光提高班</a>
+                        </li>
+                        <%
+                        for(var i=0 ; i < target.length ; i++){
+                        subject = target.at(i)
+                        %>
+                        <li class="<% if(currentSubjectId == subject.get('id')){ %>active<% } %>">
+                            <a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>
+                        </li>
+                        <% } %>
+                    </ul>
+                    <ul class="nav pull-right">
+                        <li>
+                            <div class="btn" onclick="Interfaces.sync()">同步数据</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </script>
 
 <script type="text/template" id="th_lesson">
-    <ul class="nav">
-        <li>
-            <a><%= target.get('name')%></a>
-        </li>
-    </ul>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="navbar-inner">
+            <div class="container">
+                <div class="nav-collapse collapse">
+                    <ul class="nav">
+                        <li>
+                            <a><%= target.get('name')%></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+
+<script type="text/template" id="th_problem">
+    <div class="progress_bar">
+        <%
+        var hit_current =false
+        for(var i =0;i < stage.get('sections').models.length;i++){
+        console.log('sections')
+        var s= stage.get('sections').models[i]
+        if(s.get('id')==section.get('id')){
+        hit_current=true
+        }
+        if(!hit_current){
+        %>
+        <div class="progress_dart <% if(i==0){%>dart_first<%}%> dart_done">
+            <div class="progress_label">
+                <div class="progress_icon diagnose_off"></div>
+            </div>
+            <div class="progress_arrow"></div>
+        </div>
+        <%
+        }else{
+        %>
+        <div class="progress_dart <% if(i==0){%>dart_first<%}%>">
+            <div class="progress_label">
+                <div class="progress_icon star_off"></div>
+                <span class="progress_title">这个主题呀！</span>
+            </div>
+            <div class="progress_arrow"></div>
+            <div class="progress_gauge" style="width:<%=section.completeRate()*100%>%;">
+                <div class="progress_arrow"></div>
+            </div>
+        </div>
+        <%
+        break}
+        }
+        %>
+    </div>
+</script>
+
+<script type="text/template" id="th_summary">
+    summary
 </script>
 
 <script type="text/template" id="tc_subject">
@@ -146,40 +200,31 @@
 
 <script type="text/template" id="tc_problem_singlechoice">
     <div class="span10">
-        <h3><%=target.get('id')%>
-        </h3>
-
         <p>
-            <% userdata = target.get('userdata') %>
-            userdata: <%=JSON.stringify(userdata) %>
+            <%=target.get('body')%>
         </p>
 
-        <p>
-            correct answers: <%=target.correct_answers %>
-        </p>
-
-        <p>
-            body: <%=target.get('body')%>
-        </p>
-
-        <p>
+        <div>
             <%
+            userdata = Sun.getuserdata('problem',target.get('id'))
             for(var i =0 ; i < target.get("choices").length; i++) {
             var choice = target.get("choices")[i]
             %>
 
-        <div class="palette palette-clouds <%= (i%2==0)? 'even': 'odd' %>">
-            <label class="radio">
-                <input class="answer"
-                       id="<%=choice.id%>"
-                       answer="<%= choice.answer%>"
-                       type="radio"
-                       name="optionsRadios">
-                <%= target.get('choices')[i].display_text %>
-            </label>
+            <div id="pcontainer_<%=choice.id%>" class="pcontainer palette palette-clouds even"
+                 onclick="makeSelection('<%=choice.id%>')">
+                <label class="radio">
+                    <input class="answer"
+                           id="<%=choice.id%>"
+                           answer="<%= choice.answer%>"
+                           type="radio"
+                           name="optionsRadios"
+                           onclick="makeSelection('<%=choice.id%>')" >
+                    <%= target.get('choices')[i].display_text %>
+                </label>
+            </div>
+            <% } %>
         </div>
-        <% } %>
-        </p>
 
         <div class="result">
             <div id="grading_result" class="pull-left">
@@ -194,7 +239,7 @@
                 <% if(currentMode != MODE.VIEW_ONLY){
                 if(userdata.current == 'EOF') { %>
                 <a id="next-question" class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
-                <% }else{ %>
+                <% }else if(userdata.current == undefined){ %>
                 <a id="submit_answer" class="btn btn-large  btn-primary"
                    onclick="grading('<%=target.get('id')%>')">提交答案</a>
                 <% } %>
