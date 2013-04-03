@@ -27,7 +27,7 @@ public class DeleteUnusedFilesRequest {
         }
         cursor.close();
         // TODO: test code
-//        dfo.start();
+        dfo.start();
         return ExerciseApplication.getInstance().getContentResolver().delete(MetadataContract.Media.CONTENT_URI,
                 CursorUtils.generateSelectionStringForIntegerID(MetadataContract.Media._FILE_ID, dfo.getFileIDs()), null);
     }

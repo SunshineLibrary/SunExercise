@@ -24,6 +24,7 @@ import org.sunshinelibrary.support.api.subscription.SubscriptionManager;
 import org.sunshinelibrary.support.api.subscription.SubscriptionRequest;
 import org.sunshinelibrary.support.utils.ApplicationInterface;
 import org.sunshinelibrary.support.utils.CursorUtils;
+import org.sunshinelibrary.support.utils.LockManager;
 import org.sunshinelibrary.support.utils.database.Contract;
 import org.sunshinelibrary.support.utils.json.JsonHandler;
 import org.sunshinelibrary.support.utils.sync.SyncObserver;
@@ -49,6 +50,21 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
 
     Subscription mSubscription;
     SyncObserver mObserver;
+
+    private LockManager mLockManager;
+    private LockManager.Token mLockToken;
+
+    public Proxy() {
+        mLockManager = LockManager.getInstance(ExerciseApplication.getInstance().getBaseContext());
+    }
+
+    private void acquireLock() {
+        mLockToken = mLockManager.acquireWakeLock(mLockToken);
+    }
+
+    private void releaseLock() {
+        mLockManager.releaseLock(mLockToken);
+    }
 
     @Override
     public String requestUserData(String string) {
@@ -179,6 +195,7 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
 
     @Override
     public void onDataReceived(Subscription subscription, JSONObject object) throws Exception {
+        acquireLock();
         Log.d(TAG, "onDataReceived");
         if (subscription.getID() == mSubscription.getID()) {
             Log.d(TAG, "JSON" + object.toString());
@@ -208,6 +225,7 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
         dr.start();
         updateDownloadFinish(Lessons.CONTENT_URI, Contract.DOWNLOAD_STATUS.WAITING,
                 Contract.DOWNLOAD_STATUS.DOWNLOADING);
+        releaseLock();
     }
 
     public void notifyCollectionDownloadProgress(String collectionId, float percentage) {
@@ -222,6 +240,10 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
 //        int status = CursorUtils.getInt(cursor, Lessons._DOWNLOAD_FINISH);
 //        cursor.close();
         mObserver.onCollectionDownloaded(collectionId, available);
+        if (!isSynchronizing()) {
+            int count = deleteUnusedFiles();
+            Log.i(TAG, "delete " + count + " files");
+        }
     }
 
     static protected boolean timeToSync() {
