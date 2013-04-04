@@ -64,24 +64,24 @@ jQuery(function () {
             }
 
             // Remove this blog to disable cache
-//            if (options["i d"] != undefined) {
-//                var id = options["id"]
-//                var cached = MATERIAL_CACHE[id]
-//                if (cached != undefined) {
-//                    console.log("[CACHED]id," + id)
-//                    if (callback != undefined) {
-//                        eval(callback)(cached, options)
-//                    }
-//                }
-//            }
+            if (options["i d"] != undefined) {
+                var id = options["id"]
+                var cached = MATERIAL_CACHE[id]
+                if (cached != undefined) {
+                    console.log("[CACHED]id," + id)
+                    if (callback != undefined) {
+                        eval(callback)(cached, options)
+                    }
+                }
+            }
 
             options["target"] = type
             if (typeof android == "undefined") {
                 // web dev mode, request data from sundata server
                 console.log("[WEB]try to fetch a material," + type + "," + JSON.stringify(options))
 
-                mockMaterial = "http://42.121.65.247:9000/api/material"
-                // mockMaterial = "http://127.0.0.1:9000/api/material"
+//                mockMaterial = "http://42.121.65.247:9000/api/material"
+                mockMaterial = "http://127.0.0.1:9000/api/material"
                 $.ajaxSetup({ "async": false });
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
@@ -89,7 +89,7 @@ jQuery(function () {
                         console.log("data:" + JSON.stringify(data))
                         result = Sun.createMaterial(data, type)
                         // Remove this blog to disable cache
-//                        MATERIAL_CACHE[id] = result
+                        MATERIAL_CACHE[id] = result
                         if (callback != undefined) {
                             eval(callback)(result, options)
                         }
@@ -267,6 +267,7 @@ jQuery(function () {
 
         onSyncCompleted: function () {
             console.log("onSyncCompleted")
+            location.reload();
         },
 
         onCollectionProgress: function (collectionId, percentage) {
@@ -282,7 +283,7 @@ jQuery(function () {
                 console.log("[WEB]sync")
             } else {
                 console.log("[ANDROID]sync")
-                android.sync();
+                android.sync()
             }
         },
 
@@ -291,7 +292,16 @@ jQuery(function () {
                 console.log("[WEB]download," + id)
             } else {
                 console.log("[ANDROID]download," + id)
-                android.download(id);
+                android.download(id)
+            }
+        },
+
+        onReady:function(){
+            if (typeof android == "undefined") {
+                console.log("[WEB]onReady")
+            } else {
+                console.log("[ANDROID]onReady")
+                android.onReady()
             }
         }
     }

@@ -26,7 +26,14 @@ jQuery(function () {
             app_router.on('route:subjects', function () {
                 Sun.fetch("subjects", null, function (subjects) {
                     Log.i("subjects," + JSON.stringify(subjects))
-                    app_router.navigate("subject/" + subjects.models[0].id, {trigger: true, replace: true})
+                    for (var i = 0; i < subjects.length; i++) {
+                        var s = subjects.at(i)
+                        Sun.fetch("subject", {id: s.get('id')}, function (subject) {
+                            if (subject.get('lessons').length > 0) {
+                                app_router.navigate("subject/" + subject.id, {trigger: true, replace: true})
+                            }
+                        })
+                    }
                 })
             })
             app_router.on('route:subject', function (id) {
@@ -72,10 +79,10 @@ jQuery(function () {
                     if (currentMode == MODE.NORMAL) {
                         if (sections.length == 0) {
                             Sun.setcomplete('stage', id)
-                            stage.complete(null, function () {
-                                Log.e("no sections in this stage")
-                                app_router.navigate("lesson/" + section.get("lesson_id"), {trigger: true, replace: true})
-                            })
+//                            stage.complete(null, function () {
+//                                Log.e("no sections in this stage")
+//                                app_router.navigate("lesson/" + section.get("lesson_id"), {trigger: true, replace: true})
+//                            })
                         }
 
                         if (!Sun.iscomplete("stage", id)) {
@@ -254,6 +261,8 @@ jQuery(function () {
                     })
                 })
             })
+            Interfaces.onReady()
+
             Backbone.history.start()
 
             function loadProblem(id) {
@@ -372,8 +381,8 @@ jQuery(function () {
                 $('.pcontainer').each(function (i, p) {
                     $(p).removeClass('odd')
                 })
-                $('#'+id).prop('checked', true)
-                $('#pcontainer_'+id).addClass('odd')
+                $('#' + id).prop('checked', true)
+                $('#pcontainer_' + id).addClass('odd')
             }
 
             viewStage = function (id) {

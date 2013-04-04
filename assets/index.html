@@ -61,11 +61,12 @@
                         <%
                         for(var i=0 ; i < target.length ; i++){
                         subject = target.at(i)
+                        if($.inArray(subject.get('id'),target.showSubjects)>=0){
                         %>
                         <li class="<% if(currentSubjectId == subject.get('id')){ %>active<% } %>">
                             <a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>
                         </li>
-                        <% } %>
+                        <% } } %>
                     </ul>
                     <ul class="nav pull-right">
                         <li>
@@ -81,15 +82,16 @@
 <script type="text/template" id="th_lesson">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
-            <div class="container">
                 <div class="nav-collapse collapse">
                     <ul class="nav">
+                        <li>
+                            <a href="#subject/<%= target.get('subject_id')%>">返回</a>
+                        </li>
                         <li>
                             <a><%= target.get('name')%></a>
                         </li>
                     </ul>
                 </div>
-            </div>
         </div>
     </div>
 
@@ -192,7 +194,7 @@
             <% } else {%>
             <a href="#stage/<%=stage.id%>"><img src="<%=imgPath%>" alt="circle background"></a>
             <% } %>
-            <p><%=parseInt(stage.get('seq'))+1%></p>
+            <p><%=parseInt(stage.get('seq'))%></p>
         </div>
         <% }) %>
     </div>
@@ -219,7 +221,7 @@
                            answer="<%= choice.answer%>"
                            type="radio"
                            name="optionsRadios"
-                           onclick="makeSelection('<%=choice.id%>')" >
+                           onclick="makeSelection('<%=choice.id%>')">
                     <%= target.get('choices')[i].display_text %>
                 </label>
             </div>
@@ -257,7 +259,7 @@
 
 <script type="text/template" id="tc_problem_multichoice">
     <div class="span10">
-        <h3><%=target.get('id')%>
+        <h3>多选<%=target.get('id')%>
             <% if(target.get('userdata')==true){%>(completed)<%}%>
         </h3>
 
@@ -358,7 +360,7 @@
     <% } %>
 </script>
 <script type="text/template" id="tc_video">
-    video
+    <h2>video</h2>
     <p><%=JSON.stringify(target)%></p>
     <%
     id = target.get("id")
@@ -371,7 +373,7 @@
             <source src="file:///sdcard/Movies/oceans-clip.mp4<" type='video/mp4'>
         </video>
     </div>
-    <div class="btn btn-primary" onclick="completeVideo('<%=id%>')">看完啦</div>
+    <div class="btn btn-primary btn-large" onclick="completeVideo('<%=id%>')">看完啦</div>
 
 </script>
 
