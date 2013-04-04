@@ -28,7 +28,6 @@ public class ExerciseApplication  extends Application {
         super();
         application = this;
         ApplicationInterface.setApplication(this);
-        mSyncManager = new Proxy();
         Contract.setAuthorityUri(MetadataContract.AUTHORITY_URI);
     }
 
@@ -46,6 +45,7 @@ public class ExerciseApplication  extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        mSyncManager = new Proxy();
         Proxy.updateDownloadFinish(Lessons.CONTENT_URI, DOWNLOAD_STATUS.DOWNLOADING, DOWNLOAD_STATUS.NONE);
         Proxy.updateDownloadFinish(Lessons.CONTENT_URI, DOWNLOAD_STATUS.WAITING, DOWNLOAD_STATUS.NONE);
     }
