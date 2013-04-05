@@ -14,7 +14,8 @@
                  android:name="org.sunshinelibrary.exercise.app.application.ExerciseApplication">
 
         <activity android:name=".app.activity.MainActivity"
-                  android:screenOrientation="sensorLandscape">
+                  android:screenOrientation="sensorLandscape"
+                  android:configChanges="orientation|keyboardHidden|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
