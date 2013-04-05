@@ -80,8 +80,8 @@ jQuery(function () {
                 // web dev mode, request data from sundata server
                 console.log("[WEB]try to fetch a material," + type + "," + JSON.stringify(options))
 
-//                mockMaterial = "http://42.121.65.247:9000/api/material"
-                mockMaterial = "http://127.0.0.1:9000/api/material"
+                mockMaterial = "http://42.121.65.247:9000/api/material"
+                  //mockMaterial = "http://127.0.0.1:9000/api/material"
                 $.ajaxSetup({ "async": false });
                 $.getJSON(mockMaterial + "?callback=?",
                     options,

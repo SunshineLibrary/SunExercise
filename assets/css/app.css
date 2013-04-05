@@ -8,6 +8,7 @@ body {
 #content_container {
   margin: 70px auto;
   background-color: #eee;
+  width: 904px;
 }
 
 /* Single Choice */
@@ -22,6 +23,7 @@ body {
 .question {
   line-height: 20px;
   margin-bottom: 20px;
+  font-weight: bold;
 }
 .quest-type {
   color: #999;
@@ -47,6 +49,13 @@ body {
 }
 .radio input[type="radio"].answer {
   margin: 4px 16px;
+}
+input[type="text"].answer {
+  width: 735px;
+  height: 38px;
+  border-color: #77bb55;
+  margin: 0 10px 0 0;
+  padding: 0;
 }
 #submit_answer {
   background: #77BB55;

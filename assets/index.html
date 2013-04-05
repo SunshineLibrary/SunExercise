@@ -325,12 +325,17 @@
 
 
 <script type="text/template" id="tc_problem_singlefilling">
-    <p><%=target.get("body")%></p>
+    <p class="question">
+      <span class="quest-type">（填空题）</span>
+      <%=target.get("body")%>
+      下列式子属于单项式的是下列式子属于单项式的是下列式子属于单项式的是下列式子属于单项式的是下列式子属于单项式的是下列式子属于单项式的是下列式子属于单项式的是下列式子属于单项式的是
+    </p>
     <% userdata = target.get('userdata') %>
 
     <p>userdata: <%=JSON.stringify(userdata)%></p>
 
     <p><%=JSON.stringify(target)%></p>
+    <input class="answer" type="text">
     <% if(currentMode != MODE.VIEW_ONLY) { %>
 
     <% if(userdata.current == 'EOF') { %>
