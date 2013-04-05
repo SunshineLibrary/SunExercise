@@ -1,0 +1,496 @@
+body {
+    background-color: #eee;
+}
+
+.tile {
+    margin-bottom: 20px;
+}
+
+#content_container {
+    margin-top: 76px;
+    height: auto;
+}
+
+#content {
+    margin-top: 0px;
+    margin-left: 28px;
+    width: auto;
+}
+
+
+#content .row [class*="span"]:first-child {
+    margin-left: 0;
+}
+
+#content .row [class*="lessonProgressBar"]:first-child {
+    margin-left: 0;
+}
+
+#content .row [class*="lessonProgressBar"]:first-child .rectangle {
+    border-top-left-radius: none;
+    border-bottom-left-radius: none;
+}
+
+h2 {
+    font-family: Futura italic;
+    font-size: 24px;
+    color: #999999;
+    margin: 0px;
+    height: auto;
+    padding-bottom: 20px;
+}
+
+.well {
+    height: 112px;
+    background-color: rgb(224, 224, 224);
+    padding: 0px;
+}
+
+.well.downloaded {
+    background-color: #ffffff;
+}
+
+.well .row-top {
+    display: inline-block;
+    width: 220px;
+    height: 62px;
+    margin-left: 0px;
+}
+
+.row > h4 {
+    position: relative;
+    font-size: 16px;
+    width: 146px;
+    height: 50px;
+    margin: 9px 0px 0px 12px;
+    line-height: 22px;
+    text-align: left;
+    float: left;
+}
+
+.lesson_label {
+    display: block;
+    height: auto;
+    width: auto;
+    position: relative;
+    float: left;
+    margin-top: -2px;
+    margin-left:14px;
+}
+
+.lesson_label >p {
+    display: none;
+}
+
+.lesson_label >p.show {
+    display: block;
+    margin-bottom: 0px;
+    margin-top: 12px;
+    text-align: center;
+    margin-right: 12px;
+    font-size: 14px;
+    color: #aaaaaa;
+}
+
+.well .btn-large {
+    height: 16px;
+    width: 64px;
+    padding: 7px 10px 10px 10px;
+    margin: 6px 0px 10px 68px;
+    background-color: #77bb55;
+    background-image: none;
+    border: none;
+    color: #ffffff;
+    text-shadow: none;
+    text-align: center;
+}
+
+.well .btn-large.hide {
+    display: none;
+}
+
+.navbar-fixed-top .navbar-inner {
+    height: 56px;
+    padding-left: 0px;
+}
+
+.navbar .brand {
+    height: 38px;
+    color: #ffffff;
+    font-size: 18px;
+    margin-left: 0px;
+    padding: 18px 40px 0px 68px;
+    background-color: #444444;
+}
+
+.navbar-fixed-top .navbar-inner .container {
+    display: inline;
+}
+
+.nav-collapse.collapse {
+    height: 56px;
+    overflow: visible;
+    padding-left: 0px;
+    background-color: #444444;
+}
+
+.navbar-inverse .nav > li {
+    height: 56px;
+    width: auto;
+    padding: 0px;
+}
+
+.navbar-inverse .nav > li > a {
+    color: #ffffff;
+    height: 38px;
+    margin: 0px;
+    padding: 18px 24px 0px 24px;
+    font-size: 14px;
+    width: auto;
+    position: center;
+}
+
+.navbar-inverse .nav > .active > a {
+    color: #ffffff;
+    height: 38px;
+    margin: 0px;
+    padding: 18px 24px 0px 24px;
+    font-size: 14px;
+    width: auto;
+    position: center;
+    background-color: #333333;
+}
+
+.navbar-inverse .nav > .active > a:focus,
+.navbar-inverse .nav > .active > a:hover {
+    background-color: #333333;
+}
+
+.circle_wrap {
+    margin: auto;
+    width: 700px;
+}
+
+.circle_wrap .line {
+    margin-top: 160px;
+    float: left;
+}
+
+.stage_circle {
+    position: relative;
+    background-repeat: no-repeat;
+    font-family: Future;
+    float: left;
+}
+
+/*done circles*/
+.circle_0 img {
+    margin-top: 79px;
+}
+
+.circle_0 p {
+    font-style: italic;
+    font-size: 36pt;
+    color: #E8BAA3;
+    top: 117px;
+    left: 69px;
+    position: absolute;
+}
+
+/*just unlocked circles*/
+.circle_1 img {
+    margin-top: 59px;
+}
+
+.circle_1 p {
+    font-style: italic;
+    font-size: 48pt;
+    color: #E8BAA3;
+    left: 82px;
+    top: 107px;
+    position: absolute;
+}
+
+/*locked circles*/
+.circle_2 img {
+    margin-top: 81px;
+}
+
+.circle_2 p {
+    font-size: 30pt;
+    left: 72px;
+    top: 103px;
+    position: absolute;
+    color: rgb(51, 51, 51);
+}
+
+.navbar .btn {
+    display: visible;
+    background-color: transparent;
+    background-image: none;
+    margin-top: 0px;
+    padding: 0px 0px 0px 0px;
+    border: 0;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+
+.well >div.show {
+    display: inline-block;
+    margin: 0px;
+    height: 30px;
+    width: 196px;
+    padding: 8px 12px 0px 12px;
+}
+
+.lessonProgressBar {
+    margin: 0px;
+    display: inline-block;
+    height: 30px;
+    width: auto;
+    padding: 0px;
+    margin-left: -4px;
+}
+
+.rectangle {
+    display: block;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: 0px;
+    float: left;
+    height: 10px;
+    width: 100%;
+    border-left: none;
+    background-color: #eeeeee;
+    box-shadow: inset 0 1px 0px rgba(0, 0, 0, 0.2);
+}
+
+.ball {
+    display: block;
+    float: right;
+    height: auto;
+    width: auto;
+    margin-left: -24px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    vertical-align: middle;
+}
+
+.wrap-text {
+    word-wrap: break-word;
+}
+
+body {
+    background-color: #eeeeee;
+}
+
+
+/* Single Choice */
+.single-choice {
+    margin: 0 auto;
+    width: 904px;
+}
+.single-choice p {
+    font-size: 18px;
+    color: #555;
+}
+.question {
+    line-height: 20px;
+    margin-bottom: 20px;
+}
+.quest-type {
+    color: #999;
+}
+.palette {
+    padding: 16px 0;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+}
+.palette .radio {
+    padding-left: 0;
+}
+.even {
+    background-color: #fff;
+}
+.odd {
+    background-color: #E0E0E0;
+    box-shadow: inset 0 2px 2px rgba(0,0,0, 0.1);
+    -moz-box-shadow: inset 0 2px 2px rgba(0,0,0, 0.1);
+    -webkit-box-shadow: inset 0 2px 2px rgba(0,0,0, 0.1);
+}
+.radio input[type="radio"].answer {
+    margin: 4px 16px;
+}
+#submit_answer {
+    background: #77BB55;
+    width: 110px;
+    padding: 13px 19px;
+}
+#next-question {
+    width: 110px;
+    height: 24px;
+    background: #77bb55;
+    color: #fff;
+    font-size: 18px;
+    text-shadow: none;
+    text-align: center;
+}
+.result {
+    overflow: hidden;
+    margin-top: 30px;
+}
+#grading_result {
+    font-size: 24px;
+    color: #DD6622;
+    margin-top: 10px;
+}
+
+.navbar .brand{
+    height: 38px;
+    color: #ffffff;
+    font-size: 18px;
+    margin-left: 0px;
+    padding: 18px 40px 0px 68px;
+    background-color: #444444;
+}
+
+.navbar-fixed-top .navbar-inner .container {
+    display: inline;
+}
+
+.navbar-inverse .nav > li {
+    height: 56px;
+    width: auto;
+    padding:0px;
+}
+
+.navbar-inverse .nav > li > a {
+    color: #ffffff;
+    height: 38px;
+    margin:0px;
+    padding: 18px 24px 0px 24px;
+    font-size: 14px;
+    width:auto;
+    position: center;
+}
+
+.navbar-inverse .nav > .active > a {
+    color: #ffffff;
+    height: 38px;
+    margin:0px;
+    padding: 18px 24px 0px 24px;
+    font-size: 14px;
+    width: auto;
+    position: center;
+    background-color: #333333;
+}
+
+.navbar-inverse .nav > .active > a:focus,
+.navbar-inverse .nav > .active > a:hover {
+    background-color: #333333;
+}
+
+.circle_wrap {
+    margin: auto;
+    width: 700px;
+}
+
+.circle_wrap .line{
+    margin-top: 160px;
+    float: left;
+}
+
+.stage_circle {
+    position: relative;
+    background-repeat: no-repeat;
+    font-family: Future;
+    float: left;
+}
+
+/*done circles*/
+.circle_0 img {
+    margin-top: 79px;
+}
+
+.circle_0 p {
+    font-style: italic;
+    font-size: 36pt;
+    color: #E8BAA3;
+    top: 117px;
+    left: 69px;
+    position: absolute;
+}
+
+/*just unlocked circles*/
+.circle_1 img {
+    margin-top: 59px;
+}
+
+.circle_1 p {
+    font-style: italic;
+    font-size: 48pt;
+    color: #E8BAA3;
+    left: 82px;
+    top: 107px;
+    position: absolute;
+}
+
+/*locked circles*/
+.circle_2 img {
+    margin-top: 81px;
+}
+
+.circle_2 p {
+    font-size: 30pt;
+    left: 72px;
+    top: 103px;
+    position: absolute;
+    color: rgb(51,51,51);
+}
+
+.navbar .btn {
+    display: visible;
+    background-color: transparent;
+    background-image: none;
+    margin-top: 0px;
+    padding:0px 0px 0px 0px;
+    border: 0;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.well >div.show{
+    display: inline-block;
+    margin:0px;
+    height: 30px;
+    width: 196px;
+    padding: 8px 12px 0px 12px;
+}
+
+.rectangle {
+    display: block;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    margin-left: 0px;
+    float: left;
+    height:10px;
+    width:100%;
+    border-left: none;
+    background-color: #eeeeee;
+    box-shadow: inset 0 1px 0px rgba(0,0,0,0.2);
+}
+
+.wrap-text{
+    word-wrap: break-word;
+}

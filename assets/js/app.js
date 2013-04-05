@@ -261,9 +261,22 @@ jQuery(function () {
                     })
                 })
             })
-            Interfaces.onReady()
 
+            currentSection = undefined
+            currentId = undefined
+            app_router.bind('all', function (route, section, params) {
+                currentSection = section
+                if (typeof params != "undefined") {
+                    currentId = params[0]
+                } else {
+                    currentId = undefined
+                }
+            });
+
+            Logger.hide()
             Backbone.history.start()
+
+            Interfaces.onReady()
 
             function loadProblem(id) {
                 Sun.fetch("problem", {id: id}, function (problem) {
@@ -389,6 +402,44 @@ jQuery(function () {
                 currentMode = MODE.VIEW_ONLY
                 app_router.navigate("stage/" + id, {trigger: true, replace: true})
             }
+
+            goUpstairs = function () {
+                Log.i('get upstairs with current,' + currentSection + "," + currentId)
+                if (currentSection == "lesson") {
+                    Sun.fetch('lesson', {id: currentId}, function (lesson) {
+                        app_router.navigate("subject/" + lesson.get('subject_id'), {trigger: true, replace: true})
+                    })
+                } else if (currentSection == "stage") {
+                    Sun.fetch('stage', {id: currentId}, function (stage) {
+                        app_router.navigate("lesson/" + stage.get('lesson_id'), {trigger: true, replace: true})
+                    })
+                } else if (currentSection == "section") {
+                    Sun.fetch('section', {id: currentId}, function (section) {
+                        app_router.navigate("stage/" + section.get('stage_id'), {trigger: true, replace: true})
+                    })
+                } else if (currentSection == "activity") {
+                    Sun.fetch('activity', {id: currentId}, function (activity) {
+                        Sun.fetch('section', {id: activity.get('section_id')}, function (section) {
+                            Sun.fetch('stage', {id: section.get('stage_id')}, function (stage) {
+                                app_router.navigate("lesson/" + stage.get('lesson_id'), {trigger: true, replace: true})
+                            })
+                        })
+                    })
+                } else if (currentSection == "problem") {
+                    Sun.fetch('problem', {id: currentId}, function (problem) {
+                        Sun.fetch('activity', {id: problem.get('activity_id')}, function (activity) {
+                            Sun.fetch('section', {id: activity.get('section_id')}, function (section) {
+                                Sun.fetch('stage', {id: section.get('stage_id')}, function (stage) {
+                                    app_router.navigate("lesson/" + stage.get('lesson_id'), {trigger: true, replace: true})
+                                })
+                            })
+                        })
+                    })
+                } else {
+                    Log.e('unsupported type to go upstairs,' + currentSection + "," + currentId)
+                }
+            }
+
         }
 
         currentMode = MODE.NORMAL
