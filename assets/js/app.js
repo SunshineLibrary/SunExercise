@@ -180,8 +180,9 @@ jQuery(function () {
                                     app_router.navigate("summary/" + problem.get("activity_id"), {trigger: true, replace: true})
                                 }
                             } else if (activity.get("type") == 2) {
-                                Log.i("video activity type 2")
-                                setBody(new VideoView({model: activity}))
+                                var media = Sun.getmedia(activity.get('media_id'))
+                                Log.i("video activity type 2," + JSON.stringify(media))
+                                setBody(new VideoView({model: activity, media: media}))
                                 reloadPage()
                             } else {
                                 // TODO other acitivities, like video
@@ -378,8 +379,13 @@ jQuery(function () {
                         })
                     } else if (problem.get("type") == 2) {
                         Log.i("problem type 2")
+                        var answer = $('#answer').val()
+                        var correct = false
+                        if (answer == problem.get('choices')[0]['display_text']) {
+                            correct = true
+                        }
                         problem.complete({
-                            correct: true
+                            correct: correct
                         }, function () {
                             loadProblem(problem.get('id'))
                         })
@@ -439,7 +445,6 @@ jQuery(function () {
                     Log.e('unsupported type to go upstairs,' + currentSection + "," + currentId)
                 }
             }
-
         }
 
         currentMode = MODE.NORMAL

@@ -283,6 +283,10 @@ jQuery(function () {
 
     Problems = Backbone.Collection.extend({model: Problem})
 
+    Media = Backbone.Model.extend({})
+
+    Medias = Backbone.Collection.extend({model: Media})
+
     UserData = Backbone.Model.extend({})
 
     Error = Backbone.Model.extend({})
