@@ -68,7 +68,7 @@ h2 {
     position: relative;
     float: left;
     margin-top: -2px;
-    margin-left:14px;
+    margin-left: 14px;
 }
 
 .lesson_label >p {
@@ -232,7 +232,6 @@ h2 {
     box-shadow: none;
 }
 
-
 .well >div.show {
     display: inline-block;
     margin: 0px;
@@ -282,23 +281,26 @@ body {
     background-color: #eeeeee;
 }
 
-
 /* Single Choice */
 .single-choice {
     margin: 0 auto;
     width: 904px;
 }
+
 .single-choice p {
     font-size: 18px;
     color: #555;
 }
+
 .question {
     line-height: 20px;
     margin-bottom: 20px;
 }
+
 .quest-type {
     color: #999;
 }
+
 .palette {
     padding: 16px 0;
     margin-bottom: 15px;
@@ -306,26 +308,32 @@ body {
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
 }
+
 .palette .radio {
     padding-left: 0;
 }
+
 .even {
     background-color: #fff;
 }
+
 .odd {
     background-color: #E0E0E0;
-    box-shadow: inset 0 2px 2px rgba(0,0,0, 0.1);
-    -moz-box-shadow: inset 0 2px 2px rgba(0,0,0, 0.1);
-    -webkit-box-shadow: inset 0 2px 2px rgba(0,0,0, 0.1);
+    box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.1);
 }
+
 .radio input[type="radio"].answer {
     margin: 4px 16px;
 }
+
 #submit_answer {
     background: #77BB55;
     width: 110px;
     padding: 13px 19px;
 }
+
 #next-question {
     width: 110px;
     height: 24px;
@@ -335,17 +343,19 @@ body {
     text-shadow: none;
     text-align: center;
 }
+
 .result {
     overflow: hidden;
     margin-top: 30px;
 }
+
 #grading_result {
     font-size: 24px;
     color: #DD6622;
     margin-top: 10px;
 }
 
-.navbar .brand{
+.navbar .brand {
     height: 38px;
     color: #ffffff;
     font-size: 18px;
@@ -361,23 +371,23 @@ body {
 .navbar-inverse .nav > li {
     height: 56px;
     width: auto;
-    padding:0px;
+    padding: 0px;
 }
 
 .navbar-inverse .nav > li > a {
     color: #ffffff;
     height: 38px;
-    margin:0px;
+    margin: 0px;
     padding: 18px 24px 0px 24px;
     font-size: 14px;
-    width:auto;
+    width: auto;
     position: center;
 }
 
 .navbar-inverse .nav > .active > a {
     color: #ffffff;
     height: 38px;
-    margin:0px;
+    margin: 0px;
     padding: 18px 24px 0px 24px;
     font-size: 14px;
     width: auto;
@@ -395,7 +405,7 @@ body {
     width: 700px;
 }
 
-.circle_wrap .line{
+.circle_wrap .line {
     margin-top: 160px;
     float: left;
 }
@@ -445,7 +455,7 @@ body {
     left: 72px;
     top: 103px;
     position: absolute;
-    color: rgb(51,51,51);
+    color: rgb(51, 51, 51);
 }
 
 .navbar .btn {
@@ -453,7 +463,7 @@ body {
     background-color: transparent;
     background-image: none;
     margin-top: 0px;
-    padding:0px 0px 0px 0px;
+    padding: 0px 0px 0px 0px;
     border: 0;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
@@ -463,9 +473,9 @@ body {
     box-shadow: none;
 }
 
-.well >div.show{
+.well >div.show {
     display: inline-block;
-    margin:0px;
+    margin: 0px;
     height: 30px;
     width: 196px;
     padding: 8px 12px 0px 12px;
@@ -477,17 +487,25 @@ body {
     margin-top: 10px;
     margin-left: 0px;
     float: left;
-    height:10px;
-    width:100%;
+    height: 10px;
+    width: 100%;
     border-left: none;
     background-color: #eeeeee;
-    box-shadow: inset 0 1px 0px rgba(0,0,0,0.2);
+    box-shadow: inset 0 1px 0px rgba(0, 0, 0, 0.2);
 }
 
-.wrap-text{
+#input[type="text"].answer {
+    width: 735px;
+    height: 38px;
+    border-color: #77bb55;
+    margin: 0 10px 0 0;
+    padding: 0;
+}
+
+.wrap-text {
     word-wrap: break-word;
 }
 
-.row-bottom{
+.row-bottom {
     margin-left: 0px;
 }
