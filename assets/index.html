@@ -10,6 +10,7 @@
 
     <link href="css/app2.css" rel="stylesheet">
     <link href="css/progress.css" rel="stylesheet">
+    <link href="css/summary.css" rel="stylesheet">
     <script src="js/libs/underscore/underscore.js"></script>
     <script src="js/libs/backbone/backbone.js"></script>
 
@@ -367,17 +368,41 @@
 <script type="text/template" id="tc_month"></script>
 <script type="text/template" id="tc_activity"></script>
 <script type="text/template" id="tc_section"></script>
+
+
+
+
+<!-- Summary Page -->
 <script type="text/template" id="tc_summary">
-    summary
-    <%=JSON.stringify(target)%>
-    <% if(target.get('next_activity')!=undefined) {%>
-    <a class="btn btn-large" href="#activity/<%=target.get('next_activity')%>">跳转继续</a>
-    <% }else if(target.get('next_lesson')!=undefined) { %>
-    <a class="btn btn-large" href="#lesson/<%=target.get('next_lesson')%>">返回课程</a>
-    <% }else{ %>
-    <a class="btn btn-large" href="#section/<%=target.get('section_id')%>">继续</a>
-    <% } %>
+    <div class="summary-warp">
+        <div class="upper-warp">
+            <div id="correctness">
+                <img src="img/summary30.png" alt="正确率图片">
+                <div id="right">
+                    <p class="title">正确</p>
+                    <p class="number">7</p>
+                </div>
+                <div id="wrong">
+                    <p class="title">错误</p>
+                    <p class="number">6</p>
+                </div>
+            </div>
+        </div>
+        <div class="lower-warp">
+            <p>嗯 --|| 你还有很大的提升空间哦~</p>
+            <div class="center-warp">
+                <% if(target.get('next_activity')!=undefined) {%>
+                <a class="btn" href="#activity/<%=target.get('next_activity')%>">跳转继续</a>
+                <% }else if(target.get('next_lesson')!=undefined) { %>
+                <a class="btn" href="#lesson/<%=target.get('next_lesson')%>">返回课程</a>
+                <% }else{ %>
+                <a class="btn" href="#section/<%=target.get('section_id')%>">继续学习</a>
+                <% } %>
+            </div>
+        </div>
+    </div>
 </script>
+
 <script type="text/template" id="tc_video">
     <h2>video</h2>
 

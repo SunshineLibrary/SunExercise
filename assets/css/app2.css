@@ -17,7 +17,6 @@ body {
     width: auto;
 }
 
-
 #content .row [class*="span"]:first-child {
     margin-left: 0;
 }

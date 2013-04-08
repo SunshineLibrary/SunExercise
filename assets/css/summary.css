@@ -1,0 +1,81 @@
+.summary-warp {
+    position: absolute;
+    left: 0px;
+    top: 56px;
+    width: 100%;
+    font-family: Futura;
+}
+
+.summary-warp .upper-warp {
+    height: 320px;
+    background: white;
+}
+
+.summary-warp .lower-warp {
+    height: 320px;
+    background: #eeeeee;
+    position: relative;
+}
+
+.lower-warp p {
+    font-size: 24px;
+    color: #555555;
+    text-align: center;
+    margin-top: 105px;
+    margin-bottom: 30px;
+}
+
+.lower-warp .center-warp {
+    width: 200px;
+    margin: auto;
+}
+
+.lower-warp .center-warp .btn {
+    width: 200px;
+    font-size: 18px;
+    height: 56px;
+    background: #70bb5d;
+    color: #ffffff;
+
+    /*Vertical alignment! Like magic!*/
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#correctness{
+    width: 350px;
+    margin: auto;
+    position: relative;
+}
+
+#correctness img{
+    height: 200px;
+    margin-top: 60px;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+}
+
+#correctness .title{
+    font-size: 18px;
+    color: #555555;
+}
+
+#correctness .number{
+    font-size: 36px;
+    color: #555555;
+    text-align: center;
+    margin-top: 16px;
+}
+
+#correctness #right{
+    position: absolute;
+    top: 108px;
+    left: 250px;
+}
+
+#correctness #wrong{
+    position: absolute;
+    top: 108px;
+    left: 310px;
+}
