@@ -11,13 +11,6 @@ body {
     height: auto;
 }
 
-#content {
-    margin-top: 0px;
-    margin-left: 28px;
-    width: auto;
-}
-
-
 #content .row [class*="span"]:first-child {
     margin-left: 0;
 }
@@ -493,4 +486,8 @@ body {
 
 .wrap-text{
     word-wrap: break-word;
+}
+
+.row-bottom{
+    margin-left: 0px;
 }

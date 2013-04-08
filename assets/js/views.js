@@ -167,8 +167,9 @@ jQuery(function () {
      */
     VideoView = Backbone.View.extend({
         template: Templates.Content.video,
+        media:undefined,
         render: function () {
-            this.el = this.template({target: this.model})
+            this.el = this.template({target: this.model, media: this.options['media']})
             return this
         }
     })

@@ -198,8 +198,8 @@ body {
           box-shadow: none;
 }
 
-.well >div.row-bottom{
-    display: none;
+row-bottom{
+    margin-left: 0px;
 }
 
 .well >div.show{

@@ -32,6 +32,9 @@ jQuery(function () {
         },
         "problem": function (json) {
             return new Problem(json)
+        },
+        "media": function (json) {
+            return new Media(json)
         }
     }
 
@@ -75,23 +78,24 @@ jQuery(function () {
                 }
             }
 
+            var ret = undefined
             options["target"] = type
             if (typeof android == "undefined") {
                 // web dev mode, request data from sundata server
                 console.log("[WEB]try to fetch a material," + type + "," + JSON.stringify(options))
 
-                mockMaterial = "http://42.121.65.247:9000/api/material"
-//                mockMaterial = "http://127.0.0.1:9000/api/material"
+//                mockMaterial = "http://42.121.65.247:9000/api/material"
+                mockMaterial = "http://127.0.0.1:9000/api/material"
                 $.ajaxSetup({ "async": false });
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
                     function (data) {
                         console.log("data:" + JSON.stringify(data))
-                        result = Sun.createMaterial(data, type)
+                        ret = Sun.createMaterial(data, type)
                         // Remove this blog to disable cache
-                        MATERIAL_CACHE[id] = result
+                        MATERIAL_CACHE[id] = ret
                         if (callback != undefined) {
-                            eval(callback)(result, options)
+                            eval(callback)(ret, options)
                         }
                     }
                 )
@@ -100,12 +104,13 @@ jQuery(function () {
                 // android dev mode
                 console.log("[ANDROID]try to fetch a material," + type + "," + JSON.stringify(options))
 
-                var result = Sun.requestMaterial(type, options["id"])
-                console.log("result," + JSON.stringify(result))
+                ret = Sun.requestMaterial(type, options["id"])
+                console.log("result," + JSON.stringify(ret))
                 if (callback != undefined) {
-                    eval(callback)(result, options)
+                    eval(callback)(ret, options)
                 }
             }
+            return ret
         },
 
         setuserdata: function (type, id, options, callback) {
@@ -166,17 +171,30 @@ jQuery(function () {
             var userdata = undefined
             if (typeof android == "undefined") {
                 // web dev mode
-                console.log("[WEB]set user data")
+                console.log("[WEB]set user data," + JSON.stringify(req))
                 userdata = USER_DATA[id]
             } else {
                 // android dev mode
                 console.log("[ANDROID]set user data," + JSON.stringify(req))
                 userdata = android.requestUserData(JSON.stringify(req))
-                console.log("got userdata!!!!!!," + userdata)
             }
             userdata = (userdata == undefined) ? "{}" : userdata
             console.log("got userdata," + id + "," + userdata)
             return JSON.parse(userdata)
+        },
+
+        getmedia: function (id) {
+            var ret =undefined
+            if (typeof android == "undefined") {
+                // web dev mode
+                console.log("[WEB]get media," + id)
+                ret = new Media({"id":"03354928-9820-11e2-b307-00163e011797","file_id":"1","path":"http://st.xiami.com/res/loop/img/logo.png"})
+            } else {
+                // android dev mode
+                console.log("[ANDROID]get media," + id)
+                ret= Sun.fetch('media', {id:id})
+            }
+            return ret
         },
 
         getuserid: function () {
@@ -267,12 +285,9 @@ jQuery(function () {
             } else {
                 console.log("[ANDROID]onCollectionDownloaded," + lessonId + "," + downloaded)
                 Sun.adduserdata()
-//                android.notifyCollectionDownloaded(lessonId, true);
             }
             if (downloaded) {
-                hideDownloadBtn(lessonId)
-                showStageProgress(lessonId)
-                changeLessonBackground(lessonId)
+                changeDownloadBtn(lessonId, downloaded)
             }
 
         },
@@ -338,18 +353,16 @@ jQuery(function () {
     }
 })
 
-function hideDownloadBtn(id) {
-    $('#lessonbox_download_' + id).hide()
+function changeDownloadBtn(id, downloaded) {
+    if (downloaded) {
+        $('#lessonbox_download_' + id).hide()
+        $('#lessonbox_progress_' + id).show()
+        $('.well.' + id).addClass('downloaded');
+        $('.lesson_label >img.' + id).addClass('hide');
+        $('.lesson_label >p.' + id).addClass('show');
+    } else {
+        $('#lessonbox_download_' + id).hide()
+        $('#lessonbox_progress_' + id).hide()
+    }
 //    $('.well .btn-large.' + id).addClass('hide');
-}
-
-function showStageProgress(id) {
-    $('#lessonbox_progress_' + id).show()
-//    $('.well >div.row-bottom.' + id).addClass('show');
-}
-
-function changeLessonBackground(id) {
-    $('.well.' + id).addClass('downloaded');
-    $('.lesson_label >img.' + id).addClass('hide');
-    $('.lesson_label >p.' + id).addClass('show');
 }

@@ -155,21 +155,21 @@
                      style="display:<%if(userdata['downloaded']==true){%>none<%}%>"
                      onclick="Interfaces.download('<%=lesson.id%>')">下载
                 </div>
-                <div id="lessonbox_progress_<%=lesson.id%>" class="row row-bottom <%=lesson.id%>"
-                     style="display:<%if(userdata['downloaded']!=true){%>none<%}%>">
-                    <%
-                    var stageCount = 2
-                    var stageWidth = 100/stageCount
-                    for(var i=0;i < stageCount; i++){
-                    %>
-                    <a href='#lesson/<%=lesson.get("id")%>'>
+                <a href='#lesson/<%=lesson.get("id")%>'>
+                    <div id="lessonbox_progress_<%=lesson.id%>" class="row row-bottom"
+                         style="display:<%if(userdata['downloaded']!=true){%>none<%}%>">
+                        <%
+                        var stageCount = 2
+                        var stageWidth = 100/stageCount
+                        for(var i=0;i < stageCount; i++){
+                        %>
                         <div class="lessonProgressBar" style="width:<%=stageWidth%>%">
                             <div class="rectangle" style="display:block"></div>
                             <div class="ball" style="display:block"><img src="img/StageIcon_<%=i+1%>_Grey.png"/></div>
                         </div>
-                    </a>
-                    <%}%>
-                </div>
+                        <%}%>
+                    </div>
+                </a>
             </div>
         </div>
         <% }) %>
@@ -220,7 +220,7 @@
 </script>
 
 <script type="text/template" id="tc_problem_singlechoice">
-    <div class="span10">
+    <div class="row">
         <p>
             <%=target.get('body')%>
         </p>
@@ -272,13 +272,18 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <p>
+            <%=JSON.stringify(target)%>
+        </p>
+    </div>
 
 </script>
 
 
 <script type="text/template" id="tc_problem_multichoice">
     <div class="span10">
-        <h3>多选<%=target.get('id')%>
+        <h3>??<%=target.get('id')%>
             <% if(target.get('userdata')==true){%>(completed)<%}%>
         </h3>
 
@@ -326,14 +331,14 @@
                 <%=currentMode%>
                 <% if(currentMode != MODE.VIEW_ONLY) { %>
                 <% if(userdata.current == 'EOF') { %>
-                <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+                <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">??</a>
                 <% }else{ %>
                 <a id="submit_answer" class="btn btn-large  btn-primary"
-                   onclick="grading('<%=target.get('id')%>')">提交答案</a>
+                   onclick="grading('<%=target.get('id')%>')">????</a>
                 <% } %>
                 <% }else{ %>
                 <div>
-                    <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+                    <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">??</a>
                 </div>
                 <% } %>
             </div>
@@ -344,23 +349,49 @@
 
 
 <script type="text/template" id="tc_problem_singlefilling">
-    <p><%=target.get("body")%></p>
-    <% userdata = target.get('userdata') %>
+    <div class="row">
+        <p>
+            <%=target.get("body")%>
+            <% userdata = target.get('userdata') %>
+        </p>
+    </div>
 
-    <p>userdata: <%=JSON.stringify(userdata)%></p>
+    <div class="row">
+        <div class="span10 controls">
+            <input type="text" id="answer" style="width:100%;margin-top:5px;height:30px" placeholder="填写答案">
+        </div>
 
-    <p><%=JSON.stringify(target)%></p>
-    <% if(currentMode != MODE.VIEW_ONLY) { %>
+        <div class="span2">
+            <% if(currentMode != MODE.VIEW_ONLY) { %>
 
-    <% if(userdata.current == 'EOF') { %>
-    <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
-    <% }else{ %>
-    <a id="submit_answer" class="btn btn-large  btn-primary"
-       onclick="grading('<%=target.get('id')%>')">提交答案</a>
-    <% } %>
-    <% } else { %>
-    <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
-    <% } %>
+            <% if(userdata.current == 'EOF') { %>
+            <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+            <% }else{ %>
+            <a id="submit_answer" class="btn btn-large  btn-primary"
+               onclick="grading('<%=target.get('id')%>')">提交答案</a>
+            <% } %>
+            <% } else { %>
+            <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+            <% } %>
+        </div>
+    </div>
+
+    <div id="grading_result" class="row">
+        <% if(userdata.correct==true) { %>
+        Right:)
+        <% } else if (userdata.correct==false) { %>
+        WRONG!!!
+        <% } %>
+    </div>
+
+    <div class="row" style="margin-top:20px">
+        <% userdata = target.get('userdata') %>
+
+        <p>userdata: <%=JSON.stringify(userdata)%></p>
+
+        <p><%=JSON.stringify(target)%></p>
+    </div>
+
 </script>
 
 <script type="text/template" id="tc_stages"></script>
@@ -368,7 +399,7 @@
 <script type="text/template" id="tc_activity"></script>
 <script type="text/template" id="tc_section"></script>
 <script type="text/template" id="tc_summary">
-    summary
+    <h1>总结页(not implemented)</h1>
     <%=JSON.stringify(target)%>
     <% if(target.get('next_activity')!=undefined) {%>
     <a class="btn btn-large" href="#activity/<%=target.get('next_activity')%>">跳转继续</a>
@@ -379,28 +410,29 @@
     <% } %>
 </script>
 <script type="text/template" id="tc_video">
-    <h2>video</h2>
+    <h1>Video</h1>
 
-    <p><%=JSON.stringify(target)%></p>
     <%
     id = target.get("id")
+    Log.i('media:'+JSON.stringify(media))
+    var mediaPath = "file://"+media.get('path')
+    <!--var mediaPath = "./img/test.mp4"-->
     %>
-
-
-    <div style="background-color:grey">
-        <video src="file:///sdcard/test1.mp4" width=640 height=480>
+    <div>
+        <video id="video" class="clearfix" src="<%=mediaPath%>" width=640 height=480>
             html5 video
         </video>
     </div>
 
-    <!--<div>-->
-    <!--<video id="my_video_1" class="video-js vjs-default-skin" controls-->
-    <!--preload="auto" width="640" height="264" poster="my_video_poster.png"-->
-    <!--data-setup="{}">-->
-    <!--<source src="file:///sdcard/Movies/oceans-clip.mp4<" type='video/mp4'>-->
-    <!--</video>-->
-    <!--</div>-->
-    <div class="btn btn-primary btn-large" onclick="completeVideo('<%=id%>')">看完啦</div>
+    <% var video =document.getElementById('video')%>
+
+    <div style="text-align: center;">
+        <div class="btn btn-primary btn-large" onclick="video.play()"> ▶</div>
+        <div class="btn btn-large" onclick="completeVideo('<%=id%>')">看完啦</div>
+    </div>
+    <p>media:<%=JSON.stringify(media)%></p>
+
+    <p>mediapath:<%=mediaPath%></p>
 
 </script>
 
