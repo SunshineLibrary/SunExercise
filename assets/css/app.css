@@ -69,6 +69,7 @@ input[type="text"].answer {
   color: #fff;
   font-size: 18px;
   text-shadow: none;
+	text-align: center;
 }
 .result {
   overflow: hidden;
@@ -78,6 +79,59 @@ input[type="text"].answer {
   font-size: 24px;
   color: #DD6622;
   margin-top: 10px;
+}
+
+.navbar .brand{
+	height: 38px;
+	color: #ffffff;
+	font-size: 18px;
+	margin-left: 0px;
+	padding: 18px 40px 0px 68px;
+	background-color: #444444;
+}
+
+.navbar-fixed-top .navbar-inner .container {
+	display: inline;
+}
+
+.nav-collapse.collapse {
+	height: 56px;
+	overflow: visible;
+	margin-left: 198px;
+	padding-left: 0px;
+	background-color: #444444;
+}
+
+.navbar-inverse .nav > li {
+	height: 56px;
+	width: auto;
+	padding:0px;
+}
+
+.navbar-inverse .nav > li > a {
+  	color: #ffffff;
+  	height: 38px;
+  	margin:0px;
+  	padding: 18px 24px 0px 24px;
+  	font-size: 14px;
+  	width:auto;
+  	position: center;
+}
+
+.navbar-inverse .nav > .active > a {
+  	color: #ffffff;
+  	height: 38px;
+  	margin:0px;
+  	padding: 18px 24px 0px 24px;
+  	font-size: 14px;
+  	width: auto;
+  	position: center;
+  	background-color: #333333;
+}
+
+.navbar-inverse .nav > .active > a:focus,
+.navbar-inverse .nav > .active > a:hover {
+  	background-color: #333333;
 }
 
 .circle_wrap {
@@ -136,6 +190,66 @@ input[type="text"].answer {
     top: 103px;
     position: absolute;
     color: rgb(51,51,51);
+}
+
+.navbar .btn {
+	display: visible;
+	background-color: transparent;
+	background-image: none;
+	margin-top: 0px;
+	padding:0px 0px 0px 0px;
+	border: 0;
+	-webkit-border-radius: 0px;
+     -moz-border-radius: 0px;
+          border-radius: 0px;
+    -webkit-box-shadow: none;
+     -moz-box-shadow: none;
+          box-shadow: none;
+}
+
+.well >div.row-bottom{
+    display: none;
+}
+
+.well >div.show{
+	display: inline-block;
+	margin:0px;
+	height: 30px;
+	width: 196px;
+	padding: 8px 12px 0px 12px;
+}
+
+.lessonProgressBar {
+	margin: 0px;
+	display: inline-block;
+	height: 30px;
+	width: auto;
+	padding: 0px;
+	margin-left: -4px;
+}
+
+.rectangle {
+	display: block;
+	margin-bottom: 10px;
+	margin-top: 10px;
+	margin-left: 0px;
+	float: left;
+    height:10px;
+	width:100%;
+	border-left: none;
+	background-color: #eeeeee;
+	box-shadow: inset 0 1px 0px rgba(0,0,0,0.2);
+}
+
+.ball {
+	display: block;
+	float: right;
+	height: auto;
+	width: auto;
+	margin-left: -24px;
+	margin-top: 3px;
+	margin-bottom: 3px;
+	vertical-align: middle;
 }
 
 .wrap-text{

@@ -81,7 +81,7 @@ jQuery(function () {
                 console.log("[WEB]try to fetch a material," + type + "," + JSON.stringify(options))
 
                 mockMaterial = "http://42.121.65.247:9000/api/material"
-                  //mockMaterial = "http://127.0.0.1:9000/api/material"
+//                mockMaterial = "http://127.0.0.1:9000/api/material"
                 $.ajaxSetup({ "async": false });
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
@@ -155,7 +155,7 @@ jQuery(function () {
                 console.log("[ANDROID]set user data," + reqText)
                 android.requestUserData(reqText)
             }
-            if (callback != undefined) {
+            if (typeof callback != "undefined") {
                 eval(callback)(type, id)
             }
         },
@@ -236,21 +236,7 @@ jQuery(function () {
 
     Interfaces = {
         backpage: function () {
-            url = window.location.href
-            // TODO change it to a "REAL" index judgement
-            if (url.lastIndexOf("#") < 0) {
-                // not in route, like index.html
-                console.log("not in route now, maybe there is no data right now")
-                android.showExitDialog()
-            } else {
-                console.log("back pressed, current url," + url)
-                if (url.indexOf("subject") >= 0) {
-                    console.log("ready to exit")
-                    android.showExitDialog()
-                } else {
-                    window.history.back()
-                }
-            }
+            goUpstairs()
         },
 
         onSyncStart: function () {
@@ -259,6 +245,7 @@ jQuery(function () {
 
         onJsonReceived: function () {
             console.log("onJsonReceived")
+            location.reload()
         },
 
         onJsonParsed: function () {
@@ -267,7 +254,6 @@ jQuery(function () {
 
         onSyncCompleted: function () {
             console.log("onSyncCompleted")
-            location.reload();
         },
 
         onCollectionProgress: function (collectionId, percentage) {
@@ -275,7 +261,24 @@ jQuery(function () {
         },
 
         onCollectionDownloaded: function (lessonId, downloaded) {
-            console.log("onCollectionDownloaded," + lessonId + "," + downloaded)
+            Sun.adduserdata('lesson', lessonId, 'downloaded', true)
+            if (typeof android == "undefined") {
+                console.log("[WEB]onCollectionDownloaded," + lessonId + "," + downloaded)
+            } else {
+                console.log("[ANDROID]onCollectionDownloaded," + lessonId + "," + downloaded)
+                Sun.adduserdata()
+//                android.notifyCollectionDownloaded(lessonId, true);
+            }
+            if (downloaded) {
+                hideDownloadBtn(lessonId)
+                showStageProgress(lessonId)
+                changeLessonBackground(lessonId)
+            }
+
+        },
+
+        loadUrl: function (route) {
+            app_router.navigate(route, {trigger: true, replace: true})
         },
 
         sync: function () {
@@ -290,37 +293,63 @@ jQuery(function () {
         download: function (id) {
             if (typeof android == "undefined") {
                 console.log("[WEB]download," + id)
+                Interfaces.onCollectionDownloaded(id, true)
             } else {
                 console.log("[ANDROID]download," + id)
                 android.download(id)
             }
         },
 
-        onReady:function(){
+        onReady: function () {
             if (typeof android == "undefined") {
                 console.log("[WEB]onReady")
             } else {
                 console.log("[ANDROID]onReady")
                 android.onReady()
             }
+        },
+
+        onVideoComplete: function (id) {
+            Log.i('video completed,' + id)
         }
     }
 
     Log = {
         d: function (content) {
-            console.log("[DEBUG]" + content)
+            content = "[DEBUG]" + content
+            console.log(content)
+            log(content)
         },
         i: function (content) {
-            console.log("[INFO]" + content)
+            content = "[INFO]" + content
+            console.log(content)
+            log(content)
         },
         e: function (content) {
-            console.log("[ERROR]" + content)
+            content = "[ERROR]" + content
+            console.log(content)
+            log(content)
         },
         w: function (content) {
-            console.log("[WARNING]" + content)
+            content = "[WARNING]" + content
+            console.log(content)
+            log(content)
         }
     }
-
 })
 
+function hideDownloadBtn(id) {
+    $('#lessonbox_download_' + id).hide()
+//    $('.well .btn-large.' + id).addClass('hide');
+}
 
+function showStageProgress(id) {
+    $('#lessonbox_progress_' + id).show()
+//    $('.well >div.row-bottom.' + id).addClass('show');
+}
+
+function changeLessonBackground(id) {
+    $('.well.' + id).addClass('downloaded');
+    $('.lesson_label >img.' + id).addClass('hide');
+    $('.lesson_label >p.' + id).addClass('show');
+}

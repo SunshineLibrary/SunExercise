@@ -3,6 +3,7 @@ package org.sunshinelibrary.exercise.app.activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnPreparedListener;
@@ -89,6 +90,11 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
                     .show();
             finish();
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override

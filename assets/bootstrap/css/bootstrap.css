@@ -53,17 +53,17 @@ section {
   display: block;
 }
 
-audio,
-canvas,
-video {
-  display: inline-block;
-  *display: inline;
-  *zoom: 1;
-}
+/*audio,*/
+/*canvas,*/
+/*video {*/
+  /*display: inline-block;*/
+  /**display: inline;*/
+  /**zoom: 1;*/
+/*}*/
 
-audio:not([controls]) {
-  display: none;
-}
+/*audio:not([controls]) {*/
+  /*display: none;*/
+/*}*/
 
 html {
   font-size: 100%;

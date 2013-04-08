@@ -56,6 +56,7 @@ public class HTML5WebView extends WebView {
         s.setJavaScriptEnabled(true);
         s.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         s.setLoadWithOverviewMode(true);
+        s.setRenderPriority(WebSettings.RenderPriority.HIGH);
         s.setSavePassword(true);
         s.setSaveFormData(true);
         s.setSupportZoom(false);

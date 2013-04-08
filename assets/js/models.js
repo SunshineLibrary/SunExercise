@@ -157,7 +157,7 @@ jQuery(function () {
                 }
             }
             var rate = completeCount / this.get('activities').length
-            console.log('complete rate:' + rate)
+            Log.i('complete rate:' + rate)
             return rate
         },
         complete: function (options, callback) {
