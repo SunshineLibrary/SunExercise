@@ -351,6 +351,7 @@
 <script type="text/template" id="tc_problem_singlefilling">
     <div class="row">
         <span class="quest-type">（填空题）</span>
+
         <p>
             <%=target.get("body")%>
             <% userdata = target.get('userdata') %>
@@ -385,14 +386,6 @@
         <% } %>
     </div>
 
-    <div class="row" style="margin-top:20px">
-        <% userdata = target.get('userdata') %>
-
-        <p>userdata: <%=JSON.stringify(userdata)%></p>
-
-        <p><%=JSON.stringify(target)%></p>
-    </div>
-
 </script>
 
 <script type="text/template" id="tc_stages"></script>
@@ -411,29 +404,25 @@
     <% } %>
 </script>
 <script type="text/template" id="tc_video">
-    <h1>Video</h1>
+    <h1><%=target.get('name')%></h1>
 
     <%
     id = target.get("id")
     Log.i('media:'+JSON.stringify(media))
     var mediaPath = "file://"+media.get('path')
-    <!--var mediaPath = "./img/test.mp4"-->
     %>
-    <div>
-        <video id="video" class="clearfix" src="<%=mediaPath%>" width=640 height=480>
-            html5 video
+    <div class="row" style="text-align:center">
+        <video id="video" class="clearfix" src="<%=mediaPath%>" poster="img/img-video-placeholder.gif" width=640
+               height=380 onclick="this.play()">
         </video>
+        <% var video =document.getElementById('video')%>
+        <div style="text-align: center;">
+            <div class="btn btn-primary btn-large" onclick="video.play()">
+                <img style="height:25px" src="img/play.png"/>
+            </div>
+            <div class="btn btn-large" onclick="completeVideo('<%=id%>')">看完啦</div>
+        </div>
     </div>
-
-    <% var video =document.getElementById('video')%>
-
-    <div style="text-align: center;">
-        <div class="btn btn-primary btn-large" onclick="video.play()"> ▶</div>
-        <div class="btn btn-large" onclick="completeVideo('<%=id%>')">看完啦</div>
-    </div>
-    <p>media:<%=JSON.stringify(media)%></p>
-
-    <p>mediapath:<%=mediaPath%></p>
 
 </script>
 
