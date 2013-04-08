@@ -139,7 +139,7 @@
                 <div class="row row-top">
                     <h4 style="text-wrap:pre-line"><%=lesson.get("name")%></h4>
 
-                    <div class="lesson_label">
+                    <div class="pull-right lesson_label">
                         <img class="<%=lesson.id%>" src="img/label_new.png"/>
 
                         <p class="<%=lesson.id%>"><%=lesson.get("day_week")%></p>
@@ -147,15 +147,17 @@
                 </div>
                 <%
                 userdata = Sun.getuserdata('lesson',lesson.get('id'))
-                if(userdata['downloaded']!=true){
                 %>
-                <% } else{ %>
-                <% }%>
+                <div id="lessonbox_download_progress_<%=lesson.id%>"
+                     style="width:90%;margin-left:10px;margin-right:10px;display:none"
+                     class="row row-bottom progress">
+                    <div class="bar" style="width: 0%;"></div>
+                </div>
                 <div id="lessonbox_download_<%=lesson.id%>" class="btn btn-large <%=lesson.id%>"
                      style="display:<%if(userdata['downloaded']==true){%>none<%}%>"
                      onclick="Interfaces.download('<%=lesson.id%>')">下载
                 </div>
-                <a href='#lesson/<%=lesson.get("id")%>'>
+                <a href='#lesson/<%=lesson.get("id")%>' style="margin-left:10px;margin-right:10px">
                     <div id="lessonbox_progress_<%=lesson.id%>" class="row row-bottom"
                          style="display:<%if(userdata['downloaded']!=true){%>none<%}%>">
                         <%
