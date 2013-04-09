@@ -236,14 +236,13 @@
             %>
 
             <div id="pcontainer_<%=choice.id%>" class="pcontainer palette palette-clouds even"
-                 onclick="makeSelection('<%=choice.id%>')">
+                 onclick="makeSelection('<%=choice.id%>',true)">
                 <label class="radio">
                     <input class="answer"
                            id="<%=choice.id%>"
                            answer="<%= choice.answer%>"
                            type="radio"
-                           name="optionsRadios"
-                           onclick="makeSelection('<%=choice.id%>')">
+                           name="optionsRadios">
                     <%= target.get('choices')[i].display_text %>
                 </label>
             </div>
@@ -285,44 +284,33 @@
 
 
 <script type="text/template" id="tc_problem_multichoice">
-    <div class="span10">
-        <h3>??<%=target.get('id')%>
-            <% if(target.get('userdata')==true){%>(completed)<%}%>
-        </h3>
-
+    <div class="row">
         <p>
-            <% userdata = target.get('userdata') %>
-            userdata: <%=JSON.stringify(userdata) %>
+            <%=target.get('body')%>
         </p>
 
-        <p>
-            correct answers: <%=target.correct_answers %>
-        </p>
-
-        <p>
-            body: <%=target.get('body')%>
-        </p>
-
-        <p>
+        <div>
             <%
+            userdata = Sun.getuserdata('problem',target.get('id'))
             for(var i =0 ; i < target.get("choices").length; i++) {
             var choice = target.get("choices")[i]
             %>
 
-        <div class="palette palette-clouds">
-            <label class="checkbox">
-                <input class="answer"
-                       id="<%=choice.id%>"
-                       answer="<%= choice.answer%>"
-                       type="checkbox"
-                       name="optionsRadios">
-                <%= target.get('choices')[i].display_text %>
-            </label>
+            <div id="pcontainer_<%=choice.id%>" class="pcontainer palette palette-clouds even"
+                 onclick="makeSelection('<%=choice.id%>',false)">
+                <label class="checkbox">
+                    <input class="answer"
+                           id="<%=choice.id%>"
+                           answer="<%= choice.answer%>"
+                           type="checkbox"
+                           name="optionsRadios">
+                    <%= target.get('choices')[i].display_text %>
+                </label>
+            </div>
+            <% } %>
         </div>
-        <% } %>
-        </p>
 
-        <div class="">
+        <div class="result">
             <div id="grading_result" class="pull-left">
                 <% if(userdata.correct==true) { %>
                 Right:)
@@ -330,22 +318,27 @@
                 WRONG!!!
                 <% } %>
             </div>
+
             <div class="pull-right">
-                <%=currentMode%>
-                <% if(currentMode != MODE.VIEW_ONLY) { %>
-                <% if(userdata.current == 'EOF') { %>
-                <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">??</a>
-                <% }else{ %>
+                <% if(currentMode != MODE.VIEW_ONLY){
+                if(userdata.current == 'EOF') { %>
+                <a id="next-question" class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+                <% }else if(userdata.current == undefined){ %>
                 <a id="submit_answer" class="btn btn-large  btn-primary"
-                   onclick="grading('<%=target.get('id')%>')">????</a>
+                   onclick="grading('<%=target.get('id')%>')">提交答案</a>
                 <% } %>
-                <% }else{ %>
+                <% } else { %>
                 <div>
-                    <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">??</a>
+                    <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
                 </div>
                 <% } %>
             </div>
         </div>
+    </div>
+    <div class="row">
+        <p>
+            <%=JSON.stringify(target)%>
+        </p>
     </div>
 
 </script>
@@ -466,7 +459,8 @@
                 <% } %>
             </div>
         </div>
-    </div></script>
+    </div>
+</script>
 <script type="text/template" id="tc_video">
     <h1><%=target.get('name')%></h1>
 

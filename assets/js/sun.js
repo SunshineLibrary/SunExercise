@@ -249,7 +249,6 @@ jQuery(function () {
             userdata = Sun.getuserdata(type, id)
             return userdata['current'] == "EOF"
         }
-
     }
 
     Interfaces = {
@@ -263,11 +262,11 @@ jQuery(function () {
 
         onJsonReceived: function () {
             console.log("onJsonReceived")
-            location.reload()
         },
 
         onJsonParsed: function () {
             console.log("onJsonParsed")
+            location.reload()
         },
 
         onSyncCompleted: function () {
@@ -288,10 +287,9 @@ jQuery(function () {
                 Sun.adduserdata()
             }
 //            if (downloaded == "true") {
-            if (downloaded) {
+//            if (downloaded) {
                 changeDownloadBtn(lessonId, downloaded)
-            }
-
+//            }
         },
 
         loadUrl: function (route) {

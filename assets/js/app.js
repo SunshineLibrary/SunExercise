@@ -300,7 +300,6 @@ jQuery(function () {
 
                                 if (problem.get("type") == "0") {
                                     setBody(new SingleChoiceProblemView({model: problem}))
-                                    setFooter(new SingleChoiceProblemFooterView({model: problem}))
                                 } else if (problem.get("type") == "1") {
                                     setBody(new MultiChoiceProblemView({model: problem}))
                                 } else if (problem.get("type") == "2") {
@@ -398,12 +397,26 @@ jQuery(function () {
                 })
             }
 
-            makeSelection = function (id) {
-                $('.pcontainer').each(function (i, p) {
-                    $(p).removeClass('odd')
-                })
-                $('#' + id).prop('checked', true)
-                $('#pcontainer_' + id).addClass('odd')
+            makeSelection = function (id, excluded) {
+                Log.i('make selection')
+                if (excluded) {
+                    $('.pcontainer').each(function (i, p) {
+                        $(p).removeClass('odd')
+                    })
+                }
+                var choice = $('#' + id)
+                var checked = choice.prop('checked')
+                if (excluded) {
+                    choice.prop('checked', true)
+                    $('#pcontainer_' + id).addClass('odd')
+                } else {
+                    choice.prop('checked', !checked)
+                    if (!checked) {
+                        $('#pcontainer_' + id).addClass('odd')
+                    } else {
+                        $('#pcontainer_' + id).removeClass('odd')
+                    }
+                }
             }
 
             viewStage = function (id) {
