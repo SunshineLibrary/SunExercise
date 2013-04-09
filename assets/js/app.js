@@ -176,8 +176,10 @@ jQuery(function () {
                                     }
                                 }
                                 if (completed) {
-                                    Sun.setcomplete("activity", problem.get("activity_id"))
-                                    app_router.navigate("summary/" + problem.get("activity_id"), {trigger: true, replace: true})
+//                                    Sun.setcomplete("activity", activity.get("id"))
+                                    activity.complete(null, function () {
+                                        app_router.navigate("summary/" + activity.get("id"), {trigger: true, replace: true})
+                                    })
                                 }
                             } else if (activity.get("type") == 2) {
                                 var media = Sun.getmedia(activity.get('media_id'))
