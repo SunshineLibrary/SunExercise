@@ -7,6 +7,7 @@
     <script src="js/libs/jquery/jquery-1.9.1.js"></script>
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
     <script src="js/libs/logger/Logger.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
 
     <link href="css/app.css" rel="stylesheet">
     <link href="css/progress.css" rel="stylesheet">
@@ -274,12 +275,6 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <p>
-            <%=JSON.stringify(target)%>
-        </p>
-    </div>
-
 </script>
 
 
@@ -335,12 +330,6 @@
             </div>
         </div>
     </div>
-    <div class="row">
-        <p>
-            <%=JSON.stringify(target)%>
-        </p>
-    </div>
-
 </script>
 
 
@@ -483,6 +472,15 @@
     </div>
 
 </script>
+
+<div id="myModal" class="modal hide fade">
+    <div class="modal-header">
+        <h3>同步中，请等待</h3>
+    </div>
+    <div class="modal-body">
+        <p>加载完成后会返回首页</p>
+    </div>
+</div>
 
 <script type="text/template" id="tf_lesson"></script>
 <script type="text/template" id="tf_subject"></script>

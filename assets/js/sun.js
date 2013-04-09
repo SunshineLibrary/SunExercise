@@ -262,11 +262,15 @@ jQuery(function () {
 
         onJsonReceived: function () {
             console.log("onJsonReceived")
+            $('#myModal').modal({
+                backdrop: 'static',
+                keyboard: false
+            })
         },
 
         onJsonParsed: function () {
             console.log("onJsonParsed")
-            location.reload()
+            window.location.replace(location.pathname);
         },
 
         onSyncCompleted: function () {
@@ -288,7 +292,7 @@ jQuery(function () {
             }
 //            if (downloaded == "true") {
 //            if (downloaded) {
-                changeDownloadBtn(lessonId, downloaded)
+            changeDownloadBtn(lessonId, downloaded)
 //            }
         },
 
@@ -299,6 +303,12 @@ jQuery(function () {
         sync: function () {
             if (typeof android == "undefined") {
                 console.log("[WEB]sync")
+                setTimeout(function () {
+                    setTimeout(function () {
+                        Interfaces.onJsonParsed()
+                    }, 2000)
+                    Interfaces.onJsonReceived()
+                }, 1000)
             } else {
                 console.log("[ANDROID]sync")
                 android.sync()
