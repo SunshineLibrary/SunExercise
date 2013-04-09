@@ -311,7 +311,7 @@ jQuery(function () {
                 console.log("[WEB]download," + id)
                 setTimeout(function () {
                     setTimeout(function () {
-//                        Interfaces.onCollectionDownloaded(id, true)
+                        Interfaces.onCollectionDownloaded(id, true)
                     }, 1000)
                     changeDownloadProgress(id, 20)
                 }, 1000)
