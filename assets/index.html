@@ -261,14 +261,14 @@
             <div class="pull-right">
                 <% if(currentMode != MODE.VIEW_ONLY){
                 if(userdata.current == 'EOF') { %>
-                <a id="next-question" class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+                <a id="next-question" class="btn btn-large btn-answer" href="#activity/<%=target.get('activity_id')%>">继续</a>
                 <% }else if(userdata.current == undefined){ %>
-                <a id="submit_answer" class="btn btn-large  btn-primary"
+                <a id="submit_answer" class="btn btn-large  btn-primary btn-answer"
                    onclick="grading('<%=target.get('id')%>')">提交答案</a>
                 <% } %>
                 <% } else { %>
                 <div>
-                    <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+                    <a class="btn btn-large btn-answer" href="#activity/<%=target.get('activity_id')%>">继续</a>
                 </div>
                 <% } %>
             </div>
@@ -351,7 +351,7 @@
 
 
 <script type="text/template" id="tc_problem_singlefilling">
-    <div class="row">
+    <div class="row subject">
         <span class="quest-type">（填空题）</span>
 
         <p>
@@ -362,25 +362,25 @@
 
     <div class="row">
         <div class="span10 controls">
-            <input type="text" id="answer" style="width:100%;margin-top:5px;height:30px" placeholder="填写答案">
+            <input type="text" id="answer" style="width:100%;height:30px" placeholder="填写答案">
         </div>
 
         <div class="span2">
             <% if(currentMode != MODE.VIEW_ONLY) { %>
 
             <% if(userdata.current == 'EOF') { %>
-            <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+            <a class="btn btn-large btn-answer" href="#activity/<%=target.get('activity_id')%>">继续</a>
             <% }else{ %>
-            <a id="submit_answer" class="btn btn-large  btn-primary"
+            <a id="submit_answer" class="btn btn-large btn-primary btn-answer"
                onclick="grading('<%=target.get('id')%>')">提交答案</a>
             <% } %>
             <% } else { %>
-            <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+            <a class="btn btn-large btn-answer" href="#activity/<%=target.get('activity_id')%>">继续</a>
             <% } %>
         </div>
     </div>
 
-    <div id="grading_result" class="row">
+    <div id="grading_result" class="row pull-right">
         <% if(userdata.correct==true) { %>
         Right:)
         <% } else if (userdata.correct==false) { %>
