@@ -42,40 +42,72 @@
     vertical-align: middle;
 }
 
-#correctness{
+#centerd-correctness{
     width: 350px;
     margin: auto;
     position: relative;
 }
 
-#correctness img{
+#centerd-correctness .image-warp{
+    width: 200px;
+    top: 60px;
+    left: 0px;
+    position: relative;
+}
+
+.image-warp img{
     height: 200px;
-    margin-top: 60px;
     top: 0px;
     left: 0px;
     position: absolute;
 }
 
-#correctness .title{
+.image-warp #zhengquelv{
+    top:46px;
+    left: 73px;
+    position: absolute;
+}
+
+.image-warp .rating-warp{
+    color: #555555;
+    width: 100px;
+    height: 60px;
+    margin: auto;
+}
+
+.rating-warp #rating{
+    font-size: 60px;
+    text-align: center;
+    padding-top: 90px;
+}
+
+.image-warp #sign{
+    font-size: 18px;
+    margin-top: 10px;
+    position: absolute;
+    top: 94px;
+}
+
+#centerd-correctness .title{
     font-size: 18px;
     color: #555555;
 }
 
-#correctness .number{
+#centerd-correctness .number{
     font-size: 36px;
     color: #555555;
-    text-align: center;
     margin-top: 16px;
+    text-align: center;
 }
 
-#correctness #right{
+#centerd-correctness #right{
     position: absolute;
-    top: 108px;
+    top: 106px;
     left: 250px;
 }
 
-#correctness #wrong{
+#centerd-correctness #wrong{
     position: absolute;
-    top: 108px;
+    top: 106px;
     left: 310px;
 }
