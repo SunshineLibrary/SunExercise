@@ -207,7 +207,7 @@ jQuery(function () {
                                     app_router.navigate("section/" + activity.get('section_id'), {trigger: true, replace: true})
                                 }
                             } else if (activity.get("type") == 2) {
-                                Log.i("video activity type 2")
+                                Log.i("video activity type 2," + JSON.stringify(activity))
                                 setBody(new VideoView({model: activity}))
                                 reloadPage()
                             }

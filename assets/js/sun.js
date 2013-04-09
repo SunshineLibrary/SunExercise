@@ -290,10 +290,9 @@ jQuery(function () {
                 console.log("[ANDROID]onCollectionDownloaded," + lessonId + "," + downloaded)
                 Sun.adduserdata()
             }
-//            if (downloaded == "true") {
-//            if (downloaded) {
-            changeDownloadBtn(lessonId, downloaded)
-//            }
+            if (downloaded == "true") {
+                changeDownloadBtn(lessonId, downloaded)
+            }
         },
 
         loadUrl: function (route) {
@@ -320,7 +319,7 @@ jQuery(function () {
                 console.log("[WEB]download," + id)
                 setTimeout(function () {
                     setTimeout(function () {
-                        Interfaces.onCollectionDownloaded(id, true)
+                        Interfaces.onCollectionDownloaded(id, "true")
                     }, 1000)
                     changeDownloadProgress(id, 20)
                 }, 1000)
