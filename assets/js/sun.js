@@ -276,7 +276,7 @@ jQuery(function () {
 
         onCollectionProgress: function (collectionId, percentage) {
             console.log("onCollectionProgress," + collectionId + "," + percentage)
-            changeDownloadProgress(collectionId, percentage*100)
+            changeDownloadProgress(collectionId, percentage * 100)
         },
 
         onCollectionDownloaded: function (lessonId, downloaded) {
@@ -287,6 +287,7 @@ jQuery(function () {
                 console.log("[ANDROID]onCollectionDownloaded," + lessonId + "," + downloaded)
                 Sun.adduserdata()
             }
+//            if (downloaded == "true") {
             if (downloaded) {
                 changeDownloadBtn(lessonId, downloaded)
             }
@@ -362,7 +363,7 @@ jQuery(function () {
 function changeDownloadProgress(id, percentage) {
     $('#lessonbox_download_' + id).hide()
     $('#lessonbox_download_progress_' + id).show()
-    $('#lessonbox_download_progress_' + id+" >div").css('width', percentage + "%")
+    $('#lessonbox_download_progress_' + id + " >div").css('width', percentage + "%")
 }
 
 function changeDownloadBtn(id, downloaded) {

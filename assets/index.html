@@ -8,8 +8,9 @@
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
     <script src="js/libs/logger/Logger.js"></script>
 
-    <link href="css/app2.css" rel="stylesheet">
+    <link href="css/app.css" rel="stylesheet">
     <link href="css/progress.css" rel="stylesheet">
+    <link href="css/summary.css" rel="stylesheet">
     <script src="js/libs/underscore/underscore.js"></script>
     <script src="js/libs/backbone/backbone.js"></script>
 
@@ -395,16 +396,77 @@
 <script type="text/template" id="tc_activity"></script>
 <script type="text/template" id="tc_section"></script>
 <script type="text/template" id="tc_summary">
-    <h1>总结页(not implemented)</h1>
-    <%=JSON.stringify(target)%>
-    <% if(target.get('next_activity')!=undefined) {%>
-    <a class="btn btn-large" href="#activity/<%=target.get('next_activity')%>">跳转继续</a>
-    <% }else if(target.get('next_lesson')!=undefined) { %>
-    <a class="btn btn-large" href="#lesson/<%=target.get('next_lesson')%>">返回课程</a>
-    <% }else{ %>
-    <a class="btn btn-large" href="#section/<%=target.get('section_id')%>">继续</a>
-    <% } %>
-</script>
+
+    <div>
+        <%
+        n_correct = 0
+        n_wrong = 0
+        for(var i =0;i < target.get('problems').length;i++){
+        var problem= target.get('problems').models[i]
+        var userdata= problem.get('userdata')
+        Log.i('problem userdata:'+JSON.stringify(userdata))
+        var correct= userdata['correct']
+        if(correct==true){
+        n_correct++
+        }else if (correct ==false){
+        n_wrong++
+        }
+        }
+        Log.i('problem statistic:'+n_correct+','+n_wrong)
+        persentage = ((n_correct+n_wrong)==0)?0:(n_correct / (n_correct + n_wrong) * 100)
+        %>
+    </div>
+    <div class="summary-warp">
+        <div class="upper-warp">
+            <div id="centerd-correctness">
+                <% pic_name = Math.ceil(persentage / 10) * 10 + "" %>
+
+                <div class="image-warp">
+                    <img src="img/persentage/<%= pic_name %>%.png" alt="?????">
+
+                    <p id="zhengquelv" class="title">正确率</p>
+
+                    <div class="rating-warp">
+                        <p id="rating"><%= Math.ceil(persentage)%></p>
+                    </div>
+
+                    <%
+                    sign_left = 130
+                    if (persentage < 5)
+                    sign_left = 120
+                    else if (Math.ceil(persentage) >= 100 )
+                    sign_left = 145
+                    %>
+
+                    <p id="sign" style="left:<%=sign_left%>px">%</p>
+                </div>
+
+                <div id="right">
+                    <p class="title">正确</p>
+
+                    <p class="number"><%= n_correct%></p>
+                </div>
+                <div id="wrong">
+                    <p class="title">错误</p>
+
+                    <p class="number"><%= n_wrong%></p>
+                </div>
+            </div>
+        </div>
+        <div class="lower-warp">
+            <p>SB，差得远呀！</p>
+
+            <div class="center-warp">
+                <% if(target.get('next_activity')!=undefined) {%>
+                <a class="btn" href="#activity/<%=target.get('next_activity')%>">继续</a>
+                <% }else if(target.get('next_lesson')!=undefined) { %>
+                <a class="btn" href="#lesson/<%=target.get('next_lesson')%>">回到课程</a>
+                <% }else{ %>
+                <a class="btn" href="#section/<%=target.get('section_id')%>">继续</a>
+                <% } %>
+            </div>
+        </div>
+    </div></script>
 <script type="text/template" id="tc_video">
     <h1><%=target.get('name')%></h1>
 
