@@ -291,7 +291,9 @@ jQuery(function () {
                 Sun.adduserdata()
             }
             if (downloaded == "true") {
-                changeDownloadBtn(lessonId, downloaded)
+                changeDownloadBtn(lessonId, true)
+            } else{
+                changeDownloadBtn(lessonId, false)
             }
         },
 
@@ -319,7 +321,7 @@ jQuery(function () {
                 console.log("[WEB]download," + id)
                 setTimeout(function () {
                     setTimeout(function () {
-                        Interfaces.onCollectionDownloaded(id, "true")
+                        Interfaces.onCollectionDownloaded(id, "false")
                     }, 1000)
                     changeDownloadProgress(id, 20)
                 }, 1000)
@@ -382,7 +384,7 @@ function changeDownloadBtn(id, downloaded) {
         $('.lesson_label >img.' + id).addClass('hide');
         $('.lesson_label >p.' + id).addClass('show');
     } else {
-        $('#lessonbox_download_' + id).hide()
+        $('#lessonbox_download_' + id).show()
         $('#lessonbox_progress_' + id).hide()
         $('#lessonbox_download_progress_' + id).hide()
     }
