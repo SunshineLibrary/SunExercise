@@ -253,7 +253,15 @@ jQuery(function () {
 
     Interfaces = {
         backpage: function () {
-            goUpstairs()
+            url = window.location.href
+            if (url.lastIndexOf("#") < 0 || url.indexOf("subject") >= 0) {
+                // not in route, like index.html
+                // or at subject page, like index.html#subject/123456
+                console.log("backpage," + url)
+                android.showExitDialog()
+            } else {
+                goUpstairs()
+            }
         },
 
         onSyncStart: function () {
@@ -292,7 +300,7 @@ jQuery(function () {
             }
             if (downloaded == "true") {
                 changeDownloadBtn(lessonId, true)
-            } else{
+            } else {
                 changeDownloadBtn(lessonId, false)
             }
         },
@@ -321,7 +329,7 @@ jQuery(function () {
                 console.log("[WEB]download," + id)
                 setTimeout(function () {
                     setTimeout(function () {
-                        Interfaces.onCollectionDownloaded(id, "false")
+                        Interfaces.onCollectionDownloaded(id, "true")
                     }, 1000)
                     changeDownloadProgress(id, 20)
                 }, 1000)
