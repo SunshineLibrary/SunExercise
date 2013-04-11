@@ -39,6 +39,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     private static final int MENU_DUMP = 38;
     private static final int MENU_CLEAN_USER_DATA = 39;
     private static final int MENU_RELOAD = 40;
+    private static final int MENU_VIDEO = 41;
 
     private static final String TAG = "Main";
     private static final String ASSETS = "file:///android_asset/";
@@ -154,6 +155,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
             menu.add(0, MENU_CLEAN_USER_DATA, 0, "Reset");
             menu.add(0, MENU_RELOAD, 0 , "Reload");
             menu.add(0, MENU_DUMP, 0 , "Dump");
+            menu.add(0, MENU_VIDEO, 0, "Video");
             menu.add(1, MENU_SYNC, 0, "Sync");
             menu.add(1, MENU_DOWNLOAD, 0, "Download");
             menu.add(2, MENU_DEBUG, 0, "TestCase");
@@ -192,6 +194,9 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
                 return true;
             case MENU_DUMP:
                 new TestCase().start(TestCase.DUMP);
+                return true;
+            case MENU_VIDEO:
+                mWebView.loadUrl(ASSETS + "test" + HTML);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
