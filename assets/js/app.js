@@ -212,7 +212,8 @@ jQuery(function () {
                                 }
                             } else if (activity.get("type") == 2) {
                                 Log.i("video activity type 2," + JSON.stringify(activity))
-                                setBody(new VideoView({model: activity}))
+                                var media = Sun.getmedia(activity.get('media_id'))
+                                setBody(new VideoView({model: activity, media: media}))
                                 reloadPage()
                             }
                         }
