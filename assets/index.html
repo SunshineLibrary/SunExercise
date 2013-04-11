@@ -25,12 +25,11 @@
 </head>
 <body>
 
-<div id="header">
-</div>
+
+<div id="header"></div>
 
 <div class="container" id="content_container">
     <div id="content">loading content</div>
-
 </div>
 
 <div class="navbar navbar-inverse navbar-fixed-bottom" style="display: none">
@@ -48,9 +47,13 @@
 
 <!--Many templates-->
 <script type="text/template" id="th_subjects">
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <ul class="nav">
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+            <a class="brand" href="#">阳光提高班</a>
+            <div class="nav-collapse collapse">
+            
+                <ul class="nav">
                 <%
                 for(var i=0 ; i < target.length ; i++){
                 subject = target.at(i)
@@ -60,22 +63,23 @@
                     <a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>
                 </li>
                 <% }} %>
-            </ul>
-            <ul class="nav pull-right">
+                </ul>
+                <ul class="nav pull-right">
                 <li>
                     <div class="btn" onclick="Interfaces.sync()">
                         <img src="img/btn_main_refresh.png"/>
                     </div>
                 </li>
-            </ul>
-        </div>
+                </ul>
+            </div>
     </div>
+</div>
 </script>
 
 <script type="text/template" id="th_lesson">
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="navbar-inner">
-            <div class="nav-collapse collapse">
+            <div class="nav-collapse collapse" style="margin-left:0px">
                 <ul class="nav">
                     <li>
                         <a href="#subject/<%= target.get('subject_id')%>">返回</a>
@@ -151,7 +155,7 @@
                 userdata = Sun.getuserdata('lesson',lesson.get('id'))
                 %>
                 <div id="lessonbox_download_progress_<%=lesson.id%>"
-                     style="width:90%;margin-left:10px;margin-right:10px;display:none"
+                     style="width:90%;display:none"
                      class="row row-bottom progress">
                     <div class="bar" style="width: 0%;"></div>
                 </div>
@@ -159,8 +163,7 @@
                      style="display:<%if(userdata['downloaded']==true){%>none<%}%>"
                      onclick="Interfaces.download('<%=lesson.id%>')">下载
                 </div>
-                <a href='#lesson/<%=lesson.get("id")%>' style="margin-left:10px;margin-right:10px">
-                    <div id="lessonbox_progress_<%=lesson.id%>" class="row row-bottom"
+                <div id="lessonbox_progress_<%=lesson.id%>" class="row row-bottom"
                          style="display:<%if(userdata['downloaded']!=true){%>none<%}%>">
                         <%
                         var stageCount = 2
@@ -172,8 +175,7 @@
                             <div class="ball" style="display:block"><img src="img/StageIcon_<%=i+1%>_Grey.png"/></div>
                         </div>
                         <%}%>
-                    </div>
-                </a>
+                </div>
             </div>
         </div>
         <% }) %>
