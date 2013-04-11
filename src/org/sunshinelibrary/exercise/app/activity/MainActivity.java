@@ -38,6 +38,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     private static final int MENU_LOG_DB = 37;
     private static final int MENU_DUMP = 38;
     private static final int MENU_CLEAN_USER_DATA = 39;
+    private static final int MENU_RELOAD = 40;
 
     private static final String TAG = "Main";
     private static final String ASSETS = "file:///android_asset/";
@@ -150,13 +151,15 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (DEBUG) {
-            menu.add(1, MENU_DEBUG, 0, "TestCase");
-            menu.add(0, MENU_CLEAN, 0, "Clean");
-            menu.add(2, MENU_SYNC, 0, "Sync");
-            menu.add(2, MENU_DOWNLOAD, 0, "Download");
             menu.add(0, MENU_CLEAN_USER_DATA, 0, "Reset");
-            menu.add(0, MENU_LOG_DB, 0, "LogDB");
+            menu.add(0, MENU_RELOAD, 0 , "Reload");
             menu.add(0, MENU_DUMP, 0 , "Dump");
+            menu.add(1, MENU_SYNC, 0, "Sync");
+            menu.add(1, MENU_DOWNLOAD, 0, "Download");
+            menu.add(2, MENU_DEBUG, 0, "TestCase");
+            menu.add(2, MENU_CLEAN, 0, "Clean");
+            menu.add(2, MENU_LOG_DB, 0, "LogDB");
+
             return true;
         } else {
             return super.onCreateOptionsMenu(menu);
@@ -180,6 +183,9 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
                 return true;
             case MENU_CLEAN_USER_DATA:
                 new TestCase().start(TestCase.CLEAN_USER_DATA);
+                return true;
+            case MENU_RELOAD:
+                mWebView.loadUrl(ASSETS + "index" + HTML);
                 return true;
             case MENU_LOG_DB:
                 new TestCase().start(TestCase.LOG_DB);
