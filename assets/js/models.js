@@ -73,7 +73,8 @@ jQuery(function () {
                 day: date.getDate(),
                 month: date.getMonth() + 1,
                 year: date.getYear() + 1900,
-                stages: stages
+                stages: stages,
+                userdata: Sun.getuserdata("lesson", options.id)
             })
         }
     })
@@ -240,20 +241,30 @@ jQuery(function () {
      */
     Problem = Backbone.Model.extend({
         initialize: function (options) {
-            this.set("userdata", Sun.getuserdata("problem", options.id))
+            this.set({
+                userdata: Sun.getuserdata("problem", options.id),
+                parent_id: options['activity_id']
+            })
             if (this.get('choices') != undefined) {
-                var ANSWERS = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F"}
-                var correct_answers = []
-                for (var i = 0; i < this.get('choices').length; i++) {
-                    var choice = this.get('choices')[i]
-                    if (choice['answer'] == "yes") {
-                        correct_answers.push(ANSWERS[i])
+                var type = options['type']
+                if (type == '2') {
+                    var correct_answers = options.choices[0]['display_text']
+                    this.set({
+                        correct_answers: correct_answers
+                    })
+                } else if (type == '0' || type == '1') {
+                    var ANSWERS = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F"}
+                    var correct_answers = []
+                    for (var i = 0; i < this.get('choices').length; i++) {
+                        var choice = this.get('choices')[i]
+                        if (choice['answer'] == "yes") {
+                            correct_answers.push(ANSWERS[i])
+                        }
                     }
+                    this.set({
+                        correct_answers: correct_answers
+                    })
                 }
-                this.set({
-                    parent_id: options['activity_id'],
-                    correct_answers: correct_answers
-                })
             }
         },
         grading: function (options) {

@@ -114,7 +114,10 @@ jQuery(function () {
     SingleChoiceProblemView = Backbone.View.extend({
         template: Templates.Content.problem_sc,
         render: function () {
-            this.el = this.template({target: this.model})
+            this.el = this.template({
+                target: this.model,
+                activity: this.options['activity']
+            })
             return this
         }
     })
@@ -122,7 +125,10 @@ jQuery(function () {
     MultiChoiceProblemView = Backbone.View.extend({
         template: Templates.Content.problem_mc,
         render: function () {
-            this.el = this.template({target: this.model})
+            this.el = this.template({
+                target: this.model,
+                activity: this.options['activity']
+            })
             return this
         }
     })
@@ -130,7 +136,10 @@ jQuery(function () {
     SingleChoiceProblemFooterView = Backbone.View.extend({
         template: Templates.Footer.problem_sc,
         render: function () {
-            this.el = this.template({target: this.model})
+            this.el = this.template({
+                target: this.model,
+                activity: this.options['activity']
+            })
             return this
         }
     })
@@ -138,7 +147,10 @@ jQuery(function () {
     SingleFillingProblemView = Backbone.View.extend({
         template: Templates.Content.problem_sf,
         render: function () {
-            this.el = this.template({target: this.model})
+            this.el = this.template({
+                target: this.model,
+                activity: this.options['activity']
+            })
             return this
         }
     })
@@ -167,7 +179,7 @@ jQuery(function () {
      */
     VideoView = Backbone.View.extend({
         template: Templates.Content.video,
-        media:undefined,
+        media: undefined,
         render: function () {
             this.el = this.template({target: this.model, media: this.options['media']})
             return this

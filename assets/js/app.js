@@ -51,6 +51,10 @@ jQuery(function () {
                             })
                         )
                         reloadPage()
+
+                        $.each(subject.get('lessons').models, function (index, lesson) {
+                            changeDownloadBtn(lesson.get('id'), lesson.get('userdata')['downloaded'])
+                        })
                     })
                 })
             })
@@ -299,11 +303,11 @@ jQuery(function () {
                                 }))
 
                                 if (problem.get("type") == "0") {
-                                    setBody(new SingleChoiceProblemView({model: problem}))
+                                    setBody(new SingleChoiceProblemView({model: problem, activity: activity}))
                                 } else if (problem.get("type") == "1") {
-                                    setBody(new MultiChoiceProblemView({model: problem}))
+                                    setBody(new MultiChoiceProblemView({model: problem, activity: activity}))
                                 } else if (problem.get("type") == "2") {
-                                    setBody(new SingleFillingProblemView({model: problem}))
+                                    setBody(new SingleFillingProblemView({model: problem, activity: activity}))
                                 } else {
                                     Log.i("unsupported problem," + id + "," + problem.get("type"))
                                 }
