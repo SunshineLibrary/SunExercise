@@ -1,33 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="fill_parent"
-             android:layout_height="fill_parent"
-             android:orientation="vertical">
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
     <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/web"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="vertical">
+        android:id="@+id/web"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
 
         <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="欢迎来到阳光书屋"
-                android:textColor="#00ff00"
-                android:textSize="30sp"/>
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="欢迎来到阳光书屋"
+            android:textColor="#00ff00"
+            android:textSize="30sp"
+            android:visibility="gone" />
 
         <Button
-                android:id="@+id/TestBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="测试视频"
-                android:onClick="testVideo"
-                />
-
+            android:id="@+id/TestBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="testVideo"
+            android:text="测试视频"
+            android:visibility="gone" />
     </LinearLayout>
 
 </FrameLayout>
