@@ -456,13 +456,23 @@
         }
         }
         Log.i('problem statistic:'+n_correct+','+n_wrong)
-        persentage = ((n_correct+n_wrong)==0)?0:(n_correct / (n_correct + n_wrong) * 100)
+        percentage = ((n_correct+n_wrong)==0)?0:(n_correct / (n_correct + n_wrong) * 100)
+        var notion = ""
+        if(percentage<50){
+        notion="错了不少题哦！不过没关系，可以再看看讲解或请教老师和同学。加油，你一定能通过的！"
+        }else if(percentage<80){
+        notion="不错呀，大部分都对了！但你还有潜力可以做得更好，不要放过错题哦"
+        }else if(percentage<99){
+        notion="很厉害～保持现在的气势，继续向满分冲刺吧！！"
+        }else if(percentage==100){
+        notion="全对！！太棒了！！享受同学们羡慕的眼光吧！！"
+        }
         %>
     </div>
     <div class="summary-warp">
         <div class="upper-warp">
             <div id="centerd-correctness">
-                <% pic_name = Math.ceil(persentage / 10) * 10 + "" %>
+                <% pic_name = Math.ceil(percentage / 10) * 10 + "" %>
 
                 <div class="image-warp">
                     <img src="img/persentage/<%= pic_name %>%.png" alt="?????">
@@ -470,14 +480,14 @@
                     <p id="zhengquelv" class="title">正确率</p>
 
                     <div class="rating-warp">
-                        <p id="rating"><%= Math.ceil(persentage)%></p>
+                        <p id="rating"><%= Math.ceil(percentage)%></p>
                     </div>
 
                     <%
                     sign_left = 130
-                    if (persentage < 5)
+                    if (percentage < 5)
                     sign_left = 120
-                    else if (Math.ceil(persentage) >= 100 )
+                    else if (Math.ceil(percentage) >= 100 )
                     sign_left = 145
                     %>
 
@@ -497,7 +507,7 @@
             </div>
         </div>
         <div class="lower-warp">
-            <p>SB，差得远呀！</p>
+            <p><%=notion%></p>
 
             <div class="center-warp">
                 <% if(target.get('next_activity')!=undefined) {%>
