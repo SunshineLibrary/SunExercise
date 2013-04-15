@@ -253,6 +253,7 @@ jQuery(function () {
     Interfaces = {
         backpage: function () {
             url = window.location.href
+            Log.i("backpage," + url)
             if (url.lastIndexOf("#") < 0 || url.indexOf("subject") >= 0) {
                 // not in route, like index.html
                 // or at subject page, like index.html#subject/123456
@@ -277,7 +278,7 @@ jQuery(function () {
 
         onJsonParsed: function () {
             console.log("onJsonParsed")
-            window.location.replace(location.pathname);
+            window.location.replace(location.pathname)
         },
 
         onSyncCompleted: function () {
@@ -295,7 +296,6 @@ jQuery(function () {
                 console.log("[WEB]onCollectionDownloaded," + lessonId + "," + downloaded)
             } else {
                 console.log("[ANDROID]onCollectionDownloaded," + lessonId + "," + downloaded)
-                Sun.adduserdata()
             }
             if (downloaded == "true") {
                 changeDownloadBtn(lessonId, true)

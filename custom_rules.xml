@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="custom_rules">
+    <target name="clear">
+        <xpath input="AndroidManifest.xml"
+               expression="/manifest/@package"
+               output="manifest.package" />
+        <echo level="info">Clear package ${manifest.package}</echo>
+        <exec executable="${android.platform.tools.dir}/adb">
+            <arg value="shell"/>
+            <arg value="pm"/>
+            <arg value="clear"/>
+            <arg value="${manifest.package}"/>
+        </exec>
+    </target>
+    <target name="start">
+        <xpath input="AndroidManifest.xml"
+               expression="/manifest/@package"
+               output="manifest.package" />
+        <xpath input="AndroidManifest.xml"
+               expression="/manifest/application/activity[intent-filter/action/@android:name='android.intent.action.MAIN']/@android:name"
+               output="manifest.main" />
+        <echo level="info">Restart main activity ${manifest.package}/${manifest.main}</echo>
+        <exec executable="${android.platform.tools.dir}/adb">
+            <arg value="shell"/>
+            <arg value="am"/>
+            <arg value="start"/>
+            <arg value="-S"/>
+            <arg value="-a"/>
+            <arg value="android.intent.action.MAIN"/>
+            <arg value="-n"/>
+            <arg value="${manifest.package}/${manifest.main}"/>
+        </exec>
+    </target>
+    <target name="cls">
+        <echo level="info">Clear(flush) the entire log</echo>
+        <exec executable="${android.platform.tools.dir}/adb">
+            <arg value="logcat"/>
+            <arg value="-c"/>
+        </exec>
+    </target>
+    <target name="log">
+        <echo level="info">Start adb logcat</echo>
+        <exec executable="${android.platform.tools.dir}/adb">
+            <arg value="logcat"/>
+        </exec>
+    </target>
+    <target name="suite"
+        depends="clean, debug, install, start, clear, cls, log">
+    </target>
+</project>
