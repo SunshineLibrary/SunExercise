@@ -1,11 +1,15 @@
 package org.sunshinelibrary.exercise.metadata.operation;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import static org.sunshinelibrary.exercise.metadata.MetadataContract.Media;
 
 import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
+import org.sunshinelibrary.exercise.metadata.MetadataContract;
+import org.sunshinelibrary.exercise.metadata.MetadataContract.Lessons;
 import org.sunshinelibrary.support.api.ApiManager;
 import org.sunshinelibrary.support.utils.CursorUtils;
+import org.sunshinelibrary.support.utils.database.Contract;
 import org.sunshinelibrary.support.utils.sync.FileRequest;
 
 import java.io.File;
@@ -32,7 +36,8 @@ public class DownloadLessonOperation extends ExerciseOperation implements FileRe
         ArrayList<String> mediaIDs = CollectMediaIDs(mLessonId);
 
         if (mediaIDs.size() <= 0) {
-            updateDownloadFinish(mLessonId, true);
+            updateDownloadStatusById(MetadataContract.Lessons.CONTENT_URI, mLessonId,
+                    Contract.DOWNLOAD_STATUS.DOWNLOADED);
             ExerciseApplication.getInstance().getSyncManager().notifyCollectionDownloaded(mLessonId, true);
             return;
         }
@@ -61,6 +66,10 @@ public class DownloadLessonOperation extends ExerciseOperation implements FileRe
 
     @Override
     public void onProgressUpdate(float percentage) {
+        ContentValues values = new ContentValues();
+        values.put(Lessons._DOWNLOAD_FINISH, String.valueOf(percentage));
+        mContext.getContentResolver().update(Lessons.CONTENT_URI, values, Lessons._STRING_ID + "=?",
+                new String[]{mLessonId});
         ExerciseApplication.getInstance().getSyncManager().notifyCollectionDownloadProgress(mLessonId, percentage);
     }
 

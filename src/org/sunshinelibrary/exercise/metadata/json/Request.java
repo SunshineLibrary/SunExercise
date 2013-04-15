@@ -96,8 +96,8 @@ public class Request extends JSONObject {
         Cursor cursor = mResolver.query(AUTHORITY_URI.buildUpon().appendPath(table).build(), new String[]{recordColumn},
                 idColumn + "=?", new String[]{param.id}, null);
         String user_data = EMPTY;
-        if (cursor.getCount()> 0) {
-            cursor.moveToFirst();
+
+        if (cursor.moveToFirst()) {
             user_data = CursorUtils.getString(cursor, recordColumn);
         }
         cursor.close();
@@ -179,7 +179,7 @@ public class Request extends JSONObject {
         String selection = UserData._STRING_ID + "=?";
         String[] selectionArgs = new String[]{param.id};
         Cursor cursor = mResolver.query(UserData.CONTENT_URI, null, selection, selectionArgs, null);
-        if (cursor.getCount() > 0) {
+        if (cursor.moveToFirst()) {
             int count = mResolver.update(UserData.CONTENT_URI, c, selection, selectionArgs);
         } else {
             c.put(UserData._STRING_ID, param.id);

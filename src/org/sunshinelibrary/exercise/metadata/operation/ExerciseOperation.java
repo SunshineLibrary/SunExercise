@@ -14,12 +14,8 @@ import static org.sunshinelibrary.exercise.metadata.MetadataContract.*;
  * Date: 1/25/13
  * Trello:
  */
-public abstract class ExerciseOperation extends Operation {
+public class ExerciseOperation extends Operation {
     private static final String TAG = "ExerciseOperation";
-
-    void updateDownloadFinish(String folderID, boolean downloadFinish) {
-        updateDownloadFinish(Lessons.CONTENT_URI, Lessons._STRING_ID, folderID, downloadFinish);
-    }
 
     public ArrayList<String> AllSubjectIDs() {
         return getCollection(Subjects.CONTENT_URI, Subjects._STRING_ID, null, null);
@@ -56,4 +52,7 @@ public abstract class ExerciseOperation extends Operation {
                 Problems._MEDIA_ID, Problems._PARENT_ID, Problems._SEQUENCE, null);
         return combine(mediaIDs, mediaIDsWithinProblems);
     }
+
+    @Override
+    public void execute() {}
 }

@@ -26,7 +26,7 @@ public class LessonTable extends CustomizedAbstractTable {
             {Lessons._TIME, "DATETIME DEFAULT '2013-1-1'"},
             {Lessons._USER_PROGRESS, "TEXT DEFAULT \"\""},
             {Lessons._USER_RESULT, "FLOAT DEFAULT 0"},
-            {Lessons._DOWNLOAD_FINISH, "INTEGER DEFAULT 0"}
+            {Lessons._DOWNLOAD_FINISH, "TEXT DEFAULT \"none\""}
     };
 
     public LessonTable(DBHandler handler) {

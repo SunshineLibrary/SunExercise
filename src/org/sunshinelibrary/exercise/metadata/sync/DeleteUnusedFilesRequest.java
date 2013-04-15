@@ -20,7 +20,9 @@ public class DeleteUnusedFilesRequest {
                 .query(MetadataContract.Media.getMediaDeleteUnusedFileUri(), null, null, null, null);
         DeleteFileOperation dfo = new DeleteFileOperation(ApiManager.getInstance(ExerciseApplication.getInstance()
             .getBaseContext()).getFileManager());
+        cursor.moveToFirst();
         Log.i("DeleteUnusedFilesRequest", "count :" + cursor.getCount());
+        cursor.moveToPosition(-1);
         while (cursor.moveToNext()) {
             int fileId = cursor.getInt(cursor.getColumnIndex(MetadataContract.Media._FILE_ID));
             dfo.add(fileId);
