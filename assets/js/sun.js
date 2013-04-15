@@ -244,7 +244,6 @@ jQuery(function () {
             return userdata['current_viewed'] == 'EOF'
         },
 
-
         iscomplete: function (type, id) {
             userdata = Sun.getuserdata(type, id)
             return userdata['current'] == "EOF"
@@ -385,19 +384,21 @@ function changeDownloadProgress(id, percentage) {
 
 function changeDownloadBtn(id, downloaded) {
     if (downloaded) {
-        $('#lessonbox_download_' + id).hide()
         $('#lessonbox_download_progress_' + id).hide()
         $('#lessonbox_progress_' + id).show()
         $('.well.' + id).addClass('downloaded');
-        $('.lesson_label >img.' + id).addClass('hide');
-        $('.lesson_label >p.' + id).addClass('show');
-        $('.well.' + id).click(function (e) {
-            window.open('#lesson/' + id, '_self');
+        $('.lesson_label >img.' + id).hide();
+        $('.lesson_label >p.' + id).show();
+
+        $('.well.'+id).click(function(e){
+            window.open('#lesson/'+id,'_self');
         });
     } else {
         $('#lessonbox_download_' + id).show()
         $('#lessonbox_progress_' + id).hide()
         $('#lessonbox_download_progress_' + id).hide()
+        $('.lesson_label >img.' + id).show()
+        $('.lesson_label >p.' + id).hide()
+
     }
-//    $('.well .btn-large.' + id).addClass('hide');
 }
