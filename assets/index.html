@@ -26,7 +26,13 @@
 <body>
 
 
-<div id="header"></div>
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar-inner">
+            <div class="nav-collapse collapse" id="header">
+            </div>
+    </div>
+</div>
 
 <div class="container" id="content_container">
     <div id="content">loading content</div>
@@ -47,11 +53,7 @@
 
 <!--Many templates-->
 <script type="text/template" id="th_subjects">
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <a class="brand" href="#">阳光提高班</a>
-
-            <div class="nav-collapse collapse">
+            <a class="brand">阳光提高班</a>
 
                 <ul class="nav">
                     <%
@@ -71,9 +73,6 @@
                         </div>
                     </li>
                 </ul>
-            </div>
-        </div>
-    </div>
 </script>
 
 <script type="text/template" id="th_lesson">
@@ -145,41 +144,45 @@
         %>
 
         <div class="span3">
-            <div class="well <%=lesson.id%>" id="lesson">
+
+         <% userdata = Sun.getuserdata('lesson',lesson.get('id')) %>
+
+            <div class="well <%=lesson.id%>" id="lesson" style="background-color:<%if(userdata['downloaded']==true){%>#ffffff<%}%>" onclick="<%if(userdata['downloaded']==true){%>window.open('#lesson/'+'<%=lesson.id%>','_self')<%}%>">
                 <div class="row row-top">
-                    <h4 style="text-wrap:pre-line"><%=lesson.get("name")%></h4>
-
+                    <h4><%=lesson.get("name")%></h4>
                     <div class="pull-right lesson_label">
-                        <img class="<%=lesson.id%>" src="img/label_new.png"/>
+                        <img class="<%=lesson.id%>" src="img/label_new.png" style="display:<%if(userdata['downloaded']==true){%>none<%}%>"/>
 
-                        <p class="<%=lesson.id%>"><%=lesson.get("day_week")%></p>
+                        <p class="<%=lesson.id%>" style="display:<%if(userdata['downloaded']!=true){%>none<%}%>"><%=lesson.get("day_week")%></p>
                     </div>
                 </div>
-                <%
-                userdata = Sun.getuserdata('lesson',lesson.get('id'))
-                %>
-                <div id="lessonbox_download_progress_<%=lesson.id%>"
-                     style="width:90%;display:none"
-                     class="row row-bottom progress">
-                    <div class="bar" style="width: 0%;"></div>
-                </div>
+               
+               <div class="row row-bottom">
+                
                 <div id="lessonbox_download_<%=lesson.id%>" class="btn btn-large <%=lesson.id%>"
                      style="display:<%if(userdata['downloaded']==true){%>none<%}%>"
                      onclick="Interfaces.download('<%=lesson.id%>')">下载
                 </div>
-                <div id="lessonbox_progress_<%=lesson.id%>" class="row row-bottom"
-                     style="display:<%if(userdata['downloaded']!=true){%>none<%}%>">
-                    <%
-                    var stageCount = 2
-                    var stageWidth = 100/stageCount
-                    for(var i=0;i < stageCount; i++){
-                    %>
-                    <div class="lessonProgressBar" style="width:<%=stageWidth%>%">
-                        <div class="rectangle" style="display:block"></div>
-                        <div class="ball" style="display:block"><img src="img/StageIcon_<%=i+1%>_Grey.png"/></div>
-                    </div>
-                    <%}%>
+                <div id="lessonbox_download_progress_<%=lesson.id%>"
+                     style="width:90%;display:none"
+                     class="row row-bottom-content progress">
+                    <div class="bar" style="width: 0%;"></div>
                 </div>
+                <div id="lessonbox_progress_<%=lesson.id%>" class="row row-bottom-content"
+                         style="display:<%if(userdata['downloaded']!=true){%>none<%}%>">
+                        <%
+                        var stageCount = 2
+                        var stageWidth = 100/stageCount
+                        for(var i=0;i < stageCount; i++){
+                        %>
+                        <div class="lessonProgressBar" style="width:<%=stageWidth%>%">
+                            <div class="rectangle" style="display:block"></div>
+                            <div class="ball" style="display:block"><img src="img/StageIcon_<%=i+1%>_Grey.png"/></div>
+                        </div>
+                        <%}%>
+
+                </div>
+               </div>
             </div>
         </div>
         <% }) %>
@@ -521,27 +524,37 @@
         </div>
     </div>
 </script>
+
 <script type="text/template" id="tc_video">
-    <h1><%=target.get('name')%></h1>
+   <!--<h1><%=target.get('name')%></h1>-->
+
+   <%isViewed=Sun.isviewed('media',target.get("id"))%>
 
     <%
     id = target.get("id")
     Log.i('media:'+JSON.stringify(media))
     var mediaPath = "file://"+media.get('path')
     %>
-    <div class="row" style="text-align:center">
-        <video id="video" class="clearfix" src="<%=mediaPath%>" poster="img/img-video-placeholder.gif" width=640
-               height=380 onclick="this.play()">
+    <div class="row" style="text-align:center;margin-left:auto; margin-right:auto; margin-top:90px">
+        <video id="video" class="clearfix" src="<%=mediaPath%>" poster="img/img-video-placeholder.gif" width=560
+               height=420 onclick="this.play()">
         </video>
-        <% var video =document.getElementById('video')%>
+        <!--<% var video =document.getElementById('video')%>-->
         <div style="text-align: center;">
-            <div class="btn btn-primary btn-large" onclick="video.play()">
-                <img style="height:25px" src="img/play.png"/>
-            </div>
-            <div class="btn btn-large" onclick="completeVideo('<%=id%>')">看完啦</div>
+            <!--<div class="btn btn-primary btn-large" onclick="video.play()">-->
+            <!--<img style="height:25px" src="img/play.png"/>-->
+            <!--</div>-->
+            <button type="button" class="btn btn-large"  style=" 
+                background-color: #b2d4a1;
+                background-image: none;
+                border: none;
+                color: #ffffff;
+                text-shadow: none;"
+                onclick="completeVideo('<%=id%>')" <%if(isViewed){%>disabled="disabled"<%}%>>
+                继续学习
+            </button>
         </div>
     </div>
-
 </script>
 
 <div id="myModal" class="modal hide fade">
