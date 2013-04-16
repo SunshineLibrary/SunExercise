@@ -35,7 +35,7 @@
 </div>
 
 <div class="container" id="content_container">
-    <div id="content">loading content</div>
+    <div id="content"></div>
 </div>
 
 <div class="navbar navbar-inverse navbar-fixed-bottom" style="display: none">
@@ -63,8 +63,9 @@
                     %>
                     <li class="<% if(currentSubjectId == subject.get('id')){ %>active<% } %>">
                         <a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>
+                    <div id="triangle" style="display:<% if(currentSubjectId != subject.get('id')){ %>none<% } %>"></div>
                     </li>
-                    <% }} %>
+                    <% }}%>
                 </ul>
                 <ul class="nav pull-right">
                     <li>
@@ -115,7 +116,7 @@
         <div class="progress_dart <% if(i==0){%>dart_first<%}%>">
             <div class="progress_label">
                 <div class="progress_icon star_off"></div>
-                <span class="progress_title">这个主题呀！</span>
+                <span class="progress_title"><%=section.get('name')%></span>
             </div>
             <div class="progress_arrow"></div>
             <div class="progress_gauge" style="width:<%=section.completeRate()*100%>%;">

@@ -389,10 +389,10 @@ function changeDownloadBtn(id, downloaded) {
         $('.well.' + id).addClass('downloaded');
         $('.lesson_label >img.' + id).hide();
         $('.lesson_label >p.' + id).show();
-
         $('.well.'+id).click(function(e){
             window.open('#lesson/'+id,'_self');
         });
+
     } else {
         $('#lessonbox_download_' + id).show()
         $('#lessonbox_progress_' + id).hide()

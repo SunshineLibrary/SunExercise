@@ -51,9 +51,9 @@ jQuery(function () {
             var self = this
             $.each(options, function (index, subject) {
                 Sun.fetch('subject', {id: subject['id']}, function (s) {
-                    if (s.get('lessons').length > 0) {
+                   //if (s.get('lessons').length > 0) {
                         self.showSubjects.push(s.get('id'))
-                    }
+                   // }
                 })
             })
         }
