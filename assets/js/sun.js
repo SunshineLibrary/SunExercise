@@ -48,7 +48,8 @@ jQuery(function () {
                     "id": id,
                     "user_data": user_data
                 },
-                "user_id": user_id}
+                "user_id": user_id
+            }
         },
         requestMaterial: function (type, id) {
             var req = Sun.createrequest("material", "get", type, id, undefined, Sun.getuserid())
@@ -67,11 +68,11 @@ jQuery(function () {
             }
 
             // Remove this blog to disable cache
-            if (options["i d"] != undefined) {
+            if (options["id"] != undefined) {
                 var id = options["id"]
                 var cached = MATERIAL_CACHE[id]
                 if (cached != undefined) {
-                    console.log("[CACHED]id," + id)
+                    Log.d("[CACHED]id," + id)
                     if (callback != undefined) {
                         eval(callback)(cached, options)
                     }
@@ -82,15 +83,14 @@ jQuery(function () {
             options["target"] = type
             if (typeof android == "undefined") {
                 // web dev mode, request data from sundata server
-                console.log("[WEB]try to fetch a material," + type + "," + JSON.stringify(options))
+                Log.i("[WEB]fetch," + type + "," + JSON.stringify(options))
 
                 mockMaterial = "http://42.121.65.247:9000/api/material"
 //                mockMaterial = "http://127.0.0.1:9000/api/material"
-                $.ajaxSetup({ "async": false });
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
                     function (data) {
-                        console.log("data:" + JSON.stringify(data))
+                        Log.i("[WEB]fetched," + JSON.stringify(data))
                         ret = Sun.createMaterial(data, type)
                         // Remove this blog to disable cache
                         MATERIAL_CACHE[id] = ret
@@ -99,13 +99,11 @@ jQuery(function () {
                         }
                     }
                 )
-                $.ajaxSetup({ "async": true});
             } else {
                 // android dev mode
-                console.log("[ANDROID]try to fetch a material," + type + "," + JSON.stringify(options))
-
+                Log.i("[ANDROID]fetch," + type + "," + JSON.stringify(options))
                 ret = Sun.requestMaterial(type, options["id"])
-                console.log("result," + JSON.stringify(ret))
+                Log.i("[ANDROID]fetched," + JSON.stringify(ret))
                 if (callback != undefined) {
                     eval(callback)(ret, options)
                 }
@@ -124,14 +122,13 @@ jQuery(function () {
                 Sun.getuserid())
             if (typeof android == "undefined") {
                 // web dev mode
-                console.log("[WEB]set user data")
+                Log.i("[WEB]set user data," + type + "," + id + "," + options)
                 USER_DATA[id] = JSON.stringify(options)
             } else {
                 // android dev mode
+                Log.i("[ANDROID]set user data," + type + "," + id + "," + options)
                 var reqText = JSON.stringify(req)
-                console.log("[ANDROID]set user data," + reqText)
-                var resp = android.requestUserData(reqText)
-                options["result"] = resp
+                options["result"] = android.requestUserData(reqText)
             }
             if (callback != undefined) {
                 eval(callback)(type, id, options)
@@ -152,12 +149,12 @@ jQuery(function () {
                 Sun.getuserid())
             if (typeof android == "undefined") {
                 // web dev mode
-                console.log("[WEB]set user data")
+                Log.i("[WEB]set user data")
                 USER_DATA[id] = JSON.stringify(userdata)
             } else {
                 // android dev mode
                 var reqText = JSON.stringify(req)
-                console.log("[ANDROID]set user data," + reqText)
+                Log.i("[ANDROID]set user data," + reqText)
                 android.requestUserData(reqText)
             }
             if (typeof callback != "undefined") {
@@ -171,15 +168,14 @@ jQuery(function () {
             var userdata = undefined
             if (typeof android == "undefined") {
                 // web dev mode
-                console.log("[WEB]set user data," + JSON.stringify(req))
+                Log.d("[WEB]get user data," + type + "," + id + JSON.stringify(req))
                 userdata = USER_DATA[id]
             } else {
                 // android dev mode
-                console.log("[ANDROID]set user data," + JSON.stringify(req))
+                Log.d("[ANDROID]set user data," + JSON.stringify(req))
                 userdata = android.requestUserData(JSON.stringify(req))
             }
             userdata = (userdata == undefined) ? "{}" : userdata
-            console.log("got userdata," + id + "," + userdata)
             return JSON.parse(userdata)
         },
 
@@ -187,11 +183,11 @@ jQuery(function () {
             var ret = undefined
             if (typeof android == "undefined") {
                 // web dev mode
-                console.log("[WEB]get media," + id)
+                Log.i("[WEB]get media," + id)
                 ret = new Media({"id": "03354928-9820-11e2-b307-00163e011797", "file_id": "1", "path": "http://st.xiami.com/res/loop/img/logo.png"})
             } else {
                 // android dev mode
-                console.log("[ANDROID]get media," + id)
+                Log.i("[ANDROID]get media," + id)
                 ret = Sun.fetch('media', {id: id})
             }
             return ret
@@ -202,7 +198,7 @@ jQuery(function () {
         },
 
         showuserdata: function () {
-            console.log("current userdata:" + JSON.stringify(USER_DATA))
+            Log.i("current userdata:" + JSON.stringify(USER_DATA))
         },
 
         resetuserdata: function () {
@@ -233,7 +229,7 @@ jQuery(function () {
         },
 
         setunviewed: function (type, id) {
-            console.log('setunviewed,' + type + ',' + id)
+            Log.i('setunviewed,' + type + ',' + id)
             var userdata = Sun.getuserdata(type, id)
             userdata['current_viewed'] = undefined
             Sun.setuserdata(type, id, userdata)
@@ -247,6 +243,9 @@ jQuery(function () {
         iscomplete: function (type, id) {
             userdata = Sun.getuserdata(type, id)
             return userdata['current'] == "EOF"
+        },
+
+        isCollectionDownloaded: function (id) {
         }
     }
 
@@ -257,7 +256,7 @@ jQuery(function () {
             if (url.lastIndexOf("#") < 0 || url.indexOf("subject") >= 0) {
                 // not in route, like index.html
                 // or at subject page, like index.html#subject/123456
-                console.log("backpage," + url)
+                Log.i("backpage," + url)
                 android.showExitDialog()
             } else {
                 goUpstairs()
@@ -265,11 +264,11 @@ jQuery(function () {
         },
 
         onSyncStart: function () {
-            console.log("onSyncStart")
+            Log.i("onSyncStart")
         },
 
         onJsonReceived: function () {
-            console.log("onJsonReceived")
+            Log.i("onJsonReceived")
             $('#myModal').modal({
                 backdrop: 'static',
                 keyboard: false
@@ -277,25 +276,25 @@ jQuery(function () {
         },
 
         onJsonParsed: function () {
-            console.log("onJsonParsed")
+            Log.i("onJsonParsed")
             window.location.replace(location.pathname)
         },
 
         onSyncCompleted: function () {
-            console.log("onSyncCompleted")
+            Log.i("onSyncCompleted")
         },
 
         onCollectionProgress: function (collectionId, percentage) {
-            console.log("onCollectionProgress," + collectionId + "," + percentage)
+            Log.i("onCollectionProgress," + collectionId + "," + percentage)
             changeDownloadProgress(collectionId, percentage * 100)
         },
 
         onCollectionDownloaded: function (lessonId, downloaded) {
             Sun.adduserdata('lesson', lessonId, 'downloaded', true)
             if (typeof android == "undefined") {
-                console.log("[WEB]onCollectionDownloaded," + lessonId + "," + downloaded)
+                Log.i("[WEB]onCollectionDownloaded," + lessonId + "," + downloaded)
             } else {
-                console.log("[ANDROID]onCollectionDownloaded," + lessonId + "," + downloaded)
+                Log.i("[ANDROID]onCollectionDownloaded," + lessonId + "," + downloaded)
             }
             if (downloaded == "true") {
                 changeDownloadBtn(lessonId, true)
@@ -310,7 +309,7 @@ jQuery(function () {
 
         sync: function () {
             if (typeof android == "undefined") {
-                console.log("[WEB]sync")
+                Log.i("[WEB]sync")
                 setTimeout(function () {
                     setTimeout(function () {
                         Interfaces.onJsonParsed()
@@ -318,14 +317,14 @@ jQuery(function () {
                     Interfaces.onJsonReceived()
                 }, 1000)
             } else {
-                console.log("[ANDROID]sync")
+                Log.i("[ANDROID]sync")
                 android.sync()
             }
         },
 
         download: function (id) {
             if (typeof android == "undefined") {
-                console.log("[WEB]download," + id)
+                Log.i("[WEB]download," + id)
                 setTimeout(function () {
                     setTimeout(function () {
                         Interfaces.onCollectionDownloaded(id, "true")
@@ -333,16 +332,16 @@ jQuery(function () {
                     changeDownloadProgress(id, 20)
                 }, 1000)
             } else {
-                console.log("[ANDROID]download," + id)
+                Log.i("[ANDROID]download," + id)
                 android.download(id)
             }
         },
 
         onReady: function () {
             if (typeof android == "undefined") {
-                console.log("[WEB]onReady")
+                Log.i("[WEB]onReady")
             } else {
-                console.log("[ANDROID]onReady")
+                Log.i("[ANDROID]onReady")
                 android.onReady()
             }
         },
@@ -353,26 +352,36 @@ jQuery(function () {
         }
     }
 
+    DEBUG = true
+
     Log = {
         d: function (content) {
-            content = "[DEBUG]" + content
-            console.log(content)
-            log(content)
+            if (DEBUG) {
+                content = "[DEBUG]" + content
+                console.log(content)
+                log(content)
+            }
         },
         i: function (content) {
-            content = "[INFO]" + content
-            console.log(content)
-            log(content)
+            if (DEBUG) {
+                content = "[INFO]" + content
+                console.log(content)
+                log(content)
+            }
         },
         e: function (content) {
-            content = "[ERROR]" + content
-            console.log(content)
-            log(content)
+            if (DEBUG) {
+                content = "[ERROR]" + content
+                console.log(content)
+                log(content)
+            }
         },
         w: function (content) {
-            content = "[WARNING]" + content
-            console.log(content)
-            log(content)
+            if (DEBUG) {
+                content = "[WARNING]" + content
+                console.log(content)
+                log(content)
+            }
         }
     }
 })
@@ -391,8 +400,8 @@ function changeDownloadBtn(id, downloaded) {
         $('.lesson_label >img.' + id).hide();
         $('.lesson_label >p.' + id).show();
 
-        $('.well.'+id).click(function(e){
-            window.open('#lesson/'+id,'_self');
+        $('.well.' + id).click(function (e) {
+            window.open('#lesson/' + id, '_self');
         });
     } else {
         $('#lessonbox_download_' + id).show()

@@ -144,19 +144,22 @@
 
         <div class="span3">
 
-            <% userdata = Sun.getuserdata('lesson',lesson.get('id')) %>
+            <%
+            userdata = Sun.getuserdata('lesson',lesson.get('id'))
+            var downloaded = lesson.get("download_finish")
+            %>
 
             <div class="well <%=lesson.id%>" id="lesson"
-                 style="background-color:<%if(userdata['downloaded']==true){%>#ffffff<%}%>"
-                 onclick="<%if(userdata['downloaded']==true){%>window.open('#lesson/'+'<%=lesson.id%>','_self')<%}%>">
+                 style="background-color:<%if(downloaded=='1'){%>#ffffff<%}%>"
+                 onclick="<%if(downloaded==true){%>window.open('#lesson/'+'<%=lesson.id%>','_self')<%}%>">
                 <div class="row row-top">
                     <h4><%=lesson.get("name")%></h4>
 
                     <div class="pull-right lesson_label">
                         <img class="<%=lesson.id%>" src="img/label_new.png"
-                             style="display:<%if(userdata['downloaded']==true){%>none<%}%>"/>
+                             style="display:<%if(downloaded=='1'){%>none<%}%>"/>
 
-                        <p class="<%=lesson.id%>" style="display:<%if(userdata['downloaded']!=true){%>none<%}%>">
+                        <p class="<%=lesson.id%>" style="display:<%if(downloaded!='1'){%>none<%}%>">
                             <%=lesson.get("day_week")%></p>
                     </div>
                 </div>
@@ -164,7 +167,7 @@
                 <div class="row row-bottom">
 
                     <div id="lessonbox_download_<%=lesson.id%>" class="btn btn-large <%=lesson.id%>"
-                         style="display:<%if(userdata['downloaded']==true){%>none<%}%>"
+                         style="display:<%if(downloaded=='1'){%>none<%}%>"
                          onclick="Interfaces.download('<%=lesson.id%>')">下载
                     </div>
                     <div id="lessonbox_download_progress_<%=lesson.id%>"
@@ -173,7 +176,7 @@
                         <div class="bar" style="width: 0%;"></div>
                     </div>
                     <div id="lessonbox_progress_<%=lesson.id%>" class="row row-bottom-content"
-                         style="display:<%if(userdata['downloaded']!=true){%>none<%}%>">
+                         style="display:<%if(downloaded!='1'){%>none<%}%>">
                         <%
                         var stageCount = 2
                         var stageWidth = 100/stageCount
@@ -555,7 +558,6 @@
 
     <%
     id = target.get("id")
-    var media = target
     Log.i('media:'+JSON.stringify(media))
     var mediaPath = "file://"+media.get('path')
     %>

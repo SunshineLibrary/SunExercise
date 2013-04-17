@@ -66,7 +66,6 @@ jQuery(function () {
         initialize: function (options) {
             var date = new Date(Date.parse(options.time))
             var stages = new Stages(options["stages"])
-            Log.i("stages of lesson," + JSON.stringify(stages))
             this.set({
                 parent_id: options['subject_id'],
                 day_week: "星期" + DAYS_OF_WEEK[date.getDay()],
