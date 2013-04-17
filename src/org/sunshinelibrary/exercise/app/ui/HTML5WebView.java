@@ -158,6 +158,7 @@ public class HTML5WebView extends WebView {
             HTML5WebView.this.setVisibility(View.VISIBLE);
 
             // todo: HTML5WebView.this.mInteraction
+            HTML5WebView.this.mInteraction.onVideoComplete();
             Log.d(LOGTAG, "onHideCustomView");
 
 
