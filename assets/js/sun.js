@@ -349,6 +349,7 @@ jQuery(function () {
 
         onVideoComplete: function (id) {
             Log.i('video completed,' + id)
+            $("#nextButton").removeAttr("disabled")
         }
     }
 

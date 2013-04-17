@@ -2,12 +2,16 @@ package org.sunshinelibrary.exercise.metadata.operation;
 
 import android.database.Cursor;
 import android.util.Log;
+import org.sunshinelibrary.exercise.metadata.MetadataContract;
 import org.sunshinelibrary.support.utils.CursorUtils;
+import org.sunshinelibrary.support.utils.database.Contract;
+import static org.sunshinelibrary.support.utils.database.Contract.DOWNLOAD_STATUS;
 
 import java.io.File;
 import java.util.ArrayList;
 
 import static org.sunshinelibrary.exercise.metadata.MetadataContract.Media;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -59,7 +63,7 @@ public class CheckAvailableOperation extends ExerciseOperation {
             mediaIDs = this.CollectMediaIDs(lessonId);
 //           	Log.i(TAG, "check mediaIDs" + mediaIDs.toString());
             if (mediaIDs.size() <= 0) {
-                updateDownloadFinish(lessonId, true);
+                updateDownloadStatusById(MetadataContract.Lessons.CONTENT_URI, lessonId, DOWNLOAD_STATUS.DOWNLOADED);
                 continue;
             }
 
@@ -67,7 +71,9 @@ public class CheckAvailableOperation extends ExerciseOperation {
 
             cursor = mContext.getContentResolver().query(Media.CONTENT_URI, new String[]{Media._PATH},
                     CursorUtils.generateSelectionStringForStringID(Media._STRING_ID, mediaIDs), null, null);
+            cursor.moveToFirst();
             if(mediaIDs.size() == cursor.getCount()){
+                cursor.moveToPosition(-1);
                 while (cursor.moveToNext()) {
                     int pathIndex = cursor.getColumnIndex(Media._PATH);
                     String path = cursor.getString(pathIndex);
@@ -82,7 +88,8 @@ public class CheckAvailableOperation extends ExerciseOperation {
                 mAvailable = false;
             }
             cursor.close();
-            updateDownloadFinish(lessonId, mAvailable);
+            updateDownloadStatusById(MetadataContract.Lessons.CONTENT_URI, lessonId,
+                    mAvailable?DOWNLOAD_STATUS.DOWNLOADED:DOWNLOAD_STATUS.NONE);
         }
     }
 }

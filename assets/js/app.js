@@ -53,7 +53,7 @@ jQuery(function () {
                         reloadPage()
 
                         $.each(subject.get('lessons').models, function (index, lesson) {
-                            changeDownloadBtn(lesson.get('id'), lesson.get('userdata')['downloaded'])
+                            changeDownloadBtn(lesson.get('id'), (lesson.get('download_finish') == '1'))
                         })
                     })
                 })
@@ -81,15 +81,13 @@ jQuery(function () {
                 Sun.fetch("stage", {id: id}, function (stage) {
                     var userdata = Sun.getuserdata("stage", id)
                     var sections = stage.get("sections").models
+                    var completed = (userdata.current == 'EOF')
 
                     // Check if stage completed
-                    if (currentMode == MODE.NORMAL) {
+                    if (!completed) {
+                        currentMode = MODE.NORMAL
                         if (sections.length == 0) {
                             Sun.setcomplete('stage', id)
-//                            stage.complete(null, function () {
-//                                Log.e("no sections in this stage")
-//                                app_router.navigate("lesson/" + section.get("lesson_id"), {trigger: true, replace: true})
-//                            })
                         }
 
                         if (!Sun.iscomplete("stage", id)) {
@@ -102,7 +100,7 @@ jQuery(function () {
                         } else {
                             app_router.navigate("lesson/" + stage.get('lesson_id'), {trigger: true, replace: true})
                         }
-                    } else {
+                    } else if (currentMode == MODE.VIEW_ONLY) {
                         // View only mode
                         if (Sun.isviewed("stage", id)) {
                             clearViewed(stage.get('id'))
@@ -121,6 +119,8 @@ jQuery(function () {
                             Sun.setviewed("stage", stage.get('id'))
                             app_router.navigate("lesson/" + stage.get('lesson_id'), {trigger: true, replace: true})
                         }
+                    } else {
+                        Log.i("should not be here when complete and not VIEW_ONLY mode")
                     }
                 })
             })
@@ -183,7 +183,6 @@ jQuery(function () {
                                     }
                                 }
                                 if (completed) {
-//                                    Sun.setcomplete("activity", activity.get("id"))
                                     activity.complete(null, function () {
                                         app_router.navigate("summary/" + activity.get("id"), {trigger: true, replace: true})
                                     })
@@ -358,6 +357,7 @@ jQuery(function () {
                         Log.i("grading problem," + problem.get("id"))
                         var completeOk = true
                         var grading_result = $("#grading_result")
+                        var checked = []
 
                         for (var i = 0; i < problem.get('choices').length; i++) {
                             choice = problem.get('choices')[i]
@@ -367,6 +367,9 @@ jQuery(function () {
                                 + answer.attr("id") + ","
                                 + answer[0].checked + ","
                                 + choice['answer'])
+                            if (answer[0].checked == true) {
+                                checked.push(choice['id'])
+                            }
                             if (choice['answer'] == "yes") {
                                 if (answer[0].checked == true) {
                                     Log.i(choiceId + " right")
@@ -382,7 +385,8 @@ jQuery(function () {
                             }
                         }
                         problem.complete({
-                            correct: completeOk
+                            correct: completeOk,
+                            checked: checked
                         }, function () {
                             loadProblem(problem.get('id'))
                         })
@@ -394,7 +398,8 @@ jQuery(function () {
                             correct = true
                         }
                         problem.complete({
-                            correct: correct
+                            correct: correct,
+                            answer: answer
                         }, function () {
                             loadProblem(problem.get('id'))
                         })
@@ -428,6 +433,7 @@ jQuery(function () {
             }
 
             viewStage = function (id) {
+                Log.i('view statge,' + id)
                 currentMode = MODE.VIEW_ONLY
                 app_router.navigate("stage/" + id, {trigger: true, replace: true})
             }

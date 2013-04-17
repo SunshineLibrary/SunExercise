@@ -7,6 +7,7 @@ import org.sunshinelibrary.exercise.metadata.MetadataContract;
 import static org.sunshinelibrary.exercise.metadata.MetadataContract.Lessons;
 import static org.sunshinelibrary.support.utils.database.Contract.DOWNLOAD_STATUS;
 import org.sunshinelibrary.exercise.metadata.database.MetadataDBHandlerFactory;
+import org.sunshinelibrary.exercise.metadata.operation.ExerciseOperation;
 import org.sunshinelibrary.exercise.metadata.sync.ExerciseDeprecatedSyncManager;
 import org.sunshinelibrary.exercise.metadata.sync.Proxy;
 import org.sunshinelibrary.support.utils.ApplicationInterface;
@@ -46,8 +47,7 @@ public class ExerciseApplication  extends Application {
     public void onCreate() {
         super.onCreate();
         mSyncManager = new Proxy();
-        Proxy.updateDownloadFinish(Lessons.CONTENT_URI, DOWNLOAD_STATUS.DOWNLOADING, DOWNLOAD_STATUS.NONE);
-        Proxy.updateDownloadFinish(Lessons.CONTENT_URI, DOWNLOAD_STATUS.WAITING, DOWNLOAD_STATUS.NONE);
+        new ExerciseOperation().clearDownloadingStatus(Lessons.CONTENT_URI);
     }
 
     @Override

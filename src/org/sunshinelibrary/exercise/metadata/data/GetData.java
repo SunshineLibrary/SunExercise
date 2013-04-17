@@ -173,6 +173,7 @@ public class GetData {
         Cursor stageCursor = mResovler.query(MetadataContract.Stages.CONTENT_URI, null,
                 MetadataContract.Stages._PARENT_ID + " = " + id, null,
                 MetadataContract.Stages._SEQUENCE);
+        stageCursor.moveToFirst();
         int stageCount = stageCursor.getCount();
         stageCursor.close();
 

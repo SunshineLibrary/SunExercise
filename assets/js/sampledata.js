@@ -68,6 +68,9 @@ sample_schema = {
                         "time": {
                             "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}",
                             "type": "string"
+                        },
+                        "download_finish" : {
+                            "type": "string"
                         }
                     }
                 }
@@ -118,6 +121,9 @@ sample_schema = {
             "time": {
                 "type": "string",
                 "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}"
+            },
+            "download_finish" : {
+                "type": "string"
             }
         }
     },
@@ -376,12 +382,13 @@ sample_data = {
         ]
     },
     subject: {"id": "su1", "name": "数学", "lessons": [
-        {"id": "l1", "subject_id": "su1", "name": "有理数的四则运算（加减）", "seq": "0", "time": "2012-12-20"},
-        {"id": "l2", "subject_id": "su1", "name": "有理数的四则运算（乘除）", "seq": "1", "time": "2012-12-24"},
-        {"id": "l3", "subject_id": "su1", "name": "绝对值的概念", "seq": "2", "time": "2013-01-01"},
-        {"id": "l4", "subject_id": "su1", "name": "", "seq": "3", "time": "2013-02-01"}
+        {"id": "l1", "subject_id": "su1", "name": "有理数的四则运算（加减）", "seq": "0", "time": "2012-12-20", "download_finish":"1"},
+        {"id": "l2", "subject_id": "su1", "name": "有理数的四则运算（乘除）", "seq": "1", "time": "2012-12-24", "download_finish":"none"},
+        {"id": "l3", "subject_id": "su1", "name": "绝对值的概念", "seq": "2", "time": "2013-01-01", "download_finish":"waiting"},
+        {"id": "l5", "subject_id": "su1", "name": "呵呵的概念", "seq": "3", "time": "2013-01-10", "download_finish":"0.6432"},
+        {"id": "l4", "subject_id": "su1", "name": "", "seq": "4", "time": "2013-02-01", "download_finish":"downloading"}
     ]},
-    lesson: {"id": "l1", "subject_id": "su1", "name": "有理数的四则运算（加减）", "seq": "0", "time": "2012-12-20", "stages": [
+    lesson: {"id": "l1", "subject_id": "su1", "name": "有理数的四则运算（加减）", "seq": "0", "time": "2012-12-20", "download_finish":"1", "stages": [
         {"id": "st1", "lesson_id": "l1", "seq": "0", "type": "1"},
         {"id": "st2", "lesson_id": "l1", "seq": "1", "type": "2"}
     ]},

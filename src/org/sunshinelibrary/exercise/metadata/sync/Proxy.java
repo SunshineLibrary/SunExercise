@@ -16,6 +16,7 @@ import static org.sunshinelibrary.exercise.metadata.MetadataContract.Lessons;
 
 import org.sunshinelibrary.exercise.metadata.json.Request;
 import org.sunshinelibrary.exercise.metadata.operation.CheckAvailableOperation;
+import org.sunshinelibrary.exercise.metadata.operation.ExerciseOperation;
 import org.sunshinelibrary.support.api.ApiManager;
 import org.sunshinelibrary.support.api.ApiUriBuilder;
 import org.sunshinelibrary.support.api.subscription.Subscription;
@@ -28,6 +29,8 @@ import org.sunshinelibrary.support.utils.LockManager;
 import org.sunshinelibrary.support.utils.database.Contract;
 import org.sunshinelibrary.support.utils.json.JsonHandler;
 import org.sunshinelibrary.support.utils.sync.SyncObserver;
+
+import static org.sunshinelibrary.support.utils.database.Contract.DOWNLOAD_STATUS;
 
 import java.util.ArrayList;
 
@@ -146,7 +149,7 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
 
     @Override
     public void download(String collectionId) {
-        updateDownloadFinish(Lessons.CONTENT_URI, collectionId, Contract.DOWNLOAD_STATUS.WAITING);
+        new ExerciseOperation().updateDownloadStatusById(Lessons.CONTENT_URI, collectionId, DOWNLOAD_STATUS.WAITING);
         if (!isSynchronizing())
             sync();
     }
@@ -222,11 +225,11 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
     public void onSyncComplete(Subscription subscription, boolean isSuccess) {
         mObserver.onSyncCompleted(isSuccess);
         mIsSynchronizing = false;
-        ArrayList<String> lessonIDs = getIDs(Lessons.CONTENT_URI, Contract.DOWNLOAD_STATUS.WAITING);
+        ExerciseOperation op = new ExerciseOperation();
+        ArrayList<String> lessonIDs = op.getIDsByDownloadStatus(Lessons.CONTENT_URI, DOWNLOAD_STATUS.WAITING);
         DownloadLessonRequest dr = new DownloadLessonRequest(lessonIDs);
         dr.start();
-        updateDownloadFinish(Lessons.CONTENT_URI, Contract.DOWNLOAD_STATUS.WAITING,
-                Contract.DOWNLOAD_STATUS.DOWNLOADING);
+        op.updateDownloadStatusByStatus(Lessons.CONTENT_URI, DOWNLOAD_STATUS.WAITING, DOWNLOAD_STATUS.DOWNLOADING);
         releaseLock();
     }
 
@@ -288,31 +291,7 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
         editor.commit();
     }
 
-    static protected void updateDownloadFinish(Uri uri, String id, int downloadStatus) {
-        ContentValues values = new ContentValues();
-        values.put(Contract.Columns._DOWNLOAD_FINISH, downloadStatus);
-        ExerciseApplication.getInstance().getContentResolver().update(uri, values,
-                Contract.Columns._STRING_ID + "=?", new String[]{id});
-    }
 
-    static protected ArrayList<String> getIDs(Uri uri, int downloadStatus) {
-        Cursor cursor = ExerciseApplication.getInstance().getContentResolver().query(uri,
-                new String[]{Contract.Columns._STRING_ID}, Contract.Columns._DOWNLOAD_FINISH + "=?",
-                new String[]{String.valueOf(downloadStatus)}, null);
-        ArrayList<String> ids = new ArrayList<String>();
-        while (cursor.moveToNext()) {
-            ids.add(CursorUtils.getString(cursor, Contract.Columns._STRING_ID));
-        }
-        cursor.close();
-        return ids;
-    }
-
-    static public void updateDownloadFinish(Uri uri, int from, int to) {
-        ContentValues values = new ContentValues();
-        values.put(Contract.Columns._DOWNLOAD_FINISH, from);
-        ExerciseApplication.getInstance().getContentResolver().update(uri, values,
-                Contract.Columns._DOWNLOAD_FINISH + "=?", new String[]{String.valueOf(to)});
-    }
 
     @Override
     public void setUIInterface(AndroidUIInterface a) {

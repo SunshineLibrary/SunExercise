@@ -25,11 +25,10 @@
 </head>
 
 <body>
-    
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
-            <div class="nav-collapse collapse" id="header">
-            </div>
+        <div class="nav-collapse collapse" id="header">
+        </div>
     </div>
 </div>
 
@@ -84,10 +83,10 @@
             <div class="nav-collapse collapse" style="margin-left:0px">
                 <ul class="nav">
                     <li>
-                        <a href="#subject/<%= target.get('subject_id')%>">返回</a>
+                        <img onclick="Interfaces.backpage()" src="img/back.png"/>
                     </li>
                     <li>
-                        <a><%= target.get('name')%></a>
+                        <a style="font-size:20px"><%= target.get('name')%></a>
                     </li>
                 </ul>
             </div>
@@ -149,8 +148,10 @@
         <div class="span3">
 
             <div class="well <%=lesson.id%>" id="lesson" style="background-color:<%if(userdata['downloaded']==true){%>#ffffff<%}%>" onclick="<%if(userdata['downloaded']==true){%>window.open('#lesson/'+'<%=lesson.id%>','_self')<%}%>">
+
                 <div class="row row-top">
                     <h4><%=lesson.get("name")%></h4>
+
                     <div class="pull-right lesson_label">
                         <img class="<%=lesson.id%>" src="img/label_new.png" style="display:<%if(userdata['downloaded']==true && userdata['entered']!=undefined){%>none<%}%>"/>
                         <p class="<%=lesson.id%>" style="display:<%if(userdata['downloaded']!=true || userdata['entered']==undefined){%>none<%}%>"><%=lesson.get("day_week")%></p>
@@ -170,6 +171,7 @@
                 </div>
                 <div id="lessonbox_progress_<%=lesson.id%>" class="row row-bottom-content"
                          style="display:<%if(userdata['downloaded']!=true || userdata['entered']==undefined){%>none<%}%>">
+
                         <%
                         var stageCount = 2
                         var stageWidth = 100/stageCount
@@ -181,8 +183,8 @@
                         </div>
                         <%}%>
 
+                    </div>
                 </div>
-               </div>
             </div>
         </div>
         <% }) %>
@@ -222,7 +224,7 @@
         <%var choose_circle = 0%>
         <div class="stage_circle circle_<%=circleClassNum%>">
             <% if (circleClassNum != 1) {%>
-            <a onclick="viewStage('<%=stage.get('id')%>')"><img src="<%=imgPath%>" alt="circle background"></a>
+            <div onclick="viewStage('<%=stage.get('id')%>')"><img src="<%=imgPath%>" alt="circle background"></div>
             <% } else {%>
             <a href="#stage/<%=stage.id%>"><img src="<%=imgPath%>" alt="circle background"></a>
             <% } %>
@@ -248,60 +250,68 @@
         <div>
             <%
             userdata = Sun.getuserdata('problem',target.get('id'))
+            var completed = (userdata.current == 'EOF')
             for(var i =0 ; i < target.get("choices").length; i++) {
             var choice = target.get("choices")[i]
+            var shouldCheck = ($.inArray(choice.id, userdata.checked)>=0)
             %>
 
-            <div id="pcontainer_<%=choice.id%>" class="pcontainer palette palette-clouds even"
-                 onclick="makeSelection('<%=choice.id%>',true)">
-                <label class="radio">
-                    <input class="answer"
-                           id="<%=choice.id%>"
-                           answer="<%= choice.answer%>"
-                           type="radio"
-                           name="optionsRadios">
-                    <%= target.get('choices')[i].display_text %>
-                </label>
+            <div id="pcontainer_<%=choice.id%>" class="pcontainer palette palette-clouds
+            <%if(shouldCheck){%>odd<%}else{%>even<%}%>"
+            <%if(!completed){%>
+            onclick="makeSelection('<%=choice.id%>',true)"
+            <%}%>
+            >
+            <label class="radio">
+                <input class="answer"
+                       id="<%=choice.id%>"
+                       answer="<%= choice.answer%>"
+                       type="radio"
+                       name="optionsRadios"
+                       completed=<%=completed%>
+                <% if(completed){%>disabled<%}%>
+                <% if(shouldCheck){%>checked<%}%>
+                >
+                <%= target.get('choices')[i].display_text %>
+            </label>
+        </div>
+        <% } %>
+    </div>
+
+    <div class="result">
+        <div id="grading_result" class="pull-left">
+            <%
+            if(activity_type=='7'){
+            if(userdata.correct==true) {
+            %>
+            yo，答对啦！
+            <%
+            } else if (userdata.correct==false) {
+            %>
+            错了哎。正确答案是：<%=target.get('correct_answers')%>
+            <%
+            }
+            }else if((activity_type=='4') && (userdata.current == 'EOF')){%>
+            答完啦
+            <%}
+            %>
+        </div>
+
+        <div class="pull-right">
+            <% if(currentMode != MODE.VIEW_ONLY){
+            if(userdata.current == 'EOF') { %>
+            <a id="next-question" class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+            <% }else if(userdata.current == undefined){ %>
+            <a id="submit_answer" class="btn btn-large  btn-primary"
+               onclick="grading('<%=target.get('id')%>')">提交答案</a>
+            <% } %>
+            <% } else { %>
+            <div>
+                <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
             </div>
             <% } %>
         </div>
-
-        <div class="result">
-            <div id="grading_result" class="pull-left">
-                <%
-                if(activity_type=='7'){
-                console.log('7!')
-                if(userdata.correct==true) {
-                %>
-                yo，答对啦！
-                <%
-                } else if (userdata.correct==false) {
-                %>
-                阿西，错了哎。正确答案是：<%=target.get('correct_answers')%>
-                <%
-                }
-                }else if((activity_type=='4') && (userdata.current == 'EOF')){%>
-                答完啦
-                <%}
-                %>
-
-            </div>
-
-            <div class="pull-right">
-                <% if(currentMode != MODE.VIEW_ONLY){
-                if(userdata.current == 'EOF') { %>
-                <a id="next-question" class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
-                <% }else if(userdata.current == undefined){ %>
-                <a id="submit_answer" class="btn btn-large  btn-primary"
-                   onclick="grading('<%=target.get('id')%>')">提交答案</a>
-                <% } %>
-                <% } else { %>
-                <div>
-                    <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
-                </div>
-                <% } %>
-            </div>
-        </div>
+    </div>
     </div>
 </script>
 
@@ -323,59 +333,68 @@
             <%
             userdata = Sun.getuserdata('problem',target.get('id'))
             activity_type = activity.get('type')
+            var completed = (userdata.current == 'EOF')
             for(var i =0 ; i < target.get("choices").length; i++) {
             var choice = target.get("choices")[i]
+            var shouldCheck = ($.inArray(choice.id, userdata.checked)>=0)
             %>
 
-            <div id="pcontainer_<%=choice.id%>" class="pcontainer palette palette-clouds even"
-                 onclick="makeSelection('<%=choice.id%>',false)">
-                <label class="checkbox">
-                    <input class="answer"
-                           id="<%=choice.id%>"
-                           answer="<%= choice.answer%>"
-                           type="checkbox"
-                           name="optionsRadios">
-                    <%= target.get('choices')[i].display_text %>
-                </label>
+            <div id="pcontainer_<%=choice.id%>"
+                 class="pcontainer palette palette-clouds
+                 <% if(shouldCheck){%>odd<%}else{%>even<%}%>"
+            <% if(!completed){%>
+            onclick="makeSelection('<%=choice.id%>',false)"
+            <%}%>
+            >
+            <label class="checkbox">
+                <input class="answer"
+                       id="<%=choice.id%>"
+                       answer="<%= choice.answer%>"
+                       type="checkbox"
+                <% if(completed){%>disabled<%}%>
+                name="optionsRadios"
+                <% if(shouldCheck){%>checked<%}%>
+                >
+                <%= target.get('choices')[i].display_text %>
+            </label>
+        </div>
+        <% } %>
+    </div>
+
+    <div class="result">
+        <div id="grading_result" class="pull-left">
+            <%
+            if(activity_type=='7'){
+            if(userdata.correct==true) {
+            %>
+            yo，答对啦！
+            <%
+            } else if (userdata.correct==false) {
+            %>
+            错了哎。正确答案是：<%=target.get('correct_answers')%>
+            <%
+            }
+            }else if((activity_type=='4') && (userdata.current == 'EOF')){%>
+            答完啦
+            <%}
+            %>
+        </div>
+
+        <div class="pull-right">
+            <% if(currentMode != MODE.VIEW_ONLY){
+            if(userdata.current == 'EOF') { %>
+            <a id="next-question" class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+            <% }else if(userdata.current == undefined){ %>
+            <a id="submit_answer" class="btn btn-large  btn-primary"
+               onclick="grading('<%=target.get('id')%>')">提交答案</a>
+            <% } %>
+            <% } else { %>
+            <div>
+                <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
             </div>
             <% } %>
         </div>
-
-        <div class="result">
-            <div id="grading_result" class="pull-left">
-                <%
-                if(activity_type=='7'){
-                console.log('7!')
-                if(userdata.correct==true) {
-                %>
-                yo，答对啦！
-                <%
-                } else if (userdata.correct==false) {
-                %>
-                阿西，错了哎。正确答案是：<%=target.get('correct_answers')%>
-                <%
-                }
-                }else if((activity_type=='4') && (userdata.current == 'EOF')){%>
-                答完啦
-                <%}
-                %>
-            </div>
-
-            <div class="pull-right">
-                <% if(currentMode != MODE.VIEW_ONLY){
-                if(userdata.current == 'EOF') { %>
-                <a id="next-question" class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
-                <% }else if(userdata.current == undefined){ %>
-                <a id="submit_answer" class="btn btn-large  btn-primary"
-                   onclick="grading('<%=target.get('id')%>')">提交答案</a>
-                <% } %>
-                <% } else { %>
-                <div>
-                    <a class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
-                </div>
-                <% } %>
-            </div>
-        </div>
+    </div>
     </div>
 </script>
 
@@ -392,6 +411,7 @@
         <p>
             <%
             userdata = target.get('userdata')
+            var completed = (userdata.current == 'EOF')
             activity_type = activity.get('type')
             %>
             <%=target.get("body")%>
@@ -400,33 +420,34 @@
 
     <div class="row">
         <div class="span10 controls">
-            <input type="text" class="" id="answer" style="width:100%;margin-top:5px;height:30px" placeholder="填写答案">
+            <input type="text" class="" id="answer" style="width:100%;margin-top:5px;height:30px"
+                   placeholder="<%if(completed){%><%=userdata.answer%><%}else{%>填写答案<%}%>">
         </div>
 
-        <% if(currentMode != MODE.VIEW_ONLY) { %>
-        <% if(userdata.current == 'EOF') { %>
-        <a class="span2 btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
-        <% }else{ %>
-        <a id="submit_answer" class="span2 btn btn-large btn-primary"
-           onclick="grading('<%=target.get('id')%>')">提交答案</a>
-        <% } %>
-        <% } else { %>
-        <a class="span2 btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
-        <% } %>
-    </div>
+        <div class="">
+            <% if(currentMode != MODE.VIEW_ONLY) { %>
+            <% if(completed) { %>
+            <a class="span2 btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+            <% }else{ %>
+            <a id="submit_answer" class="span2 btn btn-large btn-primary"
+               onclick="grading('<%=target.get('id')%>')">提交答案</a>
+            <% } %>
+            <% } else { %>
+            <a class="span2 btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+            <% } %>
+        </div>
     </div>
 
     <div id="grading_result" class="row">
         <%
         if(activity_type=='7'){
-        console.log('7!')
         if(userdata.correct==true) {
         %>
         yo，答对啦！
         <%
         } else if (userdata.correct==false) {
         %>
-        阿西，错了哎。正确答案是：<%=target.get('correct_answers')%>
+        错了哎。正确答案是：<%=target.get('correct_answers')%>
         <%
         }
         }else if((activity_type=='4') && (userdata.current == 'EOF')){%>
@@ -526,32 +547,36 @@
 </script>
 
 <script type="text/template" id="tc_video">
-   <!--<h1><%=target.get('name')%></h1>-->
+    <!--<h1><%=target.get('name')%></h1>-->
 
-   <%isViewed=Sun.isviewed('media',target.get("id"))%>
+    <%isViewed=Sun.isviewed('media',target.get("id"))%>
 
     <%
     id = target.get("id")
+    var media = target
     Log.i('media:'+JSON.stringify(media))
     var mediaPath = "file://"+media.get('path')
     %>
-    <div class="row" style="text-align:center;margin-left:auto; margin-right:auto; margin-top:90px">
-        <video id="video" class="clearfix" src="<%=mediaPath%>" poster="img/img-video-placeholder.gif" width=560
+    <div style="text-align:center">
+        <div style="font-size:28px;line-height:36px;margin:15px" class="title"><%=target.get('name')%></div>
+        <video id="video" class="clearfix" src="<%=mediaPath%>" poster="img/img-video-placeholder.gif"
                height=420 onclick="this.play()">
         </video>
-        <!--<% var video =document.getElementById('video')%>-->
-        <div style="text-align: center;">
-            <!--<div class="btn btn-primary btn-large" onclick="video.play()">-->
-            <!--<img style="height:25px" src="img/play.png"/>-->
-            <!--</div>-->
-            <button type="button" class="btn btn-large"  style=" 
-                background-color: #b2d4a1;
+        <div style="text-align: center;margin-top:30px">
+            <button class="btn btn-large" onclick="Interfaces.onVideoComplete('123')">看完啦（release时删除）</button>
+            <button type="button" class="btn btn-large" id="nextButton"
+                    style="
+                background-color: #77BB55;
                 background-image: none;
                 border: none;
                 color: #ffffff;
                 text-shadow: none;"
-                onclick="completeVideo('<%=id%>')" <%if(isViewed){%>disabled="disabled"<%}%>>
-                继续学习
+                    onclick="completeVideo('<%=id%>')"
+            <% if (currentMode != MODE.VIEW_ONLY){%>
+            disabled="disabled"
+            <%}%>
+            >
+            继续学习
             </button>
         </div>
     </div>
