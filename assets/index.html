@@ -23,10 +23,9 @@
     <script src="js/sun.js"></script>
     <script src="js/app.js"></script>
 </head>
+
 <body>
-
-
-
+    
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
             <div class="nav-collapse collapse" id="header">
@@ -54,16 +53,19 @@
 <!--Many templates-->
 <script type="text/template" id="th_subjects">
             <a class="brand">阳光提高班</a>
-
                 <ul class="nav">
                     <%
                     for(var i=0 ; i < target.length ; i++){
-                    subject = target.at(i)
-                    if($.inArray(subject.get('id'),target.showSubjects)>=0){
+                    subject = target.at(i);
+                    %>
+                    <%userdata = Sun.getuserdata('subject',subject.get('id'));%>
+
+                    <% if($.inArray(subject.get('id'),target.showSubjects)>=0){
                     %>
                     <li class="<% if(currentSubjectId == subject.get('id')){ %>active<% } %>">
                         <a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>
-                    <div id="triangle" style="display:<% if(currentSubjectId != subject.get('id')){ %>none<% } %>"></div>
+                        <div id="triangle" style="display:<% if(currentSubjectId != subject.get('id')){ %>none<% } %>"></div>
+                        <div id="badge">2</div>
                     </li>
                     <% }}%>
                 </ul>
@@ -146,15 +148,12 @@
 
         <div class="span3">
 
-         <% userdata = Sun.getuserdata('lesson',lesson.get('id')) %>
-
             <div class="well <%=lesson.id%>" id="lesson" style="background-color:<%if(userdata['downloaded']==true){%>#ffffff<%}%>" onclick="<%if(userdata['downloaded']==true){%>window.open('#lesson/'+'<%=lesson.id%>','_self')<%}%>">
                 <div class="row row-top">
                     <h4><%=lesson.get("name")%></h4>
                     <div class="pull-right lesson_label">
-                        <img class="<%=lesson.id%>" src="img/label_new.png" style="display:<%if(userdata['downloaded']==true){%>none<%}%>"/>
-
-                        <p class="<%=lesson.id%>" style="display:<%if(userdata['downloaded']!=true){%>none<%}%>"><%=lesson.get("day_week")%></p>
+                        <img class="<%=lesson.id%>" src="img/label_new.png" style="display:<%if(userdata['downloaded']==true && userdata['entered']!=undefined){%>none<%}%>"/>
+                        <p class="<%=lesson.id%>" style="display:<%if(userdata['downloaded']!=true || userdata['entered']==undefined){%>none<%}%>"><%=lesson.get("day_week")%></p>
                     </div>
                 </div>
                
@@ -170,7 +169,7 @@
                     <div class="bar" style="width: 0%;"></div>
                 </div>
                 <div id="lessonbox_progress_<%=lesson.id%>" class="row row-bottom-content"
-                         style="display:<%if(userdata['downloaded']!=true){%>none<%}%>">
+                         style="display:<%if(userdata['downloaded']!=true || userdata['entered']==undefined){%>none<%}%>">
                         <%
                         var stageCount = 2
                         var stageWidth = 100/stageCount

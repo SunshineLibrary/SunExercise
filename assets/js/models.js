@@ -51,9 +51,9 @@ jQuery(function () {
             var self = this
             $.each(options, function (index, subject) {
                 Sun.fetch('subject', {id: subject['id']}, function (s) {
-                   //if (s.get('lessons').length > 0) {
+                   if (s.get('lessons').length > 0) {
                         self.showSubjects.push(s.get('id'))
-                   // }
+                    }
                 })
             })
         }
@@ -65,6 +65,15 @@ jQuery(function () {
     Lesson = Backbone.Model.extend({
         initialize: function (options) {
             var date = new Date(Date.parse(options.time))
+           // var stages = new Stages()
+            //for(var i =0 ;i < options["stages"].length;i++){
+               // var stage = new Stage(options["stages"][i])
+             //   var userdata = Sun.getuserdata('stage',stage.get("id"))
+                //stage.set({
+                //    completed: (userdata.current=="EOF")
+                //})
+               // stages.add(stage)
+            //}
             var stages = new Stages(options["stages"])
             Log.i("stages of lesson," + JSON.stringify(stages))
             this.set({

@@ -109,10 +109,6 @@ h2 {
     text-align: center;
 }
 
-.well .btn-large:hover {
-    background-color: #5e9443;
-}
-
 .well .btn-large.hide {
     display: none;
 }
@@ -282,10 +278,6 @@ h2 {
     border-left: 1px dashed #333333;
 }
 
-.navbar .btn:hover {
-    background-color: #333333;
-}
-
 .well >div.show {
     display: inline-block;
     margin: 0px;
@@ -432,4 +424,19 @@ h2 {
     padding: 0px;
     width: auto;
     display: block;
+}
+
+#badge {
+    height:20px;
+    width:20px; 
+    border-radius:100%; 
+    color:#ffffff; 
+    background-color:#dd6622; 
+    font-size:14px; 
+    text-align:center; 
+    margin-top: -45px; 
+    margin-right:4px; 
+    z-index:1; 
+    display:block; 
+    float:right;
 }
