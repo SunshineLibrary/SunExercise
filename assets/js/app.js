@@ -53,7 +53,7 @@ jQuery(function () {
                         reloadPage()
 
                         $.each(subject.get('lessons').models, function (index, lesson) {
-                            changeDownloadBtn(lesson.get('id'), lesson.get('userdata')['downloaded'])
+                            changeDownloadBtn(lesson.get('id'), (lesson.get('download_finish') == '1'))
                         })
                     })
                 })
