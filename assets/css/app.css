@@ -75,22 +75,23 @@ h2 {
     height: auto;
     width: auto;
     position: relative;
-    float: right;
+    margin-top: -3px;
+    margin-right: -2px;
+
 }
 
 .lesson_label >img {
     display: block;
     width: auto;
     height: auto;
-    margin-top: -2px;
 }
 
 .lesson_label >p {
     display: block;
     margin-bottom: 0px;
-    margin-top: 12px;
+    margin-top: 15px;
     text-align: center;
-    margin-right: 12px;
+    margin-right: 14px;
     font-size: 14px;
     color: #aaaaaa;
 }

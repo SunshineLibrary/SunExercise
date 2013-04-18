@@ -83,22 +83,22 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
 
         startService(new Intent(MainActivity.this, NotificationService.class));
 
-        Intent intent = new Intent(UserInfo.ACTION_SIGN_IN_ACTIVITY);
+      /*  Intent intent = new Intent(UserInfo.ACTION_SIGN_IN_ACTIVITY);
         intent.addCategory(Intent.CATEGORY_DEFAULT);
         try {
             startActivityForResult(intent, UserInfo.SIGN_IN_REQUEST);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, "没有安装正确版本的更新晓书(SunDaemon)", Toast.LENGTH_LONG)
+            Toast.makeText(this, "娌℃湁瀹夎姝ｇ‘鐗堟湰鐨勬洿鏂版檽涔�SunDaemon)", Toast.LENGTH_LONG)
                     .show();
             finish();
-        }
+        }*/
     }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
-
+/*
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -109,7 +109,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
                 finish();
             }
         }
-    }
+    }*/
 
     @Override
     protected void onResume() {
@@ -120,13 +120,13 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
         } catch (PackageManager.NameNotFoundException e) {
             Log.i(TAG, "onResume");
         }
-        if (mSignIn && mLoadReady)
+        if (/*mSignIn &&*/ mLoadReady)
             mInterface.autoSync();
 
     }
 
 
-    // 捕捉返回键，首先隐藏播放器，然后判断是否能够返回。
+    // 鎹曟崏杩斿洖閿紝棣栧厛闅愯棌鎾斁鍣紝鐒跺悗鍒ゆ柇鏄惁鑳藉杩斿洖銆�
     public void onBackPressed() {
         Log.i(TAG, "in" + mWebView.inCustomView());
         if (mWebView.inCustomView()) {
@@ -221,7 +221,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     @Override
     public void onReady() {
         mLoadReady = true;
-        if (mSignIn)
+       /* if (mSignIn)*/
             mInterface.autoSync();
     }
 

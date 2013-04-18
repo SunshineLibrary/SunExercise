@@ -62,8 +62,6 @@ jQuery(function () {
                 Log.i("lesson " + id)
                 Sun.fetch("lesson", {id: id}, function (lesson) {
                     
-                    Sun.adduserdata("lesson",id,"entered","true")
-
                     setHeader(
                         new LessonHeaderView({
                             model: lesson

@@ -65,24 +65,23 @@ jQuery(function () {
     Lesson = Backbone.Model.extend({
         initialize: function (options) {
             var date = new Date(Date.parse(options.time))
-           // var stages = new Stages()
-            //for(var i =0 ;i < options["stages"].length;i++){
-               // var stage = new Stage(options["stages"][i])
-             //   var userdata = Sun.getuserdata('stage',stage.get("id"))
-                //stage.set({
-                //    completed: (userdata.current=="EOF")
-                //})
-               // stages.add(stage)
-            //}
-            var stages = new Stages(options["stages"])
-            Log.i("stages of lesson," + JSON.stringify(stages))
+            /*var stages = new Stages()
+            for(var i =0 ;i < options["stages"].length;i++){
+                var stage = new Stage(options["stages"][i])
+                var userdata = Sun.getuserdata('stage',stage.get('id'))
+                stage.set({
+                    completed: (userdata.current=="EOF")
+                })
+                stages.add(stage)
+            }*/
+            var somestages = new Stages(options["stages"])
             this.set({
                 parent_id: options['subject_id'],
                 day_week: "星期" + DAYS_OF_WEEK[date.getDay()],
                 day: date.getDate(),
                 month: date.getMonth() + 1,
                 year: date.getYear() + 1900,
-                stages: stages,
+                stages: somestages,
                 userdata: Sun.getuserdata("lesson", options.id)
             })
         }

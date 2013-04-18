@@ -64,7 +64,7 @@
                     <li class="<% if(currentSubjectId == subject.get('id')){ %>active<% } %>">
                         <a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>
                         <div id="triangle" style="display:<% if(currentSubjectId != subject.get('id')){ %>none<% } %>"></div>
-                        <div id="badge">2</div>
+                       <!-- <div id="badge">2</div> -->
                     </li>
                     <% }}%>
                 </ul>
@@ -146,22 +146,26 @@
         %>
 
         <div class="span3">
+            <%
+            var downloaded = lesson.get("download_finish")
+            %>
 
-            <div class="well <%=lesson.id%>" id="lesson" style="background-color:<%if(userdata['downloaded']==true){%>#ffffff<%}%>" onclick="<%if(userdata['downloaded']==true){%>window.open('#lesson/'+'<%=lesson.id%>','_self')<%}%>">
-
+            <div class="well <%=lesson.id%>" id="lesson"
+                 style="background-color:<%if(downloaded=='1'){%>#ffffff<%}%>"
+                 onclick="<%if(downloaded=='1'){%>window.open('#lesson/'+'<%=lesson.id%>','_self')<%}%>">
                 <div class="row row-top">
                     <h4><%=lesson.get("name")%></h4>
 
                     <div class="pull-right lesson_label">
-                        <img class="<%=lesson.id%>" src="img/label_new.png" style="display:<%if(userdata['downloaded']==true && userdata['entered']!=undefined){%>none<%}%>"/>
-                        <p class="<%=lesson.id%>" style="display:<%if(userdata['downloaded']!=true || userdata['entered']==undefined){%>none<%}%>"><%=lesson.get("day_week")%></p>
+                        <img class="<%=lesson.id%>" src="img/label_new.png" style="display:<%if(downloaded=='1' && userdata['entered']!=undefined){%>none<%}%>"/>
+                        <p class="<%=lesson.id%>" style="display:<%if(downloaded !='1' || userdata['entered']==undefined){%>none<%}%>"><%=lesson.get("day_week")%></p>
                     </div>
                 </div>
                
                <div class="row row-bottom">
                 
                 <div id="lessonbox_download_<%=lesson.id%>" class="btn btn-large <%=lesson.id%>"
-                     style="display:<%if(userdata['downloaded']==true){%>none<%}%>"
+                     style="display:<%if(downloaded=='1'){%>none<%}%>"
                      onclick="Interfaces.download('<%=lesson.id%>')">下载
                 </div>
                 <div id="lessonbox_download_progress_<%=lesson.id%>"
@@ -170,18 +174,25 @@
                     <div class="bar" style="width: 0%;"></div>
                 </div>
                 <div id="lessonbox_progress_<%=lesson.id%>" class="row row-bottom-content"
-                         style="display:<%if(userdata['downloaded']!=true || userdata['entered']==undefined){%>none<%}%>">
-
+                         style="display:<%if( downloaded!='1' || userdata['entered']==undefined){%>none<%}%>">
                         <%
-                        var stageCount = 2
+                        var stageCount = undefined
+                        var stageArray = new Array()
+                        Sun.fetch('lesson', {id: lesson.get('id')}, function (s) {
+                            stageCount = s.get('stages').length
+                            stageArray = s.get('stages')
+
                         var stageWidth = 100/stageCount
                         for(var i=0;i < stageCount; i++){
+                        var stageUserData = Sun.getuserdata('stage',stageArray.at(i).get('id'))
+                        Log.i("stageUserData['current']="+ stageUserData.current)
                         %>
+
                         <div class="lessonProgressBar" style="width:<%=stageWidth%>%">
-                            <div class="rectangle" style="display:block"></div>
+                            <div class="rectangle" style="display:block; background-color:<%if(stageUserData['current']=='EOF'){%>#77BB55<%}%>"></div>
                             <div class="ball" style="display:block"><img src="img/StageIcon_<%=i+1%>_Grey.png"/></div>
                         </div>
-                        <%}%>
+                        <%}})%>
 
                     </div>
                 </div>
@@ -553,7 +564,6 @@
 
     <%
     id = target.get("id")
-    var media = target
     Log.i('media:'+JSON.stringify(media))
     var mediaPath = "file://"+media.get('path')
     %>
