@@ -53,9 +53,10 @@ jQuery(function () {
                         reloadPage()
 
                         $.each(subject.get('lessons').models, function (index, lesson) {
-                            changeDownloadBtn(lesson.get('id'), (lesson.get('download_finish') == '1'))
+//                            changeDownloadBtn(lesson.get('id'), (lesson.get('download_finish') == '1'))
+                            changeDownloadBtn(lesson.get('id'), lesson.get('download_finish'))
                         })
-                    })
+                    }, true)
                 })
             })
             app_router.on('route:lesson', function (id) {

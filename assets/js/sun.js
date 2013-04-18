@@ -62,20 +62,22 @@ jQuery(function () {
             return result
         },
 
-        fetch: function (type, options, callback) {
+        fetch: function (type, options, callback, refresh) {
             var start = new Date().getTime();
             options = (options == undefined) ? {} : options
             // Only if the type is subjects, options can be undefined
             var id = (options == undefined) ? 'subjects' : options['id']
 
             // Enable cache
-            var cached = MATERIAL_CACHE[id]
-            if (cached != undefined) {
-                if (callback != undefined) {
-                    eval(callback)(cached, options)
+            if (refresh != true) {
+                var cached = MATERIAL_CACHE[id]
+                if (cached != undefined) {
+                    if (callback != undefined) {
+                        eval(callback)(cached, options)
+                    }
+                    console.log("[CACHEDFETCHCOST]" + (new Date().getTime() - start))
+                    return cached
                 }
-                console.log("[CACHEDFETCHCOST]" + (new Date().getTime() - start))
-                return cached
             }
 
             var ret = undefined
@@ -299,9 +301,9 @@ jQuery(function () {
                 Log.i("[ANDROID]onCollectionDownloaded," + lessonId + "," + downloaded)
             }
             if (downloaded == "true") {
-                changeDownloadBtn(lessonId, true)
+                changeDownloadBtn(lessonId, '1')
             } else {
-                changeDownloadBtn(lessonId, false)
+                changeDownloadBtn(lessonId, 'failed')
             }
         },
 
@@ -335,6 +337,8 @@ jQuery(function () {
                 }, 1000)
             } else {
                 Log.i("[ANDROID]download," + id)
+                $('#lessonbox_download_' + id).addClass('disabled')
+                $('#lessonbox_download_' + id).attr('onclick','').unbind('click')
                 android.download(id)
             }
         },
@@ -395,14 +399,17 @@ function changeDownloadProgress(id, percentage) {
 }
 
 function changeDownloadBtn(id, downloaded) {
-    if (downloaded) {
+    if (downloaded == '1') {
         $('#lessonbox_download_progress_' + id).hide()
         $('.well.' + id).addClass('downloaded');
-        $('.well.'+id).click(function(e){
+        $('.well.' + id).click(function (e) {
             $('.lesson_label >img.' + id).hide();
-            window.open('#lesson/'+id,'_self');
+            window.open('#lesson/' + id, '_self');
         });
 
+    } else if (downloaded == 'downloading') {
+        $('#lessonbox_download_' + id).addClass('disabled')
+        $('#lessonbox_download_' + id).attr('onclick','').unbind('click')
     } else {
         $('#lessonbox_download_' + id).show()
         $('#lessonbox_progress_' + id).hide()
