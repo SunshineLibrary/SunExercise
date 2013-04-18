@@ -88,7 +88,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
         try {
             startActivityForResult(intent, UserInfo.SIGN_IN_REQUEST);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, "娌℃湁瀹夎姝ｇ‘鐗堟湰鐨勬洿鏂版檽涔�SunDaemon)", Toast.LENGTH_LONG)
+            Toast.makeText(this, "濞屸剝婀佺�澶庮棖濮濓絿鈥橀悧鍫熸拱閻ㄥ嫭娲块弬鐗堟娑旓拷SunDaemon)", Toast.LENGTH_LONG)
                     .show();
             finish();
         }
@@ -126,7 +126,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     }
 
 
-    // 鎹曟崏杩斿洖閿紝棣栧厛闅愯棌鎾斁鍣紝鐒跺悗鍒ゆ柇鏄惁鑳藉杩斿洖銆�
+    // 閹规洘宕忔潻鏂挎礀闁款噯绱濇＃鏍у帥闂呮劘妫岄幘顓熸杹閸ｎ煉绱濋悞璺烘倵閸掋倖鏌囬弰顖氭儊閼宠棄顧愭潻鏂挎礀閵嗭拷
     public void onBackPressed() {
         Log.i(TAG, "in" + mWebView.inCustomView());
         if (mWebView.inCustomView()) {
@@ -221,7 +221,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     @Override
     public void onReady() {
         mLoadReady = true;
-        if (mSignIn)
+       if (mSignIn)
             mInterface.autoSync();
     }
 
