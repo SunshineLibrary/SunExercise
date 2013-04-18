@@ -332,7 +332,7 @@ jQuery(function () {
                     setTimeout(function () {
                         Interfaces.onCollectionDownloaded(id, "true")
                     }, 1000)
-                    changeDownloadProgress(id, 20)
+                    changeDownloadProgress(id, 100)
                 }, 1000)
             } else {
                 Log.i("[ANDROID]download," + id)
@@ -398,20 +398,15 @@ function changeDownloadProgress(id, percentage) {
 function changeDownloadBtn(id, downloaded) {
     if (downloaded) {
         $('#lessonbox_download_progress_' + id).hide()
-        $('#lessonbox_progress_' + id).show()
         $('.well.' + id).addClass('downloaded');
-        $('.lesson_label >img.' + id).hide();
-        $('.lesson_label >p.' + id).show();
-
-        $('.well.' + id).click(function (e) {
-            window.open('#lesson/' + id, '_self');
+        $('.well.'+id).click(function(e){
+            $('.lesson_label >img.' + id).hide();
+            window.open('#lesson/'+id,'_self');
         });
+
     } else {
         $('#lessonbox_download_' + id).show()
         $('#lessonbox_progress_' + id).hide()
         $('#lessonbox_download_progress_' + id).hide()
-        $('.lesson_label >img.' + id).show()
-        $('.lesson_label >p.' + id).hide()
-
     }
 }

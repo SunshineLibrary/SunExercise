@@ -88,7 +88,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
         try {
             startActivityForResult(intent, UserInfo.SIGN_IN_REQUEST);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, "没有安装正确版本的更新晓书(SunDaemon)", Toast.LENGTH_LONG)
+            Toast.makeText(this, "娌℃湁瀹夎姝ｇ‘鐗堟湰鐨勬洿鏂版檽涔�SunDaemon)", Toast.LENGTH_LONG)
                     .show();
             finish();
         }
@@ -120,13 +120,13 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
         } catch (PackageManager.NameNotFoundException e) {
             Log.i(TAG, "onResume");
         }
-        if (mSignIn && mLoadReady)
+        if (/*mSignIn &&*/ mLoadReady)
             mInterface.autoSync();
 
     }
 
 
-    // 捕捉返回键，首先隐藏播放器，然后判断是否能够返回。
+    // 鎹曟崏杩斿洖閿紝棣栧厛闅愯棌鎾斁鍣紝鐒跺悗鍒ゆ柇鏄惁鑳藉杩斿洖銆�
     public void onBackPressed() {
         Log.i(TAG, "in" + mWebView.inCustomView());
         if (mWebView.inCustomView()) {

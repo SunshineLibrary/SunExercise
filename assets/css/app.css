@@ -75,22 +75,23 @@ h2 {
     height: auto;
     width: auto;
     position: relative;
-    float: right;
+    margin-top: -3px;
+    margin-right: -2px;
+
 }
 
 .lesson_label >img {
     display: block;
     width: auto;
     height: auto;
-    margin-top: -2px;
 }
 
 .lesson_label >p {
     display: block;
     margin-bottom: 0px;
-    margin-top: 12px;
+    margin-top: 15px;
     text-align: center;
-    margin-right: 12px;
+    margin-right: 14px;
     font-size: 14px;
     color: #aaaaaa;
 }
@@ -127,7 +128,8 @@ h2 {
     height: 56px;
     padding-left: 0px;
     background-color: #444444;
-    border: none;
+    box-shadow: none;
+    border-bottom: 1px solid #333333;
 }
 
 .navbar .brand {
@@ -137,6 +139,7 @@ h2 {
     margin-left: 0px;
     padding: 18px 40px 0px 68px;
     background-color: #444444;
+    border-right: 1px dashed #333333;
 }
 
 .navbar-fixed-top .navbar-inner .container {
@@ -149,6 +152,10 @@ h2 {
     overflow: visible;
     padding-left: 0px;
     background-color: #444444;
+}
+
+.navbar-inverse .nav {
+    margin-right: -96px;
 }
 
 .navbar-inverse .nav > li {
@@ -164,23 +171,38 @@ h2 {
     padding: 18px 24px 0px 24px;
     font-size: 14px;
     width: auto;
-    position: center;
+    z-index: 0;
+}
+
+#triangle {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: -7px;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 8px solid #eeeeee;
+    z-index: 1;
+    box-shadow: none;
 }
 
 .navbar-inverse .nav > .active > a {
-    color: #ffffff;
-    height: 38px;
-    margin: 0px;
-    padding: 18px 24px 0px 24px;
-    font-size: 14px;
-    width: auto;
-    position: center;
+    background-color: transparent;
+    box-shadow: none;
+}
+
+.navbar-inverse .nav > li > a:focus,
+.navbar-inverse .nav > li > a:hover {
     background-color: #333333;
 }
 
-.navbar-inverse .nav > .active > a:focus,
+.navbar-inverse .nav > .active > a:focus{
+    background-color: blue;
+}
 .navbar-inverse .nav > .active > a:hover {
-    background-color: #333333;
+    background-color: transparent;
+    box-shadow: none;
 }
 
 .circle_wrap {
@@ -254,6 +276,7 @@ h2 {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
+    border-left: 1px dashed #333333;
 }
 
 .well >div.show {
@@ -402,4 +425,19 @@ h2 {
     padding: 0px;
     width: auto;
     display: block;
+}
+
+#badge {
+    height:20px;
+    width:20px; 
+    border-radius:100%; 
+    color:#ffffff; 
+    background-color:#dd6622; 
+    font-size:14px; 
+    text-align:center; 
+    margin-top: -45px; 
+    margin-right:4px; 
+    z-index:1; 
+    display:block; 
+    float:right;
 }
