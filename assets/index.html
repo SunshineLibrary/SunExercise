@@ -185,7 +185,7 @@
                 </div>
                
                <div class="row row-bottom">
-                
+
                 <div id="lessonbox_download_<%=lesson.id%>" class="btn btn-large <%=lesson.id%>"
                      style="display:<%if(downloaded=='1'){%>none<%}%>"
                      onclick="Interfaces.download('<%=lesson.id%>')">下载
@@ -305,7 +305,7 @@
                 <% if(completed){%>disabled<%}%>
                 <% if(shouldCheck){%>checked<%}%>
                 >
-                <%= target.get('choices')[i].display_text %>
+                <%=ANSWERS[i]%>. <%= target.get('choices')[i].display_text %>
             </label>
         </div>
         <% } %>
@@ -388,7 +388,7 @@
                 name="optionsRadios"
                 <% if(shouldCheck){%>checked<%}%>
                 >
-                <%= target.get('choices')[i].display_text %>
+                <%=ANSWERS[i]%>. <%= target.get('choices')[i].display_text %>
             </label>
         </div>
         <% } %>
@@ -463,7 +463,7 @@
             <a class="span2 btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
             <% }else{ %>
             <a id="submit_answer" class="span2 btn btn-large btn-primary"
-               onclick="grading('<%=target.get('id')%>')"><%=JSON.stringify(userdata)%>提交答案</a>
+               onclick="grading('<%=target.get('id')%>')">提交答案</a>
             <% } %>
             <% } else { %>
             <a class="span2 btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
@@ -595,7 +595,7 @@
                height=420 onclick="this.play()">
         </video>
         <div style="text-align: center;margin-top:30px">
-            <button class="btn btn-large" onclick="Interfaces.onVideoComplete('123')">看完啦（release时删除）</button>
+            <button class="btn btn-large" onclick="Interfaces.onVideoComplete('123')">看完啦</button>
             <button type="button" class="btn btn-large" id="nextButton"
                     style="
                 background-color: #77BB55;

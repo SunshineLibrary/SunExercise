@@ -9,6 +9,8 @@ jQuery(function () {
 
     USER_DATA = new Object()
 
+    USER_DATA_CACHE = new Object()
+
     MATERIAL_CACHE = new Object()
 
     MATERIAL_TYPES = {
@@ -72,10 +74,10 @@ jQuery(function () {
             if (refresh != true) {
                 var cached = MATERIAL_CACHE[id]
                 if (cached != undefined) {
+                    console.log("[CACHEDFETCHCOST]" + (new Date().getTime() - start))
                     if (callback != undefined) {
                         eval(callback)(cached, options)
                     }
-                    console.log("[CACHEDFETCHCOST]" + (new Date().getTime() - start))
                     return cached
                 }
             }
@@ -106,8 +108,7 @@ jQuery(function () {
                 ret = Sun.requestMaterial(type, options["id"])
                 Log.i("[ANDROID]fetched," + JSON.stringify(ret))
                 if (callback != undefined) {
-                    var end = new Date().getTime();
-                    console.log("[FETCHCOST]" + (end - start) + ',' + type + ',' + id)
+                    console.log("[FETCHCOST]" + (new Date().getTime() - start) + ',' + type + ',' + id)
                     MATERIAL_CACHE[id] = ret
                     eval(callback)(ret, options)
                 }
@@ -128,11 +129,13 @@ jQuery(function () {
                 // web dev mode
                 Log.i("[WEB]set user data," + type + "," + id + "," + options)
                 USER_DATA[id] = JSON.stringify(options)
+                USER_DATA_CACHE[id] = undefined
             } else {
                 // android dev mode
                 Log.i("[ANDROID]set user data," + type + "," + id + "," + options)
                 var reqText = JSON.stringify(req)
                 options["result"] = android.requestUserData(reqText)
+                USER_DATA_CACHE[id] = undefined
             }
             if (callback != undefined) {
                 eval(callback)(type, id, options)
@@ -155,10 +158,12 @@ jQuery(function () {
                 // web dev mode
                 Log.i("[WEB]add user data")
                 USER_DATA[id] = JSON.stringify(userdata)
+                USER_DATA_CACHE[id] = undefined
             } else {
                 // android dev mode
                 var reqText = JSON.stringify(req)
                 Log.i("[ANDROID]add user data," + reqText)
+                USER_DATA_CACHE[id] = undefined
                 android.requestUserData(reqText)
             }
             if (typeof callback != "undefined") {
@@ -168,6 +173,10 @@ jQuery(function () {
 
         getuserdata: function (type, id) {
             // "get" method means get user data
+            if (USER_DATA_CACHE[id] != undefined) {
+                Log.i("[CACHEUSERDATA]" + type + "," + id)
+                return USER_DATA_CACHE[id]
+            }
             req = Sun.createrequest("user_data", "get", type, id, undefined, Sun.getuserid())
             var userdata = undefined
             if (typeof android == "undefined") {
@@ -180,7 +189,9 @@ jQuery(function () {
                 userdata = android.requestUserData(JSON.stringify(req))
             }
             userdata = (userdata == undefined) ? "{}" : userdata
-            return  JSON.parse(userdata)
+            var ret = JSON.parse(userdata)
+            USER_DATA_CACHE[id] = ret
+            return ret
         },
 
         getmedia: function (id) {
@@ -338,7 +349,7 @@ jQuery(function () {
             } else {
                 Log.i("[ANDROID]download," + id)
                 $('#lessonbox_download_' + id).addClass('disabled')
-                $('#lessonbox_download_' + id).attr('onclick','').unbind('click')
+                $('#lessonbox_download_' + id).attr('onclick', '').unbind('click')
                 android.download(id)
             }
         },
@@ -358,7 +369,7 @@ jQuery(function () {
         }
     }
 
-    DEBUG = true
+    DEBUG = false
 
     Log = {
         d: function (content) {
@@ -409,7 +420,7 @@ function changeDownloadBtn(id, downloaded) {
 
     } else if (downloaded == 'downloading') {
         $('#lessonbox_download_' + id).addClass('disabled')
-        $('#lessonbox_download_' + id).attr('onclick','').unbind('click')
+        $('#lessonbox_download_' + id).attr('onclick', '').unbind('click')
     } else {
         $('#lessonbox_download_' + id).show()
         $('#lessonbox_progress_' + id).hide()

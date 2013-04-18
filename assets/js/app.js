@@ -25,6 +25,7 @@ jQuery(function () {
             var app_router = new AppRouter
             app_router.on('route:subjects', function () {
                 Sun.fetch("subjects", null, function (subjects) {
+                    currentMaterial = "subjects"
                     Log.i("subjects," + JSON.stringify(subjects))
                     for (var i = 0; i < subjects.length; i++) {
                         var s = subjects.at(i)
@@ -40,6 +41,8 @@ jQuery(function () {
                 Log.i("subject " + id)
                 Sun.fetch("subjects", null, function (subjects) {
                     Sun.fetch("subject", {id: id}, function (subject) {
+                        currentSubject = subject
+                        currentMaterial = "subject"
                         setHeader(
                             new SubjecsHeaderView({
                                 model: subjects,
@@ -62,7 +65,8 @@ jQuery(function () {
             app_router.on('route:lesson', function (id) {
                 Log.i("lesson " + id)
                 Sun.fetch("lesson", {id: id}, function (lesson) {
-
+                    currentLesson = lesson
+                    currentMaterial = "lesson"
                     Sun.adduserdata("lesson", id, "entered", "true")
 
                     setHeader(
@@ -83,6 +87,7 @@ jQuery(function () {
                     var userdata = Sun.getuserdata("stage", id)
                     var sections = stage.get("sections").models
                     var completed = (userdata.current == 'EOF')
+                    currentMaterial = "stage"
 
                     // Check if stage completed
                     if (!completed) {
@@ -128,6 +133,8 @@ jQuery(function () {
             })
             app_router.on('route:section', function (id) {
                 Sun.fetch("section", {id: id}, function (section) {
+                    currentMaterial = "section"
+
                     var userdata = Sun.getuserdata("section", id)
                     var activities = section.get("activities").models
                     if (currentMode == MODE.NORMAL) {
@@ -170,6 +177,7 @@ jQuery(function () {
             app_router.on('route:activity', function (id) {
                 Log.i("activity " + id)
                 Sun.fetch("activity", {id: id}, function (activity) {
+                        currentMaterial = "activity"
                         var userdata = Sun.getuserdata("activity", id)
                         if (currentMode == MODE.NORMAL) {
                             // activity with problems
@@ -232,6 +240,7 @@ jQuery(function () {
                     Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
                         Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
                             Log.i("summary for activity," + JSON.stringify(activity))
+                            currentMaterial = "summary"
 
                             var correctCount = 0
                             $.each(activity.get("problems").models, function (number, problem) {
@@ -275,16 +284,9 @@ jQuery(function () {
                 })
             })
 
-            currentSection = undefined
-            currentId = undefined
-            app_router.bind('all', function (route, section, params) {
-                currentSection = section
-                if (typeof params != "undefined") {
-                    currentId = params[0]
-                } else {
-                    currentId = undefined
-                }
-            });
+            currentSubject = undefined
+            currentLesson = undefined
+            currentMaterial = undefined
 
             Logger.hide()
             Backbone.history.start()
@@ -293,6 +295,7 @@ jQuery(function () {
 
             function loadProblem(id) {
                 Sun.fetch("problem", {id: id}, function (problem) {
+                    currentMaterial = "problem"
                     Log.i("problem," + problem.get("type"))
                     Sun.fetch("activity", {id: problem.get('activity_id')}, function (activity) {
                         Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
@@ -442,39 +445,22 @@ jQuery(function () {
             }
 
             goUpstairs = function () {
-                Log.i('get upstairs with current,' + currentSection + "," + currentId)
-                if (currentSection == "lesson") {
-                    Sun.fetch('lesson', {id: currentId}, function (lesson) {
-                        app_router.navigate("subject/" + lesson.get('subject_id'), {trigger: true, replace: true})
-                    })
-                } else if (currentSection == "stage") {
-                    Sun.fetch('stage', {id: currentId}, function (stage) {
-                        app_router.navigate("lesson/" + stage.get('lesson_id'), {trigger: true, replace: true})
-                    })
-                } else if (currentSection == "section") {
-                    Sun.fetch('section', {id: currentId}, function (section) {
-                        app_router.navigate("stage/" + section.get('stage_id'), {trigger: true, replace: true})
-                    })
-                } else if (currentSection == "activity") {
-                    Sun.fetch('activity', {id: currentId}, function (activity) {
-                        Sun.fetch('section', {id: activity.get('section_id')}, function (section) {
-                            Sun.fetch('stage', {id: section.get('stage_id')}, function (stage) {
-                                app_router.navigate("lesson/" + stage.get('lesson_id'), {trigger: true, replace: true})
-                            })
-                        })
-                    })
-                } else if (currentSection == "problem") {
-                    Sun.fetch('problem', {id: currentId}, function (problem) {
-                        Sun.fetch('activity', {id: problem.get('activity_id')}, function (activity) {
-                            Sun.fetch('section', {id: activity.get('section_id')}, function (section) {
-                                Sun.fetch('stage', {id: section.get('stage_id')}, function (stage) {
-                                    app_router.navigate("lesson/" + stage.get('lesson_id'), {trigger: true, replace: true})
-                                })
-                            })
-                        })
-                    })
+                console.log('get upstairs with current,' + currentMaterial)
+                if (currentMaterial == "lesson") {
+                    app_router.navigate("subject/" + currentSubject.get('id'), {trigger: true, replace: true})
+                } else if (currentMaterial == "stage") {
+                    app_router.navigate("lesson/" + currentLesson.get('id'), {trigger: true, replace: true})
+                } else if (currentMaterial == "section") {
+                    app_router.navigate("lesson/" + currentLesson.get('id'), {trigger: true, replace: true})
+                } else if (currentMaterial == "activity") {
+                    app_router.navigate("lesson/" + currentLesson.get('id'), {trigger: true, replace: true})
+                } else if (currentMaterial == "problem") {
+                    app_router.navigate("lesson/" + currentLesson.get('id'), {trigger: true, replace: true})
+                } else if (currentMaterial == "summary") {
+                    app_router.navigate("lesson/" + currentLesson.get('id'), {trigger: true, replace: true})
                 } else {
-                    Log.e('unsupported type to go upstairs,' + currentSection + "," + currentId)
+                    Log.e('unsupported type to go upstairs,' + currentMaterial )
+                    app_router.navigate("subjects", {trigger: true, replace: true})
                 }
             }
         }
