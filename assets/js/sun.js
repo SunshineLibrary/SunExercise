@@ -63,20 +63,19 @@ jQuery(function () {
         },
 
         fetch: function (type, options, callback) {
-            if (options == undefined) {
-                options = {}
-            }
+            var start = new Date().getTime();
+            options = (options == undefined) ? {} : options
+            // Only if the type is subjects, options can be undefined
+            var id = (options == undefined) ? 'subjects' : options['id']
 
-            // Remove this blog to disable cache
-            if (options["id"] != undefined) {
-                var id = options["id"]
-                var cached = MATERIAL_CACHE[id]
-                if (cached != undefined) {
-                    Log.d("[CACHED]id," + id)
-                    if (callback != undefined) {
-                        eval(callback)(cached, options)
-                    }
+            // Enable cache
+            var cached = MATERIAL_CACHE[id]
+            if (cached != undefined) {
+                if (callback != undefined) {
+                    eval(callback)(cached, options)
                 }
+                console.log("[CACHEDFETCHCOST]" + (new Date().getTime() - start))
+                return cached
             }
 
             var ret = undefined
@@ -105,6 +104,9 @@ jQuery(function () {
                 ret = Sun.requestMaterial(type, options["id"])
                 Log.i("[ANDROID]fetched," + JSON.stringify(ret))
                 if (callback != undefined) {
+                    var end = new Date().getTime();
+                    console.log("[FETCHCOST]" + (end - start) + ',' + type + ',' + id)
+                    MATERIAL_CACHE[id] = ret
                     eval(callback)(ret, options)
                 }
             }
@@ -149,12 +151,12 @@ jQuery(function () {
                 Sun.getuserid())
             if (typeof android == "undefined") {
                 // web dev mode
-                Log.i("[WEB]set user data")
+                Log.i("[WEB]add user data")
                 USER_DATA[id] = JSON.stringify(userdata)
             } else {
                 // android dev mode
                 var reqText = JSON.stringify(req)
-                Log.i("[ANDROID]set user data," + reqText)
+                Log.i("[ANDROID]add user data," + reqText)
                 android.requestUserData(reqText)
             }
             if (typeof callback != "undefined") {
@@ -168,15 +170,16 @@ jQuery(function () {
             var userdata = undefined
             if (typeof android == "undefined") {
                 // web dev mode
-                Log.d("[WEB]get user data," + type + "," + id + JSON.stringify(req))
+                Log.d("[WEB]get user data," + type + "," + id)
                 userdata = USER_DATA[id]
             } else {
                 // android dev mode
-                Log.d("[ANDROID]set user data," + JSON.stringify(req))
+                Log.d("[ANDROID]get user data," + type + "," + id)
                 userdata = android.requestUserData(JSON.stringify(req))
             }
             userdata = (userdata == undefined) ? "{}" : userdata
-            return JSON.parse(userdata)
+            var ret = JSON.parse(userdata)
+            return  ret
         },
 
         getmedia: function (id) {
@@ -290,7 +293,7 @@ jQuery(function () {
         },
 
         onCollectionDownloaded: function (lessonId, downloaded) {
-            Sun.adduserdata('lesson', lessonId, 'downloaded', true)
+//            Sun.adduserdata('lesson', lessonId, 'downloaded', true)
             if (typeof android == "undefined") {
                 Log.i("[WEB]onCollectionDownloaded," + lessonId + "," + downloaded)
             } else {
