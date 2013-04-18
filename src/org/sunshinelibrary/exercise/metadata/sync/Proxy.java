@@ -130,7 +130,9 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
             public void run() {
                 mIsSynchronizing = true;
                 mObserver.onSyncStart();
-                SubscriptionRequest sq = new SubscriptionRequest(ApiUriBuilder.getUriFromPath(PATH));
+                String DUMMY_HOST = "192.168.3.100/api/exercise/updates.json";
+                Uri HOST_URI = new Uri.Builder().scheme("http").authority(DUMMY_HOST).build();
+                SubscriptionRequest sq = new SubscriptionRequest(ApiUriBuilder.getUriFromPath(PATH)); 
                 SubscriptionManager sm = ApiManager.getInstance(ExerciseApplication.getInstance().getBaseContext())
                         .getSubscriptionManager();
                 mSubscription = sm.getOrCreateNewSubscription(sq);
@@ -207,7 +209,7 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
             if (succeed) {
                 CheckAvailableOperation co = new CheckAvailableOperation();
                 co.addAll();
-                // 接在Json数据处理完成后执行，执行后直接通知前端，必须同步执行。
+                // 鎺ュ湪Json鏁版嵁澶勭悊瀹屾垚鍚庢墽琛岋紝鎵ц鍚庣洿鎺ラ�鐭ュ墠绔紝蹇呴』鍚屾鎵ц銆�
                 co.execute();
             }
             mObserver.onJsonParsed();

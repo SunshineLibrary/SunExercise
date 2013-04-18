@@ -23,9 +23,8 @@
     <script src="js/sun.js"></script>
     <script src="js/app.js"></script>
 </head>
+
 <body>
-
-
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="nav-collapse collapse" id="header">
@@ -34,7 +33,7 @@
 </div>
 
 <div class="container" id="content_container">
-    <div id="content">loading content</div>
+    <div id="content"></div>
 </div>
 
 <div class="navbar navbar-inverse navbar-fixed-bottom" style="display: none">
@@ -52,26 +51,30 @@
 
 <!--Many templates-->
 <script type="text/template" id="th_subjects">
-    <a class="brand">阳光提高班</a>
+            <a class="brand">阳光提高班</a>
+                <ul class="nav">
+                    <%
+                    for(var i=0 ; i < target.length ; i++){
+                    subject = target.at(i);
+                    %>
+                    <%userdata = Sun.getuserdata('subject',subject.get('id'));%>
 
-    <ul class="nav">
-        <%
-        for(var i=0 ; i < target.length ; i++){
-        subject = target.at(i)
-        if($.inArray(subject.get('id'),target.showSubjects)>=0){
-        %>
-        <li class="<% if(currentSubjectId == subject.get('id')){ %>active<% } %>">
-            <a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>
-        </li>
-        <% }} %>
-    </ul>
-    <ul class="nav pull-right">
-        <li>
-            <div class="btn" onclick="Interfaces.sync()">
-                <img src="img/btn_main_refresh.png"/>
-            </div>
-        </li>
-    </ul>
+                    <% if($.inArray(subject.get('id'),target.showSubjects)>=0){
+                    %>
+                    <li class="<% if(currentSubjectId == subject.get('id')){ %>active<% } %>">
+                        <a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>
+                        <div id="triangle" style="display:<% if(currentSubjectId != subject.get('id')){ %>none<% } %>"></div>
+                       <!-- <div id="badge">2</div> -->
+                    </li>
+                    <% }}%>
+                </ul>
+                <ul class="nav pull-right">
+                    <li>
+                        <div class="btn" onclick="Interfaces.sync()">
+                            <img src="img/btn_main_refresh.png"/>
+                        </div>
+                    </li>
+                </ul>
 </script>
 
 <script type="text/template" id="th_lesson">
@@ -114,7 +117,7 @@
         <div class="progress_dart <% if(i==0){%>dart_first<%}%>">
             <div class="progress_label">
                 <div class="progress_icon star_off"></div>
-                <span class="progress_title">这个主题呀！</span>
+                <span class="progress_title"><%=section.get('name')%></span>
             </div>
             <div class="progress_arrow"></div>
             <div class="progress_gauge" style="width:<%=section.completeRate()*100%>%;">
@@ -143,50 +146,53 @@
         %>
 
         <div class="span3">
-
             <%
-            userdata = Sun.getuserdata('lesson',lesson.get('id'))
             var downloaded = lesson.get("download_finish")
             %>
 
             <div class="well <%=lesson.id%>" id="lesson"
                  style="background-color:<%if(downloaded=='1'){%>#ffffff<%}%>"
-                 onclick="<%if(downloaded==true){%>window.open('#lesson/'+'<%=lesson.id%>','_self')<%}%>">
+                 onclick="<%if(downloaded=='1'){%>window.open('#lesson/'+'<%=lesson.id%>','_self')<%}%>">
                 <div class="row row-top">
                     <h4><%=lesson.get("name")%></h4>
 
                     <div class="pull-right lesson_label">
-                        <img class="<%=lesson.id%>" src="img/label_new.png"
-                             style="display:<%if(downloaded=='1'){%>none<%}%>"/>
-
-                        <p class="<%=lesson.id%>" style="display:<%if(downloaded!='1'){%>none<%}%>">
-                            <%=lesson.get("day_week")%></p>
+                        <img class="<%=lesson.id%>" src="img/label_new.png" style="display:<%if(downloaded=='1' && userdata['entered']!=undefined){%>none<%}%>"/>
+                        <p class="<%=lesson.id%>" style="display:<%if(downloaded !='1' || userdata['entered']==undefined){%>none<%}%>"><%=lesson.get("day_week")%></p>
                     </div>
                 </div>
-
-                <div class="row row-bottom">
-
-                    <div id="lessonbox_download_<%=lesson.id%>" class="btn btn-large <%=lesson.id%>"
-                         style="display:<%if(downloaded=='1'){%>none<%}%>"
-                         onclick="Interfaces.download('<%=lesson.id%>')">下载
-                    </div>
-                    <div id="lessonbox_download_progress_<%=lesson.id%>"
-                         style="width:90%;display:none"
-                         class="row row-bottom-content progress">
-                        <div class="bar" style="width: 0%;"></div>
-                    </div>
-                    <div id="lessonbox_progress_<%=lesson.id%>" class="row row-bottom-content"
-                         style="display:<%if(downloaded!='1'){%>none<%}%>">
+               
+               <div class="row row-bottom">
+                
+                <div id="lessonbox_download_<%=lesson.id%>" class="btn btn-large <%=lesson.id%>"
+                     style="display:<%if(downloaded=='1'){%>none<%}%>"
+                     onclick="Interfaces.download('<%=lesson.id%>')">下载
+                </div>
+                <div id="lessonbox_download_progress_<%=lesson.id%>"
+                     style="width:90%;display:none"
+                     class="row row-bottom-content progress">
+                    <div class="bar" style="width: 0%;"></div>
+                </div>
+                <div id="lessonbox_progress_<%=lesson.id%>" class="row row-bottom-content"
+                         style="display:<%if( downloaded!='1' || userdata['entered']==undefined){%>none<%}%>">
                         <%
-                        var stageCount = 2
+                        var stageCount = undefined
+                        var stageArray = new Array()
+                        Sun.fetch('lesson', {id: lesson.get('id')}, function (s) {
+                            stageCount = s.get('stages').length
+                            stageArray = s.get('stages')
+
                         var stageWidth = 100/stageCount
                         for(var i=0;i < stageCount; i++){
+                        var stageUserData = Sun.getuserdata('stage',stageArray.at(i).get('id'))
+                        Log.i("stageUserData['current']="+ stageUserData.current)
                         %>
+
                         <div class="lessonProgressBar" style="width:<%=stageWidth%>%">
-                            <div class="rectangle" style="display:block"></div>
-                            <div class="ball" style="display:block"><img src="img/StageIcon_<%=i+1%>_Grey.png"/></div>
+                            <div class="rectangle" style="display:block; background-color:<%if(stageUserData['current']=='EOF'){%>#77BB55<%}%>"></div>
+                            <div class="ball" style="display:block"><img <%if(stageUserData['current']=='EOF'){%>src="img/StageIcon_<%=i+1%>_Done.png"<%}else{%>src="img/StageIcon_<%=i+1%>_Grey.png"<%}%>/></div>
                         </div>
-                        <%}%>
+                        <%}})%>
 
                     </div>
                 </div>
