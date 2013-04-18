@@ -28,6 +28,8 @@ jQuery(function () {
 
     DAYS_OF_WEEK = ["日", "一", "二", "三", "四", "五", "六"]
 
+    ANSWERS = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F", 6: "G", 7: "H", 8: "I"}
+
     /**
      * Subject
      */
@@ -52,7 +54,7 @@ jQuery(function () {
             console.log("init subjects")
             $.each(options, function (index, subject) {
                 Sun.fetch('subject', {id: subject['id']}, function (s) {
-                   if (s.get('lessons').length > 0) {
+                    if (s.get('lessons').length > 0) {
                         self.showSubjects.push(s.get('id'))
                     }
                 })
@@ -68,14 +70,14 @@ jQuery(function () {
         initialize: function (options) {
             var date = new Date(Date.parse(options.time))
             /*var stages = new Stages()
-            for(var i =0 ;i < options["stages"].length;i++){
-                var stage = new Stage(options["stages"][i])
-                var userdata = Sun.getuserdata('stage',stage.get('id'))
-                stage.set({
-                    completed: (userdata.current=="EOF")
-                })
-                stages.add(stage)
-            }*/
+             for(var i =0 ;i < options["stages"].length;i++){
+             var stage = new Stage(options["stages"][i])
+             var userdata = Sun.getuserdata('stage',stage.get('id'))
+             stage.set({
+             completed: (userdata.current=="EOF")
+             })
+             stages.add(stage)
+             }*/
             var somestages = new Stages(options["stages"])
             this.set({
                 parent_id: options['subject_id'],
@@ -263,7 +265,6 @@ jQuery(function () {
                         correct_answers: correct_answers
                     })
                 } else if (type == '0' || type == '1') {
-                    var ANSWERS = {0: "A", 1: "B", 2: "C", 3: "D", 4: "E", 5: "F"}
                     var correct_answers = []
                     for (var i = 0; i < this.get('choices').length; i++) {
                         var choice = this.get('choices')[i]
