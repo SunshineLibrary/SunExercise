@@ -20,7 +20,7 @@
 }
 
 .dart_done {
-    background: #70bb5d;
+    background: #7B5;
 }
 
 .dart_done .progress_arrow {
@@ -30,7 +30,7 @@
 .progress_gauge {
     position: absolute; top: 0px; left: 0px; z-index: 5px;
     height: inherit;
-    background: #70bb5d;
+    background: #7B5;
 }
 
 .progress_gauge .progress_arrow {
