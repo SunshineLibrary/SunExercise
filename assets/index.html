@@ -190,7 +190,7 @@
 
                         <div class="lessonProgressBar" style="width:<%=stageWidth%>%">
                             <div class="rectangle" style="display:block; background-color:<%if(stageUserData['current']=='EOF'){%>#77BB55<%}%>"></div>
-                            <div class="ball" style="display:block"><img src="img/StageIcon_<%=i+1%>_Grey.png"/></div>
+                            <div class="ball" style="display:block"><img <%if(stageUserData['current']=='EOF'){%>src="img/StageIcon_<%=i+1%>_Done.png"<%}else{%>src="img/StageIcon_<%=i+1%>_Grey.png"<%}%>/></div>
                         </div>
                         <%}})%>
 
