@@ -186,7 +186,6 @@
                         var stageWidth = 100/stageCount
                         for(var i=0;i < stageCount; i++){
                         var stageUserData = Sun.getuserdata('stage',stageArray.at(i).get('id'))
-                        Log.i("stageUserData['current']="+ stageUserData.current)
                         %>
 
                         <div class="lessonProgressBar" style="width:<%=stageWidth%>%">
@@ -422,7 +421,7 @@
 
         <p>
             <%
-            userdata = target.get('userdata')
+            userdata = Sun.getuserdata('problem',target.get('id'))
             var completed = (userdata.current == 'EOF')
             activity_type = activity.get('type')
             %>
@@ -442,7 +441,7 @@
             <a class="span2 btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
             <% }else{ %>
             <a id="submit_answer" class="span2 btn btn-large btn-primary"
-               onclick="grading('<%=target.get('id')%>')">提交答案</a>
+               onclick="grading('<%=target.get('id')%>')"><%=JSON.stringify(userdata)%>提交答案</a>
             <% } %>
             <% } else { %>
             <a class="span2 btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>

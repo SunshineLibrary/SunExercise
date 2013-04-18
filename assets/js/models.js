@@ -49,6 +49,7 @@ jQuery(function () {
         showSubjects: [],
         initialize: function (options) {
             var self = this
+            console.log("init subjects")
             $.each(options, function (index, subject) {
                 Sun.fetch('subject', {id: subject['id']}, function (s) {
                    if (s.get('lessons').length > 0) {
@@ -56,6 +57,7 @@ jQuery(function () {
                     }
                 })
             })
+            console.log("end init subjects")
         }
     })
 

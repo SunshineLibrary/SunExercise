@@ -178,8 +178,7 @@ jQuery(function () {
                 userdata = android.requestUserData(JSON.stringify(req))
             }
             userdata = (userdata == undefined) ? "{}" : userdata
-            var ret = JSON.parse(userdata)
-            return  ret
+            return  JSON.parse(userdata)
         },
 
         getmedia: function (id) {

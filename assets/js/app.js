@@ -61,8 +61,8 @@ jQuery(function () {
             app_router.on('route:lesson', function (id) {
                 Log.i("lesson " + id)
                 Sun.fetch("lesson", {id: id}, function (lesson) {
-                    
-                    Sun.adduserdata("lesson",id,"entered","true")
+
+                    Sun.adduserdata("lesson", id, "entered", "true")
 
                     setHeader(
                         new LessonHeaderView({
@@ -121,6 +121,7 @@ jQuery(function () {
                         }
                     } else {
                         Log.i("should not be here when complete and not VIEW_ONLY mode")
+                        app_router.navigate("lesson/" + stage.get('lesson_id'), {trigger: true, replace: true})
                     }
                 })
             })
@@ -244,6 +245,7 @@ jQuery(function () {
                                 stage: stage
                             }))
 
+                            // TODO change to realdata
                             var jump = sample_data.jump_condition
                             if (jump != undefined && jump != "" && jump != null) {
                                 if (correctCount >= jump.condition.min && correctCount <= jump.condition.max) {
