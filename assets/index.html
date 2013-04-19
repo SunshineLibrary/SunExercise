@@ -66,8 +66,8 @@
                         Sun.fetch('subject', {id: subject.get('id')}, function (l) {
                             lessonArray = l.get('lessons')
                             lessonCount = lessonArray.length
-                        Log.i("========================================================================================="+
-                        lessonCount+"========================================================")
+                        Log.i("========================================================="+lessonCount+
+                            "========================================================")
 
                     })
                     
@@ -85,7 +85,7 @@
                     <li class="<% if(currentSubjectId == subject.get('id')){ %>active<% } %>">
                         <a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>
                         <div id="triangle" style="display:<% if(currentSubjectId != subject.get('id')){ %>none<% } %>"></div>
-                        <div id="badge"><%=p%></div>
+                        <div id="badge" style="display:<%if(p<=0){%>none<%}%>"><%=p%></div>
                     </li>
                     <% }%>
                 <%}%>
@@ -100,9 +100,6 @@
 </script>
 
 <script type="text/template" id="th_lesson">
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="nav-collapse collapse" style="margin-left:0px">
                 <ul class="nav">
                     <li>
                         <img onclick="Interfaces.backpage()" src="img/back.png"/>
@@ -111,9 +108,6 @@
                         <a style="font-size:20px"><%= target.get('name')%></a>
                     </li>
                 </ul>
-            </div>
-        </div>
-    </div>
 </script>
 
 <script type="text/template" id="th_problem">

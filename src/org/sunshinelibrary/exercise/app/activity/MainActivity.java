@@ -88,7 +88,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
         try {
             startActivityForResult(intent, UserInfo.SIGN_IN_REQUEST);
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, "濞屸剝婀佺�澶庮棖濮濓絿鈥橀悧鍫熸拱閻ㄥ嫭娲块弬鐗堟娑旓拷SunDaemon)", Toast.LENGTH_LONG)
+            Toast.makeText(this, "Not install the right version of SunDaemon)", Toast.LENGTH_LONG)
                     .show();
             finish();
         }
@@ -120,13 +120,13 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
         } catch (PackageManager.NameNotFoundException e) {
             Log.i(TAG, "onResume");
         }
-        if (/*mSignIn &&*/ mLoadReady)
+        if (mSignIn && mLoadReady)
             mInterface.autoSync();
 
     }
 
 
-    // 閹规洘宕忔潻鏂挎礀闁款噯绱濇＃鏍у帥闂呮劘妫岄幘顓熸杹閸ｎ煉绱濋悞璺烘倵閸掋倖鏌囬弰顖氭儊閼宠棄顧愭潻鏂挎礀閵嗭拷
+    // 闁硅娲樺畷蹇旀交閺傛寧绀�梺娆惧櫙缁辨繃锛冮弽褍甯ラ梻鍛姌濡矂骞橀鐔告澒闁革綆鐓夌槐婵嬫倿鐠虹儤鍊甸柛鎺嬪�閺屽洭寮伴姘剨闁煎疇妫勯¨鎰交閺傛寧绀�柕鍡嫹
     public void onBackPressed() {
         Log.i(TAG, "in" + mWebView.inCustomView());
         if (mWebView.inCustomView()) {
@@ -221,7 +221,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     @Override
     public void onReady() {
         mLoadReady = true;
-       if (mSignIn)
+        if (mSignIn)
             mInterface.autoSync();
     }
 
