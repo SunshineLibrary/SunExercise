@@ -369,7 +369,7 @@ jQuery(function () {
         }
     }
 
-    DEBUG = false
+    DEBUG = true
 
     Log = {
         d: function (content) {
