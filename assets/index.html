@@ -51,23 +51,44 @@
 
 <!--Many templates-->
 <script type="text/template" id="th_subjects">
-            <div style="width:48px; height:56px; margin:0px; padding:0px; display:none"><img src="img/SunExercise_Logo.png" style="width:auto; height:auto; border:none; box-shadow:none; margin-left:20px: margin-top:auto; margin-bottom:auto;"/></div>
+            <div style="width:48px; height:56px; float:left"><img src="img/SunExercise_Logo.png" style="width:auto; height:auto; border:none; box-shadow:none; margin-left:20px; margin-top:14px;"/></div>
             <a class="brand">阳光提高班</a>
                 <ul class="nav">
+
                     <%
                     for(var i=0 ; i < target.length ; i++){
-                    subject = target.at(i);
+                    var subject = target.at(i);
                     %>
-                    <%userdata = Sun.getuserdata('subject',subject.get('id'));%>
 
-                    <% if($.inArray(subject.get('id'),target.showSubjects)>=0){
-                    %>
+                    <% if($.inArray(subject.get('id'),target.showSubjects)>=0){ 
+                        var lessonArray = new Array()
+                        var lessonCount = undefined
+                        Sun.fetch('subject', {id: subject.get('id')}, function (l) {
+                            lessonArray = l.get('lessons')
+                            lessonCount = lessonArray.length
+                        Log.i("========================================================="+lessonCount+
+                            "========================================================")
+
+                    })
+                    
+                    for( var n=0,p=0; n<lessonCount; n++ ){
+
+                         userdata = Sun.getuserdata('lesson',lessonArray.at(n).get('id'))
+                         var newstatus = userdata['entered']
+                          if(newstatus==undefined)
+                            {
+                              ++p;
+                            }
+
+                    }%>
+
                     <li class="<% if(currentSubjectId == subject.get('id')){ %>active<% } %>">
                         <a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>
                         <div id="triangle" style="display:<% if(currentSubjectId != subject.get('id')){ %>none<% } %>"></div>
-                       <!-- <div id="badge">2</div> -->
+                        <div id="badge" style="display:<%if(p<=0){%>none<%}%>"><%=p%></div>
                     </li>
-                    <% }}%>
+                    <% }%>
+                <%}%>
                 </ul>
                 <ul class="nav pull-right">
                     <li>
@@ -79,9 +100,6 @@
 </script>
 
 <script type="text/template" id="th_lesson">
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="nav-collapse collapse" style="margin-left:0px">
                 <ul class="nav">
                     <li>
                         <img onclick="Interfaces.backpage()" src="img/back.png"/>
@@ -90,9 +108,6 @@
                         <a style="font-size:20px"><%= target.get('name')%></a>
                     </li>
                 </ul>
-            </div>
-        </div>
-    </div>
 </script>
 
 <script type="text/template" id="th_problem">
@@ -192,7 +207,8 @@
                             <div class="rectangle" style="display:block; background-color:<%if(stageUserData['current']=='EOF'){%>#77BB55<%}%>"></div>
                             <div class="ball" style="display:block"><img <%if(stageUserData['current']=='EOF'){%>src="img/StageIcon_<%=i+1%>_Done.png"<%}else{%>src="img/StageIcon_<%=i+1%>_Grey.png"<%}%>/></div>
                         </div>
-                        <%}})%>
+                        <%}
+                    })%>
 
                     </div>
                 </div>
