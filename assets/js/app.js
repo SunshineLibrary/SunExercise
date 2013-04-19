@@ -59,7 +59,7 @@ jQuery(function () {
 //                            changeDownloadBtn(lesson.get('id'), (lesson.get('download_finish') == '1'))
                             changeDownloadBtn(lesson.get('id'), lesson.get('download_finish'))
                         })
-                    }, true)
+                    },true)
                 })
             })
             app_router.on('route:lesson', function (id) {
