@@ -2,10 +2,11 @@
 <html>
 <head>
     <title>阳光提高班</title>
+    <link rel="shortcut icon" href="favicon.ico">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
     <script src="js/libs/jquery/jquery-1.9.1.js"></script>
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="css/font-awesome.min.css" rel="stylesheet">
     <script src="js/libs/logger/Logger.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
 
@@ -91,10 +92,8 @@
                 <%}%>
                 </ul>
                 <ul class="nav pull-right">
-                    <li>
-                        <div class="btn" onclick="Interfaces.sync()">
-                            <img src="img/btn_main_refresh.png"/>
-                        </div>
+                    <li class="refreshZone">
+                        <img class="icon" src="img/refresh.png" onclick="Interfaces.sync()" />
                     </li>
                 </ul>
 </script>

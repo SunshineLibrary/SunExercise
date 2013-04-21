@@ -200,8 +200,18 @@ jQuery(function () {
                             } else if (activity.get("type") == 2) {
                                 var media = Sun.getmedia(activity.get('media_id'))
                                 Log.i("video activity type 2," + JSON.stringify(media))
-                                setBody(new VideoView({model: activity, media: media}))
-                                reloadPage()
+
+                                Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
+                                    Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
+                                        setHeader(new VideoHeaderView({
+                                            activity: activity,
+                                            section: section,
+                                            stage: stage
+                                        }))
+                                        setBody(new VideoView({model: activity, media: media}))
+                                        reloadPage()
+                                    })
+                                })
                             } else {
                                 // TODO other acitivities, like video
                                 Log.i("unsupported activity," + JSON.stringify(activity))
@@ -459,7 +469,7 @@ jQuery(function () {
                 } else if (currentMaterial == "summary") {
                     app_router.navigate("lesson/" + currentLesson.get('id'), {trigger: true, replace: true})
                 } else {
-                    Log.e('unsupported type to go upstairs,' + currentMaterial )
+                    Log.e('unsupported type to go upstairs,' + currentMaterial)
                     app_router.navigate("subjects", {trigger: true, replace: true})
                 }
             }

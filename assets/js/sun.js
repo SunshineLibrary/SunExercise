@@ -280,6 +280,8 @@ jQuery(function () {
 
         onSyncStart: function () {
             Log.i("onSyncStart")
+            addRefreshBtn()
+            disableRefresh()
         },
 
         onJsonReceived: function () {
@@ -297,6 +299,8 @@ jQuery(function () {
 
         onSyncCompleted: function () {
             Log.i("onSyncCompleted")
+            removeRefreshBtn()
+            enableRefresh();
         },
 
         onCollectionProgress: function (collectionId, percentage) {
@@ -324,15 +328,19 @@ jQuery(function () {
 
         sync: function () {
             if (typeof android == "undefined") {
-                Log.i("[WEB]sync")
+                Log.i("===========================================================================[WEB]sync========================================================")
                 setTimeout(function () {
                     setTimeout(function () {
                         Interfaces.onJsonParsed()
+                        removeRefreshBtn()
+                        enableRefresh()
                     }, 2000)
                     Interfaces.onJsonReceived()
+                    addRefreshBtn()
+                    disableRefresh()
                 }, 1000)
             } else {
-                Log.i("[ANDROID]sync")
+                Log.i("=========================================================================[ANDROID]sync======================================================")
                 android.sync()
             }
         },
@@ -369,7 +377,7 @@ jQuery(function () {
         }
     }
 
-    DEBUG = false
+    DEBUG = true
 
     Log = {
         d: function (content) {
@@ -427,3 +435,24 @@ function changeDownloadBtn(id, downloaded) {
         $('#lessonbox_download_progress_' + id).hide()
     }
 }
+
+function addRefreshBtn() {
+    $('.nav>li>img.icon').addClass('icon-spin');
+ }
+
+function removeRefreshBtn() {
+    $('.nav>li>img.icon').removeClass('icon-spin');
+ }
+
+function disableRefresh(){
+                $('.nav>li>img.icon').attr('onclick', '').unbind('click')
+                Log.i('=======================================Sync开始了&按钮屏蔽了===============================')
+        }
+
+function enableRefresh(){
+                $('.nav>li>img.icon').attr('onclick', '').bind('click', function() {
+                   Interfaces.sync()
+                });
+                Log.i('=======================================Sync结束了&按钮放开了===============================')
+
+        }

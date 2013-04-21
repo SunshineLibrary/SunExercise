@@ -269,12 +269,12 @@ h2 {
     color: rgb(51, 51, 51);
 }
 
-.navbar .btn {
+.navbar .icon {
     display: visible;
     background-color: transparent;
     background-image: none;
-    margin-top: 0px;
-    padding: 0px 0px 0px 0px;
+    margin: 18px;
+    padding: 0px;
     border: 0;
     -webkit-border-radius: 0px;
     -moz-border-radius: 0px;
@@ -282,7 +282,14 @@ h2 {
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
     box-shadow: none;
-    border-left: 1px dashed #333333;
+}
+
+.nav >li.refreshZone {
+    height:56px;
+    width:56px;
+    margin:0px;
+    padding:0px;
+
 }
 
 .well >div.show {

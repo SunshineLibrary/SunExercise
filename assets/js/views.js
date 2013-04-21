@@ -186,4 +186,16 @@ jQuery(function () {
         }
     })
 
+    VideoHeaderView = Backbone.View.extend({
+        template: Templates.Header.problem,
+        render: function () {
+            this.el = this.template({
+                activity: this.options['activity'],
+                section: this.options['section'],
+                stage: this.options['stage']
+            })
+            return this
+        }
+    })
+
 })
