@@ -265,8 +265,11 @@ jQuery(function () {
                                 stage: stage
                             }))
 
-                            // TODO change to realdata
-                            var jump = JSON.parse(activity.get('jump_condition'))[0]
+                            var jumpText = activity.get('jump_condition')
+                            if (jumpText == undefined || jumpText == "") {
+                                jumpText = "[]"
+                            }
+                            var jump = JSON.parse(jumpText)[0]
 //                            var jump = sample_data.jump_condition[0]
                             if (jump == undefined) {
                                 setBody(new SummaryView({model: activity}))
