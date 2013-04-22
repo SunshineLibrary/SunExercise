@@ -11,7 +11,7 @@ jQuery(function () {
         Sun.fetch("activity", {id: id}, function (activity) {
             Sun.fetch("section", {id: activity.get("section_id")}, function (section) {
                 Sun.fetch("stage", {id: section.get("stage_id")}, function (stage) {
-                    console.log("stage," + JSON.stringify(stage))
+                    console.log("checkin stage," + JSON.stringify(stage))
                     userdata = Sun.getuserdata("stage", stage.get("id"))
                     userdata["current"] = id
                     Sun.setuserdata("stage", stage.get("id"), userdata)
