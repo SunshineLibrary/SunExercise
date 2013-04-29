@@ -59,7 +59,7 @@ jQuery(function () {
 //                            changeDownloadBtn(lesson.get('id'), (lesson.get('download_finish') == '1'))
                             changeDownloadBtn(lesson.get('id'), lesson.get('download_finish'))
                         })
-                    },true)
+                    }, true)
                 })
             })
             app_router.on('route:lesson', function (id) {
@@ -265,11 +265,18 @@ jQuery(function () {
                                 stage: stage
                             }))
 
-                            // TODO change to realdata
-                            var jump = sample_data.jump_condition
-                            if (jump != undefined && jump != "" && jump != null) {
+                            var jumpText = activity.get('jump_condition')
+                            if (jumpText == undefined || jumpText == "") {
+                                jumpText = "[]"
+                            }
+                            var jump = JSON.parse(jumpText)[0]
+//                            var jump = sample_data.jump_condition[0]
+                            if (jump == undefined) {
+                                setBody(new SummaryView({model: activity}))
+                                reloadPage()
+                            } else {
                                 if (correctCount >= jump.condition.min && correctCount <= jump.condition.max) {
-                                    Log.i("right jump!")
+                                    Log.i("hit in jump!")
                                     if (jump.to_activity_id == -1) {
                                         endStage(aid, function (id) {
                                             activity.set({next_lesson: id})
@@ -279,7 +286,6 @@ jQuery(function () {
                                     } else {
                                         checkin('activity', jump.to_activity_id)
                                         activity.set({next_activity: jump.to_activity_id})
-//                                app_router.navigate("activity/" + jump.to_activity_id, {trigger: true, replace: true})
                                         setBody(new SummaryView({model: activity}))
                                         reloadPage()
                                     }

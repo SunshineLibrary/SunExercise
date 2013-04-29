@@ -69,7 +69,7 @@ sample_schema = {
                             "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}",
                             "type": "string"
                         },
-                        "download_finish" : {
+                        "download_finish": {
                             "type": "string"
                         }
                     }
@@ -122,7 +122,7 @@ sample_schema = {
                 "type": "string",
                 "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}"
             },
-            "download_finish" : {
+            "download_finish": {
                 "type": "string"
             }
         }
@@ -382,13 +382,13 @@ sample_data = {
         ]
     },
     subject: {"id": "su1", "name": "数学", "lessons": [
-        {"id": "l1", "subject_id": "su1", "name": "有理数的四则运算（加减）", "seq": "0", "time": "2012-12-20", "download_finish":"1"},
-        {"id": "l2", "subject_id": "su1", "name": "有理数的四则运算（乘除）", "seq": "1", "time": "2012-12-24", "download_finish":"none"},
-        {"id": "l3", "subject_id": "su1", "name": "绝对值的概念", "seq": "2", "time": "2013-01-01", "download_finish":"waiting"},
-        {"id": "l5", "subject_id": "su1", "name": "呵呵的概念", "seq": "3", "time": "2013-01-10", "download_finish":"0.6432"},
-        {"id": "l4", "subject_id": "su1", "name": "", "seq": "4", "time": "2013-02-01", "download_finish":"downloading"}
+        {"id": "l1", "subject_id": "su1", "name": "有理数的四则运算（加减）", "seq": "0", "time": "2012-12-20", "download_finish": "1"},
+        {"id": "l2", "subject_id": "su1", "name": "有理数的四则运算（乘除）", "seq": "1", "time": "2012-12-24", "download_finish": "none"},
+        {"id": "l3", "subject_id": "su1", "name": "绝对值的概念", "seq": "2", "time": "2013-01-01", "download_finish": "waiting"},
+        {"id": "l5", "subject_id": "su1", "name": "呵呵的概念", "seq": "3", "time": "2013-01-10", "download_finish": "0.6432"},
+        {"id": "l4", "subject_id": "su1", "name": "", "seq": "4", "time": "2013-02-01", "download_finish": "downloading"}
     ]},
-    lesson: {"id": "l1", "subject_id": "su1", "name": "有理数的四则运算（加减）", "seq": "0", "time": "2012-12-20", "download_finish":"1", "stages": [
+    lesson: {"id": "l1", "subject_id": "su1", "name": "有理数的四则运算（加减）", "seq": "0", "time": "2012-12-20", "download_finish": "1", "stages": [
         {"id": "st1", "lesson_id": "l1", "seq": "0", "type": "1"},
         {"id": "st2", "lesson_id": "l1", "seq": "1", "type": "2"}
     ]},
@@ -412,13 +412,15 @@ sample_data = {
         {"id": "c3", "problem_id": "p1", "seq": "2", "display_text": "正确选项三", "answer": "yes"},
         {"id": "c4", "problem_id": "p1", "seq": "3", "display_text": "错误选项四", "answer": "no"}
     ]},
-    jump_condition: {
-        "to_activity_id": "-1",
-        "condition": {
-            "type": "CorrectCount",
-            "min": 2, "max": 3
+    jump_condition: [
+        {
+            "to_activity_id": "a9",
+            "condition": {
+                "type": "CorrectCount",
+                "min": 1, "max": 3
+            }
         }
-    },
+    ],
     userdata: {
         "current": ""
     }
