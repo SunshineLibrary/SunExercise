@@ -46,6 +46,8 @@ h2 {
     padding-bottom: 20px;
 }
 
+
+
 .well {
     display: table;
     height: 120px;
@@ -270,18 +272,7 @@ h2 {
 }
 
 .navbar .icon {
-    display: visible;
-    background-color: transparent;
-    background-image: none;
-    margin: 18px;
-    padding: 0px;
-    border: 0;
-    -webkit-border-radius: 0px;
-    -moz-border-radius: 0px;
-    border-radius: 0px;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    box-shadow: none;
+    margin: 11px;
 }
 
 .nav >li.refreshZone {
@@ -442,6 +433,11 @@ h2 {
     display: block;
 }
 
+.row-bottom .bar {
+    background-image: none;
+    background-color: #77BB55;
+}
+
 #badge {
     height:20px;
     width:20px; 
@@ -455,4 +451,19 @@ h2 {
     z-index:1; 
     display:block; 
     float:right;
+}
+
+#progress {    
+    border-radius: 10px;
+    background-color: rgba(0,0,0,.7);    
+    color: white;    
+    font-size: 18px;    
+    font-weight: bold;    
+    height: 80px;    
+    left: 60px;    
+    line-height: 80px;    
+    margin: 0px auto;
+    text-align: center;    
+    width: 200px; 
+    z-index: 100;
 }

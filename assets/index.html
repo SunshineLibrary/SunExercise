@@ -28,7 +28,15 @@
 <body>
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
-        <div class="nav-collapse collapse" id="header">
+        <div class="nav-collapse collapse">
+            <!--<div style="width:48px; height:56px; float:left"><img src="img/SunExercise_Logo.png" style="width:auto; height:auto; border:none; box-shadow:none; margin-left:20px; margin-top:14px;"/></div>
+            <a class="brand">阳光提高班</a>-->
+            <div  id="header"></div>
+            <ul class="nav pull-right">
+                <li class="refreshZone">
+                    <img class="icon icon-2x" src="img/btn_main_refresh.png" onclick="Interfaces.sync()" />
+                </li>
+            </ul>
         </div>
     </div>
 </div>
@@ -55,32 +63,25 @@
             <div style="width:48px; height:56px; float:left"><img src="img/SunExercise_Logo.png" style="width:auto; height:auto; border:none; box-shadow:none; margin-left:20px; margin-top:14px;"/></div>
             <a class="brand">阳光提高班</a>
                 <ul class="nav">
-
                     <%
                     for(var i=0 ; i < target.length ; i++){
                     var subject = target.at(i);
                     %>
 
-                    <% if($.inArray(subject.get('id'),target.showSubjects)>=0){ 
+                    <%if($.inArray(subject.get('id'),target.showSubjects)>=0){ 
                         var lessonArray = new Array()
                         var lessonCount = undefined
                         Sun.fetch('subject', {id: subject.get('id')}, function (l) {
                             lessonArray = l.get('lessons')
                             lessonCount = lessonArray.length
-                        Log.i("========================================================="+lessonCount+
-                            "========================================================")
-
                     })
                     
                     for( var n=0,p=0; n<lessonCount; n++ ){
-
-                         userdata = Sun.getuserdata('lesson',lessonArray.at(n).get('id'))
-                         var newstatus = userdata['entered']
-                          if(newstatus==undefined)
-                            {
-                              ++p;
-                            }
-
+                        userdata = Sun.getuserdata('lesson',lessonArray.at(n).get('id'))
+                        var newstatus = userdata['entered']
+                        if(newstatus==undefined){
+                            ++p;
+                        }
                     }%>
 
                     <li class="<% if(currentSubjectId == subject.get('id')){ %>active<% } %>">
@@ -91,11 +92,11 @@
                     <% }%>
                 <%}%>
                 </ul>
-                <ul class="nav pull-right">
-                    <li class="refreshZone">
-                        <img class="icon" src="img/refresh.png" onclick="Interfaces.sync()" />
-                    </li>
-                </ul>
+                <!--<ul class="nav pull-right">-->
+                    <!--<li class="refreshZone">-->
+                        <!--<img class="icon" src="img/refresh.png" onclick="Interfaces.sync()" />-->
+                    <!--</li>-->
+                <!--</ul>-->
 </script>
 
 <script type="text/template" id="th_lesson">
@@ -183,11 +184,13 @@
                      style="display:<%if(downloaded=='1'){%>none<%}%>"
                      onclick="Interfaces.download('<%=lesson.id%>')">下载
                 </div>
+                
                 <div id="lessonbox_download_progress_<%=lesson.id%>"
                      style="width:90%;display:none"
                      class="row row-bottom-content progress">
                     <div class="bar" style="width: 0%;"></div>
                 </div>
+
                 <div id="lessonbox_progress_<%=lesson.id%>" class="row row-bottom-content"
                          style="display:<%if( downloaded!='1' || userdata['entered']==undefined){%>none<%}%>">
                         <%

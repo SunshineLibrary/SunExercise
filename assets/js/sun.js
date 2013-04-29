@@ -305,11 +305,11 @@ jQuery(function () {
 
         onCollectionProgress: function (collectionId, percentage) {
             Log.i("onCollectionProgress," + collectionId + "," + percentage)
-            changeDownloadProgress(collectionId, percentage * 100)
+            changeDownloadProgress(collectionId, percentage*100)
         },
 
         onCollectionDownloaded: function (lessonId, downloaded) {
-//            Sun.adduserdata('lesson', lessonId, 'downloaded', true)
+//          Sun.adduserdata('lesson', lessonId, 'downloaded', true)
             if (typeof android == "undefined") {
                 Log.i("[WEB]onCollectionDownloaded," + lessonId + "," + downloaded)
             } else {
@@ -350,15 +350,23 @@ jQuery(function () {
                 Log.i("[WEB]download," + id)
                 setTimeout(function () {
                     setTimeout(function () {
-                        Interfaces.onCollectionDownloaded(id, "true")
+                        setTimeout(function(){
+                            setTimeout(function(){
+                                Interfaces.onCollectionDownloaded(id, "true")
+                            },1000)
+                            changeDownloadProgress(id, 100)
+                        },1000)
+                         changeDownloadProgress(id, 60)
                     }, 1000)
-                    changeDownloadProgress(id, 100)
+                    $('#lessonbox_download_progress_' + id).append('<progress value="0" max="100" style="width:196px; height:15px"></progress>')
+                    $('#lessonbox_download_progress_' + id).removeClass('progress')
+                    changeDownloadProgress(id, 30)
                 }, 1000)
             } else {
                 Log.i("[ANDROID]download," + id)
                 $('#lessonbox_download_' + id).addClass('disabled')
                 $('#lessonbox_download_' + id).attr('onclick', '').unbind('click')
-                android.download(id)
+                android.download(id)       
             }
         },
 
@@ -409,12 +417,26 @@ jQuery(function () {
             }
         }
     }
+
+    /*any = {
+        something: function (id){ 
+            appendDialog()
+            var stopTime = new Date().getTime() + 5000 
+            while (new Date().getTime() < stopTime){}
+            alert('hello')
+            window.open('#subject/' + id, '_self')
+            $('#progress').remove()
+        }
+    }*/
 })
 
 function changeDownloadProgress(id, percentage) {
     $('#lessonbox_download_' + id).hide()
     $('#lessonbox_download_progress_' + id).show()
-    $('#lessonbox_download_progress_' + id + " >div").css('width', percentage + "%")
+    if (typeof android == "undefined") {
+    $('#lessonbox_download_progress_' + id + ">progress").attr('value', percentage)
+    }else{
+    $('#lessonbox_download_progress_' + id + " >div").css('width', percentage + "%")}
 }
 
 function changeDownloadBtn(id, downloaded) {
@@ -425,7 +447,6 @@ function changeDownloadBtn(id, downloaded) {
             $('.lesson_label >img.' + id).hide();
             window.open('#lesson/' + id, '_self');
         });
-
     } else if (downloaded == 'downloading') {
         $('#lessonbox_download_' + id).addClass('disabled')
         $('#lessonbox_download_' + id).attr('onclick', '').unbind('click')
@@ -438,21 +459,24 @@ function changeDownloadBtn(id, downloaded) {
 
 function addRefreshBtn() {
     $('.nav>li>img.icon').addClass('icon-spin');
- }
+}
 
 function removeRefreshBtn() {
     $('.nav>li>img.icon').removeClass('icon-spin');
- }
+}
 
 function disableRefresh(){
-                $('.nav>li>img.icon').attr('onclick', '').unbind('click')
-                Log.i('=======================================Sync开始了&按钮屏蔽了===============================')
-        }
+    $('.nav>li>img.icon').attr('onclick', '').unbind('click')
+}
 
 function enableRefresh(){
-                $('.nav>li>img.icon').attr('onclick', '').bind('click', function() {
-                   Interfaces.sync()
-                });
-                Log.i('=======================================Sync结束了&按钮放开了===============================')
+    $('.nav>li>img.icon').attr('onclick', '').bind('click', function() {
+        Interfaces.sync()
+    });
+}
 
-        }
+/*function appendDialog(){
+    var body = $('body')
+    var loadDialog = '<div id="progress">正在努力加载页面...</div>'
+    body.append(loadDialog)
+}*/
