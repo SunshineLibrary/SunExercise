@@ -23,6 +23,57 @@ jQuery(function () {
         // Instantiate the router
         var app_router = new AppRouter
 
+        loadProblem = function (id) {
+            Sun.fetch("problem", {id: id}, function (problem) {
+                currentMaterial = "problem"
+//                    Log.i("problem," + problem.get("type"))
+                Log.i("problems:" + JSON.stringify(problem))
+
+                Sun.fetch("activity", {id: problem.get('activity_id')}, function (activity) {
+                    Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
+                        Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
+                            if (currentMode == MODE.VIEW_ONLY) {
+                                Sun.setviewed('problem', id)
+                            }
+
+                            setHeader(new ProblemHeaderView({
+                                problem: problem,
+                                activity: activity,
+                                section: section,
+                                stage: stage
+                            }))
+
+                            if (problem.get("type") == "0") {
+                                setBody(new SingleChoiceProblemView({model: problem, activity: activity}))
+                            } else if (problem.get("type") == "1") {
+                                setBody(new MultiChoiceProblemView({model: problem, activity: activity}))
+                            } else if (problem.get("type") == "2") {
+                                setBody(new SingleFillingProblemView({model: problem, activity: activity}))
+                            } else {
+                                Log.i("unsupported problem," + id + "," + problem.get("type"))
+                            }
+                            reloadPage()
+                        })
+                    })
+                })
+            })
+        }
+
+
+        function setHeader(header) {
+            currentPage.header = header
+        }
+
+        function setBody(body) {
+            currentPage.body = body
+        }
+
+        function reloadPage() {
+            currentPageView.render()
+            hideWaiting()
+        }
+
+
         function initRoute() {
             app_router.on('route:subjects', function () {
                 Sun.fetch("subjects", null, function (subjects) {
@@ -310,54 +361,6 @@ jQuery(function () {
 
             Interfaces.onReady()
 
-            loadProblem = function (id) {
-                Sun.fetch("problem", {id: id}, function (problem) {
-                    currentMaterial = "problem"
-                    Log.i("problem," + problem.get("type"))
-                    Sun.fetch("activity", {id: problem.get('activity_id')}, function (activity) {
-                        Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
-                            Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
-                                if (currentMode == MODE.VIEW_ONLY) {
-                                    Sun.setviewed('problem', id)
-                                }
-
-                                setHeader(new ProblemHeaderView({
-                                    problem: problem,
-                                    activity: activity,
-                                    section: section,
-                                    stage: stage
-                                }))
-
-                                if (problem.get("type") == "0") {
-                                    setBody(new SingleChoiceProblemView({model: problem, activity: activity}))
-                                } else if (problem.get("type") == "1") {
-                                    setBody(new MultiChoiceProblemView({model: problem, activity: activity}))
-                                } else if (problem.get("type") == "2") {
-                                    setBody(new SingleFillingProblemView({model: problem, activity: activity}))
-                                } else {
-                                    Log.i("unsupported problem," + id + "," + problem.get("type"))
-                                }
-                                reloadPage()
-                            })
-                        })
-                    })
-                })
-            }
-
-            function setHeader(header) {
-                currentPage.header = header
-            }
-
-            function setBody(body) {
-                currentPage.body = body
-            }
-
-            function reloadPage() {
-                currentPageView.render()
-                hideWaiting()
-            }
-
-
             viewStage = function (id) {
                 Log.i('view statge,' + id)
                 currentMode = MODE.VIEW_ONLY
@@ -414,7 +417,6 @@ jQuery(function () {
             showWaiting()
             Sun.fetch("problem", {id: problemId}, function (problem) {
                 if (problem.get("type") == 0 || problem.get("type") == 1) {
-                    Log.i("grading problem," + problem.get("id"))
                     var completeOk = true
                     var checked = []
 
@@ -422,7 +424,7 @@ jQuery(function () {
                         var choice = problem.get('choices')[i]
                         var choiceId = "#" + choice['id']
                         var answer = $(choiceId)
-                        var userChecked = answer.checked
+                        var userChecked = answer.prop("checked")
                         var shouldCheck = (choice['answer'] == "yes")
                         if (userChecked == true) {
                             checked.push(choice['id'])
@@ -431,6 +433,8 @@ jQuery(function () {
                             completeOk = false
                         }
                     }
+                    Log.i("grading result," + completeOk)
+
                     problem.complete({
                         correct: completeOk,
                         checked: checked
@@ -458,7 +462,7 @@ jQuery(function () {
         }
 
         makeSelection = function (id, excluded) {
-            Log.i('make selection')
+            Log.i('make selection,' + id + "," + excluded)
             if (excluded) {
                 $('.pcontainer').each(function (i, p) {
                     $(p).removeClass('odd')

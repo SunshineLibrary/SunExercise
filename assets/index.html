@@ -295,7 +295,7 @@
                 <% if(completed){%>disabled<%}%>
                 <% if(shouldCheck){%>checked<%}%>
                 >
-                <%=ANSWERS[i]%>. <%= target.get('choices')[i].display_text %>
+                <strong><%=ANSWERS[i]%>.</strong> <%= target.get('choices')[i].display_text %>
             </label>
         </div>
         <% } %>
@@ -372,13 +372,13 @@
             <label class="checkbox">
                 <input class="answer"
                        id="<%=choice.id%>"
-                       answer="<%= choice.answer%>"
+                       answer="<%=choice.answer%>"
                        type="checkbox"
                 <% if(completed){%>disabled<%}%>
                 name="optionsRadios"
                 <% if(shouldCheck){%>checked<%}%>
                 >
-                <%=ANSWERS[i]%>. <%= target.get('choices')[i].display_text %>
+                <strong><%=ANSWERS[i]%>.</strong> <%= target.get('choices')[i].display_text %>
             </label>
         </div>
         <% } %>
