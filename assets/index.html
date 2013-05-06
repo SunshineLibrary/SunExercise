@@ -66,13 +66,9 @@
                         Sun.fetch('subject', {id: subject.get('id')}, function (l) {
                             lessonArray = l.get('lessons')
                             lessonCount = lessonArray.length
-                        Log.i("========================================================="+lessonCount+
-                            "========================================================")
-
                     })
                     
-                    for( var n=0,p=0; n<lessonCount; n++ ){
-
+                    for( var n=0,p=0; n < lessonCount; n++ ){
                          userdata = Sun.getuserdata('lesson',lessonArray.at(n).get('id'))
                          var newstatus = userdata['entered']
                           if(newstatus==undefined)
@@ -614,6 +610,12 @@
     </div>
     <div class="modal-body">
         <p>加载完成后会返回首页</p>
+    </div>
+</div>
+
+<div id="waitingDiag" class="modal hide fade">
+    <div class="modal-body">
+        <p>你丫等会儿</p>
     </div>
 </div>
 

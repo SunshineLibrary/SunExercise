@@ -55,8 +55,17 @@ jQuery(function () {
         },
         requestMaterial: function (type, id) {
             var req = Sun.createrequest("material", "get", type, id, undefined, Sun.getuserid())
+
+            var start = new Date().getTime();
             var resp = android.requestData(JSON.stringify(req))
+            var end = new Date().getTime();
+            console.log("[REQUESTGENCOST]" + (end - start))
+
+            start = new Date().getTime();
             var material = Sun.createMaterial(JSON.parse(resp), type)
+            end = new Date().getTime();
+            console.log("[CREATEMATERIALCOST]," + type + "," + id + "," + (end - start))
+
             return material
         },
         createMaterial: function (json, type) {
@@ -88,8 +97,8 @@ jQuery(function () {
                 // web dev mode, request data from sundata server
                 Log.i("[WEB]fetch," + type + "," + JSON.stringify(options))
 
-//                mockMaterial = "http://42.121.65.247:9000/api/material"
-                mockMaterial = "http://127.0.0.1:9000/api/material"
+                mockMaterial = "http://42.121.65.247:9000/api/material"
+//                mockMaterial = "http://127.0.0.1:9000/api/material"
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
                     function (data) {
@@ -104,11 +113,11 @@ jQuery(function () {
                 )
             } else {
                 // android dev mode
-                Log.i("[ANDROID]fetch," + type + "," + JSON.stringify(options))
+//                Log.i("[ANDROID]fetch," + type + "," + JSON.stringify(options))
                 ret = Sun.requestMaterial(type, options["id"])
-                Log.i("[ANDROID]fetched," + JSON.stringify(ret))
+//                Log.i("[ANDROID]fetched," + JSON.stringify(ret))
+                console.log("[FETCHCOST]" + (new Date().getTime() - start) + ',' + type + ',' + id)
                 if (callback != undefined) {
-                    console.log("[FETCHCOST]" + (new Date().getTime() - start) + ',' + type + ',' + id)
                     MATERIAL_CACHE[id] = ret
                     eval(callback)(ret, options)
                 }
@@ -224,6 +233,7 @@ jQuery(function () {
         },
 
         setcomplete: function (type, id, options, callback) {
+            console.log("set complete," + type + "," + id)
             userdata = Sun.getuserdata(type, id)
             userdata['current'] = "EOF"
             if (options != undefined) {

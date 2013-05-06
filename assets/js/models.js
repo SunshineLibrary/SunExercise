@@ -30,7 +30,7 @@ jQuery(function () {
 
     ANSWERS = {}
     for (var i = 0; i < 25; i++) {
-        ANSWERS[i] = String.fromCharCode("A".charCodeAt(0)+i)
+        ANSWERS[i] = String.fromCharCode("A".charCodeAt(0) + i)
     }
 
 
@@ -180,7 +180,9 @@ jQuery(function () {
         complete: function (options, callback) {
             if (this.isComplete()) {
                 Sun.setcomplete('section', this.get('id'))
-                Sun.fetch("stage", {id: this.get('parent_id')}, function (stage) {
+                console.log("completeSECTION," + this.get('stage_id'))
+                Sun.fetch("stage", {id: this.get('stage_id')}, function (stage) {
+                    console.log("completeSECTIONSTAGE," + JSON.stringify(stage))
                     stage.complete(options, function () {
                         if (callback != undefined) {
                             eval(callback)(options)
@@ -282,11 +284,6 @@ jQuery(function () {
                 }
             }
         },
-        grading: function (options) {
-            var type = this.get('type')
-            Log.w("start grading," + type)
-            Log.w("grading not supported," + type)
-        },
         isComplete: function () {
             var userdata = Sun.getuserdata('problem', this.get('id'))
             return userdata['current'] == 'EOF'
@@ -298,11 +295,6 @@ jQuery(function () {
             })
             if (callback != undefined) {
                 eval(callback)()
-            }
-        },
-        changestate: function (state, options) {
-            if (state == MATERIAL_STATE.COMPLETE) {
-                this.complete()
             }
         }
     })

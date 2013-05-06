@@ -7,26 +7,27 @@
  */
 
 jQuery(function () {
-        function initRoute() {
-            var AppRouter = Backbone.Router.extend({
-                routes: {
-                    "": "subjects",
-                    "subject/:id": "subject",
-                    "lesson/:id": "lesson",
-                    "stage/:id": "stage",
-                    "section/:id": "section",
-                    "activity/:id": "activity",
-                    "problem/:id": "problem",
-                    "summary/:aid": "summary"
-                }
-            })
+        var AppRouter = Backbone.Router.extend({
+            routes: {
+                "": "subjects",
+                "subject/:id": "subject",
+                "lesson/:id": "lesson",
+                "stage/:id": "stage",
+                "section/:id": "section",
+                "activity/:id": "activity",
+                "problem/:id": "problem",
+                "summary/:aid": "summary"
+            }
+        })
 
-            // Instantiate the router
-            var app_router = new AppRouter
+        // Instantiate the router
+        var app_router = new AppRouter
+
+        function initRoute() {
             app_router.on('route:subjects', function () {
                 Sun.fetch("subjects", null, function (subjects) {
                     currentMaterial = "subjects"
-                    Log.i("subjects," + JSON.stringify(subjects))
+//                    Log.i("subjects," + JSON.stringify(subjects))
                     for (var i = 0; i < subjects.length; i++) {
                         var s = subjects.at(i)
                         Sun.fetch("subject", {id: s.get('id')}, function (subject) {
@@ -82,7 +83,6 @@ jQuery(function () {
                 })
             })
             app_router.on('route:stage', function (id) {
-                Log.i("stage " + id)
                 Sun.fetch("stage", {id: id}, function (stage) {
                     var userdata = Sun.getuserdata("stage", id)
                     var sections = stage.get("sections").models
@@ -90,6 +90,7 @@ jQuery(function () {
                     currentMaterial = "stage"
 
                     // Check if stage completed
+//                    Log.i("stage " + id + ":" + JSON.stringify(stage))
                     if (!completed) {
                         currentMode = MODE.NORMAL
                         if (sections.length == 0) {
@@ -112,7 +113,7 @@ jQuery(function () {
                             clearViewed(stage.get('id'))
                             app_router.navigate("lesson/" + stage.get('lesson_id'), {trigger: true, replace: true})
                         }
-                        var completed = true
+                        completed = true
                         for (var i = 0; i < sections.length; i++) {
                             var section = sections[i]
                             if (!Sun.isviewed('section', section.get('id'))) {
@@ -178,13 +179,12 @@ jQuery(function () {
                 Log.i("activity " + id)
                 Sun.fetch("activity", {id: id}, function (activity) {
                         currentMaterial = "activity"
-                        var userdata = Sun.getuserdata("activity", id)
                         if (currentMode == MODE.NORMAL) {
                             // activity with problems
                             if (activity.get("type") == 4 || activity.get("type") == 7) {
                                 var completed = true
                                 for (var i = 0; i < activity.get("problems").length; i++) {
-                                    Log.i("problems:" + JSON.stringify(activity.get("problems")))
+//                                    Log.i("problems:" + JSON.stringify(activity.get("problems")))
                                     var problem = activity.get("problems").models[i]
                                     if (!problem.isComplete()) {
                                         app_router.navigate("problem/" + problem.id, {trigger: true, replace: true})
@@ -199,7 +199,7 @@ jQuery(function () {
                                 }
                             } else if (activity.get("type") == 2) {
                                 var media = Sun.getmedia(activity.get('media_id'))
-                                Log.i("video activity type 2," + JSON.stringify(media))
+//                                Log.i("video activity type 2," + JSON.stringify(media))
 
                                 Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
                                     Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
@@ -214,7 +214,8 @@ jQuery(function () {
                                 })
                             } else {
                                 // TODO other acitivities, like video
-                                Log.i("unsupported activity," + JSON.stringify(activity))
+//                                Log.i("unsupported activity," + JSON.stringify(activity))
+                                Log.i("unsupported activity")
                             }
                         } else {
                             // View only mode
@@ -233,7 +234,7 @@ jQuery(function () {
                                     app_router.navigate("section/" + activity.get('section_id'), {trigger: true, replace: true})
                                 }
                             } else if (activity.get("type") == 2) {
-                                Log.i("video activity type 2," + JSON.stringify(activity))
+//                                Log.i("video activity type 2," + JSON.stringify(activity))
                                 var media = Sun.getmedia(activity.get('media_id'))
                                 setBody(new VideoView({model: activity, media: media}))
                                 reloadPage()
@@ -249,7 +250,7 @@ jQuery(function () {
                 Sun.fetch("activity", {id: aid}, function (activity) {
                     Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
                         Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
-                            Log.i("summary for activity," + JSON.stringify(activity))
+//                            Log.i("summary for activity," + JSON.stringify(activity))
                             currentMaterial = "summary"
 
                             var correctCount = 0
@@ -257,7 +258,7 @@ jQuery(function () {
                                 if (problem.get('userdata')['correct'] == true) {
                                     correctCount++
                                 }
-                                Log.i("p," + number + "," + JSON.stringify(problem.get("userdata")))
+//                                Log.i("p," + number + "," + JSON.stringify(problem.get("userdata")))
                             })
 
                             setHeader(new SummaryHeaderView({
@@ -309,7 +310,7 @@ jQuery(function () {
 
             Interfaces.onReady()
 
-            function loadProblem(id) {
+            loadProblem = function (id) {
                 Sun.fetch("problem", {id: id}, function (problem) {
                     currentMaterial = "problem"
                     Log.i("problem," + problem.get("type"))
@@ -351,108 +352,11 @@ jQuery(function () {
                 currentPage.body = body
             }
 
-            function setFooter(footer) {
-                currentPage.footer = footer
-            }
-
             function reloadPage() {
                 currentPageView.render()
+                hideWaiting()
             }
 
-            completeVideo = function (id) {
-                Sun.fetch("activity", {id: id}, function (activity) {
-                    if (currentMode == MODE.VIEW_ONLY) {
-                        Sun.setviewed('activity', id)
-                        app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
-                    } else {
-                        Log.i("complete video," + id)
-                        activity.complete(null, function () {
-                            app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
-                        })
-                    }
-                })
-            }
-
-            grading = function (problemId) {
-                Sun.fetch("problem", {id: problemId}, function (problem) {
-                    if (problem.get("type") == 0 || problem.get("type") == 1) {
-                        Log.i("grading problem," + problem.get("id"))
-                        var completeOk = true
-                        var grading_result = $("#grading_result")
-                        var checked = []
-
-                        for (var i = 0; i < problem.get('choices').length; i++) {
-                            choice = problem.get('choices')[i]
-                            var choiceId = "#" + choice['id']
-                            var answer = $(choiceId)
-                            Log.i("problemchoice," + choiceId + ","
-                                + answer.attr("id") + ","
-                                + answer[0].checked + ","
-                                + choice['answer'])
-                            if (answer[0].checked == true) {
-                                checked.push(choice['id'])
-                            }
-                            if (choice['answer'] == "yes") {
-                                if (answer[0].checked == true) {
-                                    Log.i(choiceId + " right")
-                                } else {
-                                    Log.i(choiceId + " wrong")
-                                    completeOk = false
-                                }
-                            } else if (answer[0].checked != true && choice['answer'] == "no") {
-                                Log.i(choiceId + " right")
-                            } else {
-                                Log.i(choiceId + " wrong")
-                                completeOk = false
-                            }
-                        }
-                        problem.complete({
-                            correct: completeOk,
-                            checked: checked
-                        }, function () {
-                            loadProblem(problem.get('id'))
-                        })
-                    } else if (problem.get("type") == 2) {
-                        Log.i("problem type 2")
-                        var answer = $('#answer').val()
-                        var correct = false
-                        if (answer == problem.get('choices')[0]['display_text']) {
-                            correct = true
-                        }
-                        problem.complete({
-                            correct: correct,
-                            answer: answer
-                        }, function () {
-                            loadProblem(problem.get('id'))
-                        })
-                    } else {
-                        // TODO add different problem grading code
-                        Log.i("unsupported problem grading")
-                    }
-                })
-            }
-
-            makeSelection = function (id, excluded) {
-                Log.i('make selection')
-                if (excluded) {
-                    $('.pcontainer').each(function (i, p) {
-                        $(p).removeClass('odd')
-                    })
-                }
-                var choice = $('#' + id)
-                var checked = choice.prop('checked')
-                if (excluded) {
-                    choice.prop('checked', true)
-                    $('#pcontainer_' + id).addClass('odd')
-                } else {
-                    choice.prop('checked', !checked)
-                    if (!checked) {
-                        $('#pcontainer_' + id).addClass('odd')
-                    } else {
-                        $('#pcontainer_' + id).removeClass('odd')
-                    }
-                }
-            }
 
             viewStage = function (id) {
                 Log.i('view statge,' + id)
@@ -480,6 +384,101 @@ jQuery(function () {
                 }
             }
         }
+
+        showWaiting = function () {
+//            waitingDiag.modal({
+//                backdrop: 'static',
+//                keyboard: false
+//            })
+        }
+        hideWaiting = function () {
+//            waitingDiag.modal('hide')
+        }
+
+        completeVideo = function (id) {
+            Sun.fetch("activity", {id: id}, function (activity) {
+                if (currentMode == MODE.VIEW_ONLY) {
+                    Sun.setviewed('activity', id)
+                    app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
+                } else {
+                    Log.i("complete video," + id)
+                    activity.complete(null, function () {
+                        app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
+                    })
+                }
+            })
+        }
+
+
+        grading = function (problemId) {
+            showWaiting()
+            Sun.fetch("problem", {id: problemId}, function (problem) {
+                if (problem.get("type") == 0 || problem.get("type") == 1) {
+                    Log.i("grading problem," + problem.get("id"))
+                    var completeOk = true
+                    var checked = []
+
+                    for (var i = 0; i < problem.get('choices').length; i++) {
+                        var choice = problem.get('choices')[i]
+                        var choiceId = "#" + choice['id']
+                        var answer = $(choiceId)
+                        var userChecked = answer.checked
+                        var shouldCheck = (choice['answer'] == "yes")
+                        if (userChecked == true) {
+                            checked.push(choice['id'])
+                        }
+                        if (shouldCheck && !userChecked) {
+                            completeOk = false
+                        }
+                    }
+                    problem.complete({
+                        correct: completeOk,
+                        checked: checked
+                    }, function () {
+                        loadProblem(problem.get('id'))
+                    })
+                } else if (problem.get("type") == 2) {
+                    Log.i("problem type 2")
+                    var answer = $('#answer').val()
+                    var correct = false
+                    if (answer == problem.get('choices')[0]['display_text']) {
+                        correct = true
+                    }
+                    problem.complete({
+                        correct: correct,
+                        answer: answer
+                    }, function () {
+                        loadProblem(problem.get('id'))
+                    })
+                } else {
+                    // TODO add different problem grading code
+                    Log.i("unsupported problem grading")
+                }
+            })
+        }
+
+        makeSelection = function (id, excluded) {
+            Log.i('make selection')
+            if (excluded) {
+                $('.pcontainer').each(function (i, p) {
+                    $(p).removeClass('odd')
+                })
+            }
+            var choice = $('#' + id)
+            var checked = choice.prop('checked')
+            if (excluded) {
+                choice.prop('checked', true)
+                $('#pcontainer_' + id).addClass('odd')
+            } else {
+                choice.prop('checked', !checked)
+                if (!checked) {
+                    $('#pcontainer_' + id).addClass('odd')
+                } else {
+                    $('#pcontainer_' + id).removeClass('odd')
+                }
+            }
+        }
+        waitingDiag = $('#waitingDiag')
 
         currentMode = MODE.NORMAL
         currentPage = new Page()
