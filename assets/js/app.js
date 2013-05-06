@@ -27,7 +27,7 @@ jQuery(function () {
             Sun.fetch("problem", {id: id}, function (problem) {
                 currentMaterial = "problem"
 //                    Log.i("problem," + problem.get("type"))
-                Log.i("problems:" + JSON.stringify(problem))
+//                Log.i("problems:" + JSON.stringify(problem))
 
                 Sun.fetch("activity", {id: problem.get('activity_id')}, function (activity) {
                     Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
@@ -393,6 +393,7 @@ jQuery(function () {
 //                backdrop: 'static',
 //                keyboard: false
 //            })
+            $("#submit_answer").hide()
         }
         hideWaiting = function () {
 //            waitingDiag.modal('hide')
@@ -416,50 +417,64 @@ jQuery(function () {
         grading = function (problemId) {
             showWaiting()
             Sun.fetch("problem", {id: problemId}, function (problem) {
-                if (problem.get("type") == 0 || problem.get("type") == 1) {
-                    var completeOk = true
-                    var checked = []
+                Sun.fetch("activity", {id: problem.get('activity_id')}, function (activity) {
+                    if (problem.get("type") == 0 || problem.get("type") == 1) {
+                        var completeOk = true
+                        var checked = []
 
-                    for (var i = 0; i < problem.get('choices').length; i++) {
-                        var choice = problem.get('choices')[i]
-                        var choiceId = "#" + choice['id']
-                        var answer = $(choiceId)
-                        var userChecked = answer.prop("checked")
-                        var shouldCheck = (choice['answer'] == "yes")
-                        if (userChecked == true) {
-                            checked.push(choice['id'])
+                        for (var i = 0; i < problem.get('choices').length; i++) {
+                            var choice = problem.get('choices')[i]
+                            var choiceId = "#" + choice['id']
+                            var answer = $(choiceId)
+                            var userChecked = answer.prop("checked")
+                            var shouldCheck = (choice['answer'] == "yes")
+                            if (userChecked == true) {
+                                checked.push(choice['id'])
+                            }
+                            if (shouldCheck && !userChecked) {
+                                completeOk = false
+                            }
                         }
-                        if (shouldCheck && !userChecked) {
-                            completeOk = false
-                        }
-                    }
-                    Log.i("grading result," + completeOk)
+                        Log.i("grading result," + completeOk)
 
-                    problem.complete({
-                        correct: completeOk,
-                        checked: checked
-                    }, function () {
-                        loadProblem(problem.get('id'))
-                    })
-                } else if (problem.get("type") == 2) {
-                    Log.i("problem type 2")
-                    var answer = $('#answer').val()
-                    var correct = false
-                    if (answer == problem.get('choices')[0]['display_text']) {
-                        correct = true
+                        problem.complete({
+                            correct: completeOk,
+                            checked: checked
+                        }, function () {
+                            var activity_type = activity.get('type')
+                            if (activity_type == '4') {
+                                app_router.navigate("activity/" + activity.id, {trigger: true, replace: true})
+                            }else{
+                                loadProblem(problem.get('id'))
+                            }
+                        })
+                    } else if (problem.get("type") == 2) {
+                        Log.i("problem type 2")
+                        var answer = $('#answer').val()
+                        var correct = false
+                        if (answer == problem.get('choices')[0]['display_text']) {
+                            correct = true
+                        }
+                        problem.complete({
+                            correct: correct,
+                            answer: answer
+                        }, function () {
+                            var activity_type = activity.get('type')
+                            if (activity_type == '4') {
+                                app_router.navigate("activity/" + activity.id, {trigger: true, replace: true})
+                            }else{
+                                loadProblem(problem.get('id'))
+                            }
+                        })
+                    } else {
+                        // TODO add different problem grading code
+                        Log.i("unsupported problem grading")
                     }
-                    problem.complete({
-                        correct: correct,
-                        answer: answer
-                    }, function () {
-                        loadProblem(problem.get('id'))
-                    })
-                } else {
-                    // TODO add different problem grading code
-                    Log.i("unsupported problem grading")
-                }
+                })
+
             })
         }
+
 
         makeSelection = function (id, excluded) {
             Log.i('make selection,' + id + "," + excluded)
