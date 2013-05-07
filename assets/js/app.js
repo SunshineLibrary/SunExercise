@@ -443,7 +443,7 @@ jQuery(function () {
                         }, function () {
 //                            console.log("[REQUESTGENCOST]" + (new Date().getTime() - start))
                             var activity_type = activity.get('type')
-                            if (activity_type == '4') {
+                            if (activity_type == '7') {
                                 app_router.navigate("activity/" + activity.id, {trigger: true, replace: true})
                             } else {
                                 loadProblem(problem.get('id'))
@@ -461,7 +461,7 @@ jQuery(function () {
                             answer: answer
                         }, function () {
                             var activity_type = activity.get('type')
-                            if (activity_type == '4') {
+                            if (activity_type == '7') {
                                 app_router.navigate("activity/" + activity.id, {trigger: true, replace: true})
                             } else {
                                 loadProblem(problem.get('id'))

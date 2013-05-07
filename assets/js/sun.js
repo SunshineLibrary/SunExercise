@@ -134,6 +134,7 @@ jQuery(function () {
                 id,
                 JSON.stringify(options),
                 Sun.getuserid())
+            console.log("set userdata," + type + "," + id+","+JSON.stringify(options))
             if (typeof android == "undefined") {
                 // web dev mode
                 Log.i("[WEB]set user data," + type + "," + id + "," + options)

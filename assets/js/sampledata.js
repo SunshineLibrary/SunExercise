@@ -285,6 +285,10 @@ sample_schema = {
                 "pattern": "^[0-9]+"
             },
             "type": {
+                /**
+                 * 7 is diagnose
+                 * 4 is exercise
+                 */
                 "type": "string",
                 "pattern": "^[0-9]+"
             }
