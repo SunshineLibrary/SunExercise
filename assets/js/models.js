@@ -55,7 +55,6 @@ jQuery(function () {
         showSubjects: [],
         initialize: function (options) {
             var self = this
-            console.log("init subjects")
             $.each(options, function (index, subject) {
                 Sun.fetch('subject', {id: subject['id']}, function (s) {
                     if (s.get('lessons').length > 0) {
@@ -63,7 +62,6 @@ jQuery(function () {
                     }
                 })
             })
-            console.log("end init subjects")
         }
     })
 
@@ -84,7 +82,6 @@ jQuery(function () {
              }*/
             var somestages = new Stages(options["stages"])
             this.set({
-                parent_id: options['subject_id'],
                 day_week: "星期" + DAYS_OF_WEEK[date.getDay()],
                 day: date.getDate(),
                 month: date.getMonth() + 1,
@@ -104,7 +101,6 @@ jQuery(function () {
     Stage = Backbone.Model.extend({
         initialize: function (options) {
             this.set({
-                parent_id: options['lesson_id'],
                 sections: new Sections(options.sections),
                 userdata: Sun.getuserdata("stage", options.id)
             })
@@ -121,6 +117,7 @@ jQuery(function () {
             return completed
         },
         complete: function (options, callback) {
+
             if (this.isComplete()) {
                 Sun.setcomplete('stage', this.get('id'))
                 if (callback != undefined) {
@@ -150,7 +147,6 @@ jQuery(function () {
     Section = Backbone.Model.extend({
         initialize: function (options) {
             this.set({
-                parent_id: options['stage_id'],
                 activities: new Activities(options.activities)
             })
         },
@@ -180,9 +176,8 @@ jQuery(function () {
         complete: function (options, callback) {
             if (this.isComplete()) {
                 Sun.setcomplete('section', this.get('id'))
-                console.log("completeSECTION," + this.get('stage_id'))
+//                console.log("completeSECTION," + this.get('stage_id'))
                 Sun.fetch("stage", {id: this.get('stage_id')}, function (stage) {
-                    console.log("completeSECTIONSTAGE," + JSON.stringify(stage))
                     stage.complete(options, function () {
                         if (callback != undefined) {
                             eval(callback)(options)
@@ -214,7 +209,6 @@ jQuery(function () {
         initialize: function (options) {
             if (options["problems"] != undefined) {
                 this.set({
-                    parent_id: options['section_id'],
                     problems: new Problems(options.problems)
                 })
             }
@@ -246,7 +240,7 @@ jQuery(function () {
                 completed = true
             }
             if (completed) {
-                Sun.fetch('section', {id: this.get('parent_id')}, function (section) {
+                Sun.fetch('section', {id: this.get('section_id')}, function (section) {
                     section.complete(options, callback)
                 })
             }
@@ -261,7 +255,6 @@ jQuery(function () {
         initialize: function (options) {
             this.set({
                 userdata: Sun.getuserdata("problem", options.id),
-                parent_id: options['activity_id']
             })
             if (this.get('choices') != undefined) {
                 var type = options['type']
@@ -290,7 +283,7 @@ jQuery(function () {
         },
         complete: function (options, callback) {
             Sun.setcomplete('problem', this.get('id'), options)
-            Sun.fetch('activity', {id: this.get('parent_id')}, function (activity) {
+            Sun.fetch('activity', {id: this.get('activity_id')}, function (activity) {
                 activity.complete(options)
             })
             if (callback != undefined) {

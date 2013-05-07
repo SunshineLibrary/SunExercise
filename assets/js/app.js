@@ -368,7 +368,7 @@ jQuery(function () {
             }
 
             goUpstairs = function () {
-                console.log('get upstairs with current,' + currentMaterial)
+//                console.log('get upstairs with current,' + currentMaterial)
                 if (currentMaterial == "lesson") {
                     app_router.navigate("subject/" + currentSubject.get('id'), {trigger: true, replace: true})
                 } else if (currentMaterial == "stage") {
@@ -413,8 +413,7 @@ jQuery(function () {
             })
         }
 
-
-        grading = function (problemId) {
+        grading = function (problemId, problem) {
             showWaiting()
             Sun.fetch("problem", {id: problemId}, function (problem) {
                 Sun.fetch("activity", {id: problem.get('activity_id')}, function (activity) {
@@ -437,14 +436,16 @@ jQuery(function () {
                         }
                         Log.i("grading result," + completeOk)
 
+                        var start = new Date().getTime();
                         problem.complete({
                             correct: completeOk,
                             checked: checked
                         }, function () {
+//                            console.log("[REQUESTGENCOST]" + (new Date().getTime() - start))
                             var activity_type = activity.get('type')
                             if (activity_type == '4') {
                                 app_router.navigate("activity/" + activity.id, {trigger: true, replace: true})
-                            }else{
+                            } else {
                                 loadProblem(problem.get('id'))
                             }
                         })
@@ -462,7 +463,7 @@ jQuery(function () {
                             var activity_type = activity.get('type')
                             if (activity_type == '4') {
                                 app_router.navigate("activity/" + activity.id, {trigger: true, replace: true})
-                            }else{
+                            } else {
                                 loadProblem(problem.get('id'))
                             }
                         })

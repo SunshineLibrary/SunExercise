@@ -59,12 +59,12 @@ jQuery(function () {
             var start = new Date().getTime();
             var resp = android.requestData(JSON.stringify(req))
             var end = new Date().getTime();
-            console.log("[REQUESTGENCOST]" + (end - start))
+//            console.log("[REQUESTGENCOST]" + (end - start))
 
             start = new Date().getTime();
             var material = Sun.createMaterial(JSON.parse(resp), type)
             end = new Date().getTime();
-            console.log("[CREATEMATERIALCOST]," + type + "," + id + "," + (end - start))
+//            console.log("[CREATEMATERIALCOST]," + type + "," + id + "," + (end - start))
 
             return material
         },
@@ -83,7 +83,7 @@ jQuery(function () {
             if (refresh != true) {
                 var cached = MATERIAL_CACHE[id]
                 if (cached != undefined) {
-                    console.log("[CACHEDFETCHCOST]" + (new Date().getTime() - start))
+//                    console.log("[CACHEDFETCHCOST]" + (new Date().getTime() - start))
                     if (callback != undefined) {
                         eval(callback)(cached, options)
                     }
@@ -116,7 +116,7 @@ jQuery(function () {
 //                Log.i("[ANDROID]fetch," + type + "," + JSON.stringify(options))
                 ret = Sun.requestMaterial(type, options["id"])
 //                Log.i("[ANDROID]fetched," + JSON.stringify(ret))
-                console.log("[FETCHCOST]" + (new Date().getTime() - start) + ',' + type + ',' + id)
+//                console.log("[FETCHCOST]" + (new Date().getTime() - start) + ',' + type + ',' + id)
                 if (callback != undefined) {
                     MATERIAL_CACHE[id] = ret
                     eval(callback)(ret, options)
@@ -233,7 +233,7 @@ jQuery(function () {
         },
 
         setcomplete: function (type, id, options, callback) {
-            console.log("set complete," + type + "," + id)
+//            console.log("set complete," + type + "," + id)
             userdata = Sun.getuserdata(type, id)
             userdata['current'] = "EOF"
             if (options != undefined) {
@@ -383,32 +383,32 @@ jQuery(function () {
 
     Log = {
         d: function (content) {
-            if (DEBUG) {
-                content = "[DEBUG]" + content
-                console.log(content)
-                log(content)
-            }
+//            if (DEBUG) {
+//                content = "[DEBUG]" + content
+//                console.log(content)
+//                log(content)
+//            }
         },
         i: function (content) {
-            if (DEBUG) {
-                content = "[INFO]" + content
-                console.log(content)
-                log(content)
-            }
+//            if (DEBUG) {
+//                content = "[INFO]" + content
+//                console.log(content)
+//                log(content)
+//            }
         },
         e: function (content) {
-            if (DEBUG) {
-                content = "[ERROR]" + content
-                console.log(content)
-                log(content)
-            }
+//            if (DEBUG) {
+//                content = "[ERROR]" + content
+//                console.log(content)
+//                log(content)
+//            }
         },
         w: function (content) {
-            if (DEBUG) {
-                content = "[WARNING]" + content
-                console.log(content)
-                log(content)
-            }
+//            if (DEBUG) {
+//                content = "[WARNING]" + content
+//                console.log(content)
+//                log(content)
+//            }
         }
     }
 })
