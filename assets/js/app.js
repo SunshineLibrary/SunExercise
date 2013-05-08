@@ -413,8 +413,7 @@ jQuery(function () {
             })
         }
 
-        grading = function (problemId, problem) {
-            showWaiting()
+        grading = function (problemId, madeChoice) {
             Sun.fetch("problem", {id: problemId}, function (problem) {
                 Sun.fetch("activity", {id: problem.get('activity_id')}, function (activity) {
                     if (problem.get("type") == 0 || problem.get("type") == 1) {
