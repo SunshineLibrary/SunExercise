@@ -141,6 +141,7 @@ jQuery(function () {
                     if (!completed) {
                         currentMode = MODE.NORMAL
                         if (sections.length == 0) {
+                            console.log('empty stage,'+id)
                             Sun.setcomplete('stage', id)
                         }
 
@@ -187,6 +188,7 @@ jQuery(function () {
                     var activities = section.get("activities").models
                     if (currentMode == MODE.NORMAL) {
                         if (activities.length == 0) {
+                            console.log('empty section,'+id)
                             Sun.setcomplete('section', id)
                             section.complete(null, function () {
                                 Log.e("no activities in this section")
@@ -473,7 +475,7 @@ jQuery(function () {
 
 
         makeSelection = function (id, excluded) {
-            //Log.i('make selection,' + id + "," + excluded)
+            Log.i('make selection,' + id + "," + excluded)
             if (excluded) {
                 $('.pcontainer').each(function (i, p) {
                     $(p).removeClass('odd')
