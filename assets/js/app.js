@@ -26,9 +26,6 @@ jQuery(function () {
         loadProblem = function (id) {
             Sun.fetch("problem", {id: id}, function (problem) {
                 currentMaterial = "problem"
-//                    Log.i("problem," + problem.get("type"))
-//                Log.i("problems:" + JSON.stringify(problem))
-
                 Sun.fetch("activity", {id: problem.get('activity_id')}, function (activity) {
                     Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
                         Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
@@ -141,7 +138,6 @@ jQuery(function () {
                     currentMaterial = "stage"
 
                     // Check if stage completed
-//                    Log.i("stage " + id + ":" + JSON.stringify(stage))
                     if (!completed) {
                         currentMode = MODE.NORMAL
                         if (sections.length == 0) {
@@ -449,7 +445,7 @@ jQuery(function () {
                             }
                         })
                     } else if (problem.get("type") == 2) {
-                        Log.i("problem type 2")
+                        //Log.i("problem type 2")
                         var answer = $('#answer').val()
                         var correct = false
                         if (answer == problem.get('choices')[0]['display_text']) {
@@ -468,7 +464,7 @@ jQuery(function () {
                         })
                     } else {
                         // TODO add different problem grading code
-                        Log.i("unsupported problem grading")
+                        //Log.i("unsupported problem grading")
                     }
                 })
 
@@ -477,7 +473,7 @@ jQuery(function () {
 
 
         makeSelection = function (id, excluded) {
-            Log.i('make selection,' + id + "," + excluded)
+            //Log.i('make selection,' + id + "," + excluded)
             if (excluded) {
                 $('.pcontainer').each(function (i, p) {
                     $(p).removeClass('odd')
