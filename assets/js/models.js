@@ -5,13 +5,6 @@
  * Time: PM2:44
  * To change this template use File | Settings | File Templates.
  */
-/**
- * Created with JetBrains WebStorm.
- * User: fxp
- * Date: 13-3-18
- * Time: AM11:15
- * To change this template use File | Settings | File Templates.
- */
 
 jQuery(function () {
 
@@ -55,7 +48,6 @@ jQuery(function () {
         showSubjects: [],
         initialize: function (options) {
             var self = this
-            console.log("init subjects")
             $.each(options, function (index, subject) {
                 Sun.fetch('subject', {id: subject['id']}, function (s) {
                     if (s.get('lessons').length > 0) {
@@ -63,7 +55,6 @@ jQuery(function () {
                     }
                 })
             })
-            console.log("end init subjects")
         }
     })
 
@@ -181,6 +172,7 @@ jQuery(function () {
             if (this.isComplete()) {
                 Sun.setcomplete('section', this.get('id'))
                 Sun.fetch("stage", {id: this.get('stage_id')}, function (stage) {
+//                    console.log("DEBUG," + JSON.stringify(options) + "," + JSON.stringify(stage))
                     stage.complete(options, function () {
                         if (callback != undefined) {
                             eval(callback)(options)
@@ -235,7 +227,7 @@ jQuery(function () {
                 // activity with problems
                 // If all problem has completed, complete this activity
                 if (this.isComplete()) {
-                    console.log("completeACTIVITY," + this.get('id'))
+//                    console.log("completeACTIVITY," + this.get('id'))
                     Sun.setcomplete('activity', this.get('id'))
                     completed = true
                 }
