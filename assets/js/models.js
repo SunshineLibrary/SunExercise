@@ -5,13 +5,6 @@
  * Time: PM2:44
  * To change this template use File | Settings | File Templates.
  */
-/**
- * Created with JetBrains WebStorm.
- * User: fxp
- * Date: 13-3-18
- * Time: AM11:15
- * To change this template use File | Settings | File Templates.
- */
 
 jQuery(function () {
 
@@ -30,7 +23,7 @@ jQuery(function () {
 
     ANSWERS = {}
     for (var i = 0; i < 25; i++) {
-        ANSWERS[i] = String.fromCharCode("A".charCodeAt(0)+i)
+        ANSWERS[i] = String.fromCharCode("A".charCodeAt(0) + i)
     }
 
 
@@ -55,7 +48,6 @@ jQuery(function () {
         showSubjects: [],
         initialize: function (options) {
             var self = this
-            console.log("init subjects")
             $.each(options, function (index, subject) {
                 Sun.fetch('subject', {id: subject['id']}, function (s) {
                     if (s.get('lessons').length > 0) {
@@ -63,7 +55,6 @@ jQuery(function () {
                     }
                 })
             })
-            console.log("end init subjects")
         }
     })
 
@@ -180,7 +171,8 @@ jQuery(function () {
         complete: function (options, callback) {
             if (this.isComplete()) {
                 Sun.setcomplete('section', this.get('id'))
-                Sun.fetch("stage", {id: this.get('parent_id')}, function (stage) {
+                Sun.fetch("stage", {id: this.get('stage_id')}, function (stage) {
+//                    console.log("DEBUG," + JSON.stringify(options) + "," + JSON.stringify(stage))
                     stage.complete(options, function () {
                         if (callback != undefined) {
                             eval(callback)(options)
@@ -235,6 +227,7 @@ jQuery(function () {
                 // activity with problems
                 // If all problem has completed, complete this activity
                 if (this.isComplete()) {
+//                    console.log("completeACTIVITY," + this.get('id'))
                     Sun.setcomplete('activity', this.get('id'))
                     completed = true
                 }
@@ -282,11 +275,6 @@ jQuery(function () {
                 }
             }
         },
-        grading: function (options) {
-            var type = this.get('type')
-            Log.w("start grading," + type)
-            Log.w("grading not supported," + type)
-        },
         isComplete: function () {
             var userdata = Sun.getuserdata('problem', this.get('id'))
             return userdata['current'] == 'EOF'
@@ -298,11 +286,6 @@ jQuery(function () {
             })
             if (callback != undefined) {
                 eval(callback)()
-            }
-        },
-        changestate: function (state, options) {
-            if (state == MATERIAL_STATE.COMPLETE) {
-                this.complete()
             }
         }
     })

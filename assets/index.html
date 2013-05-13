@@ -84,7 +84,7 @@
 
                     <li class="<% if(currentSubjectId == subject.get('id')){ %>active<% } %>">
                         <!--<a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>-->
-                        <a href="javascript:void(0)" onclick="any.something('<%=subject.get('id')%>')"><%= subject.get('name') %></a>
+                        <a href="javascript:void(0)" onclick="load.rmDialog(load.addDialog('<%=subject.get('id')%>'))"><%= subject.get('name')%></a>
                         <div id="triangle" style="display:<% if(currentSubjectId != subject.get('id')){ %>none<% } %>"></div>
                         <div id="badge" style="display:<%if(p<=0){%>none<%}%>"><%=p%></div>
                     </li>
@@ -256,7 +256,7 @@
             <% } else {%>
             <a href="#stage/<%=stage.id%>"><img src="<%=imgPath%>" alt="circle background"></a>
             <% } %>
-            <p><%=parseInt(stage.get('seq'))%></p>
+            <p><%=index+1%></p>
         </div>
         <% }) %>
     </div>
@@ -266,8 +266,8 @@
     <%
     activity_type = activity.get('type')
     %>
-    <div class="row">
-        <h3><% if(activity_type=='4'){%>诊断题<%}else if(activity_type=='7'){%>练习题<%}%>
+    <div class="row" style="font-size: 18px">
+        <h3><% if(activity_type=='7'){%>诊断题<%}else if(activity_type=='4'){%>练习题<%}%>
             <small class="quest-type">（单选题）</small>
         </h3>
 
@@ -300,7 +300,7 @@
                 <% if(completed){%>disabled<%}%>
                 <% if(shouldCheck){%>checked<%}%>
                 >
-                <%=ANSWERS[i]%>. <%= target.get('choices')[i].display_text %>
+                <strong><%=ANSWERS[i]%>.</strong> <%= target.get('choices')[i].display_text %>
             </label>
         </div>
         <% } %>
@@ -309,7 +309,7 @@
     <div class="result">
         <div id="grading_result" class="pull-left">
             <%
-            if(activity_type=='7'){
+            if(activity_type=='4'){
             if(userdata.correct==true) {
             %>
             yo，答对啦！
@@ -319,8 +319,8 @@
             错了哎。正确答案是：<%=target.get('correct_answers')%>
             <%
             }
-            }else if((activity_type=='4') && (userdata.current == 'EOF')){%>
-            答完啦
+            }else if((activity_type=='7') && (userdata.current == 'EOF')){%>
+            已经答完啦 
             <%}
             %>
         </div>
@@ -348,8 +348,8 @@
     <%
     activity_type = activity.get('type')
     %>
-    <div class="row">
-        <h3><% if(activity_type=='4'){%>诊断题<%}else if(activity_type=='7'){%>练习题<%}%>
+    <div class="row" style="font-size: 18px">
+        <h3><% if(activity_type=='7'){%>诊断题<%}else if(activity_type=='4'){%>练习题<%}%>
             <small class="quest-type">（多选题）</small>
         </h3>
 
@@ -377,13 +377,13 @@
             <label class="checkbox">
                 <input class="answer"
                        id="<%=choice.id%>"
-                       answer="<%= choice.answer%>"
+                       answer="<%=choice.answer%>"
                        type="checkbox"
                 <% if(completed){%>disabled<%}%>
                 name="optionsRadios"
                 <% if(shouldCheck){%>checked<%}%>
                 >
-                <%=ANSWERS[i]%>. <%= target.get('choices')[i].display_text %>
+                <strong><%=ANSWERS[i]%>.</strong> <%= target.get('choices')[i].display_text %>
             </label>
         </div>
         <% } %>
@@ -392,7 +392,7 @@
     <div class="result">
         <div id="grading_result" class="pull-left">
             <%
-            if(activity_type=='7'){
+            if(activity_type=='4'){
             if(userdata.correct==true) {
             %>
             yo，答对啦！
@@ -402,8 +402,8 @@
             错了哎。正确答案是：<%=target.get('correct_answers')%>
             <%
             }
-            }else if((activity_type=='4') && (userdata.current == 'EOF')){%>
-            答完啦
+            }else if((activity_type=='7') && (userdata.current == 'EOF')){%>
+            已经答完啦
             <%}
             %>
         </div>
@@ -431,8 +431,8 @@
     <%
     activity_type = activity.get('type')
     %>
-    <div class="row">
-        <h3><% if(activity_type=='4'){%>诊断题<%}else if(activity_type=='7'){%>练习题<%}%>
+    <div class="row" style="font-size: 18px">
+        <h3><% if(activity_type=='7'){%>诊断题<%}else if(activity_type=='4'){%>练习题<%}%>
             <small class="quest-type">（填空题）</small>
         </h3>
 
@@ -468,7 +468,7 @@
 
     <div id="grading_result" class="row">
         <%
-        if(activity_type=='7'){
+        if(activity_type=='4'){
         if(userdata.correct==true) {
         %>
         yo，答对啦！
@@ -478,8 +478,8 @@
         错了哎。正确答案是：<%=target.get('correct_answers')%>
         <%
         }
-        }else if((activity_type=='4') && (userdata.current == 'EOF')){%>
-        答完啦
+        }else if((activity_type=='7') && (userdata.current == 'EOF')){%>
+        已经答完啦
         <%}
         %>
     </div>
@@ -614,6 +614,12 @@
     </div>
     <div class="modal-body">
         <p>加载完成后会返回首页</p>
+    </div>
+</div>
+
+<div id="waitingDiag" class="modal hide fade">
+    <div class="modal-body">
+        <p>你丫等会儿</p>
     </div>
 </div>
 

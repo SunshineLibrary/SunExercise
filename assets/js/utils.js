@@ -12,7 +12,7 @@ jQuery(function () {
             Sun.fetch("section", {id: activity.get("section_id")}, function (section) {
                 Sun.fetch("stage", {id: section.get("stage_id")}, function (stage) {
                     console.log("checkin stage," + JSON.stringify(stage))
-                    userdata = Sun.getuserdata("stage", stage.get("id"))
+                    var userdata = Sun.getuserdata("stage", stage.get("id"))
                     userdata["current"] = id
                     Sun.setuserdata("stage", stage.get("id"), userdata)
                 })
@@ -31,22 +31,18 @@ jQuery(function () {
         },
 
         get_image_name: function (stage) {
-            userdata = Sun.getuserdata('stage', stage.get('id'))
-//            this.is_first = false
+            var userdata = Sun.getuserdata('stage', stage.get('id'))
             var img_name = parseInt(stage.get('type')) + 1 + ""
             if (userdata['current'] == undefined) {
-//                this.start_lock = true
                 img_name = "0" + img_name
             } else if (userdata['current'] == undefined) {
                 img_name = "00" + img_name
-            } else {
-                img_name = img_name
             }
             return img_name
         },
 
         get_status: function (stage) {
-            userdata = Sun.getuserdata('stage', stage.get('id'))
+            var userdata = Sun.getuserdata('stage', stage.get('id'))
             return userdata['current']
         }
     }

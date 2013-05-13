@@ -55,8 +55,17 @@ jQuery(function () {
         },
         requestMaterial: function (type, id) {
             var req = Sun.createrequest("material", "get", type, id, undefined, Sun.getuserid())
+
+            var start = new Date().getTime();
             var resp = android.requestData(JSON.stringify(req))
+            var end = new Date().getTime();
+//            console.log("[REQUESTGENCOST]" + (end - start))
+
+            start = new Date().getTime();
             var material = Sun.createMaterial(JSON.parse(resp), type)
+            end = new Date().getTime();
+//            console.log("[CREATEMATERIALCOST]," + type + "," + id + "," + (end - start))
+
             return material
         },
         createMaterial: function (json, type) {
@@ -74,7 +83,7 @@ jQuery(function () {
             if (refresh != true) {
                 var cached = MATERIAL_CACHE[id]
                 if (cached != undefined) {
-                    console.log("[CACHEDFETCHCOST]" + (new Date().getTime() - start))
+//                    console.log("[CACHEDFETCHCOST]" + (new Date().getTime() - start))
                     if (callback != undefined) {
                         eval(callback)(cached, options)
                     }
@@ -104,11 +113,11 @@ jQuery(function () {
                 )
             } else {
                 // android dev mode
-                Log.i("[ANDROID]fetch," + type + "," + JSON.stringify(options))
+//                Log.i("[ANDROID]fetch," + type + "," + JSON.stringify(options))
                 ret = Sun.requestMaterial(type, options["id"])
-                Log.i("[ANDROID]fetched," + JSON.stringify(ret))
+//                Log.i("[ANDROID]fetched," + JSON.stringify(ret))
+//                console.log("[FETCHCOST]" + (new Date().getTime() - start) + ',' + type + ',' + id)
                 if (callback != undefined) {
-                    console.log("[FETCHCOST]" + (new Date().getTime() - start) + ',' + type + ',' + id)
                     MATERIAL_CACHE[id] = ret
                     eval(callback)(ret, options)
                 }
@@ -125,6 +134,7 @@ jQuery(function () {
                 id,
                 JSON.stringify(options),
                 Sun.getuserid())
+//            console.log("set userdata," + type + "," + id+","+JSON.stringify(options))
             if (typeof android == "undefined") {
                 // web dev mode
                 Log.i("[WEB]set user data," + type + "," + id + "," + options)
@@ -224,6 +234,7 @@ jQuery(function () {
         },
 
         setcomplete: function (type, id, options, callback) {
+//            console.log("set complete," + type + "," + id)
             userdata = Sun.getuserdata(type, id)
             userdata['current'] = "EOF"
             if (options != undefined) {
@@ -389,47 +400,49 @@ jQuery(function () {
 
     Log = {
         d: function (content) {
-            if (DEBUG) {
-                content = "[DEBUG]" + content
-                console.log(content)
-                log(content)
-            }
+//            if (DEBUG) {
+//                content = "[DEBUG]" + content
+//                console.log(content)
+//                log(content)
+//            }
         },
         i: function (content) {
-            if (DEBUG) {
-                content = "[INFO]" + content
-                console.log(content)
-                log(content)
-            }
+//            if (DEBUG) {
+//                content = "[INFO]" + content
+//                console.log(content)
+//                log(content)
+//            }
         },
         e: function (content) {
-            if (DEBUG) {
-                content = "[ERROR]" + content
-                console.log(content)
-                log(content)
-            }
+//            if (DEBUG) {
+//                content = "[ERROR]" + content
+//                console.log(content)
+//                log(content)
+//            }
         },
         w: function (content) {
-            if (DEBUG) {
-                content = "[WARNING]" + content
-                console.log(content)
-                log(content)
-            }
+//            if (DEBUG) {
+//                content = "[WARNING]" + content
+//                console.log(content)
+//                log(content)
+//            }
         }
     }
 
-    any = {
-        something: function (id) {
-            if (typeof android == "undefined") { 
+    load = {
+        rmDialog: function(callback){
 
+            if (typeof android == "undefined") {
                 setTimeout(function(){
-                    setTimeout(function(){
-                        $('#progress').remove()
-                        window.open('#subject/' + id, '_self') 
-                    },1000)
-                    $('body').append('<div id="progress">正在努力加载页面...</div>') 
-                },0)  
-            }   
+                    $('#progress').remove()
+                },500)
+            }else{
+                $('#progress').remove()
+            }
+        },
+        addDialog: function(id){
+            $('body').append('<div id="progress">正在努力加载页面...</div>')  
+            window.open('#subject/' + id, '_self')
         }
     }
 })
