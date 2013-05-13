@@ -429,22 +429,22 @@ jQuery(function () {
         }
     }
 
-    load = {
+   /* load = {
         rmDialog: function(callback){
 
-            if (typeof android == "undefined") {
+            //if (typeof android == "undefined") {
                 setTimeout(function(){
                     $('#progress').remove()
                 },500)
-            }else{
-                $('#progress').remove()
-            }
+            //}else{
+            //    $('#progress').remove()
+            //}
         },
         addDialog: function(id){
             $('body').append('<div id="progress">正在努力加载页面...</div>')  
             window.open('#subject/' + id, '_self')
         }
-    }
+    }*/
 })
 
 function changeDownloadProgress(id, percentage) {

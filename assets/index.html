@@ -83,8 +83,8 @@
                     }%>
 
                     <li class="<% if(currentSubjectId == subject.get('id')){ %>active<% } %>">
-                        <!--<a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>-->
-                        <a href="javascript:void(0)" onclick="load.rmDialog(load.addDialog('<%=subject.get('id')%>'))"><%= subject.get('name')%></a>
+                        <a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>
+                        <!--<a href="javascript:void(0)" onclick="load.rmDialog(load.addDialog('<%=subject.get('id')%>'))"><%= subject.get('name')%></a>-->
                         <div id="triangle" style="display:<% if(currentSubjectId != subject.get('id')){ %>none<% } %>"></div>
                         <div id="badge" style="display:<%if(p<=0){%>none<%}%>"><%=p%></div>
                     </li>
