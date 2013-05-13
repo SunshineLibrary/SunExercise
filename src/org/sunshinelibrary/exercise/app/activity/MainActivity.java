@@ -138,6 +138,14 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     }
 
     @Override
+    protected void onPause() {
+        super.onPause();
+        if (mWebView.inCustomView()) {
+            mWebView.hideCustomView();
+        }
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
         mWebView.stopLoading();
