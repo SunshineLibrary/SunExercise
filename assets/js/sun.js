@@ -88,8 +88,8 @@ jQuery(function () {
                 // web dev mode, request data from sundata server
                 Log.i("[WEB]fetch," + type + "," + JSON.stringify(options))
 
-//                mockMaterial = "http://42.121.65.247:9000/api/material"
-                mockMaterial = "http://127.0.0.1:9000/api/material"
+              mockMaterial = "http://42.121.65.247:9000/api/material"
+              //mockMaterial = "http://127.0.0.1:9000/api/material"
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
                     function (data) {
@@ -418,16 +418,20 @@ jQuery(function () {
         }
     }
 
-    /*any = {
-        something: function (id){ 
-            appendDialog()
-            var stopTime = new Date().getTime() + 5000 
-            while (new Date().getTime() < stopTime){}
-            alert('hello')
-            window.open('#subject/' + id, '_self')
-            $('#progress').remove()
+    any = {
+        something: function (id) {
+            if (typeof android == "undefined") { 
+
+                setTimeout(function(){
+                    setTimeout(function(){
+                        $('#progress').remove()
+                        window.open('#subject/' + id, '_self') 
+                    },1000)
+                    $('body').append('<div id="progress">正在努力加载页面...</div>') 
+                },0)  
+            }   
         }
-    }*/
+    }
 })
 
 function changeDownloadProgress(id, percentage) {
@@ -474,9 +478,3 @@ function enableRefresh(){
         Interfaces.sync()
     });
 }
-
-/*function appendDialog(){
-    var body = $('body')
-    var loadDialog = '<div id="progress">正在努力加载页面...</div>'
-    body.append(loadDialog)
-}*/

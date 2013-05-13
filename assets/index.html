@@ -29,8 +29,6 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="nav-collapse collapse">
-            <!--<div style="width:48px; height:56px; float:left"><img src="img/SunExercise_Logo.png" style="width:auto; height:auto; border:none; box-shadow:none; margin-left:20px; margin-top:14px;"/></div>
-            <a class="brand">阳光提高班</a>-->
             <div  id="header"></div>
             <ul class="nav pull-right">
                 <li class="refreshZone">
@@ -60,7 +58,7 @@
 
 <!--Many templates-->
 <script type="text/template" id="th_subjects">
-            <div style="width:48px; height:56px; float:left"><img src="img/SunExercise_Logo.png" style="width:auto; height:auto; border:none; box-shadow:none; margin-left:20px; margin-top:14px;"/></div>
+           <div style="width:48px; height:56px; float:left"><img src="img/SunExercise_Logo.png" style="width:auto; height:auto; border:none; box-shadow:none; margin-left:20px; margin-top:14px;"/></div>
             <a class="brand">阳光提高班</a>
                 <ul class="nav">
                     <%
@@ -85,7 +83,8 @@
                     }%>
 
                     <li class="<% if(currentSubjectId == subject.get('id')){ %>active<% } %>">
-                        <a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>
+                        <!--<a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>-->
+                        <a href="javascript:void(0)" onclick="any.something('<%=subject.get('id')%>')"><%= subject.get('name') %></a>
                         <div id="triangle" style="display:<% if(currentSubjectId != subject.get('id')){ %>none<% } %>"></div>
                         <div id="badge" style="display:<%if(p<=0){%>none<%}%>"><%=p%></div>
                     </li>
