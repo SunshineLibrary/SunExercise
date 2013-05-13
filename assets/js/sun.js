@@ -97,8 +97,8 @@ jQuery(function () {
                 // web dev mode, request data from sundata server
                 Log.i("[WEB]fetch," + type + "," + JSON.stringify(options))
 
-//                mockMaterial = "http://42.121.65.247:9000/api/material"
-                mockMaterial = "http://127.0.0.1:9000/api/material"
+              mockMaterial = "http://42.121.65.247:9000/api/material"
+              //mockMaterial = "http://127.0.0.1:9000/api/material"
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
                     function (data) {
@@ -291,6 +291,8 @@ jQuery(function () {
 
         onSyncStart: function () {
             Log.i("onSyncStart")
+            addRefreshBtn()
+            disableRefresh()
         },
 
         onJsonReceived: function () {
@@ -308,15 +310,17 @@ jQuery(function () {
 
         onSyncCompleted: function () {
             Log.i("onSyncCompleted")
+            removeRefreshBtn()
+            enableRefresh();
         },
 
         onCollectionProgress: function (collectionId, percentage) {
             Log.i("onCollectionProgress," + collectionId + "," + percentage)
-            changeDownloadProgress(collectionId, percentage * 100)
+            changeDownloadProgress(collectionId, percentage*100)
         },
 
         onCollectionDownloaded: function (lessonId, downloaded) {
-//            Sun.adduserdata('lesson', lessonId, 'downloaded', true)
+//          Sun.adduserdata('lesson', lessonId, 'downloaded', true)
             if (typeof android == "undefined") {
                 Log.i("[WEB]onCollectionDownloaded," + lessonId + "," + downloaded)
             } else {
@@ -335,15 +339,19 @@ jQuery(function () {
 
         sync: function () {
             if (typeof android == "undefined") {
-                Log.i("[WEB]sync")
+                Log.i("===========================================================================[WEB]sync========================================================")
                 setTimeout(function () {
                     setTimeout(function () {
                         Interfaces.onJsonParsed()
+                        removeRefreshBtn()
+                        enableRefresh()
                     }, 2000)
                     Interfaces.onJsonReceived()
+                    addRefreshBtn()
+                    disableRefresh()
                 }, 1000)
             } else {
-                Log.i("[ANDROID]sync")
+                Log.i("=========================================================================[ANDROID]sync======================================================")
                 android.sync()
             }
         },
@@ -353,15 +361,23 @@ jQuery(function () {
                 Log.i("[WEB]download," + id)
                 setTimeout(function () {
                     setTimeout(function () {
-                        Interfaces.onCollectionDownloaded(id, "true")
+                        setTimeout(function(){
+                            setTimeout(function(){
+                                Interfaces.onCollectionDownloaded(id, "true")
+                            },1000)
+                            changeDownloadProgress(id, 100)
+                        },1000)
+                         changeDownloadProgress(id, 60)
                     }, 1000)
-                    changeDownloadProgress(id, 100)
+                    $('#lessonbox_download_progress_' + id).append('<progress value="0" max="100" style="width:196px; height:15px"></progress>')
+                    $('#lessonbox_download_progress_' + id).removeClass('progress')
+                    changeDownloadProgress(id, 30)
                 }, 1000)
             } else {
                 Log.i("[ANDROID]download," + id)
                 $('#lessonbox_download_' + id).addClass('disabled')
                 $('#lessonbox_download_' + id).attr('onclick', '').unbind('click')
-                android.download(id)
+                android.download(id)       
             }
         },
 
@@ -412,12 +428,32 @@ jQuery(function () {
 //            }
         }
     }
+
+   /* load = {
+        rmDialog: function(callback){
+
+            //if (typeof android == "undefined") {
+                setTimeout(function(){
+                    $('#progress').remove()
+                },500)
+            //}else{
+            //    $('#progress').remove()
+            //}
+        },
+        addDialog: function(id){
+            $('body').append('<div id="progress">正在努力加载页面...</div>')  
+            window.open('#subject/' + id, '_self')
+        }
+    }*/
 })
 
 function changeDownloadProgress(id, percentage) {
     $('#lessonbox_download_' + id).hide()
     $('#lessonbox_download_progress_' + id).show()
-    $('#lessonbox_download_progress_' + id + " >div").css('width', percentage + "%")
+    if (typeof android == "undefined") {
+    $('#lessonbox_download_progress_' + id + ">progress").attr('value', percentage)
+    }else{
+    $('#lessonbox_download_progress_' + id + " >div").css('width', percentage + "%")}
 }
 
 function changeDownloadBtn(id, downloaded) {
@@ -428,7 +464,6 @@ function changeDownloadBtn(id, downloaded) {
             $('.lesson_label >img.' + id).hide();
             window.open('#lesson/' + id, '_self');
         });
-
     } else if (downloaded == 'downloading') {
         $('#lessonbox_download_' + id).addClass('disabled')
         $('#lessonbox_download_' + id).attr('onclick', '').unbind('click')
@@ -437,4 +472,22 @@ function changeDownloadBtn(id, downloaded) {
         $('#lessonbox_progress_' + id).hide()
         $('#lessonbox_download_progress_' + id).hide()
     }
+}
+
+function addRefreshBtn() {
+    $('.nav>li>img.icon').addClass('icon-spin');
+}
+
+function removeRefreshBtn() {
+    $('.nav>li>img.icon').removeClass('icon-spin');
+}
+
+function disableRefresh(){
+    $('.nav>li>img.icon').attr('onclick', '').unbind('click')
+}
+
+function enableRefresh(){
+    $('.nav>li>img.icon').attr('onclick', '').bind('click', function() {
+        Interfaces.sync()
+    });
 }
