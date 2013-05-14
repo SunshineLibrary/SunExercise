@@ -186,7 +186,6 @@ jQuery(function () {
         }
     })
 
-
     VideoHeaderView = Backbone.View.extend({
         template: Templates.Header.problem,
         render: function () {
@@ -198,5 +197,4 @@ jQuery(function () {
             return this
         }
     })
-
 })
