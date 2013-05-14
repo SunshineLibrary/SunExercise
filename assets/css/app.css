@@ -14,12 +14,8 @@ body {
     width: auto;*/
 }
 
-#content >div.row {
-    margin-left: 42px;
-}
-
-#content .row [class*="span"]:first-child {
-    margin-left: 0;
+#lesson_row {
+    margin-left: 22px;
 }
 
 #content .row [class*="lessonProgressBar"]:first-child {

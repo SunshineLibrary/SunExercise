@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>阳光提高班</title>
-    <link rel="shortcut icon" href="favicon.ico">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <script src="js/libs/jquery/jquery-1.9.1.js"></script>
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -29,12 +28,15 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="nav-collapse collapse">
-            <div  id="header"></div>
-            <ul class="nav pull-right">
-                <li class="refreshZone">
-                    <img class="icon icon-2x" src="img/btn_main_refresh.png" onclick="Interfaces.sync()" />
-                </li>
-            </ul>
+            <div  id="header">
+                <div style="width:48px; height:56px; float:left"><img src="img/SunExercise_Logo.png" style="width:auto; height:auto; border:none; box-shadow:none; margin-left:20px; margin-top:14px;"/></div>
+                <a class="brand">阳光提高班</a>
+                <ul class="nav pull-right">
+                    <li class="refreshZone">
+                        <img class="icon icon-2x" src="img/btn_main_refresh.png" onclick="Interfaces.sync()" />
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
@@ -91,11 +93,11 @@
                     <% }%>
                 <%}%>
                 </ul>
-                <!--<ul class="nav pull-right">-->
-                    <!--<li class="refreshZone">-->
-                        <!--<img class="icon" src="img/refresh.png" onclick="Interfaces.sync()" />-->
-                    <!--</li>-->
-                <!--</ul>-->
+                <ul class="nav pull-right">
+                    <li class="refreshZone">
+                        <img class="icon icon-2x" src="img/btn_main_refresh.png" onclick="Interfaces.sync()" />
+                    </li>
+                </ul>
 </script>
 
 <script type="text/template" id="th_lesson">
@@ -152,9 +154,9 @@
 
 <script type="text/template" id="tc_subject">
     <% _.each(target.get('monthLessons'),function(monthLesson){ %>
+    <div style="margin-left:-42px;">
     <h2><%=monthLesson[0].get('month')%>月</h2>
-
-    <div class="row">
+    <div class="row" id="lesson_row">
         <%
         _.each(monthLesson,function(lesson){
         userdata = Sun.getuserdata('lesson',lesson.get('id'))
@@ -172,7 +174,7 @@
                     <h4><%=lesson.get("name")%></h4>
 
                     <div class="pull-right lesson_label">
-                        <img class="<%=lesson.id%>" src="img/label_new.png" style="display:<%if(downloaded=='1' && userdata['entered']!=undefined){%>none<%}%>"/>
+                        <img class="<%=lesson.id%>" src="img/label_new.png" style="display:<%if(userdata['entered']!=undefined){%>none<%}%>"/>
                         <p class="<%=lesson.id%>" style="display:<%if(downloaded !='1' || userdata['entered']==undefined){%>none<%}%>"><%=lesson.get("day_week")%></p>
                     </div>
                 </div>
@@ -216,6 +218,7 @@
             </div>
         </div>
         <% }) %>
+    </div>
     </div>
     <% }) %>
 </script>
