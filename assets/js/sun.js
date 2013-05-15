@@ -367,8 +367,6 @@ jQuery(function () {
                         },1000)
                          changeDownloadProgress(id, 60)
                     }, 1000)
-                    //$('#lessonbox_download_progress_' + id).append('<progress value="0" max="100" style="width:196px; height:15px"></progress>')
-                    //$('#lessonbox_download_progress_' + id).removeClass('progress')
                     changeDownloadProgress(id, 30)
                 }, 1000)
             } else {
@@ -448,10 +446,7 @@ jQuery(function () {
 function changeDownloadProgress(id, percentage) {
     $('#lessonbox_download_' + id).hide()
     $('#lessonbox_download_progress_' + id).show()
-   /* if (typeof android == "undefined") {
-    $('#lessonbox_download_progress_' + id + ">progress").attr('value', percentage)
-    }else{*/
-    $('#lessonbox_download_progress_' + id + " >div").css('width', percentage + "%")//}
+    $('#lessonbox_download_progress_' + id + " >div").css('width', percentage + "%")
 }
 
 function changeDownloadBtn(id, downloaded) {

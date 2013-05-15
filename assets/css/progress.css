@@ -67,3 +67,8 @@
 .diagnose_off {
     background-image: url('Progressbar_Diagnose_Off.png');
 }
+
+.dart_done [class*="progress_arrow"]:last-child{
+    right:-30px;
+    background: url('Progressbar_Arrow_Ongoing.png') no-repeat;
+}

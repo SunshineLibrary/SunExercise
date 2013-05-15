@@ -124,8 +124,9 @@
         %>
         <div class="progress_dart <% if(i==0){%>dart_first<%}%> dart_done">
             <div class="progress_label">
-                <div class="progress_icon diagnose_off"></div>
+                <div class="progress_icon star_off"></div>
             </div>
+            <div class="progress_arrow"></div>
             <div class="progress_arrow"></div>
         </div>
         <%
@@ -133,7 +134,7 @@
         %>
         <div class="progress_dart <% if(i==0){%>dart_first<%}%>">
             <div class="progress_label">
-                <div class="progress_icon star_off"></div>
+                <div class="progress_icon star_on"></div>
                 <span class="progress_title"><%=section.get('name')%></span>
             </div>
             <div class="progress_arrow"></div>
@@ -154,7 +155,7 @@
 
 <script type="text/template" id="tc_subject">
     <% _.each(target.get('monthLessons'),function(monthLesson){ %>
-    <div style="margin-left:-42px;">
+
     <h2><%=monthLesson[0].get('month')%>月</h2>
     <div class="row" id="lesson_row">
         <%
@@ -218,7 +219,6 @@
             </div>
         </div>
         <% }) %>
-    </div>
     </div>
     <% }) %>
 </script>
