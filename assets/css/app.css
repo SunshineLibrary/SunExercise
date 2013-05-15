@@ -8,14 +8,6 @@ body {
 
 #content_container {
     margin-top: 76px;
-   /* height: auto;
-    margin-left: auto;
-    margin-right: auto;
-    width: auto;*/
-}
-
-#lesson_row {
-    margin-left: 22px;
 }
 
 #content .row [class*="lessonProgressBar"]:first-child {
@@ -32,17 +24,14 @@ body {
     border-bottom-right-radius: 5px;
 }
 
-
 h2 {
     font-family: Futura italic;
     font-size: 24px;
     color: #999999;
-    margin: 0px 0px 0px 28px;
+    margin: 0px 0px 0px -14px;
     height: auto;
     padding-bottom: 20px;
 }
-
-
 
 .well {
     display: table;

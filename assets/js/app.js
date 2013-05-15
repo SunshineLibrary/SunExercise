@@ -411,7 +411,7 @@ jQuery(function () {
             })
         }
 
-        grading = function (problemId, madeChoice) {
+        grading = function (problemId) {
             Sun.fetch("problem", {id: problemId}, function (problem) {
                 Sun.fetch("activity", {id: problem.get('activity_id')}, function (activity) {
                     if (problem.get("type") == 0 || problem.get("type") == 1) {
@@ -474,7 +474,7 @@ jQuery(function () {
         }
 
 
-        makeSelection = function (id, excluded) {
+        makeSelection = function (id, problemId, excluded) {
             Log.i('make selection,' + id + "," + excluded)
             if (excluded) {
                 $('.pcontainer').each(function (i, p) {
@@ -494,7 +494,26 @@ jQuery(function () {
                     $('#pcontainer_' + id).removeClass('odd')
                 }
             }
+            $('#submit_answer').removeClass('disabled')
+            $('#submit_answer').attr('onclick', '').bind('click', function() {
+                grading(problemId)
+            })
         }
+
+        activeSubmitBtn = function (problemId) {
+            var answer = $('#answer').val()
+            if(answer!=""){
+                $('#submit_answer').removeClass('disabled')
+                $('#submit_answer').attr('onclick', '').bind('click', function() {
+                grading(problemId)
+                })
+            }else{
+                $('#submit_answer').addClass('disabled')
+                $('#submit_answer').attr('onclick', '').unbind('click')
+            }
+        }
+
+
         waitingDiag = $('#waitingDiag')
 
         currentMode = MODE.NORMAL
