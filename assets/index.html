@@ -280,7 +280,8 @@
 
         <div>
             <%
-            userdata = Sun.getuserdata('problem',target.get('id'))
+            problemId = target.get('id')
+            userdata = Sun.getuserdata('problem',problemId)
             var completed = (userdata.current == 'EOF')
             for(var i =0 ; i < target.get("choices").length; i++) {
             var choice = target.get("choices")[i]
@@ -290,7 +291,7 @@
             <div id="pcontainer_<%=choice.id%>" class="pcontainer palette palette-clouds
             <%if(shouldCheck){%>odd<%}else{%>even<%}%>"
             <%if(!completed){%>
-            onclick="makeSelection('<%=choice.id%>',true)"
+            onclick="makeSelection('<%=choice.id%>', problemId, true)"
             <%}%>
             >
             <label class="radio">
@@ -333,8 +334,7 @@
             if(userdata.current == 'EOF') { %>
             <a id="next-question" class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
             <% }else if(userdata.current == undefined){ %>
-            <a id="submit_answer" class="btn btn-large  btn-primary"
-               onclick="grading('<%=target.get('id')%>')">提交答案</a>
+            <a id="submit_answer" class="btn btn-large  btn-primary disabled">提交答案</a>
             <% } %>
             <% } else { %>
             <div>
@@ -362,7 +362,8 @@
 
         <div>
             <%
-            userdata = Sun.getuserdata('problem',target.get('id'))
+            problemId = target.get('id')
+            userdata = Sun.getuserdata('problem',problemId)
             activity_type = activity.get('type')
             var completed = (userdata.current == 'EOF')
             for(var i =0 ; i < target.get("choices").length; i++) {
@@ -374,7 +375,7 @@
                  class="pcontainer palette palette-clouds
                  <% if(shouldCheck){%>odd<%}else{%>even<%}%>"
             <% if(!completed){%>
-            onclick="makeSelection('<%=choice.id%>',false)"
+            onclick="makeSelection('<%=choice.id%>', problemId, false)"
             <%}%>
             >
             <label class="checkbox">
@@ -416,8 +417,7 @@
             if(userdata.current == 'EOF') { %>
             <a id="next-question" class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
             <% }else if(userdata.current == undefined){ %>
-            <a id="submit_answer" class="btn btn-large  btn-primary"
-               onclick="grading('<%=target.get('id')%>')">提交答案</a>
+            <a id="submit_answer" class="btn btn-large  btn-primary disabled">提交答案</a>
             <% } %>
             <% } else { %>
             <div>
@@ -441,7 +441,8 @@
 
         <p>
             <%
-            userdata = Sun.getuserdata('problem',target.get('id'))
+            problemId = target.get('id')
+            userdata = Sun.getuserdata('problem',problemId)
             var completed = (userdata.current == 'EOF')
             activity_type = activity.get('type')
             %>
@@ -452,7 +453,7 @@
     <div class="row">
         <div class="span10 controls">
             <input type="text" class="" id="answer" style="width:100%;margin-top:5px;height:30px"
-                   placeholder="<%if(completed){%><%=userdata.answer%><%}else{%>填写答案<%}%>">
+                   placeholder="<%if(completed){%><%=userdata.answer%><%}else{%>填写答案<%}%>" onkeyup="activeSubmitBtn(problemId)">
         </div>
 
         <div class="">
@@ -460,8 +461,7 @@
             <% if(completed) { %>
             <a class="span2 btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
             <% }else{ %>
-            <a id="submit_answer" class="span2 btn btn-large btn-primary"
-               onclick="grading('<%=target.get('id')%>')">提交答案</a>
+            <a id="submit_answer" class="span2 btn btn-large btn-primary disabled">提交答案</a>
             <% } %>
             <% } else { %>
             <a class="span2 btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
