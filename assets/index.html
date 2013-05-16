@@ -255,10 +255,12 @@
         <% } %>
         <%var choose_circle = 0%>
         <div class="stage_circle circle_<%=circleClassNum%>">
-            <% if (circleClassNum != 1) {%>
+            <% if (circleClassNum == 0) {%>
             <div onclick="viewStage('<%=stage.get('id')%>')"><img src="<%=imgPath%>" alt="circle background"></div>
             <% } else {%>
-            <a href="#stage/<%=stage.id%>"><img src="<%=imgPath%>" alt="circle background"></a>
+            <a <%if(circleClassNum == 1){%>href="#stage/<%=stage.id%>"<%}%> >
+                <img src="<%=imgPath%>" alt="circle background">
+            </a>
             <% } %>
             <p><%=index+1%></p>
         </div>
