@@ -30,7 +30,7 @@ import org.sunshinelibrary.support.api.UserInfo;
 public class MainActivity extends TopActivity implements AndroidUIInterface {
 
     // TODO
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     private static final int MENU_DEBUG = 33;
     private static final int MENU_CLEAN = 34;
     private static final int MENU_SYNC = 35;
