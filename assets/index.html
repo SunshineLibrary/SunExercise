@@ -454,7 +454,7 @@
     <div class="row">
         <div class="span10 controls" style="margin-left:0px">
             <input type="text" class="" id="answer" style="width:100%;margin-top:5px;height:30px"
-                   placeholder="<%if(completed){%><%=userdata['answer']%><%}else{%>填写答案<%}%>" onkeyup="activeSubmitBtn(problemId)">
+                   placeholder="<%if(completed){%><%=userdata['answer']%><%}else{%>填写答案<%}%>" onfocus = "activeSubmitBtn(problemId)">
         </div>
 
         <div class="">

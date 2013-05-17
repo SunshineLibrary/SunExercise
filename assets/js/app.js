@@ -501,18 +501,21 @@ jQuery(function () {
         }
 
         activeSubmitBtn = function (problemId) {
+            $('#submit_answer').removeClass('disabled')
+            $('#submit_answer').attr('onclick', '').bind('click', function() {
+                judgeContent(problemId)
+            })
+        }
+
+        judgeContent = function (problemId) {
             var answer = $('#answer').val()
             if(answer!=""){
-                $('#submit_answer').removeClass('disabled')
-                $('#submit_answer').attr('onclick', '').bind('click', function() {
                 grading(problemId)
-                })
             }else{
                 $('#submit_answer').addClass('disabled')
                 $('#submit_answer').attr('onclick', '').unbind('click')
             }
         }
-
 
         waitingDiag = $('#waitingDiag')
 
