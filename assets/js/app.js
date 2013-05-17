@@ -354,7 +354,7 @@ jQuery(function () {
             currentLesson = undefined
             currentMaterial = undefined
 
-            Logger.hide()
+//            Logger.hide()
             Backbone.history.start()
 
             Interfaces.onReady()
