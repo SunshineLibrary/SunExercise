@@ -49,6 +49,7 @@ public class TestCase extends Thread{
     public static final int LOG_DB = 4;
     public static final int DUMP = 5;
     public static final int CLEAN_USER_DATA = 6;
+    public static final int PDF = 7;
 
     static int command = RUN_CASE;
 
@@ -84,6 +85,9 @@ public class TestCase extends Thread{
                 break;
             case DUMP:
                 dumpToJS();
+                break;
+            case PDF:
+                openPdf();
                 break;
             default:
                 throw new RuntimeException("illegal argument");
@@ -700,5 +704,16 @@ public class TestCase extends Thread{
         req.param.id = "";
         req.param.type = Request.USER_INFO;
         stream.write(ExerciseApplication.getInstance().getSyncManager().requestData(req.toJsonString()).getBytes());
+    }
+
+    public static void openPdf(){
+        Proxy p = new Proxy();
+        Request req = new Request();
+        req.api = Request.OPEN;
+        req.method = Request.UNKNOWN;
+        req.user_id = Request.UNKNOWN;
+        req.param.type = Request.PDF;
+        req.param.path = "/mnt/sdcard/test/test.pdf";
+        p.requestData(req.toJsonString());
     }
 }

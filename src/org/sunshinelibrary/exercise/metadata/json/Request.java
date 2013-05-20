@@ -2,6 +2,7 @@ package org.sunshinelibrary.exercise.metadata.json;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
@@ -9,6 +10,8 @@ import android.util.Log;
 
 import static org.sunshinelibrary.exercise.metadata.MetadataContract.*;
 
+import android.view.View;
+import android.widget.Toast;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -21,6 +24,7 @@ import org.sunshinelibrary.support.utils.CursorUtils;
 import org.sunshinelibrary.support.utils.JSONStringBuilder;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
@@ -36,6 +40,8 @@ public class Request extends JSONObject {
     public static final String POST = "post";
     public static final String MATERIAL = "material";
     public static final String USER_DATA = "user_data";
+    public static final String OPEN = "open";
+    public static final String PDF = "pdf";
     public static final String UNKNOWN = "unknown";
     public static final String USER_INFO = "user_info";
     public static final String SUBJECTS = "subjects";
@@ -50,6 +56,7 @@ public class Request extends JSONObject {
         public String id = "";
         public String type = "";
         public String user_data = "";
+        public String path = "";
     }
 
     public String request() {
@@ -62,6 +69,8 @@ public class Request extends JSONObject {
                 Log.e(TAG, "wrong param.type: " + param.type);
                 return EMPTY;
             }
+        } else if(api.equals(OPEN)) {
+            return open();
         } else if(param.type.equals(SUBJECTS)) {
             return queryCollection(SubjectTable.TABLE_NAME, "subjects");
         } else if (param.type.equals("subject")) {
@@ -204,5 +213,23 @@ public class Request extends JSONObject {
         SharedPreferences pref = context.getSharedPreferences(UserInfo.SP_NAME, Context.MODE_WORLD_READABLE);
         UserInfoResponse response = new UserInfoResponse(pref);
         return response.toJsonString();
+    }
+
+    protected String open(){
+        Context context = ExerciseApplication.getInstance().getBaseContext();
+
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        Uri uri = Uri.fromFile(new File(param.path));
+        if (param.type.equals(PDF)) {
+            intent.setDataAndType(uri, "application/pdf");
+        }
+        try {
+            context.startActivity(intent);
+            return OpenResponse.SUCCESS;
+        } catch (Exception e) {
+            return OpenResponse.NOT_FOUND;
+        }
     }
 }
