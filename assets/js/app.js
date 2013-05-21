@@ -473,8 +473,7 @@ jQuery(function () {
             })
         }
 
-
-        makeSelection = function (id, problemId, excluded) {
+        makeSelection = function (id,excluded) {
             Log.i('make selection,' + id + "," + excluded)
             if (excluded) {
                 $('.pcontainer').each(function (i, p) {
@@ -490,29 +489,48 @@ jQuery(function () {
                 choice.prop('checked', !checked)
                 if (!checked) {
                     $('#pcontainer_' + id).addClass('odd')
+                    counter = countHelper + 1
                 } else {
                     $('#pcontainer_' + id).removeClass('odd')
+                    counter = countHelper - 1
                 }
             }
-            $('#submit_answer').removeClass('disabled')
-            $('#submit_answer').attr('onclick', '').bind('click', function() {
-                grading(problemId)
+            activeSubmitBtn(function(){
+                if (excluded){
+                    grading(problemId)
+                }
+                else{
+                    judgeChoice()
+                }
             })
         }
 
-        activeSubmitBtn = function (problemId) {
-            var answer = $('#answer').val()
-            if(answer!=""){
-                $('#submit_answer').removeClass('disabled')
-                $('#submit_answer').attr('onclick', '').bind('click', function() {
-                grading(problemId)
-                })
-            }else{
-                $('#submit_answer').addClass('disabled')
-                $('#submit_answer').attr('onclick', '').unbind('click')
-            }
+        activeSubmitBtn = function (judge) {
+            $('#submit_answer').removeClass('disabled')
+            $('#submit_answer').attr('onclick', '').bind('click',judge)
         }
 
+        deactiveSubmitBtn = function(){
+            $('#submit_answer').addClass('disabled')
+            $('#submit_answer').attr('onclick', '').unbind('click')
+        }
+
+        judgeChoice = function(){
+             if (counter<=0) {
+                deactiveSubmitBtn()
+             }else{
+                grading(problemId)
+             }
+        }
+
+        judgeContent = function () {
+            var answer = $('#answer').val()
+            if(answer!=""){
+                grading(problemId)
+            }else{
+                deactiveSubmitBtn()
+            }
+        }
 
         waitingDiag = $('#waitingDiag')
 

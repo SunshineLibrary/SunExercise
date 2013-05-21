@@ -294,7 +294,7 @@
             <div id="pcontainer_<%=choice.id%>" class="pcontainer palette palette-clouds
             <%if(shouldCheck){%>odd<%}else{%>even<%}%>"
             <%if(!completed){%>
-            onclick="makeSelection('<%=choice.id%>', problemId, true)"
+            onclick="makeSelection('<%=choice.id%>', true)"
             <%}%>
             >
             <label class="radio">
@@ -369,6 +369,8 @@
             userdata = Sun.getuserdata('problem',problemId)
             activity_type = activity.get('type')
             var completed = (userdata.current == 'EOF')
+            countHelper = 0
+            counter = 0
             for(var i =0 ; i < target.get("choices").length; i++) {
             var choice = target.get("choices")[i]
             var shouldCheck = ($.inArray(choice.id, userdata.checked)>=0)
@@ -378,7 +380,7 @@
                  class="pcontainer palette palette-clouds
                  <% if(shouldCheck){%>odd<%}else{%>even<%}%>"
             <% if(!completed){%>
-            onclick="makeSelection('<%=choice.id%>', problemId, false)"
+            onclick="makeSelection('<%=choice.id%>', false)"
             <%}%>
             >
             <label class="checkbox">
@@ -420,7 +422,7 @@
             if(userdata.current == 'EOF') { %>
             <a id="next-question" class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
             <% }else if(userdata.current == undefined){ %>
-            <a id="submit_answer" class="btn btn-large  btn-primary disabled">提交答案</a>
+            <a id="submit_answer" class="btn btn-large btn-primary disabled">提交答案</a>
             <% } %>
             <% } else { %>
             <div>
@@ -456,7 +458,7 @@
     <div class="row">
         <div class="span10 controls" style="margin-left:0px">
             <input type="text" class="" id="answer" style="width:100%;margin-top:5px;height:30px"
-                   placeholder="<%if(completed){%><%=userdata['answer']%><%}else{%>填写答案<%}%>" onkeyup="activeSubmitBtn(problemId)">
+                   placeholder="<%if(completed){%><%=userdata['answer']%><%}else{%>填写答案<%}%>" onfocus = "activeSubmitBtn(judgeContent)">
         </div>
 
         <div class="">
@@ -464,7 +466,7 @@
             <% if(completed) { %>
             <a class="span2 btn btn-large" style="margin-left: 20px; width: 110px; padding: 13px 19px;" href="#activity/<%=target.get('activity_id')%>">继续</a>
             <% }else{ %>
-            <a id="submit_answer" class="span2 btn btn-large btn-primary disabled" style="margin-left:20px">提交答案</a>
+            <a id="submit_answer" class="span2 btn btn-large btn-primary disabled" style="margin-left:20px" >提交答案</a>
             <% } %>
             <% } else { %>
             <a class="span2 btn btn-large" href="#activity/<%=target.get('activity_id')%>" style="margin-left: 20px; width: 110px; padding: 13px 19px;">继续</a>
