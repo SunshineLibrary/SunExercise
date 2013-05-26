@@ -13,10 +13,16 @@ jQuery(function () {
                 Sun.fetch("stage", {id: section.get("stage_id")}, function (stage) {
                     console.log("checkin stage," + JSON.stringify(stage))
                     var userdata = Sun.getuserdata("stage", stage.get("id"))
-                    userdata["current"] = id
+                    userdata["current"] = section.get('id')
                     Sun.setuserdata("stage", stage.get("id"), userdata)
                 })
+                var userdata = Sun.getuserdata("section", section.get("id"))
+                userdata["current"] = activity.get('id')
+                Sun.setuserdata("section", section.get("id"), userdata)
             })
+            /*var userdata = Sun.getuserdata("activity", activity.get("id"))
+            userdata["current"] = 'undefined'
+            Sun.setuserdata("activity", activity.get("id"), userdata)*/
         })
     }
 

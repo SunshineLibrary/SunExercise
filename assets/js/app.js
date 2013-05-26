@@ -130,6 +130,7 @@ jQuery(function () {
                     reloadPage()
                 })
             })
+
             app_router.on('route:stage', function (id) {
                 Sun.fetch("stage", {id: id}, function (stage) {
                     var userdata = Sun.getuserdata("stage", id)
@@ -180,10 +181,10 @@ jQuery(function () {
                     }
                 })
             })
+
             app_router.on('route:section', function (id) {
                 Sun.fetch("section", {id: id}, function (section) {
                     currentMaterial = "section"
-
                     var userdata = Sun.getuserdata("section", id)
                     var activities = section.get("activities").models
                     if (currentMode == MODE.NORMAL) {
@@ -191,7 +192,7 @@ jQuery(function () {
                             console.log('empty section,'+id)
                             Sun.setcomplete('section', id)
                             section.complete(null, function () {
-                                Log.e("no activities in this section")
+                                //console.log('no activities in this section')
                                 app_router.navigate("stage/" + section.get("stage_id"), {trigger: true, replace: true})
                             })
                         }
@@ -224,6 +225,7 @@ jQuery(function () {
                     }
                 })
             })
+
             app_router.on('route:activity', function (id) {
                 Log.i("activity " + id)
                 Sun.fetch("activity", {id: id}, function (activity) {
@@ -292,6 +294,7 @@ jQuery(function () {
                     }
                 )
             })
+
             app_router.on('route:problem', function (id) {
                 loadProblem(id)
             })
@@ -516,7 +519,7 @@ jQuery(function () {
         }
 
         judgeChoice = function(){
-             if (counter<=0) {
+             if (counter <= 0) {
                 deactiveSubmitBtn()
              }else{
                 grading(problemId)

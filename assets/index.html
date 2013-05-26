@@ -28,12 +28,14 @@
 <div class="navbar navbar-inverse navbar-fixed-top">
     <div class="navbar-inner">
         <div class="nav-collapse collapse">
-            <div  id="header">
-                <div style="width:48px; height:56px; float:left"><img src="img/SunExercise_Logo.png" style="width:auto; height:auto; border:none; box-shadow:none; margin-left:20px; margin-top:14px;"/></div>
+            <div id="header">
+                <div style="width:48px; height:56px; float:left"><img src="img/SunExercise_Logo.png"
+                                                                      style="width:auto; height:auto; border:none; box-shadow:none; margin-left:20px; margin-top:14px;"/>
+                </div>
                 <a class="brand">阳光提高班</a>
                 <ul class="nav pull-right">
                     <li class="refreshZone">
-                        <img class="icon icon-2x" src="img/btn_main_refresh.png" onclick="Interfaces.sync()" />
+                        <img class="icon icon-2x" src="img/btn_main_refresh.png" onclick="Interfaces.sync()"/>
                     </li>
                 </ul>
             </div>
@@ -98,6 +100,8 @@
                         <img class="icon icon-2x" src="img/btn_main_refresh.png" onclick="Interfaces.sync()" />
                     </li>
                 </ul>
+
+
 </script>
 
 <script type="text/template" id="th_lesson">
@@ -109,6 +113,8 @@
                         <a style="font-size:20px"><%= target.get('name')%></a>
                     </li>
                 </ul>
+
+
 </script>
 
 <script type="text/template" id="th_problem">
@@ -148,10 +154,14 @@
         }
         %>
     </div>
+
+
 </script>
 
 <script type="text/template" id="th_summary">
     summary
+
+
 </script>
 
 <script type="text/template" id="tc_subject">
@@ -222,6 +232,8 @@
         <% }) %>
     </div>
     <% }) %>
+
+
 </script>
 
 <!-- Stages -->
@@ -235,17 +247,19 @@
         var imgPath = ""
         var status = StageHelper.get_status(stage)
         if(!meetUnlocked){
-        if(status!='EOF'){
-        circleClassNum = 1
-        imgPath = '0'+type
-        meetUnlocked = true
-        }else{
-        circleClassNum = 0
-        imgPath = type
+            if(status!='EOF'){
+                circleClassNum = 1
+                imgPath = '0'+type
+                meetUnlocked = true
+            }
+            else{
+                circleClassNum = 0
+                imgPath = type
+            }
         }
-        }else{
-        circleClassNum = 2
-        imgPath = '00'+type
+        else{
+            circleClassNum = 2
+            imgPath = '00'+type
         }
         imgPath= './img/'+imgPath+'.png'
         Log.i('stage,'+type+","+circleClassNum)
@@ -266,6 +280,7 @@
         </div>
         <% }) %>
     </div>
+
 </script>
 
 <script type="text/template" id="tc_problem_singlechoice">
@@ -347,6 +362,8 @@
         </div>
     </div>
     </div>
+
+
 </script>
 
 
@@ -432,6 +449,8 @@
         </div>
     </div>
     </div>
+
+
 </script>
 
 
@@ -491,6 +510,8 @@
         <%}
         %>
     </div>
+
+
 
 </script>
 
@@ -580,6 +601,7 @@
             </div>
         </div>
     </div>
+
 </script>
 
 <script type="text/template" id="tc_video">
@@ -614,6 +636,8 @@
             </button>
         </div>
     </div>
+
+
 </script>
 
 <div id="myModal" class="modal hide fade">
