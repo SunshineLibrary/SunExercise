@@ -26,7 +26,6 @@ jQuery(function () {
         ANSWERS[i] = String.fromCharCode("A".charCodeAt(0) + i)
     }
 
-
     /**
      * Subject
      */
@@ -124,6 +123,7 @@ jQuery(function () {
                         var userdata = Sun.getuserdata('stage', this.get('id'))
                         userdata['current'] = section.get('id')
                         Sun.setuserdata('stage', this.get('id'), userdata)
+                        console.log('just set the userdata of this stage')
                         if (callback != undefined) {
                             eval(callback)(options)
                         }
@@ -134,6 +134,7 @@ jQuery(function () {
         }
     })
     Stages = Backbone.Collection.extend({model: Stage})
+
 
     /**
      * Section
@@ -172,7 +173,7 @@ jQuery(function () {
             if (this.isComplete()) {
                 Sun.setcomplete('section', this.get('id'))
                 Sun.fetch("stage", {id: this.get('stage_id')}, function (stage) {
-//                    console.log("DEBUG," + JSON.stringify(options) + "," + JSON.stringify(stage))
+                    console.log("DEBUG," + JSON.stringify(options) + "," + JSON.stringify(stage))
                     stage.complete(options, function () {
                         if (callback != undefined) {
                             eval(callback)(options)
@@ -227,8 +228,9 @@ jQuery(function () {
                 // activity with problems
                 // If all problem has completed, complete this activity
                 if (this.isComplete()) {
-//                    console.log("completeACTIVITY," + this.get('id'))
+//                   console.log("completeACTIVITY," + this.get('id'))
                     Sun.setcomplete('activity', this.get('id'))
+
                     completed = true
                 }
             } else if (type == 2) {
@@ -238,6 +240,7 @@ jQuery(function () {
             }
             if (completed) {
                 Sun.fetch('section', {id: this.get('parent_id')}, function (section) {
+                    console.log("DEBUG," + JSON.stringify(options) + "," + JSON.stringify(section))
                     section.complete(options, callback)
                 })
             }
