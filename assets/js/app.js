@@ -67,7 +67,7 @@ jQuery(function () {
 
         function reloadPage() {
             currentPageView.render()
-            hideWaiting()
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "mathcontent"]);
         }
 
 
@@ -75,7 +75,6 @@ jQuery(function () {
             app_router.on('route:subjects', function () {
                 Sun.fetch("subjects", null, function (subjects) {
                     currentMaterial = "subjects"
-//                    Log.i("subjects," + JSON.stringify(subjects))
                     for (var i = 0; i < subjects.length; i++) {
                         var s = subjects.at(i)
                         Sun.fetch("subject", {id: s.get('id')}, function (subject) {
@@ -142,7 +141,7 @@ jQuery(function () {
                     if (!completed) {
                         currentMode = MODE.NORMAL
                         if (sections.length == 0) {
-                            console.log('empty stage,'+id)
+                            console.log('empty stage,' + id)
                             Sun.setcomplete('stage', id)
                         }
 
@@ -189,7 +188,7 @@ jQuery(function () {
                     var activities = section.get("activities").models
                     if (currentMode == MODE.NORMAL) {
                         if (activities.length == 0) {
-                            console.log('empty section,'+id)
+                            console.log('empty section,' + id)
                             Sun.setcomplete('section', id)
                             section.complete(null, function () {
                                 //console.log('no activities in this section')
@@ -235,7 +234,6 @@ jQuery(function () {
                             if (activity.get("type") == 4 || activity.get("type") == 7) {
                                 var completed = true
                                 for (var i = 0; i < activity.get("problems").length; i++) {
-//                                    Log.i("problems:" + JSON.stringify(activity.get("problems")))
                                     var problem = activity.get("problems").models[i]
                                     if (!problem.isComplete()) {
                                         app_router.navigate("problem/" + problem.id, {trigger: true, replace: true})
@@ -250,7 +248,6 @@ jQuery(function () {
                                 }
                             } else if (activity.get("type") == 2) {
                                 var media = Sun.getmedia(activity.get('media_id'))
-//                                Log.i("video activity type 2," + JSON.stringify(media))
 
                                 Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
                                     Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
@@ -265,7 +262,6 @@ jQuery(function () {
                                 })
                             } else {
                                 // TODO other acitivities, like video
-//                                Log.i("unsupported activity," + JSON.stringify(activity))
                                 Log.i("unsupported activity")
                             }
                         } else {
@@ -285,7 +281,6 @@ jQuery(function () {
                                     app_router.navigate("section/" + activity.get('section_id'), {trigger: true, replace: true})
                                 }
                             } else if (activity.get("type") == 2) {
-//                                Log.i("video activity type 2," + JSON.stringify(activity))
                                 var media = Sun.getmedia(activity.get('media_id'))
                                 setBody(new VideoView({model: activity, media: media}))
                                 reloadPage()
@@ -302,7 +297,6 @@ jQuery(function () {
                 Sun.fetch("activity", {id: aid}, function (activity) {
                     Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
                         Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
-//                            Log.i("summary for activity," + JSON.stringify(activity))
                             currentMaterial = "summary"
 
                             var correctCount = 0
@@ -310,7 +304,6 @@ jQuery(function () {
                                 if (problem.get('userdata')['correct'] == true) {
                                     correctCount++
                                 }
-//                                Log.i("p," + number + "," + JSON.stringify(problem.get("userdata")))
                             })
 
                             setHeader(new SummaryHeaderView({
@@ -476,7 +469,7 @@ jQuery(function () {
             })
         }
 
-        makeSelection = function (id,excluded) {
+        makeSelection = function (id, excluded) {
             Log.i('make selection,' + id + "," + excluded)
             if (excluded) {
                 $('.pcontainer').each(function (i, p) {
@@ -498,11 +491,11 @@ jQuery(function () {
                     counter = countHelper - 1
                 }
             }
-            activeSubmitBtn(function(){
-                if (excluded){
+            activeSubmitBtn(function () {
+                if (excluded) {
                     grading(problemId)
                 }
-                else{
+                else {
                     judgeChoice()
                 }
             })
@@ -510,27 +503,27 @@ jQuery(function () {
 
         activeSubmitBtn = function (judge) {
             $('#submit_answer').removeClass('disabled')
-            $('#submit_answer').attr('onclick', '').bind('click',judge)
+            $('#submit_answer').attr('onclick', '').bind('click', judge)
         }
 
-        deactiveSubmitBtn = function(){
+        deactiveSubmitBtn = function () {
             $('#submit_answer').addClass('disabled')
             $('#submit_answer').attr('onclick', '').unbind('click')
         }
 
-        judgeChoice = function(){
-             if (counter <= 0) {
+        judgeChoice = function () {
+            if (counter <= 0) {
                 deactiveSubmitBtn()
-             }else{
+            } else {
                 grading(problemId)
-             }
+            }
         }
 
         judgeContent = function () {
             var answer = $('#answer').val()
-            if(answer!=""){
+            if (answer != "") {
                 grading(problemId)
-            }else{
+            } else {
                 deactiveSubmitBtn()
             }
         }
