@@ -235,7 +235,7 @@ jQuery(function () {
                             if (activity.get("type") == 4 || activity.get("type") == 7) {
                                 var completed = true
                                 for (var i = 0; i < activity.get("problems").length; i++) {
-//                                    Log.i("problems:" + JSON.stringify(activity.get("problems")))
+                                    console.log("problems:" + JSON.stringify(activity.get("problems")))
                                     var problem = activity.get("problems").models[i]
                                     if (!problem.isComplete()) {
                                         app_router.navigate("problem/" + problem.id, {trigger: true, replace: true})
@@ -441,9 +441,10 @@ jQuery(function () {
                             correct: completeOk,
                             checked: checked
                         }, function () {
-//                            console.log("[REQUESTGENCOST]" + (new Date().getTime() - start))
+//                          console.log("[REQUESTGENCOST]" + (new Date().getTime() - start))
                             var activity_type = activity.get('type')
-                            if (activity_type == '7') {
+                            if (activity_type == 7) {
+                                counter = 0
                                 app_router.navigate("activity/" + activity.id, {trigger: true, replace: true})
                             } else {
                                 loadProblem(problem.get('id'))
@@ -462,6 +463,7 @@ jQuery(function () {
                         }, function () {
                             var activity_type = activity.get('type')
                             if (activity_type == '7') {
+                                $('#answer').val("")
                                 app_router.navigate("activity/" + activity.id, {trigger: true, replace: true})
                             } else {
                                 loadProblem(problem.get('id'))
@@ -477,7 +479,6 @@ jQuery(function () {
         }
 
         makeSelection = function (id,excluded) {
-            Log.i('make selection,' + id + "," + excluded)
             if (excluded) {
                 $('.pcontainer').each(function (i, p) {
                     $(p).removeClass('odd')
@@ -488,6 +489,7 @@ jQuery(function () {
             if (excluded) {
                 choice.prop('checked', true)
                 $('#pcontainer_' + id).addClass('odd')
+                counter = 1
             } else {
                 choice.prop('checked', !checked)
                 if (!checked) {
@@ -499,26 +501,21 @@ jQuery(function () {
                 }
             }
             activeSubmitBtn(function(){
-                if (excluded){
-                    grading(problemId)
-                }
-                else{
-                    judgeChoice()
-                }
+                    judgeChoiceNum()
             })
         }
 
         activeSubmitBtn = function (judge) {
             $('#submit_answer').removeClass('disabled')
             $('#submit_answer').attr('onclick', '').bind('click',judge)
-        }
+}
 
         deactiveSubmitBtn = function(){
             $('#submit_answer').addClass('disabled')
             $('#submit_answer').attr('onclick', '').unbind('click')
         }
 
-        judgeChoice = function(){
+        judgeChoiceNum = function(){
              if (counter <= 0) {
                 deactiveSubmitBtn()
              }else{
@@ -528,10 +525,10 @@ jQuery(function () {
 
         judgeContent = function () {
             var answer = $('#answer').val()
-            if(answer!=""){
-                grading(problemId)
-            }else{
+            if(answer == ""){
                 deactiveSubmitBtn()
+            }else{
+                grading(problemId)
             }
         }
 

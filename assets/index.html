@@ -301,6 +301,7 @@
             problemId = target.get('id')
             userdata = Sun.getuserdata('problem',problemId)
             var completed = (userdata.current == 'EOF')
+            counter = 0
             for(var i =0 ; i < target.get("choices").length; i++) {
             var choice = target.get("choices")[i]
             var shouldCheck = ($.inArray(choice.id, userdata.checked)>=0)
