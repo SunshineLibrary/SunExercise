@@ -173,7 +173,6 @@ jQuery(function () {
             if (this.isComplete()) {
                 Sun.setcomplete('section', this.get('id'))
                 Sun.fetch("stage", {id: this.get('stage_id')}, function (stage) {
-                    console.log("DEBUG," + JSON.stringify(options) + "," + JSON.stringify(stage))
                     stage.complete(options, function () {
                         if (callback != undefined) {
                             eval(callback)(options)
@@ -240,7 +239,6 @@ jQuery(function () {
             }
             if (completed) {
                 Sun.fetch('section', {id: this.get('parent_id')}, function (section) {
-                    console.log("DEBUG," + JSON.stringify(options) + "," + JSON.stringify(section))
                     section.complete(options, callback)
                 })
             }
@@ -300,7 +298,5 @@ jQuery(function () {
     Medias = Backbone.Collection.extend({model: Media})
 
     UserData = Backbone.Model.extend({})
-
-    Error = Backbone.Model.extend({})
 
 })

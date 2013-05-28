@@ -3,10 +3,9 @@
 <head>
     <title>阳光提高班</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <script src="js/libs/jquery/jquery-1.9.1.js"></script>
+    <script src="js/libs/jquery/jquery-1.9.1.min.js"></script>
     <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
     <link href="css/font-awesome.min.css" rel="stylesheet">
-    <script src="js/libs/logger/Logger.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
 
     <link href="css/app.css" rel="stylesheet">
@@ -15,7 +14,14 @@
     <script src="js/libs/underscore/underscore.js"></script>
     <script src="js/libs/backbone/backbone.js"></script>
 
-    <script src="js/sampledata.js"></script>
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+            config: ["MMLorHTML.js"],
+            jax: ["input/AsciiMath","output/HTML-CSS"],
+            extensions: ["asciimath2jax.js"],
+        });
+    </script>
+    <script src="js/libs/mathjax/MathJax.js"></script>
 
     <script src="js/utils.js"></script>
     <script src="js/views.js"></script>
@@ -62,57 +68,61 @@
 
 <!--Many templates-->
 <script type="text/template" id="th_subjects">
-           <div style="width:48px; height:56px; float:left"><img src="img/SunExercise_Logo.png" style="width:auto; height:auto; border:none; box-shadow:none; margin-left:20px; margin-top:14px;"/></div>
-            <a class="brand">阳光提高班</a>
-                <ul class="nav">
-                    <%
-                    for(var i=0 ; i < target.length ; i++){
-                    var subject = target.at(i);
-                    %>
+    <div style="width:48px; height:56px; float:left"><img src="img/SunExercise_Logo.png"
+                                                          style="width:auto; height:auto; border:none; box-shadow:none; margin-left:20px; margin-top:14px;"/>
+    </div>
+    <a class="brand">阳光提高班</a>
+    <ul class="nav">
+        <%
+        for(var i=0 ; i < target.length ; i++){
+        var subject = target.at(i);
+        %>
 
-                    <%if($.inArray(subject.get('id'),target.showSubjects)>=0){ 
-                        var lessonArray = new Array()
-                        var lessonCount = undefined
-                        Sun.fetch('subject', {id: subject.get('id')}, function (l) {
-                            lessonArray = l.get('lessons')
-                            lessonCount = lessonArray.length
-                    })
-                    
-                    for( var n=0,p=0; n<lessonCount; n++ ){
-                        userdata = Sun.getuserdata('lesson',lessonArray.at(n).get('id'))
-                        var newstatus = userdata['entered']
-                        if(newstatus==undefined){
-                            ++p;
-                        }
-                    }%>
+        <%if($.inArray(subject.get('id'),target.showSubjects)>=0){
+        var lessonArray = new Array()
+        var lessonCount = undefined
+        Sun.fetch('subject', {id: subject.get('id')}, function (l) {
+        lessonArray = l.get('lessons')
+        lessonCount = lessonArray.length
+        })
 
-                    <li class="<% if(currentSubjectId == subject.get('id')){ %>active<% } %>">
-                        <a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>
-                        <!--<a href="javascript:void(0)" onclick="load.rmDialog(load.addDialog('<%=subject.get('id')%>'))"><%= subject.get('name')%></a>-->
-                        <div id="triangle" style="display:<% if(currentSubjectId != subject.get('id')){ %>none<% } %>"></div>
-                        <div id="badge" style="display:<%if(p<=0){%>none<%}%>"><%=p%></div>
-                    </li>
-                    <% }%>
-                <%}%>
-                </ul>
-                <ul class="nav pull-right">
-                    <li class="refreshZone">
-                        <img class="icon icon-2x" src="img/btn_main_refresh.png" onclick="Interfaces.sync()" />
-                    </li>
-                </ul>
+        for( var n=0,p=0; n
+        <lessonCount
+        ; n++ ){
+        userdata = Sun.getuserdata('lesson',lessonArray.at(n).get('id'))
+        var newstatus = userdata['entered']
+        if(newstatus==undefined){
+        ++p;
+        }
+        }%>
+
+        <li class="<% if(currentSubjectId == subject.get('id')){ %>active<% } %>">
+            <a href="#subject/<%=subject.get('id')%>"><%= subject.get('name') %></a>
+            <!--<a href="javascript:void(0)" onclick="load.rmDialog(load.addDialog('<%=subject.get('id')%>'))"><%= subject.get('name')%></a>-->
+            <div id="triangle" style="display:<% if(currentSubjectId != subject.get('id')){ %>none<% } %>"></div>
+            <div id="badge" style="display:<%if(p<=0){%>none<%}%>"><%=p%></div>
+        </li>
+        <% }%>
+        <%}%>
+    </ul>
+    <ul class="nav pull-right">
+        <li class="refreshZone">
+            <img class="icon icon-2x" src="img/btn_main_refresh.png" onclick="Interfaces.sync()"/>
+        </li>
+    </ul>
 
 
 </script>
 
 <script type="text/template" id="th_lesson">
-                <ul class="nav">
-                    <li>
-                        <img onclick="Interfaces.backpage()" src="img/back.png"/>
-                    </li>
-                    <li>
-                        <a style="font-size:20px"><%= target.get('name')%></a>
-                    </li>
-                </ul>
+    <ul class="nav">
+        <li>
+            <img onclick="Interfaces.backpage()" src="img/back.png"/>
+        </li>
+        <li>
+            <a style="font-size:20px"><%= target.get('name')%></a>
+        </li>
+    </ul>
 
 
 </script>
@@ -168,6 +178,7 @@
     <% _.each(target.get('monthLessons'),function(monthLesson){ %>
 
     <h2><%=monthLesson[0].get('month')%>月</h2>
+
     <div class="row" id="lesson_row">
         <%
         _.each(monthLesson,function(lesson){
@@ -186,32 +197,36 @@
                     <h4><%=lesson.get("name")%></h4>
 
                     <div class="pull-right lesson_label">
-                        <img class="<%=lesson.id%>" src="img/label_new.png" style="display:<%if(userdata['entered']!=undefined){%>none<%}%>"/>
-                        <p class="<%=lesson.id%>" style="display:<%if(downloaded !='1' || userdata['entered']==undefined){%>none<%}%>"><%=lesson.get("day_week")%></p>
+                        <img class="<%=lesson.id%>" src="img/label_new.png"
+                             style="display:<%if(userdata['entered']!=undefined){%>none<%}%>"/>
+
+                        <p class="<%=lesson.id%>"
+                           style="display:<%if(downloaded !='1' || userdata['entered']==undefined){%>none<%}%>">
+                            <%=lesson.get("day_week")%></p>
                     </div>
                 </div>
-               
-               <div class="row row-bottom">
 
-                <div id="lessonbox_download_<%=lesson.id%>" class="btn btn-large <%=lesson.id%>"
-                     style="display:<%if(downloaded=='1'){%>none<%}%>"
-                     onclick="Interfaces.download('<%=lesson.id%>')">下载
-                </div>
-                
-                <div id="lessonbox_download_progress_<%=lesson.id%>"
-                     style="width:90%;display:none"
-                     class="row row-bottom-content progress">
-                    <div class="bar" style="width: 0%;"></div>
-                </div>
+                <div class="row row-bottom">
 
-                <div id="lessonbox_progress_<%=lesson.id%>" class="row row-bottom-content"
+                    <div id="lessonbox_download_<%=lesson.id%>" class="btn btn-large <%=lesson.id%>"
+                         style="display:<%if(downloaded=='1'){%>none<%}%>"
+                         onclick="Interfaces.download('<%=lesson.id%>')">下载
+                    </div>
+
+                    <div id="lessonbox_download_progress_<%=lesson.id%>"
+                         style="width:90%;display:none"
+                         class="row row-bottom-content progress">
+                        <div class="bar" style="width: 0%;"></div>
+                    </div>
+
+                    <div id="lessonbox_progress_<%=lesson.id%>" class="row row-bottom-content"
                          style="display:<%if( downloaded!='1' || userdata['entered']==undefined){%>none<%}%>">
                         <%
                         var stageCount = undefined
                         var stageArray = new Array()
                         Sun.fetch('lesson', {id: lesson.get('id')}, function (s) {
-                            stageCount = s.get('stages').length
-                            stageArray = s.get('stages')
+                        stageCount = s.get('stages').length
+                        stageArray = s.get('stages')
 
                         var stageWidth = 100/stageCount
                         for(var i=0;i < stageCount; i++){
@@ -219,11 +234,14 @@
                         %>
 
                         <div class="lessonProgressBar" style="width:<%=stageWidth%>%">
-                            <div class="rectangle" style="display:block; background-color:<%if(stageUserData['current']=='EOF'){%>#77BB55<%}%>"></div>
-                            <div class="ball" style="display:block"><img <%if(stageUserData['current']=='EOF'){%>src="img/StageIcon_<%=i+1%>_Done.png"<%}else{%>src="img/StageIcon_<%=i+1%>_Grey.png"<%}%>/></div>
+                            <div class="rectangle"
+                                 style="display:block; background-color:<%if(stageUserData['current']=='EOF'){%>#77BB55<%}%>"></div>
+                            <div class="ball" style="display:block"><img
+                                <%if(stageUserData['current']=='EOF'){%>src="img/StageIcon_<%=i+1%>_Done.png"<%}else{%>src="img/StageIcon_<%=i+1%>_Grey.png"<%}%>/>
+                            </div>
                         </div>
                         <%}
-                    })%>
+                        })%>
 
                     </div>
                 </div>
@@ -247,19 +265,19 @@
         var imgPath = ""
         var status = StageHelper.get_status(stage)
         if(!meetUnlocked){
-            if(status!='EOF'){
-                circleClassNum = 1
-                imgPath = '0'+type
-                meetUnlocked = true
-            }
-            else{
-                circleClassNum = 0
-                imgPath = type
-            }
+        if(status!='EOF'){
+        circleClassNum = 1
+        imgPath = '0'+type
+        meetUnlocked = true
         }
         else{
-            circleClassNum = 2
-            imgPath = '00'+type
+        circleClassNum = 0
+        imgPath = type
+        }
+        }
+        else{
+        circleClassNum = 2
+        imgPath = '00'+type
         }
         imgPath= './img/'+imgPath+'.png'
         Log.i('stage,'+type+","+circleClassNum)
@@ -273,7 +291,7 @@
             <div onclick="viewStage('<%=stage.get('id')%>')"><img src="<%=imgPath%>" alt="circle background"></div>
             <% } else {%>
             <a <%if(circleClassNum == 1){%>href="#stage/<%=stage.id%>"<%}%> >
-                <img src="<%=imgPath%>" alt="circle background">
+            <img src="<%=imgPath%>" alt="circle background">
             </a>
             <% } %>
             <p><%=index+1%></p>
@@ -287,7 +305,7 @@
     <%
     activity_type = activity.get('type')
     %>
-    <div class="row" style="font-size: 18px">
+    <div id="mathcontent" class="row" style="font-size: 18px">
         <h3><% if(activity_type=='7'){%>诊断题<%}else if(activity_type=='4'){%>练习题<%}%>
             <small class="quest-type">（单选题）</small>
         </h3>
@@ -372,7 +390,7 @@
     <%
     activity_type = activity.get('type')
     %>
-    <div class="row" style="font-size: 18px">
+    <div class="row" id="mathcontent" style="font-size: 18px">
         <h3><% if(activity_type=='7'){%>诊断题<%}else if(activity_type=='4'){%>练习题<%}%>
             <small class="quest-type">（多选题）</small>
         </h3>
@@ -459,38 +477,43 @@
     <%
     activity_type = activity.get('type')
     %>
-    <div class="row" style="font-size: 18px">
-        <h3><% if(activity_type=='7'){%>诊断题<%}else if(activity_type=='4'){%>练习题<%}%>
-            <small class="quest-type">（填空题）</small>
-        </h3>
+    <div id="mathcontent">
+        <div class="row" style="font-size: 18px">
+            <h3><% if(activity_type=='7'){%>诊断题<%}else if(activity_type=='4'){%>练习题<%}%>
+                <small class="quest-type">（填空题）</small>
+            </h3>
 
-        <p>
-            <%
-            problemId = target.get('id')
-            userdata = Sun.getuserdata('problem',problemId)
-            var completed = (userdata.current == 'EOF')
-            activity_type = activity.get('type')
-            %>
-            <%=target.get("body")%>
-        </p>
-    </div>
-
-    <div class="row">
-        <div class="span10 controls" style="margin-left:0px">
-            <input type="text" class="" id="answer" style="width:100%;margin-top:5px;height:30px"
-                   placeholder="<%if(completed){%><%=userdata['answer']%><%}else{%>填写答案<%}%>" onfocus = "activeSubmitBtn(judgeContent)">
+            <p>
+                <%
+                problemId = target.get('id')
+                userdata = Sun.getuserdata('problem',problemId)
+                var completed = (userdata.current == 'EOF')
+                activity_type = activity.get('type')
+                %>
+                <%=target.get("body")%>
+            </p>
         </div>
 
-        <div class="">
-            <% if(currentMode != MODE.VIEW_ONLY) { %>
-            <% if(completed) { %>
-            <a class="span2 btn btn-large" style="margin-left: 20px; width: 110px; padding: 13px 19px;" href="#activity/<%=target.get('activity_id')%>">继续</a>
-            <% }else{ %>
-            <a id="submit_answer" class="span2 btn btn-large btn-primary disabled" style="margin-left:20px" >提交答案</a>
-            <% } %>
-            <% } else { %>
-            <a class="span2 btn btn-large" href="#activity/<%=target.get('activity_id')%>" style="margin-left: 20px; width: 110px; padding: 13px 19px;">继续</a>
-            <% } %>
+        <div class="row">
+            <div class="span10 controls" style="margin-left:0px">
+                <input type="text" class="" id="answer" style="width:100%;margin-top:5px;height:30px"
+                       placeholder="<%if(completed){%><%=userdata['answer']%><%}else{%>填写答案<%}%>"
+                       onfocus="activeSubmitBtn(judgeContent)">
+            </div>
+
+            <div class="">
+                <% if(currentMode != MODE.VIEW_ONLY) { %>
+                <% if(completed) { %>
+                <a class="span2 btn btn-large" style="margin-left: 20px; width: 110px; padding: 13px 19px;"
+                   href="#activity/<%=target.get('activity_id')%>">继续</a>
+                <% }else{ %>
+                <a id="submit_answer" class="span2 btn btn-large btn-primary disabled" style="margin-left:20px">提交答案</a>
+                <% } %>
+                <% } else { %>
+                <a class="span2 btn btn-large" href="#activity/<%=target.get('activity_id')%>"
+                   style="margin-left: 20px; width: 110px; padding: 13px 19px;">继续</a>
+                <% } %>
+            </div>
         </div>
     </div>
 
@@ -513,7 +536,6 @@
     </div>
 
 
-
 </script>
 
 <script type="text/template" id="tc_stages"></script>
@@ -529,7 +551,6 @@
         for(var i =0;i < target.get('problems').length;i++){
         var problem= target.get('problems').models[i]
         var userdata= problem.get('userdata')
-        Log.i('problem userdata:'+JSON.stringify(userdata))
         var correct= userdata['correct']
         if(correct==true){
         n_correct++
@@ -608,10 +629,9 @@
 <script type="text/template" id="tc_video">
 
     <%isViewed=Sun.isviewed('media',target.get("id"))%>
-    
+
     <%
     id = target.get("id")
-    Log.i('media:'+JSON.stringify(media))
     var mediaPath = "file://"+media.get('path')
     %>
     <div style="text-align:center">
