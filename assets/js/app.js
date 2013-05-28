@@ -434,9 +434,10 @@ jQuery(function () {
                             correct: completeOk,
                             checked: checked
                         }, function () {
-//                            console.log("[REQUESTGENCOST]" + (new Date().getTime() - start))
+//                          console.log("[REQUESTGENCOST]" + (new Date().getTime() - start))
                             var activity_type = activity.get('type')
-                            if (activity_type == '7') {
+                            if (activity_type == 7) {
+                                counter = 0
                                 app_router.navigate("activity/" + activity.id, {trigger: true, replace: true})
                             } else {
                                 loadProblem(problem.get('id'))
@@ -455,6 +456,7 @@ jQuery(function () {
                         }, function () {
                             var activity_type = activity.get('type')
                             if (activity_type == '7') {
+                                $('#answer').val("")
                                 app_router.navigate("activity/" + activity.id, {trigger: true, replace: true})
                             } else {
                                 loadProblem(problem.get('id'))
@@ -469,8 +471,7 @@ jQuery(function () {
             })
         }
 
-        makeSelection = function (id, excluded) {
-            Log.i('make selection,' + id + "," + excluded)
+        makeSelection = function (id,excluded) {
             if (excluded) {
                 $('.pcontainer').each(function (i, p) {
                     $(p).removeClass('odd')
@@ -481,6 +482,7 @@ jQuery(function () {
             if (excluded) {
                 choice.prop('checked', true)
                 $('#pcontainer_' + id).addClass('odd')
+                counter = 1
             } else {
                 choice.prop('checked', !checked)
                 if (!checked) {
@@ -491,13 +493,8 @@ jQuery(function () {
                     counter = countHelper - 1
                 }
             }
-            activeSubmitBtn(function () {
-                if (excluded) {
-                    grading(problemId)
-                }
-                else {
-                    judgeChoice()
-                }
+            activeSubmitBtn(function(){
+                judgeChoiceNum()
             })
         }
 
@@ -511,7 +508,7 @@ jQuery(function () {
             $('#submit_answer').attr('onclick', '').unbind('click')
         }
 
-        judgeChoice = function () {
+        judgeChoiceNum = function(){
             if (counter <= 0) {
                 deactiveSubmitBtn()
             } else {
@@ -521,10 +518,10 @@ jQuery(function () {
 
         judgeContent = function () {
             var answer = $('#answer').val()
-            if (answer != "") {
-                grading(problemId)
-            } else {
+            if(answer == ""){
                 deactiveSubmitBtn()
+            }else{
+                grading(problemId)
             }
         }
 

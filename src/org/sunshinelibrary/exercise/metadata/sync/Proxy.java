@@ -209,7 +209,6 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
             if (succeed) {
                 CheckAvailableOperation co = new CheckAvailableOperation();
                 co.addAll();
-                // 鎺ュ湪Json鏁版嵁澶勭悊瀹屾垚鍚庢墽琛岋紝鎵ц鍚庣洿鎺ラ�鐭ュ墠绔紝蹇呴』鍚屾鎵ц銆�
                 co.execute();
             }
             mObserver.onJsonParsed();
