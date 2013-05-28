@@ -114,6 +114,7 @@ public class MetadataContract extends Contract {
         public static final String _DISPLAY_TEXT = "display_text";
         public static final String _ANSWER = "answer";
         public static final String _USER_CHOICE = "user_choice";
+        public static final String _MEDIA_ID = Columns._MEDIA_ID;
 
         public static final Uri CONTENT_URI = AUTHORITY_URI.buildUpon().appendPath("problem_choices").build();
     }
