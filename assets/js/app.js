@@ -423,7 +423,7 @@ jQuery(function () {
                             if (userChecked == true) {
                                 checked.push(choice['id'])
                             }
-                            if (shouldCheck && !userChecked) {
+                            if (shouldCheck ^ userChecked) {
                                 completeOk = false
                             }
                         }
