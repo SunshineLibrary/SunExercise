@@ -127,7 +127,6 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     }
 
 
-    // 闁硅娲樺畷蹇旀交閺傛寧绀�梺娆惧櫙缁辨繃锛冮弽褍甯ラ梻鍛姌濡矂骞橀鐔告澒闁革綆鐓夌槐婵嬫倿鐠虹儤鍊甸柛鎺嬪�閺屽洭寮伴姘剨闁煎疇妫勯¨鎰交閺傛寧绀�柕鍡嫹
     public void onBackPressed() {
         Log.i(TAG, "in" + mWebView.inCustomView());
         if (mWebView.inCustomView()) {

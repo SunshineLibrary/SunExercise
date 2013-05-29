@@ -233,7 +233,6 @@ jQuery(function () {
         },
 
         setcomplete: function (type, id, options, callback) {
-//            console.log("set complete," + type + "," + id)
             userdata = Sun.getuserdata(type, id)
             userdata['current'] = "EOF"
             if (options != undefined) {
