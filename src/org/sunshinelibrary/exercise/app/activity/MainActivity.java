@@ -26,6 +26,8 @@ import org.sunshinelibrary.exercise.app.ui.HTML5WebView;
 import org.sunshinelibrary.exercise.metadata.TestCase;
 import org.sunshinelibrary.support.api.UserInfo;
 
+import java.io.File;
+
 
 public class MainActivity extends TopActivity implements AndroidUIInterface {
 
@@ -239,5 +241,24 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
 
     public void testVideo(View view) {
         mWebView.loadUrl("http://freebsd.csie.nctu.edu.tw/~freedom/html5/");
+    }
+
+    @Override
+    public void openAdobeReader(String path){
+        Intent intent = new Intent("android.intent.action.VIEW");
+        intent.addCategory("android.intent.category.DEFAULT");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        if (path == null) path = "";
+        Uri uri = Uri.fromFile(new File(path));
+        intent.setDataAndType(uri, "application/pdf");
+
+        try {
+            startActivity(intent);
+        } catch (Exception e) {
+           Toast.makeText(getApplicationContext(),
+                    getString(R.string.error_no_pdf_reader), Toast.LENGTH_SHORT).show();
+        } finally {
+        }
     }
 }

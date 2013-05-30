@@ -227,13 +227,12 @@ jQuery(function () {
                 // activity with problems
                 // If all problem has completed, complete this activity
                 if (this.isComplete()) {
-//                   console.log("completeACTIVITY," + this.get('id'))
+//                  console.log("completeACTIVITY," + this.get('id'))
                     Sun.setcomplete('activity', this.get('id'))
-
                     completed = true
                 }
-            } else if (type == 2) {
-                // video activity
+            } else if (type == 2 || type == 6) {
+                // video activity or pdf activity
                 Sun.setcomplete('activity', this.get('id'))
                 completed = true
             }

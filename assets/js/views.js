@@ -31,7 +31,7 @@ jQuery(function () {
             problem_sc: _.template($("#tc_problem_singlechoice").html()),
             problem_sf: _.template($("#tc_problem_singlefilling").html()),
             problem_mc: _.template($("#tc_problem_multichoice").html()),
-            video: _.template($("#tc_video").html())
+            multiMedia: _.template($("#tc_multiMedia").html())
         },
         Footer: {
             lesson: _.template($("#tf_lesson").html()),
@@ -177,8 +177,8 @@ jQuery(function () {
     /**
      * Activity
      */
-    VideoView = Backbone.View.extend({
-        template: Templates.Content.video,
+    MultiMediaView = Backbone.View.extend({
+        template: Templates.Content.multiMedia,
         media: undefined,
         render: function () {
             this.el = this.template({target: this.model, media: this.options['media']})
@@ -186,7 +186,7 @@ jQuery(function () {
         }
     })
 
-    VideoHeaderView = Backbone.View.extend({
+    MultiMediaHeaderView = Backbone.View.extend({
         template: Templates.Header.problem,
         render: function () {
             this.el = this.template({
