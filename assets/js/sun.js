@@ -387,7 +387,20 @@ jQuery(function () {
         onVideoComplete: function (id) {
             Log.i('video completed,' + id)
             $("#nextButton").removeAttr("disabled")
+        },
+
+        openAdobeReader: function (path, id) {
+            Sun.setcomplete('activity', id, null, function(){
+                $("#nextButton").removeAttr("disabled")
+                if (typeof android == "undefined") {
+//                    Log.i("[WEB]openAdobeReader")
+                } else {
+//                    Log.i("[ANDROID]openAdobeReader")
+                    android.openAdobeReader(path)
+                }
+            } )
         }
+
     }
 
     DEBUG = true
