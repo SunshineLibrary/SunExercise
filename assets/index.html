@@ -319,7 +319,6 @@
             problemId = target.get('id')
             userdata = Sun.getuserdata('problem',problemId)
             var completed = (userdata.current == 'EOF')
-            counter = 0
             for(var i =0 ; i < target.get("choices").length; i++) {
             var choice = target.get("choices")[i]
             var shouldCheck = ($.inArray(choice.id, userdata.checked)>=0)
@@ -405,8 +404,6 @@
             userdata = Sun.getuserdata('problem',problemId)
             activity_type = activity.get('type')
             var completed = (userdata.current == 'EOF')
-            countHelper = 0
-            counter = 0
             for(var i =0 ; i < target.get("choices").length; i++) {
             var choice = target.get("choices")[i]
             var shouldCheck = ($.inArray(choice.id, userdata.checked)>=0)
@@ -626,29 +623,46 @@
 
 </script>
 
-<script type="text/template" id="tc_video">
+<script type="text/template" id="tc_multiMedia">
 
     <%isViewed=Sun.isviewed('media',target.get("id"))%>
 
     <%
     id = target.get("id")
-    var mediaPath = "file://"+media.get('path')
+    type = target.get('type')
+    if(type ==2){
+        var videoPath = "file://"+media.get('path')
+    }else{
+        var pdfPath = media.get('path')
+    }
     %>
     <div style="text-align:center">
-        <div style="font-size:28px;line-height:36px;margin:15px" class="title"><%=target.get('name')%></div>
-        <video id="video" class="clearfix" src="<%=mediaPath%>" poster="img/img-video-placeholder.gif"
+        <div class="title" <%if(type==2){%>style="font-size:28px;line-height:36px;margin:15px"<%}%><%if(type==6){%>style="font-size:24px;line-height:30px;margin-top:50px;color:#555555"<%}%>><%=target.get('name')%></div>
+        <%if(type == 2){%>
+        <video id="video" class="clearfix" src="<%=videoPath%>" poster="img/img-video-placeholder.gif"
                height=420 onclick="this.play()">
         </video>
+        <%}else{%>
+        <img class="btn_pdf" src="img/btn_pdf.png" style="width:auto; height:auto;margin-top:70px" onclick = "Interfaces.openAdobeReader('<%=pdfPath%>','<%=id%>')"/>
+        <%}%>
         <div style="text-align: center;margin-top:30px">
             <!--<button class="btn btn-large" onclick="Interfaces.onVideoComplete('123')">看完啦</button>-->
             <button type="button" class="btn btn-large" id="nextButton"
-                    style="
-                background-color: #77BB55;
-                background-image: none;
-                border: none;
-                color: #ffffff;
-                text-shadow: none;"
-                    onclick="completeVideo('<%=id%>')"
+
+            <%if(type==2){%>
+                style="background-color: #77BB55;
+                      background-image: none;
+                      border: none;
+                      color: #ffffff;
+                      text-shadow: none;"<%}%>
+            <%if(type==6){%>
+                style="background-color: #77BB55;
+                      background-image: none;
+                      border: none;
+                      color: #ffffff;
+                      text-shadow: none;
+                      margin-top:40px"<%}%>
+                onclick="completeMultiMedia('<%=id%>')"
             <% if (currentMode != MODE.VIEW_ONLY){%>
             disabled="disabled"
             <%}%>

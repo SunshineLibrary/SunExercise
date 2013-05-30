@@ -7,6 +7,7 @@
  */
 
 jQuery(function () {
+        choiceNum = 0
         var AppRouter = Backbone.Router.extend({
             routes: {
                 "": "subjects",
@@ -246,22 +247,26 @@ jQuery(function () {
                                         app_router.navigate("summary/" + activity.get("id"), {trigger: true, replace: true})
                                     })
                                 }
-                            } else if (activity.get("type") == 2) {
-                                var media = Sun.getmedia(activity.get('media_id'))
-
-                                Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
-                                    Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
-                                        setHeader(new VideoHeaderView({
-                                            activity: activity,
-                                            section: section,
-                                            stage: stage
-                                        }))
-                                        setBody(new VideoView({model: activity, media: media}))
-                                        reloadPage()
+                            } else if (activity.get("type") == 2 || activity.get('type') == 6) {
+                                if(activity.get('type')==6 && Sun.iscomplete('activity',id)){
+                                        activity.complete(null, function () {
+                                            app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
+                                        })
+                                }else{
+                                    var media = Sun.getmedia(activity.get('media_id'))
+                                    Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
+                                        Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
+                                            setHeader(new MultiMediaHeaderView({
+                                                activity: activity,
+                                                section: section,
+                                                stage: stage
+                                            }))
+                                            setBody(new MultiMediaView({model: activity, media: media}))
+                                            reloadPage()
+                                        })
                                     })
-                                })
+                                }
                             } else {
-                                // TODO other acitivities, like video
                                 Log.i("unsupported activity")
                             }
                         } else {
@@ -280,10 +285,19 @@ jQuery(function () {
                                     Sun.setviewed("activity", activity.get('id'))
                                     app_router.navigate("section/" + activity.get('section_id'), {trigger: true, replace: true})
                                 }
-                            } else if (activity.get("type") == 2) {
+                            } else if (activity.get("type") == 2 || activity.get('type') == 6) {
                                 var media = Sun.getmedia(activity.get('media_id'))
-                                setBody(new VideoView({model: activity, media: media}))
-                                reloadPage()
+                                Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
+                                    Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
+                                        setHeader(new MultiMediaHeaderView({
+                                            activity: activity,
+                                            section: section,
+                                            stage: stage
+                                        }))
+                                        setBody(new MultiMediaView({model: activity, media: media}))
+                                        reloadPage()
+                                    })
+                                })
                             }
                         }
                     }
@@ -393,13 +407,13 @@ jQuery(function () {
 //            waitingDiag.modal('hide')
         }
 
-        completeVideo = function (id) {
+        completeMultiMedia = function (id) {
             Sun.fetch("activity", {id: id}, function (activity) {
                 if (currentMode == MODE.VIEW_ONLY) {
                     Sun.setviewed('activity', id)
                     app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
                 } else {
-                    Log.i("complete video," + id)
+                    Log.i("complete multiMedia," + id)
                     activity.complete(null, function () {
                         app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
                     })
@@ -437,9 +451,10 @@ jQuery(function () {
 //                          console.log("[REQUESTGENCOST]" + (new Date().getTime() - start))
                             var activity_type = activity.get('type')
                             if (activity_type == 7) {
-                                counter = 0
+                                choiceNum = 0
                                 app_router.navigate("activity/" + activity.id, {trigger: true, replace: true})
                             } else {
+                                choiceNum = 0
                                 loadProblem(problem.get('id'))
                             }
                         })
@@ -482,15 +497,15 @@ jQuery(function () {
             if (excluded) {
                 choice.prop('checked', true)
                 $('#pcontainer_' + id).addClass('odd')
-                counter = 1
+                choiceNum = 1
             } else {
                 choice.prop('checked', !checked)
                 if (!checked) {
                     $('#pcontainer_' + id).addClass('odd')
-                    counter = countHelper + 1
+                    ++choiceNum
                 } else {
                     $('#pcontainer_' + id).removeClass('odd')
-                    counter = countHelper - 1
+                    --choiceNum
                 }
             }
             activeSubmitBtn(function(){
@@ -509,7 +524,7 @@ jQuery(function () {
         }
 
         judgeChoiceNum = function(){
-            if (counter <= 0) {
+            if (choiceNum <= 0) {
                 deactiveSubmitBtn()
             } else {
                 grading(problemId)

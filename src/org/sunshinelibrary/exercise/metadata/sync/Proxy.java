@@ -112,6 +112,12 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
     }
 
     @Override
+    public void openAdobeReader(String path) {
+        if (mUIInterface != null)
+            mUIInterface.openAdobeReader(path);
+    }
+
+    @Override
     public boolean autoSync() {
         boolean sync = timeToSync();
         if (sync)
