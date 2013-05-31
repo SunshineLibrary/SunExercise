@@ -119,7 +119,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
         super.onResume();
         try {
             String VersionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            Log.i(TAG, "onResume VersionName:" + VersionName);
+            Log.i(TAG, "onResume Exercise VersionName:" + VersionName);
         } catch (PackageManager.NameNotFoundException e) {
             Log.i(TAG, "onResume");
         }
