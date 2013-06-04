@@ -277,7 +277,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
             db.execSQL("delete from playlog;");
             db.close();
         } catch (Exception e) {
-            System.out.println("didn't make it");
+            Log.i(TAG,"Failed to delete playlog");
         }
     }
 }
