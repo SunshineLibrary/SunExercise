@@ -312,9 +312,17 @@
             <small class="quest-type">（单选题）</small>
         </h3>
 
-        <p>
+        <div class="problem_body">
             <%=target.get('body')%>
-        </p>
+        </div>
+        <%
+        var media = target.get('media');
+        if(typeof media != "undefined"){
+        %>
+        <div id="problem_img">
+            <img class="problem_image" src="<%=media.get('path')%>">
+        </div>
+        <% } %>
 
         <div>
             <%
@@ -396,9 +404,17 @@
             <small class="quest-type">（多选题）</small>
         </h3>
 
-        <p>
+        <div class="problem_body">
             <%=target.get('body')%>
-        </p>
+        </div>
+        <%
+        var media = target.get('media');
+        if(typeof media != "undefined"){
+        %>
+        <div id="problem_img">
+            <img class="problem_image" src="<%=media.get('path')%>">
+        </div>
+        <% } %>
 
         <div>
             <%
@@ -482,7 +498,7 @@
                 <small class="quest-type">（填空题）</small>
             </h3>
 
-            <p>
+            <div class="problem_body">
                 <%
                 problemId = target.get('id')
                 userdata = Sun.getuserdata('problem',problemId)
@@ -490,7 +506,15 @@
                 activity_type = activity.get('type')
                 %>
                 <%=target.get("body")%>
-            </p>
+            </div>
+            <%
+            var media = target.get('media');
+            if(typeof media != "undefined"){
+            %>
+            <div id="problem_img">
+                <img class="problem_image" src="<%=media.get('path')%>">
+            </div>
+            <% } %>
         </div>
 
         <div class="row">
@@ -691,6 +715,14 @@
     </h3>
     <% } %>
     <div class="problem_body"><%=content%></div>
+    <%
+    var media = target.get('media');
+    if(typeof media != "undefined"){
+    %>
+    <div id="problem_img">
+        <img class="problem_image" src="<%=media.get('path')%>">
+    </div>
+    <% } %>
 
     <div class="row">
         <ul class="thumbnails" id="choices">

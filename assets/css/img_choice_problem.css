@@ -27,3 +27,8 @@
     margin-top: 10px;
     margin-bottom: 20px;
 }
+
+.problem_image{
+    max-width: 900px;
+    margin:10px;
+}
