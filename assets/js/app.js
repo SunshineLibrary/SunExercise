@@ -327,8 +327,9 @@ jQuery(function () {
                                             }))
                                             setBody(new MultiMediaView({model: activity, media: media}))
                                             reloadPage()
-                                            if(activity.get('type') == 2)
-                                            Interfaces.deletePlayLog()
+                                            if(activity.get('type') == 2){
+                                                Interfaces.deletePlayLog()
+                                            }
                                         })
                                     })
                                 }
@@ -362,8 +363,9 @@ jQuery(function () {
                                         }))
                                         setBody(new MultiMediaView({model: activity, media: media}))
                                         reloadPage()
-                                        if(activity.get('type') == 2)
-                                        Interfaces.deletePlayLog()
+                                        if(activity.get('type') == 2){
+                                            Interfaces.deletePlayLog()
+                                        }
                                     })
                                 })
                             }
