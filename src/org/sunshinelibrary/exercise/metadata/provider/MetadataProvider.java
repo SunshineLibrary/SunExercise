@@ -66,7 +66,8 @@ public class MetadataProvider extends ContentProvider {
                         + MediaTable.TABLE_NAME + " WHERE " + MetadataContract.Media._STRING_ID + " NOT IN ( SELECT " + MetadataContract.Activities._MEDIA_ID
                         + " FROM " + ActivityTable.TABLE_NAME + " WHERE " + MetadataContract.Activities._MEDIA_ID + " IS NOT NULL UNION SELECT "
                         + MetadataContract.Problems._MEDIA_ID + " FROM " + ProblemTable.TABLE_NAME + " WHERE " + MetadataContract.Problems._MEDIA_ID
-                        + " IS NOT NULL )";
+                        + " IS NOT NULL UNION SELECT " + MetadataContract.ProblemChoices._MEDIA_ID + " FROM " + ProblemChoiceTable.TABLE_NAME + " WHERE "
+                        + MetadataContract.ProblemChoices._MEDIA_ID + " IS NOT NULL )";
 //            Log.i("MediaTable", "query: " + query);
                 return table.getDatabase().rawQuery(query, null);
             default:
