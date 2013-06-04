@@ -272,8 +272,8 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     @Override
     public void deletePlayLog(){
         String dbPath = "/data/data/"+getApplicationContext().getPackageName()+"/databases/playlog";
-        SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath,null,SQLiteDatabase.OPEN_READWRITE);
-        try {
+        try{
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath,null,SQLiteDatabase.OPEN_READWRITE);
             db.execSQL("delete from playlog;");
             db.close();
         } catch (Exception e) {
