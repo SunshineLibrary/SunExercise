@@ -13,4 +13,6 @@ public interface AndroidUIInterface {
     public void onReady();
 
     public void openAdobeReader(String path);
+
+    public void deletePlayLog();
 }
