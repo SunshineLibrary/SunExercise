@@ -399,8 +399,13 @@ jQuery(function () {
                     android.openAdobeReader(path)
                 }
             } )
-        }
+        },
 
+        deletePlayLog: function () {
+            if(typeof android != "undefined")
+            android.deletePlayLog()
+
+        }
     }
 
     DEBUG = true

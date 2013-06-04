@@ -263,6 +263,8 @@ jQuery(function () {
                                             }))
                                             setBody(new MultiMediaView({model: activity, media: media}))
                                             reloadPage()
+                                            if(activity.get('type') == 2)
+                                            Interfaces.deletePlayLog()
                                         })
                                     })
                                 }
@@ -296,6 +298,8 @@ jQuery(function () {
                                         }))
                                         setBody(new MultiMediaView({model: activity, media: media}))
                                         reloadPage()
+                                        if(activity.get('type') == 2)
+                                        Interfaces.deletePlayLog()
                                     })
                                 })
                             }
@@ -415,6 +419,8 @@ jQuery(function () {
                 } else {
                     Log.i("complete multiMedia," + id)
                     activity.complete(null, function () {
+                        if(activity.get('type') == 2)
+                        Interfaces.deletePlayLog()
                         app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
                     })
                 }
@@ -549,5 +555,6 @@ jQuery(function () {
         initRoute()
 
     }
+
 
 )
