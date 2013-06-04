@@ -22,10 +22,60 @@ jQuery(function () {
         })
 
         // Instantiate the router
-        var app_router = new AppRouter
+        var app_router = new AppRouter;
+
+        ProblemController = {
+            currentProblem: undefined,
+            currentActivity: undefined,
+            type: undefined,
+            choices: {},
+            userChoices: [],
+            userChoice: undefined,
+            completeOk: false,
+            submitBtn: undefined,
+            setup: function (problem, activity) {
+                this.currentProblem = problem;
+                this.currentActivity = activity;
+                this.type = problem.get('type');
+                for (var i = 0; i < problem.get('choices').length; i++) {
+                    var value = problem.get('choices')[i];
+                    var el = document.getElementById('choice_' + value['id']);
+                    this.submitBtn = document.getElementById('submit_answer');
+                    this.choices[value['id']] = {
+                        value: value,
+                        correct: value['answer'],
+                        el: el
+                    };
+                }
+            },
+            setUserChoice: function (choiceId, callback) {
+                // Only for single choice problem
+                this.completeOk = this.choices[choiceId].correct == 'yes';
+                var oldChoice = this.userChoice;
+                if (oldChoice != choiceId) {
+                    this.choices[choiceId].chosen = false;
+                    if (oldChoice != undefined) {
+                        this.choices[oldChoice].chosen = false;
+                    }
+                    this.userChoice = choiceId;
+                    eval(callback)(this.choices, choiceId, oldChoice);
+                }
+            },
+            clean: function () {
+                this.choices = {};
+                this.userChoices = [];
+                this.userChoice = undefined;
+                this.currentProblem = undefined;
+                this.currentActivity = undefined;
+                this.type = undefined;
+                this.submitBtn = undefined;
+                this.completeOk = false;
+            }
+        };
 
         loadProblem = function (id) {
             Sun.fetch("problem", {id: id}, function (problem) {
+                ProblemController.clean();
                 currentMaterial = "problem"
                 Sun.fetch("activity", {id: problem.get('activity_id')}, function (activity) {
                     Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
@@ -41,16 +91,31 @@ jQuery(function () {
                                 stage: stage
                             }))
 
-                            if (problem.get("type") == "0") {
+                            var pType = problem.get("type");
+                            if (pType == "0") {
                                 setBody(new SingleChoiceProblemView({model: problem, activity: activity}))
-                            } else if (problem.get("type") == "1") {
+                            } else if (pType == "1") {
                                 setBody(new MultiChoiceProblemView({model: problem, activity: activity}))
-                            } else if (problem.get("type") == "2") {
+                            } else if (pType == "2") {
                                 setBody(new SingleFillingProblemView({model: problem, activity: activity}))
+                            } else if (pType == "3") {
+                                // Single choice only
+                                var choices = problem.get('choices');
+                                var userdata = Sun.getuserdata("problem", id);
+                                for (var i = 0; i < choices.length; i++) {
+                                    choices[i].media = Sun.getmedia(choices[i].media_id);
+                                    console.log("Choice:" + problem.get('choices')[i].media.get('path'));
+                                }
+                                setBody(new ImageChoiceProblemView(
+                                    {model: problem, activity: activity, userdata: userdata}
+                                ))
                             } else {
                                 Log.i("unsupported problem," + id + "," + problem.get("type"))
                             }
-                            reloadPage()
+                            reloadPage();
+                            // Render all math equations
+                            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "mathcontent"]);
+                            ProblemController.setup(problem, activity);
                         })
                     })
                 })
@@ -67,8 +132,7 @@ jQuery(function () {
         }
 
         function reloadPage() {
-            currentPageView.render()
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub, "mathcontent"]);
+            currentPageView.render();
         }
 
 
@@ -248,11 +312,11 @@ jQuery(function () {
                                     })
                                 }
                             } else if (activity.get("type") == 2 || activity.get('type') == 6) {
-                                if(activity.get('type')==6 && Sun.iscomplete('activity',id)){
-                                        activity.complete(null, function () {
-                                            app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
-                                        })
-                                }else{
+                                if (activity.get('type') == 6 && Sun.iscomplete('activity', id)) {
+                                    activity.complete(null, function () {
+                                        app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
+                                    })
+                                } else {
                                     var media = Sun.getmedia(activity.get('media_id'))
                                     Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
                                         Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
@@ -340,7 +404,6 @@ jQuery(function () {
                                 reloadPage()
                             } else {
                                 if (correctCount >= jump.condition.min && correctCount <= jump.condition.max) {
-                                    Log.i("hit in jump!")
                                     if (jump.to_activity_id == -1) {
                                         endStage(aid, function (id) {
                                             activity.set({next_lesson: id})
@@ -368,7 +431,6 @@ jQuery(function () {
             currentLesson = undefined
             currentMaterial = undefined
 
-//            Logger.hide()
             Backbone.history.start()
 
             Interfaces.onReady()
@@ -401,14 +463,7 @@ jQuery(function () {
         }
 
         showWaiting = function () {
-//            waitingDiag.modal({
-//                backdrop: 'static',
-//                keyboard: false
-//            })
             $("#submit_answer").hide()
-        }
-        hideWaiting = function () {
-//            waitingDiag.modal('hide')
         }
 
         completeMultiMedia = function (id) {
@@ -424,6 +479,43 @@ jQuery(function () {
                         app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
                     })
                 }
+            })
+        }
+
+        /**
+         * New choice selection and grading, under test
+         * @param self
+         */
+        choice_select = function (self) {
+            console.log('choice');
+            var cid = self.getAttribute('cid');
+            self.style['border-color'] = '#77BB55';
+            ProblemController.setUserChoice(cid, function (choices, newChoiceId, oldChoice) {
+                if (oldChoice != undefined) {
+                    choices[oldChoice].el.style['border-color'] = 'white';
+                }
+                ProblemController.submitBtn.style.display = "block";
+            });
+        };
+
+        gradingChoice = function () {
+            var choices = [];
+            choices.push(ProblemController.userChoice);
+            var currentProblem = ProblemController.currentProblem;
+            console.log("complete problem, correct: " + ProblemController.completeOk + "," + choices);
+            ProblemController.currentProblem.complete({
+                correct: ProblemController.completeOk,
+                checked: choices
+            }, function () {
+                var currentActivity = ProblemController.currentActivity;
+                var activity_type = currentActivity.get('type');
+                var activity_id = currentActivity.id;
+                if (activity_type == 7) {
+                    app_router.navigate("activity/" + activity_id, {trigger: true, replace: true})
+                } else {
+                    loadProblem(currentProblem.get('id'))
+                }
+                choiceNum = 0
             })
         }
 
@@ -449,7 +541,6 @@ jQuery(function () {
                         }
                         Log.i("grading result," + completeOk)
 
-                        var start = new Date().getTime();
                         problem.complete({
                             correct: completeOk,
                             checked: checked
@@ -492,7 +583,8 @@ jQuery(function () {
             })
         }
 
-        makeSelection = function (id,excluded) {
+
+        makeSelection = function (id, excluded) {
             if (excluded) {
                 $('.pcontainer').each(function (i, p) {
                     $(p).removeClass('odd')
@@ -514,7 +606,7 @@ jQuery(function () {
                     --choiceNum
                 }
             }
-            activeSubmitBtn(function(){
+            activeSubmitBtn(function () {
                 judgeChoiceNum()
             })
         }
@@ -529,7 +621,7 @@ jQuery(function () {
             $('#submit_answer').attr('onclick', '').unbind('click')
         }
 
-        judgeChoiceNum = function(){
+        judgeChoiceNum = function () {
             if (choiceNum <= 0) {
                 deactiveSubmitBtn()
             } else {
@@ -539,9 +631,9 @@ jQuery(function () {
 
         judgeContent = function () {
             var answer = $('#answer').val()
-            if(answer == ""){
+            if (answer == "") {
                 deactiveSubmitBtn()
-            }else{
+            } else {
                 grading(problemId)
             }
         }

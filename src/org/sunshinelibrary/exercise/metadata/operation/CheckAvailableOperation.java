@@ -56,6 +56,7 @@ public class CheckAvailableOperation extends ExerciseOperation {
         }
 
         ArrayList<String> mediaIDs;
+        ArrayList<String> deleted = new ArrayList<String>();
         Cursor cursor;
 
         for (String lessonId : mLessonIDs) {
@@ -72,24 +73,27 @@ public class CheckAvailableOperation extends ExerciseOperation {
             cursor = mContext.getContentResolver().query(Media.CONTENT_URI, new String[]{Media._PATH},
                     CursorUtils.generateSelectionStringForStringID(Media._STRING_ID, mediaIDs), null, null);
             cursor.moveToFirst();
-            if(mediaIDs.size() == cursor.getCount()){
-                cursor.moveToPosition(-1);
-                while (cursor.moveToNext()) {
-                    int pathIndex = cursor.getColumnIndex(Media._PATH);
-                    String path = cursor.getString(pathIndex);
-                    File f = new File(path);
-                    if (!f.exists()) {
-                        Log.i(TAG, "file not exist:" + path);
-                        mAvailable = false;
-                        break;
-                    }
-                }
-            } else {
+            if(mediaIDs.size() != cursor.getCount()){
                 mAvailable = false;
+            }
+            cursor.moveToPosition(-1);
+            while (cursor.moveToNext()) {
+                int pathIndex = cursor.getColumnIndex(Media._PATH);
+                String path = cursor.getString(pathIndex);
+                File f = new File(path);
+                if (!f.exists()) {
+                    Log.i(TAG, "file not exist:" + path);
+                    deleted.add(path);
+                    mAvailable = false;
+                }
             }
             cursor.close();
             updateDownloadStatusById(MetadataContract.Lessons.CONTENT_URI, lessonId,
                     mAvailable?DOWNLOAD_STATUS.DOWNLOADED:DOWNLOAD_STATUS.NONE);
         }
+
+        int count = mContext.getContentResolver().delete(Media.CONTENT_URI,
+                CursorUtils.generateSelectionStringForStringID(Media._PATH, deleted), null);
+        Log.i(TAG, "Total " + count + " record(s) deleted in media table");
     }
 }

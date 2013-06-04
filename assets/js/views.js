@@ -31,6 +31,7 @@ jQuery(function () {
             problem_sc: _.template($("#tc_problem_singlechoice").html()),
             problem_sf: _.template($("#tc_problem_singlefilling").html()),
             problem_mc: _.template($("#tc_problem_multichoice").html()),
+            problem_img: _.template($("#tc_problem_img").html()),
             multiMedia: _.template($("#tc_multiMedia").html())
         },
         Footer: {
@@ -151,6 +152,23 @@ jQuery(function () {
                 target: this.model,
                 activity: this.options['activity']
             })
+            return this
+        }
+    })
+
+    ImageChoiceProblemView = Backbone.View.extend({
+        template: Templates.Content.problem_img,
+        render: function () {
+            var activity = this.options['activity'];
+            var userdata = this.options['userdata'];
+            this.el = this.template({
+                problem: this.model,
+                content: this.model.get('body'),
+                choices: this.model.get('choices'),
+                userdata: userdata,
+                activity: activity,
+                activity_type: activity.get('type')
+            });
             return this
         }
     })

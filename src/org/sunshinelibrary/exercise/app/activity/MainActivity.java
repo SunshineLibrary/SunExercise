@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.*;
 import android.widget.*;
@@ -25,6 +26,7 @@ import org.sunshinelibrary.exercise.app.interfaces.WebInteraction;
 import org.sunshinelibrary.exercise.app.service.NotificationService;
 import org.sunshinelibrary.exercise.app.ui.HTML5WebView;
 import org.sunshinelibrary.exercise.metadata.TestCase;
+import org.sunshinelibrary.support.Library;
 import org.sunshinelibrary.support.api.UserInfo;
 
 import java.io.File;
@@ -84,6 +86,9 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
         mWebView.setInteraction(mInteraction);
         mWebView.addJavascriptInterface(mInterface, "android");
         mWebView.loadUrl(ASSETS + "index" + HTML);
+        mWebView.getSettings().setRenderPriority(WebSettings.RenderPriority.HIGH);
+        mWebView.getSettings().setPluginState(android.webkit.WebSettings.PluginState.ON_DEMAND);
+
 
         startService(new Intent(MainActivity.this, NotificationService.class));
 
@@ -120,10 +125,11 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
         super.onResume();
         try {
             String VersionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-            Log.i(TAG, "onResume VersionName:" + VersionName);
+            Log.i(TAG, "onResume Exercise VersionName:" + VersionName);
         } catch (PackageManager.NameNotFoundException e) {
-            Log.i(TAG, "onResume");
+            Log.i(TAG, "onResume Exercise");
         }
+        Log.i(TAG, "onResume Exercise LibraryVersion:" + Library.getLibraryVersion());
         if (mSignIn && mLoadReady)
             mInterface.autoSync();
 

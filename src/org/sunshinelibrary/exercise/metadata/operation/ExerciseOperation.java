@@ -1,6 +1,7 @@
 package org.sunshinelibrary.exercise.metadata.operation;
 
 import android.database.Cursor;
+import android.util.Log;
 import org.sunshinelibrary.support.utils.CursorUtils;
 import org.sunshinelibrary.support.utils.operation.Operation;
 
@@ -50,7 +51,13 @@ public class ExerciseOperation extends Operation {
         });
         ArrayList<String> mediaIDsWithinProblems = getChildCollection(activityIDs, Problems.CONTENT_URI,
                 Problems._MEDIA_ID, Problems._PARENT_ID, Problems._SEQUENCE, null);
-        return combine(mediaIDs, mediaIDsWithinProblems);
+        ArrayList<String> problemIDs = getChildCollection(activityIDs, Problems.CONTENT_URI, Problems._STRING_ID,
+                Problems._PARENT_ID, Problems._SEQUENCE, null);
+        Log.i(TAG, problemIDs.toString() + problemIDs.size());
+        ArrayList<String> mediaIDsWithinProblemChoices = getChildCollection(problemIDs, ProblemChoices.CONTENT_URI,
+                ProblemChoices._MEDIA_ID, ProblemChoices._PARENT_ID, ProblemChoices._SEQUENCE, null);
+        Log.i(TAG, mediaIDsWithinProblemChoices.toString() + mediaIDsWithinProblemChoices.size());
+        return combine(combine(mediaIDs, mediaIDsWithinProblems), mediaIDsWithinProblemChoices);
     }
 
     @Override

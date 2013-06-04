@@ -254,6 +254,12 @@ jQuery(function () {
                 userdata: Sun.getuserdata("problem", options.id),
                 parent_id: options['activity_id']
             })
+            var media_id = options['media_id'];
+            if (media_id != undefined && media_id != "") {
+                this.set({
+                    media: Sun.getmedia(media_id)
+                })
+            }
             if (this.get('choices') != undefined) {
                 var type = options['type']
                 if (type == '2') {

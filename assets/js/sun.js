@@ -97,8 +97,8 @@ jQuery(function () {
                 // web dev mode, request data from sundata server
                 Log.i("[WEB]fetch," + type + "," + JSON.stringify(options))
 
-              mockMaterial = "http://42.121.65.247:9000/api/material"
-              //mockMaterial = "http://127.0.0.1:9000/api/material"
+//              mockMaterial = "http://42.121.65.247:9000/api/material"
+              mockMaterial = "http://127.0.0.1:9000/api/material"
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
                     function (data) {
@@ -208,7 +208,7 @@ jQuery(function () {
             if (typeof android == "undefined") {
                 // web dev mode
                 Log.i("[WEB]get media," + id)
-                ret = new Media({"id": "03354928-9820-11e2-b307-00163e011797", "file_id": "1", "path": "http://st.xiami.com/res/loop/img/logo.png"})
+                ret = new Media({"id": "03354928-9820-11e2-b307-00163e011797", "file_id": "1", "path": "http://shuwu.sunshine-library.org/system/files/1377/original/888a9f9d06ada3dfe4842149de51f61987c77a81.JPG?1369791427"})
             } else {
                 // android dev mode
                 Log.i("[ANDROID]get media," + id)
