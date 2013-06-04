@@ -50,7 +50,11 @@ public class ExerciseOperation extends Operation {
         });
         ArrayList<String> mediaIDsWithinProblems = getChildCollection(activityIDs, Problems.CONTENT_URI,
                 Problems._MEDIA_ID, Problems._PARENT_ID, Problems._SEQUENCE, null);
-        return combine(mediaIDs, mediaIDsWithinProblems);
+        ArrayList<String> problemIDs = getChildCollection(activityIDs, Problems.CONTENT_URI, Problems._STRING_ID,
+                Problems._PARENT_ID, Problems._SEQUENCE, null);
+        ArrayList<String> mediaIDsWithinProblemChoices = getChildCollection(problemIDs, ProblemChoices.CONTENT_URI,
+                ProblemChoices._MEDIA_ID, ProblemChoices._PARENT_ID, ProblemChoices._SEQUENCE, null);
+        return combine(combine(mediaIDs, mediaIDsWithinProblems), mediaIDsWithinProblemChoices);
     }
 
     @Override
