@@ -1,0 +1,29 @@
+.thumbnail {
+    display:block;
+    overflow:hidden;
+    height:270px;
+    width: 360px;
+    padding:0;
+}
+
+.thumbnail{
+    overflow:hidden;
+    background-color: white;
+    display:table-cell;
+    vertical-align:middle;
+    border-color:white;
+    border-width:10px;
+}
+
+.thumbnail img {
+    display:block;
+    max-height:100%;
+    max-width:100%;
+    border:0;
+}
+
+.problem_body{
+    font-size: 20px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
