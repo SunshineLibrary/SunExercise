@@ -291,10 +291,14 @@
         <div class="stage_circle circle_<%=circleClassNum%>">
             <% if (circleClassNum == 0) {%>
             <div onclick="viewStage('<%=stage.get('id')%>')"><img src="<%=imgPath%>" alt="circle background"></div>
-            <% } else {%>
-            <a <%if(circleClassNum == 1){%>href="#stage/<%=stage.id%>"<%}%> >
-            <img src="<%=imgPath%>" alt="circle background">
+            <% } else { %>
+            <% if(circleClassNum == 1){ %>
+            <a href="#stage/<%=stage.id%>">
+                <img src="<%=imgPath%>" alt="circle background">
             </a>
+            <% }else{ %>
+            <img src="<%=imgPath%>" alt="circle background">
+            <% } %>
             <% } %>
             <p><%=index+1%></p>
         </div>
@@ -716,7 +720,7 @@
     <% } %>
     <div class="problem_body"><%=content%></div>
     <%
-    var media = target.get('media');
+    var media = problem.get('media');
     if(typeof media != "undefined"){
     %>
     <div id="problem_img">
