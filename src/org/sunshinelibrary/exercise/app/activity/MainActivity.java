@@ -26,6 +26,8 @@ import org.sunshinelibrary.exercise.app.interfaces.WebInteraction;
 import org.sunshinelibrary.exercise.app.service.NotificationService;
 import org.sunshinelibrary.exercise.app.ui.HTML5WebView;
 import org.sunshinelibrary.exercise.metadata.TestCase;
+import org.sunshinelibrary.exercise.metadata.json.Request;
+import org.sunshinelibrary.exercise.metadata.sync.Proxy;
 import org.sunshinelibrary.support.Library;
 import org.sunshinelibrary.support.api.UserInfo;
 
@@ -251,25 +253,6 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     }
 
     @Override
-    public void openAdobeReader(String path){
-        Intent intent = new Intent("android.intent.action.VIEW");
-        intent.addCategory("android.intent.category.DEFAULT");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        if (path == null) path = "";
-        Uri uri = Uri.fromFile(new File(path));
-        intent.setDataAndType(uri, "application/pdf");
-
-        try {
-            startActivity(intent);
-        } catch (Exception e) {
-           Toast.makeText(getApplicationContext(),
-                    getString(R.string.error_no_pdf_reader), Toast.LENGTH_SHORT).show();
-        } finally {
-        }
-    }
-
-    @Override
     public void deletePlayLog(){
         String dbPath = "/data/data/"+getApplicationContext().getPackageName()+"/databases/playlog";
         try{
@@ -277,7 +260,21 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
             db.execSQL("delete from playlog;");
             db.close();
         } catch (Exception e) {
-            Log.i(TAG,"Failed to delete playlog");
+            Log.i(TAG,"Failed to open playlog DB");
         }
     }
+
+    @Override
+    public void openThirdPartyApp(String path, String type){
+        Proxy p = new Proxy();
+        Request req = new Request();
+        req.api = Request.OPEN;
+        req.method = Request.UNKNOWN;
+        req.user_id = Request.UNKNOWN;
+        req.param.type = type;
+        req.param.path = path;
+        p.requestData(req.toJsonString());
+    }
+
+
 }

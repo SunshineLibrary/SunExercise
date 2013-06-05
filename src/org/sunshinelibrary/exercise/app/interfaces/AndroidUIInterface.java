@@ -12,7 +12,7 @@ public interface AndroidUIInterface {
 
     public void onReady();
 
-    public void openAdobeReader(String path);
+    public void openThirdPartyApp(String path, String type);
 
     public void deletePlayLog();
 }
