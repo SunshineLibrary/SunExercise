@@ -23,9 +23,13 @@
 }
 
 .problem_body{
-    font-size: 20px;
+    font-size: 18px;
     margin-top: 10px;
     margin-bottom: 20px;
+}
+
+.choice_body{
+    font-size: 24px;
 }
 
 .problem_image{

@@ -291,10 +291,14 @@
         <div class="stage_circle circle_<%=circleClassNum%>">
             <% if (circleClassNum == 0) {%>
             <div onclick="viewStage('<%=stage.get('id')%>')"><img src="<%=imgPath%>" alt="circle background"></div>
-            <% } else {%>
-            <a <%if(circleClassNum == 1){%>href="#stage/<%=stage.id%>"<%}%> >
-            <img src="<%=imgPath%>" alt="circle background">
+            <% } else { %>
+            <% if(circleClassNum == 1){ %>
+            <a href="#stage/<%=stage.id%>">
+                <img src="<%=imgPath%>" alt="circle background">
             </a>
+            <% }else{ %>
+            <img src="<%=imgPath%>" alt="circle background">
+            <% } %>
             <% } %>
             <p><%=index+1%></p>
         </div>
@@ -340,7 +344,7 @@
             onclick="makeSelection('<%=choice.id%>', true)"
             <%}%>
             >
-            <label class="radio">
+            <label class="radio choice_body">
                 <input class="answer"
                        id="<%=choice.id%>"
                        answer="<%= choice.answer%>"
@@ -416,7 +420,7 @@
         </div>
         <% } %>
 
-        <div>
+        <div class="choice_body">
             <%
             problemId = target.get('id')
             userdata = Sun.getuserdata('problem',problemId)
@@ -434,7 +438,7 @@
             onclick="makeSelection('<%=choice.id%>', false)"
             <%}%>
             >
-            <label class="checkbox">
+            <label class="checkbox choice_body">
                 <input class="answer"
                        id="<%=choice.id%>"
                        answer="<%=choice.answer%>"
@@ -518,13 +522,14 @@
         </div>
 
         <div class="row">
-            <div class="span10 controls" style="margin-left:0px">
-                <input type="text" class="" id="answer" style="width:100%;margin-top:5px;height:30px"
+            <div class="input-block-level single_fill_form" style="margin-left:0px">
+                <input type="text" class="input-block-level" id="answer"
                        placeholder="<%if(completed){%><%=userdata['answer']%><%}else{%>填写答案<%}%>"
-                       onfocus="activeSubmitBtn(judgeContent)">
+                       onfocus="activeSubmitBtn(judgeContent)"/>
             </div>
-
-            <div class="">
+        </div>
+        <div class="row">
+            <div class="pull-right">
                 <% if(currentMode != MODE.VIEW_ONLY) { %>
                 <% if(completed) { %>
                 <a class="span2 btn btn-large" style="margin-left: 20px; width: 110px; padding: 13px 19px;"
@@ -558,7 +563,7 @@
         %>
     </div>
 
-
+    <div style="height:50px"></div>
 </script>
 
 <script type="text/template" id="tc_stages"></script>
@@ -717,7 +722,7 @@
     <% } %>
     <div class="problem_body"><%=content%></div>
     <%
-    var media = target.get('media');
+    var media = problem.get('media');
     if(typeof media != "undefined"){
     %>
     <div id="problem_img">
