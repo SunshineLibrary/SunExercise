@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.fasterxml.jackson.core.JsonEncoding;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
+import org.sunshinelibrary.exercise.R;
 import org.sunshinelibrary.exercise.app.application.ExerciseApplication;
 import org.sunshinelibrary.exercise.metadata.database.tables.*;
 import org.sunshinelibrary.exercise.metadata.sync.Proxy;
@@ -222,14 +223,14 @@ public class Request extends JSONObject {
         intent.addCategory("android.intent.category.DEFAULT");
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         Uri uri = Uri.fromFile(new File(param.path));
-        if (param.type.equals(PDF)) {
-            intent.setDataAndType(uri, "application/pdf");
-        }
+        intent.setDataAndType(uri, "application/"+param.type);
+
         try {
             context.startActivity(intent);
             return OpenResponse.SUCCESS;
         } catch (Exception e) {
-            return OpenResponse.NOT_FOUND;
+            Toast.makeText(context, R.string.noAppCanDoThis, Toast.LENGTH_LONG).show();
+            return OpenResponse.notFound(param.type);
         }
     }
 }

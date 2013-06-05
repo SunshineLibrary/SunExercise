@@ -1,5 +1,6 @@
 body {
     background-color: #eee;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
 .tile {
