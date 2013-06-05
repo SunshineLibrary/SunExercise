@@ -15,5 +15,5 @@
     <string name="notiSubTitle">"该复习了"</string>
 
     <string name="txt_loading_video">加载视频中...</string>
-    <string name="error_no_pdf_reader">没有安装PDF阅读器</string>
+    <string name="noAppCanDoThis">晓书尚未安装可以打开该类型文件的应用</string>
 </resources>

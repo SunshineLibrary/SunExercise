@@ -389,22 +389,20 @@ jQuery(function () {
             $("#nextButton").removeAttr("disabled")
         },
 
-        openAdobeReader: function (path, id) {
-            Sun.setcomplete('activity', id, null, function(){
-                $("#nextButton").removeAttr("disabled")
-                if (typeof android == "undefined") {
-//                    Log.i("[WEB]openAdobeReader")
+        openThirdPartyApp: function (path, id, fileType) {
+                $('#nextButton').removeAttr('disabled')
+                if (typeof android == 'undefined') {
+//                    Log.i("[WEB]openThirdPartyApp")
                 } else {
-//                    Log.i("[ANDROID]openAdobeReader")
-                    android.openAdobeReader(path)
+//                    Log.i("[Android]openThirdPartyApp")
+                    android.openThirdPartyApp(path, fileType)
                 }
-            } )
         },
 
         deletePlayLog: function () {
-            if(typeof android != "undefined")
-            android.deletePlayLog()
-
+            if(typeof android != "undefined") {
+                android.deletePlayLog()
+            }
         }
     }
 

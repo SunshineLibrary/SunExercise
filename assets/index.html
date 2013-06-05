@@ -660,6 +660,7 @@
     var videoPath = "file://"+media.get('path')
     }else{
     var pdfPath = media.get('path')
+    var fileType = "pdf"
     }
     %>
     <div style="text-align:center">
@@ -672,7 +673,7 @@
     </video>
     <%}else{%>
     <img class="btn_pdf" src="img/btn_pdf.png" style="width:auto; height:auto;margin-top:70px"
-         onclick="Interfaces.openAdobeReader('<%=pdfPath%>','<%=id%>')"/>
+         onclick="Interfaces.openThirdPartyApp('<%=pdfPath%>','<%=id%>','<%=fileType%>')"/>
     <%}%>
     <div style="text-align: center;margin-top:30px">
         <!--<button class="btn btn-large" onclick="Interfaces.onVideoComplete('123')">看完啦</button>-->

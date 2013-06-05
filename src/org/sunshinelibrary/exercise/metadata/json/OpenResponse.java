@@ -16,5 +16,7 @@ public class OpenResponse extends JSONObject{
     }
 
     public static final String SUCCESS = response.setStatus("success").toJsonString();
-    public static final String NOT_FOUND = response.setStatus("pdfReaderNotFound").toJsonString();
+    public static final String notFound(String type) {
+        return  response.setStatus("Sorry,there's no app on this pad can open " + type + " file").toJsonString();
+    }
 }
