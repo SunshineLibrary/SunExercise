@@ -452,3 +452,9 @@ h2 {
     width: 200px; 
     z-index: 100;
 }
+
+.single_fill_form input[type="text"] {
+    height: 50px;
+    font-size: 18px;
+    line-height: 22px;
+}
