@@ -523,9 +523,13 @@
 
         <div class="row">
             <div class="input-block-level single_fill_form" style="margin-left:0px">
-                <input type="text" class="input-block-level" id="answer"
+                <input type="text"
+                       class="input-block-level"
+                       id="answer"
                        placeholder="<%if(completed){%><%=userdata['answer']%><%}else{%>填写答案<%}%>"
-                       onfocus="activeSubmitBtn(judgeContent)"/>
+                       onfocus="activeSubmitBtn(judgeContent)"
+                       <% if(currentMode != MODE.VIEW_ONLY) { %>disabled<% } %>
+                />
             </div>
         </div>
         <div class="row">
@@ -736,10 +740,15 @@
             choice = choices[i];
             %>
             <li class="span5">
-                <div id="choice_<%=choice.id%>" cid="<%=choice.id%>" class="thumbnail"
-                     onclick="choice_select(this,true)">
+                <% if(currentMode != MODE.VIEW_ONLY){ %>
+                <div id="choice_<%=choice.id%>" cid="<%=choice.id%>" class="thumbnail" onclick="choice_select(this,true)">
                     <img src="<%=choice['media'].get('path')%>"/>
                 </div>
+                <% }else{ %>
+                <div id="choice_<%=choice.id%>" cid="<%=choice.id%>" class="thumbnail">
+                    <img src="<%=choice['media'].get('path')%>"/>
+                </div>
+                <% } %>
             </li>
             <% } %>
         </ul>
