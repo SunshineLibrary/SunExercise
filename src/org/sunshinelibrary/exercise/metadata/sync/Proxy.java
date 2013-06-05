@@ -112,9 +112,10 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
     }
 
     @Override
-    public void openAdobeReader(String path) {
-        if (mUIInterface != null)
-        mUIInterface.openAdobeReader(path);
+    public void openThirdPartyApp(String path, String type) {
+        if (mUIInterface != null){
+            mUIInterface.openThirdPartyApp(path, type);
+        }
     }
 
     @Override
