@@ -4,6 +4,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.media.MediaPlayer.OnPreparedListener;
@@ -265,6 +266,18 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
            Toast.makeText(getApplicationContext(),
                     getString(R.string.error_no_pdf_reader), Toast.LENGTH_SHORT).show();
         } finally {
+        }
+    }
+
+    @Override
+    public void deletePlayLog(){
+        String dbPath = "/data/data/"+getApplicationContext().getPackageName()+"/databases/playlog";
+        try{
+            SQLiteDatabase db = SQLiteDatabase.openDatabase(dbPath,null,SQLiteDatabase.OPEN_READWRITE);
+            db.execSQL("delete from playlog;");
+            db.close();
+        } catch (Exception e) {
+            Log.i(TAG,"Failed to delete playlog");
         }
     }
 }
