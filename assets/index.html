@@ -528,7 +528,7 @@
                        id="answer"
                        placeholder="<%if(completed){%><%=userdata['answer']%><%}else{%>填写答案<%}%>"
                        onfocus="activeSubmitBtn(judgeContent)"
-                       <% if(currentMode != MODE.VIEW_ONLY) { %>disabled<% } %>
+                       <% if(currentMode == MODE.VIEW_ONLY) { %>disabled<% } %>
                 />
             </div>
         </div>
