@@ -49,9 +49,9 @@ jQuery(function () {
             if (this.model.body != undefined) {
                 $("#content").html(this.model.body.render().el)
             }
-            if (this.model.footer != undefined) {
-                $("#footer").html(this.model.footer.render().el)
-            }
+//            if (this.model.footer != undefined) {
+//                $("#footer").html(this.model.footer.render().el)
+//            }
             return this
         }
     })
@@ -118,7 +118,7 @@ jQuery(function () {
             this.el = this.template({
                 target: this.model,
                 activity: this.options['activity']
-            })
+            });
             return this
         }
     })

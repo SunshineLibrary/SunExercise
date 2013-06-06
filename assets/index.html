@@ -317,7 +317,7 @@
         </h3>
 
         <div class="problem_body">
-            <%=target.get('body')%>
+            <%-target.get('body')%>
         </div>
         <%
         var media = target.get('media');
@@ -354,7 +354,7 @@
                 <% if(completed){%>disabled<%}%>
                 <% if(shouldCheck){%>checked<%}%>
                 >
-                <strong><%=ANSWERS[i]%>.</strong> <%= target.get('choices')[i].display_text %>
+                <strong><%=ANSWERS[i]%>.</strong> <%- target.get('choices')[i].display_text %>
             </label>
         </div>
         <% } %>
@@ -409,7 +409,7 @@
         </h3>
 
         <div class="problem_body">
-            <%=target.get('body')%>
+            <%-target.get('body')%>
         </div>
         <%
         var media = target.get('media');
@@ -447,7 +447,7 @@
                 name="optionsRadios"
                 <% if(shouldCheck){%>checked<%}%>
                 >
-                <strong><%=ANSWERS[i]%>.</strong> <%= target.get('choices')[i].display_text %>
+                <strong><%=ANSWERS[i]%>.</strong> <%- target.get('choices')[i].display_text %>
             </label>
         </div>
         <% } %>
@@ -509,7 +509,7 @@
                 var completed = (userdata.current == 'EOF')
                 activity_type = activity.get('type')
                 %>
-                <%=target.get("body")%>
+                <%-target.get("body")%>
             </div>
             <%
             var media = target.get('media');
@@ -724,7 +724,7 @@
         <small>（单选题）</small>
     </h3>
     <% } %>
-    <div class="problem_body"><%=content%></div>
+    <div class="problem_body"><%-content%></div>
     <%
     var media = problem.get('media');
     if(typeof media != "undefined"){
