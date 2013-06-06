@@ -52,7 +52,7 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
     AndroidUIInterface mUIInterface = null;
 
     Subscription mSubscription;
-    SyncObserver mObserver;
+    SyncObserver mObserver = null;
 
     private LockManager mLockManager;
     private LockManager.Token mLockToken;
@@ -141,7 +141,9 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
             @Override
             public void run() {
                 mIsSynchronizing = true;
-                mObserver.onSyncStart();
+                if (mObserver != null) {
+                    mObserver.onSyncStart();
+                }
                 String DUMMY_HOST = "192.168.3.100/api/exercise/updates.json";
                 Uri HOST_URI = new Uri.Builder().scheme("http").authority(DUMMY_HOST).build();
                 SubscriptionRequest sq = new SubscriptionRequest(ApiUriBuilder.getUriFromPath(PATH)); 
@@ -216,14 +218,18 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
         Log.d(TAG, "onDataReceived");
         if (subscription.getID() == mSubscription.getID()) {
             Log.d(TAG, "JSON" + object.toString());
-            mObserver.onJsonReceived();
+            if (mObserver != null) {
+                mObserver.onJsonReceived();
+            }
             boolean succeed = JsonHandler.parse(object);
             if (succeed) {
                 CheckAvailableOperation co = new CheckAvailableOperation();
                 co.addAll();
                 co.execute();
             }
-            mObserver.onJsonParsed();
+            if (mObserver != null) {
+                mObserver.onJsonParsed();
+            }
             if(!succeed){
                 throw new Exception("json parse error");
             }
@@ -234,7 +240,9 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
 
     @Override
     public void onSyncComplete(Subscription subscription, boolean isSuccess) {
-        mObserver.onSyncCompleted(isSuccess);
+        if (mObserver != null) {
+            mObserver.onSyncCompleted(isSuccess);
+        }
         mIsSynchronizing = false;
         ExerciseOperation op = new ExerciseOperation();
         ArrayList<String> lessonIDs = op.getIDsByDownloadStatus(Lessons.CONTENT_URI, DOWNLOAD_STATUS.WAITING);
@@ -245,7 +253,9 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
     }
 
     public void notifyCollectionDownloadProgress(String collectionId, float percentage) {
-        mObserver.onCollectionDownloadProgress(collectionId, percentage);
+        if (mObserver != null) {
+            mObserver.onCollectionDownloadProgress(collectionId, percentage);
+        }
     }
 
     public void notifyCollectionDownloaded(String collectionId, boolean available) {
@@ -255,7 +265,9 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
 //        cursor.moveToFirst();
 //        int status = CursorUtils.getInt(cursor, Lessons._DOWNLOAD_FINISH);
 //        cursor.close();
-        mObserver.onCollectionDownloaded(collectionId, available);
+        if (mObserver != null) {
+            mObserver.onCollectionDownloaded(collectionId, available);
+        }
         if (!isSynchronizing()) {
             int count = deleteUnusedFiles();
             Log.i(TAG, "delete " + count + " files");
@@ -302,10 +314,12 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
         editor.commit();
     }
 
-
-
     @Override
     public void setUIInterface(AndroidUIInterface a) {
         mUIInterface = a;
+    }
+
+    public void reset(){
+        ApiManager.getInstance(ExerciseApplication.getInstance().getBaseContext()).getSubscriptionManager().reset();
     }
 }

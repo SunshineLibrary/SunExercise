@@ -6,11 +6,11 @@ import org.sunshinelibrary.support.utils.database.DBHandler;
 
 public class MetadataDBHandlerFactory {
 
-    private static final int DB_VERSION = 101;
+    private static final int DB_VERSION = 102;
     private static final String DB_NAME = "metadata";
 
     public static DBHandler newMetadataDBHandler(Context context) {
-        DBHandler dbHandler = new DBHandler(context, DB_NAME, DB_VERSION);
+        ExerciseDBHandler dbHandler = new ExerciseDBHandler(context, DB_NAME, DB_VERSION);
         initNormalTables(dbHandler);
         return dbHandler;
     }
