@@ -291,13 +291,12 @@ jQuery(function () {
             })
 
             app_router.on('route:activity', function (id) {
-                Log.i("activity " + id)
                 Sun.fetch("activity", {id: id}, function (activity) {
-                        currentMaterial = "activity"
+                        currentMaterial = "activity";
                         if (currentMode == MODE.NORMAL) {
                             // activity with problems
                             if (activity.get("type") == 4 || activity.get("type") == 7) {
-                                var completed = true
+                                var completed = true;
                                 for (var i = 0; i < activity.get("problems").length; i++) {
                                     var problem = activity.get("problems").models[i]
                                     if (!problem.isComplete()) {
@@ -327,7 +326,7 @@ jQuery(function () {
                                             }))
                                             setBody(new MultiMediaView({model: activity, media: media}))
                                             reloadPage()
-                                            if(activity.get('type') == 2){
+                                            if (activity.get('type') == 2) {
                                                 Interfaces.deletePlayLog()
                                             }
                                         })
@@ -363,7 +362,7 @@ jQuery(function () {
                                         }))
                                         setBody(new MultiMediaView({model: activity, media: media}))
                                         reloadPage()
-                                        if(activity.get('type') == 2){
+                                        if (activity.get('type') == 2) {
                                             Interfaces.deletePlayLog()
                                         }
                                     })
@@ -476,7 +475,7 @@ jQuery(function () {
                 } else {
                     Log.i("complete multiMedia," + id)
                     activity.complete(null, function () {
-                        if(activity.get('type') == 2){
+                        if (activity.get('type') == 2) {
                             Interfaces.deletePlayLog()
                         }
                         app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
@@ -490,12 +489,11 @@ jQuery(function () {
          * @param self
          */
         choice_select = function (self) {
-            console.log('choice');
             var cid = self.getAttribute('cid');
-            self.style['border-color'] = '#77BB55';
+            self.className = 'thumbnail choice_selected';
             ProblemController.setUserChoice(cid, function (choices, newChoiceId, oldChoice) {
                 if (oldChoice != undefined) {
-                    choices[oldChoice].el.style['border-color'] = 'white';
+                    choices[oldChoice].el.className = 'thumbnail';
                 }
                 ProblemController.submitBtn.style.display = "block";
             });

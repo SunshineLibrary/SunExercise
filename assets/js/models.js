@@ -291,7 +291,7 @@ jQuery(function () {
                 activity.complete(options)
             })
             if (callback != undefined) {
-                eval(callback)()
+                eval(callback)();
             }
         }
     })
@@ -301,7 +301,5 @@ jQuery(function () {
     Media = Backbone.Model.extend({})
 
     Medias = Backbone.Collection.extend({model: Media})
-
-    UserData = Backbone.Model.extend({})
 
 })
