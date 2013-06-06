@@ -733,6 +733,7 @@
         <img class="problem_image" src="<%=media.get('path')%>">
     </div>
     <% } %>
+    <%=JSON.stringify(userdata)%>
 
     <div class="row">
         <ul class="thumbnails" id="choices">
@@ -746,7 +747,9 @@
                     <img src="<%=choice['media'].get('path')%>"/>
                 </div>
                 <% }else{ %>
-                <div id="choice_<%=choice.id%>" cid="<%=choice.id%>" class="thumbnail">
+                <div id="choice_<%=choice.id%>"
+                     cid="<%=choice.id%>"
+                     class="thumbnail <% if(userdata.checked.indexOf(choice.id)==0){ %>choice_selected<% } %>">
                     <img src="<%=choice['media'].get('path')%>"/>
                 </div>
                 <% } %>
