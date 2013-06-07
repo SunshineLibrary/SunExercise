@@ -184,14 +184,12 @@
     <div class="row" id="lesson_row">
         <%
         _.each(monthLesson,function(lesson){
-        userdata = Sun.getuserdata('lesson',lesson.get('id'))
+        userdata = Sun.getuserdata('lesson',lesson.get('id'));
+        var downloaded = lesson.get("download_finish");
+        var pushDay = lesson.get('date');
         %>
 
         <div class="span3">
-            <%
-            var downloaded = lesson.get("download_finish")
-            %>
-
             <div class="well <%=lesson.id%>" id="lesson"
                  style="background-color:<%if(downloaded=='1'){%>#ffffff<%}%>"
                  onclick="<%if(downloaded=='1'){%>window.open('#lesson/'+'<%=lesson.id%>','_self')<%}%>">
@@ -200,11 +198,12 @@
 
                     <div class="pull-right lesson_label">
                         <img class="<%=lesson.id%>" src="img/label_new.png"
-                             style="display:<%if(userdata['entered']!=undefined){%>none<%}%>"/>
+                        style="display:<%if(userdata['entered']!=undefined){%>none<%}%>"/>
 
                         <p class="<%=lesson.id%>"
                            style="display:<%if(downloaded !='1' || userdata['entered']==undefined){%>none<%}%>">
-                            <%=lesson.get("day_week")%></p>
+                            <%=displayDate(pushDay)%>
+                        </p>
                     </div>
                 </div>
 

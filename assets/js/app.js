@@ -8,6 +8,7 @@
 
 jQuery(function () {
         choiceNum = 0
+        DAYS_OF_WEEK = ["日", "一", "二", "三", "四", "五", "六"]
         var AppRouter = Backbone.Router.extend({
             routes: {
                 "": "subjects",
@@ -639,15 +640,33 @@ jQuery(function () {
             }
         }
 
-        waitingDiag = $('#waitingDiag')
+        displayDate = function (pushDay) {
+            var msPERDAY = 1000 * 60 * 60 * 24;
+            var timeZoneDiff = 8 * 1000 * 60 * 60 // (GMT+0800)
+            var today = new Date();
+            var todaySoFar = Math.floor((today.getTime()-timeZoneDiff)/msPERDAY);
+            var pushDaySoFar = Math.floor((pushDay.getTime()-timeZoneDiff)/msPERDAY);
+            var daysBetween = todaySoFar - pushDaySoFar;
 
+            if (daysBetween == 0) {
+                return '今天'
+            }else if ( daysBetween == 1){
+                return '昨天'
+            }else if ( daysBetween >= 2 && daysBetween <= 6){
+                return "星期" + DAYS_OF_WEEK[pushDay.getDay()];
+            }else if ( daysBetween > 6 || daysBetween < 0){
+                return pushDay.getMonth() + 1 + '-' + pushDay.getDate();
+            }
+        }
+
+        waitingDiag = $('#waitingDiag')
         currentMode = MODE.NORMAL
         currentPage = new Page()
         currentPageView = new PageView({model: currentPage, el: $("body")})
 
         initRoute()
 
-    }
+}
 
 
 )
