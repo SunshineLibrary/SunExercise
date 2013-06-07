@@ -45,9 +45,6 @@ public class ProblemChoiceTable extends  CustomizedAbstractTable{
             upgradeToVersion101(db);
             oldVersion = 101;
         }
-        if (oldVersion != newVersion) {
-            throw new IllegalStateException("error upgrading the database to version " + newVersion);
-        }
     }
 
     public void upgradeToVersion101(SQLiteDatabase db) {

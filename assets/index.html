@@ -316,7 +316,7 @@
         </h3>
 
         <div class="problem_body">
-            <%=target.get('body')%>
+            <%-target.get('body')%>
         </div>
         <%
         var media = target.get('media');
@@ -353,7 +353,7 @@
                 <% if(completed){%>disabled<%}%>
                 <% if(shouldCheck){%>checked<%}%>
                 >
-                <strong><%=ANSWERS[i]%>.</strong> <%= target.get('choices')[i].display_text %>
+                <strong><%=ANSWERS[i]%>.</strong> <%- target.get('choices')[i].display_text %>
             </label>
         </div>
         <% } %>
@@ -408,7 +408,7 @@
         </h3>
 
         <div class="problem_body">
-            <%=target.get('body')%>
+            <%-target.get('body')%>
         </div>
         <%
         var media = target.get('media');
@@ -446,7 +446,7 @@
                 name="optionsRadios"
                 <% if(shouldCheck){%>checked<%}%>
                 >
-                <strong><%=ANSWERS[i]%>.</strong> <%= target.get('choices')[i].display_text %>
+                <strong><%=ANSWERS[i]%>.</strong> <%- target.get('choices')[i].display_text %>
             </label>
         </div>
         <% } %>
@@ -508,7 +508,7 @@
                 var completed = (userdata.current == 'EOF')
                 activity_type = activity.get('type')
                 %>
-                <%=target.get("body")%>
+                <%-target.get("body")%>
             </div>
             <%
             var media = target.get('media');
@@ -527,7 +527,7 @@
                        id="answer"
                        placeholder="<%if(completed){%><%=userdata['answer']%><%}else{%>填写答案<%}%>"
                        onfocus="activeSubmitBtn(judgeContent)"
-                       <% if(currentMode != MODE.VIEW_ONLY) { %>disabled<% } %>
+                       <% if(currentMode == MODE.VIEW_ONLY) { %>disabled<% } %>
                 />
             </div>
         </div>
@@ -723,7 +723,7 @@
         <small>（单选题）</small>
     </h3>
     <% } %>
-    <div class="problem_body"><%=content%></div>
+    <div class="problem_body"><%-content%></div>
     <%
     var media = problem.get('media');
     if(typeof media != "undefined"){
@@ -745,7 +745,9 @@
                     <img src="<%=choice['media'].get('path')%>"/>
                 </div>
                 <% }else{ %>
-                <div id="choice_<%=choice.id%>" cid="<%=choice.id%>" class="thumbnail">
+                <div id="choice_<%=choice.id%>"
+                     cid="<%=choice.id%>"
+                     class="thumbnail <% if(userdata.checked.indexOf(choice.id)==0){ %>choice_selected<% } %>">
                     <img src="<%=choice['media'].get('path')%>"/>
                 </div>
                 <% } %>

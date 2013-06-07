@@ -1,38 +1,42 @@
 .thumbnail {
-    display:block;
-    overflow:hidden;
-    height:270px;
+    display: block;
+    overflow: hidden;
+    height: 270px;
     width: 360px;
-    padding:0;
+    padding: 0;
 }
 
-.thumbnail{
-    overflow:hidden;
+.thumbnail {
+    overflow: hidden;
     background-color: white;
-    display:table-cell;
-    vertical-align:middle;
-    border-color:white;
-    border-width:10px;
+    display: table-cell;
+    vertical-align: middle;
+    border-color: white;
+    border-width: 10px;
 }
 
 .thumbnail img {
-    display:block;
-    max-height:100%;
-    max-width:100%;
-    border:0;
+    display: block;
+    max-height: 100%;
+    max-width: 100%;
+    border: 0;
 }
 
-.problem_body{
+.problem_body {
     font-size: 18px;
     margin-top: 10px;
     margin-bottom: 20px;
 }
 
-.choice_body{
-    font-size: 24px;
+.choice_body {
+    font-size: 18px;
 }
 
-.problem_image{
+.choice_selected {
+    border-color: #77BB55;
+}
+
+.problem_image {
     max-width: 900px;
-    margin:10px;
+    margin: 10px;
 }

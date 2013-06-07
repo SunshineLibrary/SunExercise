@@ -97,8 +97,8 @@ jQuery(function () {
                 // web dev mode, request data from sundata server
                 Log.i("[WEB]fetch," + type + "," + JSON.stringify(options))
 
-              mockMaterial = "http://42.121.65.247:9000/api/material"
-//              mockMaterial = "http://127.0.0.1:9000/api/material"
+//              mockMaterial = "http://42.121.65.247:9000/api/material"
+              mockMaterial = "http://127.0.0.1:9000/api/material"
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
                     function (data) {
@@ -233,7 +233,7 @@ jQuery(function () {
         },
 
         setcomplete: function (type, id, options, callback) {
-            userdata = Sun.getuserdata(type, id)
+            var userdata = Sun.getuserdata(type, id)
             userdata['current'] = "EOF"
             if (options != undefined) {
                 $.each(Object.keys(options), function (key, value) {
@@ -265,7 +265,7 @@ jQuery(function () {
         },
 
         iscomplete: function (type, id) {
-            userdata = Sun.getuserdata(type, id)
+            var userdata = Sun.getuserdata(type, id)
             return userdata['current'] == "EOF"
         },
 
