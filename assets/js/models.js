@@ -74,11 +74,10 @@ jQuery(function () {
              }*/
             var somestages = new Stages(options["stages"])
             this.set({
+                date: date,
                 parent_id: options['subject_id'],
-                day_week: "星期" + DAYS_OF_WEEK[date.getDay()],
-                day: date.getDate(),
                 month: date.getMonth() + 1,
-                year: date.getYear() + 1900,
+                year: date.getFullYear(),
                 stages: somestages,
                 userdata: Sun.getuserdata("lesson", options.id)
             })
