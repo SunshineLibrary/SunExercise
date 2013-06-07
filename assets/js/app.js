@@ -642,10 +642,12 @@ jQuery(function () {
 
         displayDate = function (pushDay) {
             var msPERDAY = 1000 * 60 * 60 * 24;
+            var timeZoneDiff = 8 * 1000 * 60 * 60 // (GMT+0800)
             var today = new Date();
-            var todaySoFar = Math.floor(today.getTime()/msPERDAY);
-            var pushDaySoFar = Math.floor(pushDay.getTime()/msPERDAY);
+            var todaySoFar = Math.floor((today.getTime()-timeZoneDiff)/msPERDAY);
+            var pushDaySoFar = Math.floor((pushDay.getTime()-timeZoneDiff)/msPERDAY);
             var daysBetween = todaySoFar - pushDaySoFar;
+
             if (daysBetween == 0) {
                 return '今天'
             }else if ( daysBetween == 1){
