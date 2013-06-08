@@ -390,13 +390,12 @@ jQuery(function () {
         },
 
         openThirdPartyApp: function (path, id, fileType) {
-                $('#nextButton').removeAttr('disabled')
-                if (typeof android == 'undefined') {
-//                    Log.i("[WEB]openThirdPartyApp")
-                } else {
-//                    Log.i("[Android]openThirdPartyApp")
-                    android.openThirdPartyApp(path, fileType)
+            Sun.setcomplete('activity', id, null, function() {
+                $('#nextButton').removeAttr('disabled');
+                if (typeof android != 'undefined') {
+                    android.openThirdPartyApp(path, fileType);
                 }
+            })
         },
 
         deletePlayLog: function () {
