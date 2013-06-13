@@ -1,10 +1,10 @@
-/* 主体样式 */
+/* main style */
 body {
     background-color: #eee;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
-/* 按压背景效果 */
+/* press background
 .btn {
     -webkit-tap-highlight-color: rgba(94,148,67,0.5);
 }
@@ -14,8 +14,8 @@ body {
 #lesson {
     -webkit-tap-highlight-color: rgba(224,224,224,0.5);
 }
-
-/* 顶部header样式 */
+*/
+/* top_banner style */
 .navbar-fixed-top .navbar-inner {
     height: 56px;
     padding-left: 0px;
@@ -36,7 +36,7 @@ body {
     background-color: #444444;
 }
 
-/* container样式 */
+/* container style */
 #content_container {
     margin-top: 76px;
 }

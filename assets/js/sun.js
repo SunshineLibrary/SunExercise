@@ -41,14 +41,15 @@ jQuery(function () {
     }
 
     Sun = {
-        createrequest: function (api, method, type, id, user_data, user_id) {
+        createrequest: function (api, method, type, id, user_data, user_id, path) {
             return {
                 "api": api,
                 "method": method,
                 "param": {
                     "type": type,
                     "id": id,
-                    "user_data": user_data
+                    "user_data": user_data,
+                    "path": path
                 },
                 "user_id": user_id
             }
@@ -389,11 +390,12 @@ jQuery(function () {
             $("#nextButton").removeAttr("disabled")
         },
 
-        openThirdPartyApp: function (path, id, fileType) {
+        openMultiMediaFile: function (path, id, fileType) {
             Sun.setcomplete('activity', id, null, function() {
                 $('#nextButton').removeAttr('disabled');
+                var req = Sun.createrequest("open", undefined, fileType, id, undefined, undefined, path)
                 if (typeof android != 'undefined') {
-                    android.openThirdPartyApp(path, fileType);
+                    android.openMultiMediaFile(JSON.stringify(req));
                 }
             })
         },

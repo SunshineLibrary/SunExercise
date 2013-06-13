@@ -112,9 +112,9 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
     }
 
     @Override
-    public void openThirdPartyApp(String path, String type) {
+    public void openMultiMediaFile(String req) {
         if (mUIInterface != null){
-            mUIInterface.openThirdPartyApp(path, type);
+            mUIInterface.openMultiMediaFile(req);
         }
     }
 
