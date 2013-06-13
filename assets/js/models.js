@@ -17,9 +17,9 @@ jQuery(function () {
         COMPLETE: 'complete'
     }
 
-    Page = Backbone.Model.extend()
-
     DAYS_OF_WEEK = ["日", "一", "二", "三", "四", "五", "六"]
+
+    Page = Backbone.Model.extend()
 
     ANSWERS = {}
     for (var i = 0; i < 25; i++) {
@@ -74,14 +74,32 @@ jQuery(function () {
              }*/
             var somestages = new Stages(options["stages"])
             this.set({
+                date: date,
                 parent_id: options['subject_id'],
-                day_week: "星期" + DAYS_OF_WEEK[date.getDay()],
-                day: date.getDate(),
                 month: date.getMonth() + 1,
-                year: date.getYear() + 1900,
+                year: date.getFullYear(),
                 stages: somestages,
                 userdata: Sun.getuserdata("lesson", options.id)
             })
+        },
+
+        displayDate: function (pushDay) {
+            var msPERDAY = 1000 * 60 * 60 * 24;
+            var timeZoneDiff = 8 * 1000 * 60 * 60 // (GMT+0800)
+            var today = new Date();
+            var todaySoFar = Math.floor((today.getTime()-timeZoneDiff)/msPERDAY);
+            var pushDaySoFar = Math.floor((pushDay.getTime()-timeZoneDiff)/msPERDAY);
+            var daysBetween = todaySoFar - pushDaySoFar;
+
+            if (daysBetween == 0) {
+                return '今天'
+            }else if ( daysBetween == 1){
+                return '昨天'
+            }else if ( daysBetween >= 2 && daysBetween <= 6){
+                return "星期" + DAYS_OF_WEEK[pushDay.getDay()];
+            }else if ( daysBetween > 6 || daysBetween < 0){
+                return pushDay.getMonth() + 1 + '-' + pushDay.getDate();
+            }
         }
     })
     Lessons = Backbone.Collection.extend({

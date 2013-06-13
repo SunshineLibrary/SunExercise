@@ -265,15 +265,9 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     }
 
     @Override
-    public void openThirdPartyApp(String path, String type){
+    public void openMultiMediaFile(String req){
         Proxy p = new Proxy();
-        Request req = new Request();
-        req.api = Request.OPEN;
-        req.method = Request.UNKNOWN;
-        req.user_id = Request.UNKNOWN;
-        req.param.type = type;
-        req.param.path = path;
-        p.requestData(req.toJsonString());
+        p.requestData(req);
     }
 
 

@@ -41,14 +41,15 @@ jQuery(function () {
     }
 
     Sun = {
-        createrequest: function (api, method, type, id, user_data, user_id) {
+        createrequest: function (api, method, type, id, user_data, user_id, path) {
             return {
                 "api": api,
                 "method": method,
                 "param": {
                     "type": type,
                     "id": id,
-                    "user_data": user_data
+                    "user_data": user_data,
+                    "path": path
                 },
                 "user_id": user_id
             }
@@ -97,8 +98,8 @@ jQuery(function () {
                 // web dev mode, request data from sundata server
                 Log.i("[WEB]fetch," + type + "," + JSON.stringify(options))
 
-//              mockMaterial = "http://42.121.65.247:9000/api/material"
-              mockMaterial = "http://127.0.0.1:9000/api/material"
+              mockMaterial = "http://42.121.65.247:9000/api/material"
+//              mockMaterial = "http://127.0.0.1:9000/api/material"
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
                     function (data) {
@@ -314,7 +315,7 @@ jQuery(function () {
 
         onCollectionProgress: function (collectionId, percentage) {
             console.log("onCollectionProgress," + collectionId + "," + percentage);
-            changeDownloadProgress(collectionId, percentage*100)
+            changeDownloadProgress(collectionId, percentage*100);
         },
 
         onCollectionDownloaded: function (lessonId, downloaded) {
@@ -389,14 +390,14 @@ jQuery(function () {
             $("#nextButton").removeAttr("disabled")
         },
 
-        openThirdPartyApp: function (path, id, fileType) {
-                $('#nextButton').removeAttr('disabled')
-                if (typeof android == 'undefined') {
-//                    Log.i("[WEB]openThirdPartyApp")
-                } else {
-//                    Log.i("[Android]openThirdPartyApp")
-                    android.openThirdPartyApp(path, fileType)
+        openMultiMediaFile: function (path, id, fileType) {
+            Sun.setcomplete('activity', id, null, function() {
+                $('#nextButton').removeAttr('disabled');
+                var req = Sun.createrequest("open", undefined, fileType, id, undefined, undefined, path)
+                if (typeof android != 'undefined') {
+                    android.openMultiMediaFile(JSON.stringify(req));
                 }
+            })
         },
 
         deletePlayLog: function () {

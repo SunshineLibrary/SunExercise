@@ -311,11 +311,6 @@ jQuery(function () {
                                     })
                                 }
                             } else if (activity.get("type") == 2 || activity.get('type') == 6) {
-                                if (activity.get('type') == 6 && Sun.iscomplete('activity', id)) {
-                                    activity.complete(null, function () {
-                                        app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
-                                    })
-                                } else {
                                     var media = Sun.getmedia(activity.get('media_id'))
                                     Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
                                         Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
@@ -331,7 +326,6 @@ jQuery(function () {
                                             }
                                         })
                                     })
-                                }
                             } else {
                                 Log.i("unsupported activity")
                             }
@@ -640,14 +634,13 @@ jQuery(function () {
         }
 
         waitingDiag = $('#waitingDiag')
-
         currentMode = MODE.NORMAL
         currentPage = new Page()
         currentPageView = new PageView({model: currentPage, el: $("body")})
 
         initRoute()
 
-    }
+}
 
 
 )

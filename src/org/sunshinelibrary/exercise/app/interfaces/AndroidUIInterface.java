@@ -12,7 +12,7 @@ public interface AndroidUIInterface {
 
     public void onReady();
 
-    public void openThirdPartyApp(String path, String type);
+    public void openMultiMediaFile(String req);
 
     public void deletePlayLog();
 }
