@@ -1,0 +1,57 @@
+.circle_wrap {
+    margin: auto;
+    width: 700px;
+}
+
+.circle_wrap .line {
+    margin-top: 160px;
+    float: left;
+}
+
+.stage_circle {
+    position: relative;
+    background-repeat: no-repeat;
+    font-family: Future;
+    float: left;
+}
+
+/*done circles*/
+.circle_0 img {
+    margin-top: 79px;
+}
+
+.circle_0 p {
+    font-style: italic;
+    font-size: 36pt;
+    color: #E8BAA3;
+    top: 117px;
+    left: 69px;
+    position: absolute;
+}
+
+/*just unlocked circles*/
+.circle_1 img {
+    margin-top: 59px;
+}
+
+.circle_1 p {
+    font-style: italic;
+    font-size: 48pt;
+    color: #E8BAA3;
+    left: 82px;
+    top: 107px;
+    position: absolute;
+}
+
+/*locked circles*/
+.circle_2 img {
+    margin-top: 81px;
+}
+
+.circle_2 p {
+    font-size: 30pt;
+    left: 72px;
+    top: 103px;
+    position: absolute;
+    color: rgb(51, 51, 51);
+}

@@ -1,12 +1,8 @@
 .thumbnail {
-    display: block;
     overflow: hidden;
     height: 270px;
     width: 360px;
     padding: 0;
-}
-
-.thumbnail {
     overflow: hidden;
     background-color: white;
     display: table-cell;

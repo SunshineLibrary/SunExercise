@@ -1,3 +1,7 @@
+.tile {
+    margin-bottom: 20px;
+}
+
 .summary-warp {
     position: absolute;
     left: 0px;

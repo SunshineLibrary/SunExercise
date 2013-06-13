@@ -97,8 +97,8 @@ jQuery(function () {
                 // web dev mode, request data from sundata server
                 Log.i("[WEB]fetch," + type + "," + JSON.stringify(options))
 
-//              mockMaterial = "http://42.121.65.247:9000/api/material"
-              mockMaterial = "http://127.0.0.1:9000/api/material"
+              mockMaterial = "http://42.121.65.247:9000/api/material"
+//              mockMaterial = "http://127.0.0.1:9000/api/material"
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
                     function (data) {
@@ -314,7 +314,7 @@ jQuery(function () {
 
         onCollectionProgress: function (collectionId, percentage) {
             console.log("onCollectionProgress," + collectionId + "," + percentage);
-            changeDownloadProgress(collectionId, percentage*100)
+            changeDownloadProgress(collectionId, percentage*100);
         },
 
         onCollectionDownloaded: function (lessonId, downloaded) {
