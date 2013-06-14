@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
 
@@ -26,6 +27,7 @@ import org.sunshinelibrary.support.utils.JSONStringBuilder;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileDescriptor;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
@@ -43,6 +45,7 @@ public class Request extends JSONObject {
     public static final String USER_DATA = "user_data";
     public static final String OPEN = "open";
     public static final String PDF = "pdf";
+    public static final String AUDIO = "audio";
     public static final String UNKNOWN = "unknown";
     public static final String USER_INFO = "user_info";
     public static final String SUBJECTS = "subjects";
@@ -61,8 +64,8 @@ public class Request extends JSONObject {
     }
 
     public String request() {
-        if(api.equals(USER_DATA)) {
-            if(method.equals(POST)) {
+        if (api.equals(USER_DATA)) {
+            if (method.equals(POST)) {
                 return uploadUserRecord();
             } else if (method.equals(GET)) {
                 return queryUserRecord(UserDataTable.TABLE_NAME, UserData._USER_DATA, UserData._STRING_ID);
@@ -70,9 +73,9 @@ public class Request extends JSONObject {
                 Log.e(TAG, "wrong param.type: " + param.type);
                 return EMPTY;
             }
-        } else if(api.equals(OPEN)) {
+        } else if (api.equals(OPEN)) {
             return open();
-        } else if(param.type.equals(SUBJECTS)) {
+        } else if (param.type.equals(SUBJECTS)) {
             return queryCollection(SubjectTable.TABLE_NAME, "subjects");
         } else if (param.type.equals("subject")) {
             return querySingeFatherAndItsChildren(SubjectTable.TABLE_NAME, LessonTable.TABLE_NAME, "lessons",
@@ -114,7 +117,7 @@ public class Request extends JSONObject {
         return user_data;
     }
 
-    protected String queryCollection(String table, String collectionName){
+    protected String queryCollection(String table, String collectionName) {
         JSONStringBuilder jsb = new JSONStringBuilder().startObject();
         Cursor cursor = mResolver.query(AUTHORITY_URI.buildUpon().appendPath(table).build(), null, null, null, null);
         jsb.appendTableField(cursor, null, collectionName);
@@ -137,7 +140,7 @@ public class Request extends JSONObject {
     }
 
     protected String querySingeFatherAndItsChildren(String fatherTable, String childTable, String childKeyName,
-        String fatherColumn, String childColumn, String fatherId, String sortOrder) {
+                                                    String fatherColumn, String childColumn, String fatherId, String sortOrder) {
         String[] selectionArgs = new String[]{fatherId};
         Cursor father = mResolver.query(AUTHORITY_URI.buildUpon().appendPath(fatherTable).build(),
                 null, fatherColumn + "=?", selectionArgs, null);
@@ -197,11 +200,11 @@ public class Request extends JSONObject {
         }
         cursor.close();
         ApiManager.getInstance(ExerciseApplication.getInstance().getBaseContext()).getUserRecordUploader()
-            .uploadRecord(param.toJsonString());
+                .uploadRecord(param.toJsonString());
         return UserRecordResponse.SUCCESS;
     }
 
-    protected String queryUserInfo(){
+    protected String queryUserInfo() {
         Context context;
         try {
             context = ExerciseApplication.getInstance().getBaseContext().createPackageContext(
@@ -216,21 +219,26 @@ public class Request extends JSONObject {
         return response.toJsonString();
     }
 
-    protected String open(){
+    protected String open() {
         Context context = ExerciseApplication.getInstance().getBaseContext();
+        if (param.type.equals(PDF)) {
+            Intent intent = new Intent("android.intent.action.VIEW");
+            intent.addCategory("android.intent.category.DEFAULT");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            Uri uri = Uri.fromFile(new File(param.path));
+            intent.setDataAndType(uri, "application/" + param.type);
 
-        Intent intent = new Intent("android.intent.action.VIEW");
-        intent.addCategory("android.intent.category.DEFAULT");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Uri uri = Uri.fromFile(new File(param.path));
-        intent.setDataAndType(uri, "application/"+param.type);
-
-        try {
-            context.startActivity(intent);
-            return OpenResponse.SUCCESS;
-        } catch (Exception e) {
-            Toast.makeText(context, R.string.noAppCanDoThis, Toast.LENGTH_LONG).show();
-            return OpenResponse.notFound(param.type);
+            try {
+                context.startActivity(intent);
+                return OpenResponse.SUCCESS;
+            } catch (Exception e) {
+                Toast.makeText(context, R.string.noAppCanDoThis, Toast.LENGTH_LONG).show();
+                return OpenResponse.NOT_PDF_READER_FOUND;
+            }
+        } else if (param.type.equals(AUDIO)) {
+            return ExerciseApplication.getInstance().getSyncManager().playAudio(param.id, param.path);
+        } else {
+            return OpenResponse.NOT_SUPPORTED;
         }
     }
 }

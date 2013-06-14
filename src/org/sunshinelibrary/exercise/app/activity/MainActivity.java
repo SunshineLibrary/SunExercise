@@ -26,6 +26,7 @@ import org.sunshinelibrary.exercise.app.interfaces.WebInteraction;
 import org.sunshinelibrary.exercise.app.service.NotificationService;
 import org.sunshinelibrary.exercise.app.ui.HTML5WebView;
 import org.sunshinelibrary.exercise.metadata.TestCase;
+import org.sunshinelibrary.exercise.metadata.json.OpenResponse;
 import org.sunshinelibrary.exercise.metadata.json.Request;
 import org.sunshinelibrary.exercise.metadata.sync.Proxy;
 import org.sunshinelibrary.support.Library;
@@ -48,6 +49,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     private static final int MENU_RELOAD = 40;
     private static final int MENU_VIDEO = 41;
     private static final int MENU_PDF = 42;
+    private static final int MENU_AUDIO = 43;
 
     private static final String TAG = "Main";
     private static final String ASSETS = "file:///android_asset/";
@@ -60,6 +62,8 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     private boolean mSignIn = false;
     private boolean mLoadReady = false;
 
+    MediaPlayer mAudioPlayer;
+
     /**
      * Called when the activity is first created.
      */
@@ -67,6 +71,8 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+
+        mAudioPlayer = new MediaPlayer();
 
         mLinearLayout = (LinearLayout) findViewById(R.id.web);
         mWebView = new HTML5WebView(this);
@@ -132,9 +138,9 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
             Log.i(TAG, "onResume Exercise");
         }
         Log.i(TAG, "onResume Exercise LibraryVersion:" + Library.getLibraryVersion());
-        if (mSignIn && mLoadReady)
+        if (mSignIn && mLoadReady) {
             mInterface.autoSync();
-
+        }
     }
 
 
@@ -153,6 +159,9 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
         super.onPause();
         if (mWebView.inCustomView()) {
             mWebView.hideCustomView();
+        }
+        if (mAudioPlayer.isPlaying()) {
+            mAudioPlayer.stop();
         }
     }
 
@@ -175,6 +184,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
             menu.add(0, MENU_RELOAD, 0 , "Reload");
             menu.add(0, MENU_DUMP, 0 , "Dump");
             menu.add(0, MENU_PDF, 0 , "Pdf");
+            menu.add(0, MENU_AUDIO, 0, "Audio");
             menu.add(0, MENU_VIDEO, 0, "Video");
             menu.add(1, MENU_SYNC, 0, "Sync");
             menu.add(1, MENU_DOWNLOAD, 0, "Download");
@@ -221,6 +231,9 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
             case MENU_PDF:
                 new TestCase().start(TestCase.PDF);
                 return true;
+            case MENU_AUDIO:
+                new TestCase().start(TestCase.AUDIO);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -265,7 +278,35 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     }
 
     @Override
+    public String playAudio(final String id, String path) {
+        mAudioPlayer.reset();
+        try {
+            mAudioPlayer.setDataSource(this, Uri.fromFile(new File(path)));
+            mAudioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer player) {
+                    Log.i(TAG, "video complete");
+                    player.stop();
+                    mInteraction.onAudioComplete(id);
+                }
+            });
+            mAudioPlayer.prepare();
+            mAudioPlayer.start();
+        } catch (Exception e) {
+            return OpenResponse.FAILED;
+        }
+        return OpenResponse.SUCCESS;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mAudioPlayer.release();
+    }
+
+    @Override
     public void openMultiMediaFile(String req){
+
         Proxy p = new Proxy();
         p.requestData(req);
     }

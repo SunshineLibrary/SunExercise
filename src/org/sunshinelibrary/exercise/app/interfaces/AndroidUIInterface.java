@@ -15,4 +15,6 @@ public interface AndroidUIInterface {
     public void openMultiMediaFile(String req);
 
     public void deletePlayLog();
+
+    public String playAudio(String id, String path);
 }

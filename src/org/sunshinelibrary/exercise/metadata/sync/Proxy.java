@@ -14,6 +14,7 @@ import org.sunshinelibrary.exercise.app.interfaces.AndroidUIInterface;
 
 import static org.sunshinelibrary.exercise.metadata.MetadataContract.Lessons;
 
+import org.sunshinelibrary.exercise.metadata.json.OpenResponse;
 import org.sunshinelibrary.exercise.metadata.json.Request;
 import org.sunshinelibrary.exercise.metadata.operation.CheckAvailableOperation;
 import org.sunshinelibrary.exercise.metadata.operation.ExerciseOperation;
@@ -123,6 +124,16 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
         if(mUIInterface != null)
         mUIInterface.deletePlayLog();
     }
+
+    @Override
+    public String playAudio(String id, String path) {
+        if(mUIInterface != null) {
+            return mUIInterface.playAudio(id, path);
+        } else {
+            return OpenResponse.FAILED;
+        }
+    }
+
     @Override
     public boolean autoSync() {
         boolean sync = timeToSync();

@@ -97,4 +97,11 @@ public class WebInteraction implements SyncObserver{
             public void run() { mWebView.loadUrl("javascript:Interfaces.onVideoComplete('" + id + "')");}
         });
     }
+
+    public void onAudioComplete(final String id){
+        mActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() { mWebView.loadUrl("javascript:Interfaces.onAudioComplete('" + id + "')");}
+        });
+    }
 }
