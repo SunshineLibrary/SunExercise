@@ -15,4 +15,6 @@ public interface AndroidUIInterface {
     public void openThirdPartyApp(String path, String type);
 
     public void deletePlayLog();
+
+    public String playAudio(String id, String path);
 }

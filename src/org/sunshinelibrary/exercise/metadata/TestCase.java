@@ -50,6 +50,7 @@ public class TestCase extends Thread{
     public static final int DUMP = 5;
     public static final int CLEAN_USER_DATA = 6;
     public static final int PDF = 7;
+    public static final int AUDIO = 8;
 
     static int command = RUN_CASE;
 
@@ -88,6 +89,9 @@ public class TestCase extends Thread{
                 break;
             case PDF:
                 openPdf();
+                break;
+            case AUDIO:
+                openAudio();
                 break;
             default:
                 throw new RuntimeException("illegal argument");
@@ -714,6 +718,17 @@ public class TestCase extends Thread{
         req.user_id = Request.UNKNOWN;
         req.param.type = Request.PDF;
         req.param.path = "/mnt/sdcard/test/test.pdf";
+        p.requestData(req.toJsonString());
+    }
+
+    public static void openAudio(){
+        Proxy p = new Proxy();
+        Request req = new Request();
+        req.api = Request.OPEN;
+        req.method = Request.UNKNOWN;
+        req.user_id = Request.UNKNOWN;
+        req.param.type = Request.AUDIO;
+        req.param.path = "/mnt/sdcard/test/test.mp3";
         p.requestData(req.toJsonString());
     }
 }
