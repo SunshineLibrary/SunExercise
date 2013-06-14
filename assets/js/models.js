@@ -276,7 +276,7 @@ jQuery(function () {
                     this.set({
                         correct_answers: correct_answers
                     })
-                } else if (type == '0' || type == '1') {
+                } else if (type == '0' || type == '1' || type == '3') {
                     var correct_answers = []
                     for (var i = 0; i < this.get('choices').length; i++) {
                         var choice = this.get('choices')[i]
