@@ -137,8 +137,10 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
     @Override
     public boolean autoSync() {
         boolean sync = timeToSync();
-        if (sync)
+        if (sync) {
+            updatedSyncTime();
             sync();
+        }
         return sync;
     }
 
