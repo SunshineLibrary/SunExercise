@@ -397,7 +397,9 @@ jQuery(function () {
         },
 
         stopAudio: function () {
-            android.stopAudio();
+            if (!WEB_DEV_MODE) {
+                android.stopAudio();
+            }
         },
 
         openThirdPartyApp: function (path, id, fileType) {
