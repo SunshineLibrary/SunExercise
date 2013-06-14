@@ -17,7 +17,6 @@
 
     <script type="text/x-mathjax-config">
         MathJax.Hub.Config({
-        config: ["MMLorHTML.js"],
         jax: ["input/AsciiMath","output/HTML-CSS"],
         extensions: ["asciimath2jax.js"],
         });
@@ -319,12 +318,27 @@
         <div class="problem_body">
             <%-target.get('body')%>
         </div>
+
         <%
         var media = target.get('media');
         if(typeof media != "undefined"){
+        var mediaType = media.get("type");
         %>
-        <div id="problem_img">
-            <img class="problem_image" src="<%=media.get('path')%>">
+        <div>
+            <% if(mediaType == "image"){ %>
+            <div id="problem_img">
+                <img class="problem_image" src="<%=media.get('path')%>">
+            </div>
+            <%
+            }else if(mediaType == "audio"){
+            var mediaPath = media.get("path");
+            %>
+            <div id="problem_audio">
+                <img id="problem_audio_img" src="img/audio_static.png" onclick="playAudio('<%=mediaPath%>')"/>
+            </div>
+            <% }else{ %>
+            <div>抱歉，尚不支持该类型媒体</div>
+            <% } %>
         </div>
         <% } %>
 
@@ -411,12 +425,27 @@
         <div class="problem_body">
             <%-target.get('body')%>
         </div>
+
         <%
         var media = target.get('media');
         if(typeof media != "undefined"){
+        var mediaType = media.get("type");
         %>
-        <div id="problem_img">
-            <img class="problem_image" src="<%=media.get('path')%>">
+        <div>
+            <% if(mediaType == "image"){ %>
+            <div id="problem_img">
+                <img class="problem_image" src="<%=media.get('path')%>">
+            </div>
+            <%
+            }else if(mediaType == "audio"){
+            var mediaPath = media.get("path");
+            %>
+            <div id="problem_audio">
+                <img id="problem_audio_img" src="img/audio_static.png" onclick="playAudio('<%=mediaPath%>')"/>
+            </div>
+            <% }else{ %>
+            <div>抱歉，尚不支持该类型媒体</div>
+            <% } %>
         </div>
         <% } %>
 
@@ -511,14 +540,30 @@
                 %>
                 <%-target.get("body")%>
             </div>
+
             <%
             var media = target.get('media');
             if(typeof media != "undefined"){
+            var mediaType = media.get("type");
             %>
-            <div id="problem_img">
-                <img class="problem_image" src="<%=media.get('path')%>">
+            <div>
+                <% if(mediaType == "image"){ %>
+                <div id="problem_img">
+                    <img class="problem_image" src="<%=media.get('path')%>">
+                </div>
+                <%
+                }else if(mediaType == "audio"){
+                var mediaPath = media.get("path");
+                %>
+                <div id="problem_audio">
+                    <img id="problem_audio_img" src="img/audio_static.png" onclick="playAudio('<%=mediaPath%>')"/>
+                </div>
+                <% }else{ %>
+                <div>抱歉，尚不支持该类型媒体</div>
+                <% } %>
             </div>
             <% } %>
+
         </div>
 
         <div class="row">
@@ -528,7 +573,7 @@
                        id="answer"
                        placeholder="<%if(completed){%><%=userdata['answer']%><%}else{%>填写答案<%}%>"
                        onfocus="activeSubmitBtn(judgeContent)"
-                       <% if(currentMode == MODE.VIEW_ONLY) { %>disabled<% } %>
+                <% if(currentMode == MODE.VIEW_ONLY) { %>disabled<% } %>
                 />
             </div>
         </div>
@@ -682,7 +727,7 @@
     </video>
     <%}else{%>
     <img class="btn_pdf" src="img/btn_pdf.png" style="width:auto; height:auto;margin-top:70px"
-         onclick="Interfaces.openThirdPartyApp('<%=pdfPath%>','<%=id%>','<%=fileType%>')"/>
+         onclick="playPdf('<%=pdfPath%>','<%=id%>','<%=fileType%>')"/>
     <%}%>
     <div style="text-align: center;margin-top:30px">
         <!--<button class="btn btn-large" onclick="Interfaces.onVideoComplete('123')">看完啦</button>-->
@@ -742,7 +787,8 @@
             %>
             <li class="span5">
                 <% if(currentMode != MODE.VIEW_ONLY){ %>
-                <div id="choice_<%=choice.id%>" cid="<%=choice.id%>" class="thumbnail" onclick="choice_select(this,true)">
+                <div id="choice_<%=choice.id%>" cid="<%=choice.id%>" class="thumbnail"
+                     onclick="choice_select(this,true)">
                     <img src="<%=choice['media'].get('path')%>"/>
                 </div>
                 <% }else{ %>

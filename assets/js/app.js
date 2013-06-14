@@ -133,6 +133,7 @@ jQuery(function () {
 
         function reloadPage() {
             currentPageView.render();
+            Interfaces.stopAudio();
         }
 
 
@@ -428,16 +429,15 @@ jQuery(function () {
                 })
             })
 
-            currentSubject = undefined
-            currentLesson = undefined
-            currentMaterial = undefined
+            currentSubject = undefined;
+            currentLesson = undefined;
+            currentMaterial = undefined;
 
-            Backbone.history.start()
+            Backbone.history.start();
 
-            Interfaces.onReady()
+            Interfaces.onReady();
 
             viewStage = function (id) {
-                Log.i('view statge,' + id)
                 currentMode = MODE.VIEW_ONLY
                 app_router.navigate("stage/" + id, {trigger: true, replace: true})
             }
@@ -639,11 +639,33 @@ jQuery(function () {
             }
         }
 
-        waitingDiag = $('#waitingDiag')
+        playPdf = function (path, id) {
+            $('#nextButton').removeAttr('disabled');
+            Interfaces.openThirdPartyApp(path, id, "pdf");
+        }
 
-        currentMode = MODE.NORMAL
-        currentPage = new Page()
-        currentPageView = new PageView({model: currentPage, el: $("body")})
+        playVideo = function (path, id) {
+        }
+
+        playAudio = function (mediaPath) {
+            console.log('playAudio,'+mediaPath);
+            $("#problem_audio_img").attr("src", "img/audio_dynamic.gif");
+            if (WEB_DEV_MODE) {
+                alert("play audio");
+            } else {
+                Interfaces.openThirdPartyApp(mediaPath, undefined, "audio");
+            }
+        }
+
+        onAudioStop = function (id){
+            $("#problem_audio_img").attr("src", "img/audio_static.png");
+        }
+
+        waitingDiag = $('#waitingDiag');
+
+        currentMode = MODE.NORMAL;
+        currentPage = new Page();
+        currentPageView = new PageView({model: currentPage, el: $("body")});
 
         initRoute()
 

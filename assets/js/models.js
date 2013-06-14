@@ -256,8 +256,17 @@ jQuery(function () {
             })
             var media_id = options['media_id'];
             if (media_id != undefined && media_id != "") {
+                var mediaContent = Sun.getmedia(media_id);
+                var mediaPath = mediaContent.get('path');
+                if (mediaPath.endsWith(".mp3")) {
+                    mediaContent.set({type: "audio"});
+                } else if (mediaPath.endsWith(".png") || mediaPath.endsWith(".jpg")) {
+                    mediaContent.set({type: "image"});
+                } else {
+                    console.log('Unsupport media file,' + mediaPath);
+                }
                 this.set({
-                    media: Sun.getmedia(media_id)
+                    media: mediaContent
                 })
             }
             if (this.get('choices') != undefined) {
