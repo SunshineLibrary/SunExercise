@@ -135,6 +135,12 @@ public class Proxy implements AndroidInterface, SubscriptionDataListener {
     }
 
     @Override
+    public void stopAudio() {
+        if (mUIInterface != null)
+            mUIInterface.stopAudio();
+    }
+
+    @Override
     public boolean autoSync() {
         boolean sync = timeToSync();
         if (sync) {

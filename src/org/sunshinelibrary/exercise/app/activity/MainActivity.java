@@ -62,7 +62,19 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     private boolean mSignIn = false;
     private boolean mLoadReady = false;
 
-    MediaPlayer mAudioPlayer;
+    public class MyMediaPlayer extends MediaPlayer {
+        public String id;
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getId() {
+            return id;
+        }
+    }
+
+    private MyMediaPlayer mAudioPlayer;
 
     /**
      * Called when the activity is first created.
@@ -72,7 +84,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        mAudioPlayer = new MediaPlayer();
+        mAudioPlayer = new MyMediaPlayer();
 
         mLinearLayout = (LinearLayout) findViewById(R.id.web);
         mWebView = new HTML5WebView(this);
@@ -159,9 +171,6 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
         super.onPause();
         if (mWebView.inCustomView()) {
             mWebView.hideCustomView();
-        }
-        if (mAudioPlayer.isPlaying()) {
-            mAudioPlayer.stop();
         }
     }
 
@@ -280,14 +289,14 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
     @Override
     public String playAudio(final String id, String path) {
         mAudioPlayer.reset();
+        mAudioPlayer.setId(id);
         try {
             mAudioPlayer.setDataSource(this, Uri.fromFile(new File(path)));
             mAudioPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer player) {
                     Log.i(TAG, "video complete");
-                    player.stop();
-                    mInteraction.onAudioComplete(id);
+                    stopAudio();
                 }
             });
             mAudioPlayer.prepare();
@@ -296,6 +305,14 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
             return OpenResponse.FAILED;
         }
         return OpenResponse.SUCCESS;
+    }
+
+    @Override
+    public void stopAudio(){
+        if (mAudioPlayer.isPlaying()) {
+            mAudioPlayer.stop();
+            mInteraction.onAudioComplete(mAudioPlayer.getId());
+        }
     }
 
     @Override

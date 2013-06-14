@@ -17,4 +17,6 @@ public interface AndroidUIInterface {
     public void deletePlayLog();
 
     public String playAudio(String id, String path);
+
+    public void stopAudio();
 }
