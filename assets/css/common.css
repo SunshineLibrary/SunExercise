@@ -1,0 +1,42 @@
+/* main style */
+body {
+    background-color: #eee;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+/* press background
+.btn {
+    -webkit-tap-highlight-color: rgba(94,148,67,0.5);
+}
+
+.btn_pdf,
+.icon,
+#lesson {
+    -webkit-tap-highlight-color: rgba(224,224,224,0.5);
+}
+*/
+/* top_banner style */
+.navbar-fixed-top .navbar-inner {
+    height: 56px;
+    padding-left: 0px;
+    background-color: #444444;
+    box-shadow: none;
+    border-bottom: 1px solid #333333;
+}
+
+/*.navbar-fixed-top .navbar-inner .container {
+    display: inline;
+    width: auto;
+}*/
+
+.nav-collapse.collapse {
+    height: 56px;
+    overflow: visible;
+    padding-left: 0px;
+    background-color: #444444;
+}
+
+/* container style */
+#content_container {
+    margin-top: 76px;
+}

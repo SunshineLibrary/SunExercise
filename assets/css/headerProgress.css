@@ -16,7 +16,7 @@
 .progress_dart .progress_arrow {
     position: absolute; top: 0px; right: -15px; z-index: 10;
     height: inherit; width: 15px;
-    background: url('Progressbar_Arrow_Greybg.png') no-repeat;
+    background: url('../img/headerProgress/Progressbar_Arrow_Greybg.png') no-repeat;
 }
 
 .dart_done {
@@ -24,7 +24,7 @@
 }
 
 .dart_done .progress_arrow {
-    background: url('Progressbar_Arrow_Done.png') no-repeat;
+    background: url('../img/headerProgress/Progressbar_Arrow_Done.png') no-repeat;
 }
 
 .progress_gauge {
@@ -34,7 +34,7 @@
 }
 
 .progress_gauge .progress_arrow {
-    background: url('Progressbar_Arrow_Ongoing.png') no-repeat;
+    background: url('../img/headerProgress/Progressbar_Arrow_Ongoing.png') no-repeat;
 }
 
 .progress_icon {
@@ -52,23 +52,23 @@
 }
 
 .star_on {
-    background-image: url('Progressbar_Star_On.png');
+    background-image: url('../img/headerProgress/Progressbar_Star_On.png');
 }
 
 .star_off {
-    background-image: url('Progressbar_Star_Off.png');
+    background-image: url('../img/headerProgress/Progressbar_Star_Off.png');
 }
 
 
 .diagnose_on {
-    background-image: url('Progressbar_Diagnose_On.png');
+    background-image: url('../img/headerProgress/Progressbar_Diagnose_On.png');
 }
 
 .diagnose_off {
-    background-image: url('Progressbar_Diagnose_Off.png');
+    background-image: url('../img/headerProgress/Progressbar_Diagnose_Off.png');
 }
 
 .dart_done [class*="progress_arrow"]:last-child{
     right:-30px;
-    background: url('Progressbar_Arrow_Ongoing.png') no-repeat;
+    background: url('../img/headerProgress/Progressbar_Arrow_Ongoing.png') no-repeat;
 }

@@ -1,0 +1,95 @@
+/* Single Choice */
+.single-choice {
+    margin: 0 auto;
+    width: 904px;
+}
+
+.single-choice p {
+    font-size: 18px;
+    color: #555;
+}
+
+.question {
+    line-height: 20px;
+    margin-bottom: 20px;
+}
+
+.quest-type {
+    color: #999;
+}
+
+.palette {
+    padding: 16px 0;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+}
+
+.palette .radio .checkbox {
+    padding-left: 0;
+}
+
+.even {
+    background-color: #fff;
+}
+
+.odd {
+    background-color: #E0E0E0;
+    box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.1);
+    -webkit-box-shadow: inset 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+
+.checkbox input[type="checkbox"].answer {
+    margin: 4px 16px;
+}
+
+.radio input[type="radio"].answer {
+    margin: 4px 16px;
+}
+
+#submit_answer {
+    background: #77BB55;
+    width: 110px;
+    padding: 13px 19px;
+}
+
+#next-question {
+    width: 110px;
+    height: 24px;
+    background: #77bb55;
+    color: #fff;
+    font-size: 18px;
+    text-shadow: none;
+    text-align: center;
+}
+
+.result {
+    overflow: hidden;
+    margin-top: 30px;
+}
+
+#grading_result {
+    font-size: 24px;
+    color: #DD6622;
+    margin-top: 10px;
+}
+
+#input[type="text"].answer {
+    width: 735px;
+    height: 38px;
+    border-color: #77bb55;
+    margin: 0 10px 0 0;
+    padding: 0;
+}
+
+.wrap-text {
+    word-wrap: break-word;
+}
+
+.single_fill_form input[type="text"] {
+    height: 50px;
+    font-size: 18px;
+    line-height: 22px;
+}
