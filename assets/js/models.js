@@ -274,8 +274,17 @@ jQuery(function () {
             })
             var media_id = options['media_id'];
             if (media_id != undefined && media_id != "") {
+                var mediaContent = Sun.getmedia(media_id);
+                var mediaPath = mediaContent.get('path');
+                if (mediaPath.endsWith(".mp3")) {
+                    mediaContent.set({type: "audio"});
+                } else if (mediaPath.endsWith(".png") || mediaPath.endsWith(".jpg")) {
+                    mediaContent.set({type: "image"});
+                } else {
+                    console.log('Unsupport media file,' + mediaPath);
+                }
                 this.set({
-                    media: Sun.getmedia(media_id)
+                    media: mediaContent
                 })
             }
             if (this.get('choices') != undefined) {
@@ -285,7 +294,7 @@ jQuery(function () {
                     this.set({
                         correct_answers: correct_answers
                     })
-                } else if (type == '0' || type == '1') {
+                } else if (type == '0' || type == '1' || type == '3') {
                     var correct_answers = []
                     for (var i = 0; i < this.get('choices').length; i++) {
                         var choice = this.get('choices')[i]

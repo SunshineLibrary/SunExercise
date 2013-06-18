@@ -7,6 +7,8 @@
  */
 jQuery(function () {
 
+    WEB_DEV_MODE = (typeof android == 'undefined');
+
     USER_DATA = new Object()
 
     USER_DATA_CACHE = new Object()
@@ -98,8 +100,8 @@ jQuery(function () {
                 // web dev mode, request data from sundata server
                 Log.i("[WEB]fetch," + type + "," + JSON.stringify(options))
 
-              mockMaterial = "http://42.121.65.247:9000/api/material"
-//              mockMaterial = "http://127.0.0.1:9000/api/material"
+//                mockMaterial = "http://42.121.65.247:9000/api/material"
+              mockMaterial = "http://127.0.0.1:9000/api/material"
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
                     function (data) {
@@ -128,6 +130,7 @@ jQuery(function () {
 
         setuserdata: function (type, id, options, callback) {
             // "post" method means set user data
+            options['event_created'] = (new Date()).getTime();
             var req = Sun.createrequest(
                 "user_data",
                 "post",
@@ -156,6 +159,7 @@ jQuery(function () {
             // "post" method means set user data
             var userdata = Sun.getuserdata(type, id)
             userdata[key] = value
+            userdata['event_created'] = (new Date()).getTime();
 
             var req = Sun.createrequest(
                 "user_data",
@@ -295,7 +299,6 @@ jQuery(function () {
         },
 
         onJsonReceived: function () {
-            Log.i("onJsonReceived")
             $('#myModal').modal({
                 backdrop: 'static',
                 keyboard: false
@@ -315,7 +318,7 @@ jQuery(function () {
 
         onCollectionProgress: function (collectionId, percentage) {
             console.log("onCollectionProgress," + collectionId + "," + percentage);
-            changeDownloadProgress(collectionId, percentage*100);
+            changeDownloadProgress(collectionId, percentage * 100)
         },
 
         onCollectionDownloaded: function (lessonId, downloaded) {
@@ -358,13 +361,13 @@ jQuery(function () {
                 Log.i("[WEB]download," + id)
                 setTimeout(function () {
                     setTimeout(function () {
-                        setTimeout(function(){
-                            setTimeout(function(){
+                        setTimeout(function () {
+                            setTimeout(function () {
                                 Interfaces.onCollectionDownloaded(id, "true")
-                            },1000)
+                            }, 1000)
                             changeDownloadProgress(id, 100)
-                        },1000)
-                         changeDownloadProgress(id, 60)
+                        }, 1000)
+                        changeDownloadProgress(id, 60)
                     }, 1000)
                     changeDownloadProgress(id, 30)
                 }, 1000)
@@ -372,7 +375,7 @@ jQuery(function () {
                 Log.i("[ANDROID]download," + id)
                 $('#lessonbox_download_' + id).addClass('disabled')
                 $('#lessonbox_download_' + id).attr('onclick', '').unbind('click')
-                android.download(id)       
+                android.download(id)
             }
         },
 
@@ -390,6 +393,16 @@ jQuery(function () {
             $("#nextButton").removeAttr("disabled")
         },
 
+        onAudioComplete: function (id) {
+            onAudioStop(id);
+        },
+
+        stopAudio: function () {
+            if (!WEB_DEV_MODE) {
+                android.stopAudio();
+            }
+        },
+
         openMultiMediaFile: function (path, id, fileType) {
             Sun.setcomplete('activity', id, null, function() {
                 $('#nextButton').removeAttr('disabled');
@@ -401,9 +414,13 @@ jQuery(function () {
         },
 
         deletePlayLog: function () {
-            if(typeof android != "undefined") {
+            if (typeof android != "undefined") {
                 android.deletePlayLog()
             }
+        },
+
+        playMultimedia: function (type, audioPath) {
+            console.log('playMultimedia,' + type + "," + audioPath);
         }
     }
 
@@ -440,22 +457,22 @@ jQuery(function () {
         }
     }
 
-   /* load = {
-        rmDialog: function(callback){
+    /* load = {
+     rmDialog: function(callback){
 
-            //if (typeof android == "undefined") {
-                setTimeout(function(){
-                    $('#progress').remove()
-                },500)
-            //}else{
-            //    $('#progress').remove()
-            //}
-        },
-        addDialog: function(id){
-            $('body').append('<div id="progress">正在努力加载页面...</div>')  
-            window.open('#subject/' + id, '_self')
-        }
-    }*/
+     //if (typeof android == "undefined") {
+     setTimeout(function(){
+     $('#progress').remove()
+     },500)
+     //}else{
+     //    $('#progress').remove()
+     //}
+     },
+     addDialog: function(id){
+     $('body').append('<div id="progress">正在努力加载页面...</div>')
+     window.open('#subject/' + id, '_self')
+     }
+     }*/
 })
 
 function changeDownloadProgress(id, percentage) {
@@ -490,12 +507,12 @@ function removeRefreshBtn() {
     $('.nav>li>img.icon').removeClass('icon-spin');
 }
 
-function disableRefresh(){
+function disableRefresh() {
     $('.nav>li>img.icon').attr('onclick', '').unbind('click')
 }
 
-function enableRefresh(){
-    $('.nav>li>img.icon').attr('onclick', '').bind('click', function() {
+function enableRefresh() {
+    $('.nav>li>img.icon').attr('onclick', '').bind('click', function () {
         Interfaces.sync()
     });
 }
