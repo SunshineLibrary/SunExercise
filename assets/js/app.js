@@ -296,7 +296,7 @@ jQuery(function () {
                         currentMaterial = "activity";
                         if (currentMode == MODE.NORMAL) {
                             // activity with problems
-                            if (activity.get("type") == 4 || activity.get("type") == 7) {
+                            if (activity.get("type") == 4 || activity.get("type") == 41 || activity.get("type") == 7) {
                                 var completed = true;
                                 for (var i = 0; i < activity.get("problems").length; i++) {
                                     var problem = activity.get("problems").models[i]
@@ -338,7 +338,7 @@ jQuery(function () {
                             }
                         } else {
                             // View only mode
-                            if (activity.get("type") == 4 || activity.get("type") == 7) {
+                            if (activity.get("type") == 4 || activity.get("type") == 41 || activity.get("type") == 7) {
                                 // Activity with problems
                                 var completed = true;
                                 for (var i = 0; i < activity.get("problems").length; i++) {

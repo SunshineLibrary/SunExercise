@@ -203,8 +203,7 @@ jQuery(function () {
     Activity = Backbone.Model.extend({
         initialize: function (options) {
             if (options["problems"] != undefined) {
-                // Activity need shuffle problems
-                if (options["type"] == 4) {
+                if (options["type"] == 41) {
                     options.problems = _.shuffle(options.problems);
                 }
                 this.set({
@@ -276,9 +275,8 @@ jQuery(function () {
             var problemRef = this;
             if (this.get('choices') != undefined) {
                 Sun.fetch('activity', {id: options.activity_id}, function (activity) {
-                    // TODO change to right type
                     console.log('activity:' + activity.get('id'));
-                    if (activity.get('type') == 4) {
+                    if (activity.get('type') == 41) {
                         problemRef.set({'choices': _.shuffle(problemRef.get('choices'))});
                     }
 
