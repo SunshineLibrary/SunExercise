@@ -203,6 +203,10 @@ jQuery(function () {
     Activity = Backbone.Model.extend({
         initialize: function (options) {
             if (options["problems"] != undefined) {
+                // Activity need shuffle problems
+                if (options["type"] == 4) {
+                    options.problems = _.shuffle(options.problems);
+                }
                 this.set({
                     parent_id: options['section_id'],
                     problems: new Problems(options.problems)
@@ -221,24 +225,24 @@ jQuery(function () {
             return completed
         },
         complete: function (options, callback) {
-            var type = this.get('type')
-            var completed = false
+            var type = this.get('type');
+            var completed = false;
             if (type == 4 || type == 7) {
                 // activity with problems
                 // If all problem has completed, complete this activity
                 if (this.isComplete()) {
 //                  console.log("completeACTIVITY," + this.get('id'))
-                    Sun.setcomplete('activity', this.get('id'))
-                    completed = true
+                    Sun.setcomplete('activity', this.get('id'));
+                    completed = true;
                 }
             } else if (type == 2 || type == 6) {
                 // video activity or pdf activity
-                Sun.setcomplete('activity', this.get('id'))
-                completed = true
+                Sun.setcomplete('activity', this.get('id'));
+                completed = true;
             }
             if (completed) {
                 Sun.fetch('section', {id: this.get('parent_id')}, function (section) {
-                    section.complete(options, callback)
+                    section.complete(options, callback);
                 })
             }
         }
@@ -269,25 +273,34 @@ jQuery(function () {
                     media: mediaContent
                 })
             }
+            var problemRef = this;
             if (this.get('choices') != undefined) {
-                var type = options['type']
-                if (type == '2') {
-                    var correct_answers = options.choices[0]['display_text']
-                    this.set({
-                        correct_answers: correct_answers
-                    })
-                } else if (type == '0' || type == '1' || type == '3') {
-                    var correct_answers = []
-                    for (var i = 0; i < this.get('choices').length; i++) {
-                        var choice = this.get('choices')[i]
-                        if (choice['answer'] == "yes") {
-                            correct_answers.push(ANSWERS[i])
-                        }
+                Sun.fetch('activity', {id: options.activity_id}, function (activity) {
+                    // TODO change to right type
+                    console.log('activity:' + activity.get('id'));
+                    if (activity.get('type') == 4) {
+                        problemRef.set({'choices': _.shuffle(problemRef.get('choices'))});
                     }
-                    this.set({
-                        correct_answers: correct_answers
-                    })
-                }
+
+                    var type = options['type']
+                    if (type == '2') {
+                        var correct_answers = options.choices[0]['display_text']
+                        problemRef.set({
+                            correct_answers: correct_answers
+                        })
+                    } else if (type == '0' || type == '1' || type == '3') {
+                        var correct_answers = []
+                        for (var i = 0; i < problemRef.get('choices').length; i++) {
+                            var choice = problemRef.get('choices')[i]
+                            if (choice['answer'] == "yes") {
+                                correct_answers.push(ANSWERS[i])
+                            }
+                        }
+                        problemRef.set({
+                            correct_answers: correct_answers
+                        })
+                    }
+                });
             }
         },
         isComplete: function () {
