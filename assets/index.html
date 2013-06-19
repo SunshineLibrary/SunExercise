@@ -717,7 +717,7 @@
     var fileType = "pdf"
     }
     %>
-    <div style="text-align:center">
+    <div style="text-align:center" onclick="$('#nextButton').removeAttr('disabled')">
         <div class="title"
         <%if(type==2){%>style="font-size:28px;line-height:36px;margin:15px"<%}%><%if(type==6){%>style="font-size:24px;line-height:30px;margin-top:50px;color:#555555"<%}%>><%=target.get('name')%>
     </div>

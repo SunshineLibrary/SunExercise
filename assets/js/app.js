@@ -339,7 +339,8 @@ jQuery(function () {
                         } else {
                             // View only mode
                             if (activity.get("type") == 4 || activity.get("type") == 7) {
-                                var completed = true
+                                // Activity with problems
+                                var completed = true;
                                 for (var i = 0; i < activity.get("problems").length; i++) {
                                     var problem = activity.get("problems").models[i]
                                     if (!Sun.isviewed('problem', problem.get('id'))) {
@@ -353,6 +354,7 @@ jQuery(function () {
                                     app_router.navigate("section/" + activity.get('section_id'), {trigger: true, replace: true})
                                 }
                             } else if (activity.get("type") == 2 || activity.get('type') == 6) {
+                                // PDF and video
                                 var media = Sun.getmedia(activity.get('media_id'))
                                 Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
                                     Sun.fetch("stage", {id: section.get('stage_id')}, function (stage) {
@@ -648,7 +650,7 @@ jQuery(function () {
         }
 
         playAudio = function (mediaPath) {
-            console.log('playAudio,'+mediaPath);
+            console.log('playAudio,' + mediaPath);
             $("#problem_audio_img").attr("src", "img/audio_dynamic.gif");
             if (WEB_DEV_MODE) {
                 alert("play audio");
@@ -657,7 +659,7 @@ jQuery(function () {
             }
         }
 
-        onAudioStop = function (id){
+        onAudioStop = function (id) {
             $("#problem_audio_img").attr("src", "img/audio_static.png");
         }
 

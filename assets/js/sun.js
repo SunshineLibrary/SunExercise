@@ -56,27 +56,16 @@ jQuery(function () {
             }
         },
         requestMaterial: function (type, id) {
-            var req = Sun.createrequest("material", "get", type, id, undefined, Sun.getuserid())
-
-            var start = new Date().getTime();
-            var resp = android.requestData(JSON.stringify(req))
-            var end = new Date().getTime();
-//            console.log("[REQUESTGENCOST]" + (end - start))
-
-            start = new Date().getTime();
-            var material = Sun.createMaterial(JSON.parse(resp), type)
-            end = new Date().getTime();
-//            console.log("[CREATEMATERIALCOST]," + type + "," + id + "," + (end - start))
-
-            return material
+            var req = Sun.createrequest("material", "get", type, id, undefined, Sun.getuserid());
+            var resp = android.requestData(JSON.stringify(req));
+            var material = Sun.createMaterial(JSON.parse(resp), type);
+            return material;
         },
         createMaterial: function (json, type) {
-            var result = MATERIAL_TYPES[type](json)
-            return result
+            return MATERIAL_TYPES[type](json);
         },
 
         fetch: function (type, options, callback, refresh) {
-            var start = new Date().getTime();
             options = (options == undefined) ? {} : options
             // Only if the type is subjects, options can be undefined
             var id = (options == undefined) ? 'subjects' : options['id']
@@ -99,8 +88,8 @@ jQuery(function () {
                 // web dev mode, request data from sundata server
                 Log.i("[WEB]fetch," + type + "," + JSON.stringify(options))
 
-//                mockMaterial = "http://42.121.65.247:9000/api/material"
-              mockMaterial = "http://127.0.0.1:9000/api/material"
+                mockMaterial = "http://42.121.65.247:9000/api/material"
+//              mockMaterial = "http://127.0.0.1:9000/api/material"
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
                     function (data) {
