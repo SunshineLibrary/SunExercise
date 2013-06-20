@@ -401,10 +401,10 @@ jQuery(function () {
                             if (jumpText == undefined || jumpText == "") {
                                 jumpText = "[]"
                             }
-                            var jump = JSON.parse(jumpText)[0]
+                            var jump = JSON.parse(jumpText)[0];
 //                            var jump = sample_data.jump_condition[0]
                             var showNext = function (currentActivity) {
-                                if (currentActivity.get('type') == 4) {
+                                if (currentActivity.get('type') == 42) {
                                     app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
                                     console.log("no summary");
                                 } else {
@@ -563,9 +563,8 @@ jQuery(function () {
                             correct: completeOk,
                             checked: checked
                         }, function () {
-//                          console.log("[REQUESTGENCOST]" + (new Date().getTime() - start))
                             var activity_type = activity.get('type')
-                            if (activity_type == 7) {
+                            if (activity_type == 7 || activity_type == 42) {
                                 choiceNum = 0
                                 app_router.navigate("activity/" + activity.id, {trigger: true, replace: true})
                             } else {
@@ -585,19 +584,15 @@ jQuery(function () {
                             answer: answer
                         }, function () {
                             var activity_type = activity.get('type')
-                            if (activity_type == '7') {
-                                $('#answer').val("")
+                            if (activity_type == 7 || activity_type == 42) {
+                                $('#answer').val("");
                                 app_router.navigate("activity/" + activity.id, {trigger: true, replace: true})
                             } else {
-                                loadProblem(problem.get('id'))
+                                loadProblem(problem.get('id'));
                             }
                         })
-                    } else {
-                        // TODO add different problem grading code
-                        //Log.i("unsupported problem grading")
                     }
                 })
-
             })
         }
 
@@ -630,13 +625,11 @@ jQuery(function () {
         }
 
         activeSubmitBtn = function (judge) {
-            $('#submit_answer').removeClass('disabled')
-            $('#submit_answer').attr('onclick', '').bind('click', judge)
+            $('#submit_answer').show();
         }
 
         deactiveSubmitBtn = function () {
-            $('#submit_answer').addClass('disabled')
-            $('#submit_answer').attr('onclick', '').unbind('click')
+            $('#submit_answer').addClass('hide')
         }
 
         judgeChoiceNum = function () {
@@ -657,11 +650,12 @@ jQuery(function () {
         }
 
         playPdf = function (path, id) {
-            $('#nextButton').removeAttr('disabled');
+            $('#nextButton').show();
             Interfaces.openThirdPartyApp(path, id, "pdf");
         }
 
         playVideo = function (path, id) {
+            $('#nextButton').show();
         }
 
         playAudio = function (mediaPath) {

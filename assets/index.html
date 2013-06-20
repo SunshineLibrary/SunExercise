@@ -396,9 +396,18 @@
         <div class="pull-right">
             <% if(currentMode != MODE.VIEW_ONLY){
             if(userdata.current == 'EOF') { %>
-            <a id="next-question" class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
+            <a id="next-question"
+               class="btn btn-large"
+               href="#activity/<%=target.get('activity_id')%>">
+                继续
+            </a>
             <% }else if(userdata.current == undefined){ %>
-            <a id="submit_answer" class="btn btn-large  btn-primary disabled">提交答案</a>
+            <a id="submit_answer"
+               class="span2 btn btn-large btn-primary hide"
+               style="display:none;margin-left:20px"
+               onclick="grading('<%=problemId%>')">
+                提交答案
+            </a>
             <% } %>
             <% } else { %>
             <div>
@@ -506,7 +515,12 @@
             if(userdata.current == 'EOF') { %>
             <a id="next-question" class="btn btn-large" href="#activity/<%=target.get('activity_id')%>">继续</a>
             <% }else if(userdata.current == undefined){ %>
-            <a id="submit_answer" class="btn btn-large btn-primary disabled">提交答案</a>
+            <a id="submit_answer"
+               class="span2 btn btn-large btn-primary hide"
+               style="display:none;margin-left:20px"
+               onclick="grading('<%=problemId%>')">
+                提交答案
+            </a>
             <% } %>
             <% } else { %>
             <div>
@@ -584,7 +598,12 @@
                 <a class="span2 btn btn-large" style="margin-left: 20px; width: 110px; padding: 13px 19px;"
                    href="#activity/<%=target.get('activity_id')%>">继续</a>
                 <% }else{ %>
-                <a id="submit_answer" class="span2 btn btn-large btn-primary disabled" style="margin-left:20px">提交答案</a>
+                <a id="submit_answer"
+                   class="span2 btn btn-large btn-primary hide"
+                   style="display:none;margin-left:20px"
+                   onclick="grading('<%=problemId%>')">
+                    提交答案
+                </a>
                 <% } %>
                 <% } else { %>
                 <a class="span2 btn btn-large" href="#activity/<%=target.get('activity_id')%>"
@@ -717,45 +736,33 @@
     var fileType = "pdf"
     }
     %>
-    <div style="text-align:center" onclick="$('#nextButton').removeAttr('disabled')">
+    <div style="text-align:center">
         <div class="title"
         <%if(type==2){%>style="font-size:28px;line-height:36px;margin:15px"<%}%><%if(type==6){%>style="font-size:24px;line-height:30px;margin-top:50px;color:#555555"<%}%>><%=target.get('name')%>
     </div>
     <%if(type == 2){%>
     <video id="video" class="clearfix" src="<%=videoPath%>" poster="img/img-video-placeholder.gif"
-           height=420 onclick="this.play()">
+           height=420 onclick="this.play();playVideo();">
     </video>
     <%}else{%>
     <img class="btn_pdf" src="img/btn_pdf.png" style="width:auto; height:auto;margin-top:70px"
          onclick="playPdf('<%=pdfPath%>','<%=id%>','<%=fileType%>')"/>
     <%}%>
     <div style="text-align: center;margin-top:30px">
-        <!--<button class="btn btn-large" onclick="Interfaces.onVideoComplete('123')">看完啦</button>-->
-        <button type="button" class="btn btn-large" id="nextButton"
-
-        <%if(type==2){%>
-        style="background-color: #77BB55;
-        background-image: none;
-        border: none;
-        color: #ffffff;
-        text-shadow: none;"<%}%>
-        <%if(type==6){%>
-        style="background-color: #77BB55;
-        background-image: none;
-        border: none;
-        color: #ffffff;
-        text-shadow: none;
-        margin-top:40px"<%}%>
-        onclick="completeMultiMedia('<%=id%>')"
         <% if (currentMode != MODE.VIEW_ONLY){%>
-        disabled="disabled"
-        <%}%>
-        >
-        继续学习
+        <a id="nextButton"
+           class="btn btn-large btn-primary hide"
+           style="display:none;margin-left:20px"
+           onclick="completeMultiMedia('<%=id%>')">
+            继续学习
+        </a>
+        <% }else{ %>  
+        <button type="button" class="btn btn-large btn-primary" id="nextButton"
+                onclick="completeMultiMedia('<%=id%>')">
+            继续学习
         </button>
+        <%}%>
     </div>
-    </div>
-
 
 </script>
 
@@ -808,8 +815,12 @@
                 <a id="next-question" class="btn btn-large span2"
                    href="#activity/<%=problem.get('activity_id')%>">继续</a>
                 <% }else if(userdata.current == undefined){ %>
-                <a id="submit_answer" style="display:none" class="btn btn-large btn-primary span2"
-                   onclick="gradingChoice()">提交答案</a>
+                <a id="submit_answer"
+                   class="span2 btn btn-large btn-primary hide"
+                   style="display:none;margin-left:20px"
+                   onclick="grading('<%=problemId%>')">
+                    提交答案
+                </a>
                 <% } %>
                 <% } else { %>
                 <div>

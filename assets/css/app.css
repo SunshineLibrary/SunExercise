@@ -1,6 +1,6 @@
 body {
     background-color: #eee;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 .tile {
@@ -45,6 +45,7 @@ h2 {
 .well.downloaded {
     background-color: #ffffff;
 }
+
 .well .row-top {
     display: inline-block;
     width: 220px;
@@ -96,12 +97,18 @@ h2 {
     width: 64px;
     padding: 8px 10px 8px 10px;
     margin: 0px 0px 10px 68px;
-    background-color: #77bb55;
-    background-image: none;
     border: none;
     color: #ffffff;
     text-shadow: none;
     text-align: center;
+}
+
+.btn-primary {
+    background: #77bb55 none;
+}
+
+.btn-primary:hover {
+    background: #77bb55 none;
 }
 
 .well .btn-large.hide {
@@ -191,9 +198,10 @@ h2 {
     background-color: #333333;
 }
 
-.navbar-inverse .nav > .active > a:focus{
+.navbar-inverse .nav > .active > a:focus {
     background-color: blue;
 }
+
 .navbar-inverse .nav > .active > a:hover {
     background-color: transparent;
     box-shadow: none;
@@ -262,10 +270,10 @@ h2 {
 }
 
 .nav >li.refreshZone {
-    height:56px;
-    width:56px;
-    margin:0px;
-    padding:0px;
+    height: 56px;
+    width: 56px;
+    margin: 0px;
+    padding: 0px;
 
 }
 
@@ -372,8 +380,6 @@ h2 {
 #next-question {
     width: 110px;
     height: 24px;
-    background: #77bb55;
-    color: #fff;
     font-size: 18px;
     text-shadow: none;
     text-align: center;
@@ -403,12 +409,12 @@ h2 {
 }
 
 .row-bottom-content {
-    margin: 11px 12px 5px 12px; 
+    margin: 11px 12px 5px 12px;
     height: 30px;
     width: auto;
 }
 
-.row-bottom {  
+.row-bottom {
     height: 46px;
     margin-top: -5px;
     margin-left: auto;
@@ -425,32 +431,32 @@ h2 {
 }
 
 #badge {
-    height:20px;
-    width:20px; 
-    border-radius:100%; 
-    color:#ffffff; 
-    background-color:#dd6622; 
-    font-size:14px; 
-    text-align:center; 
-    margin-top: -45px; 
-    margin-right:4px; 
-    z-index:1; 
-    display:block; 
-    float:right;
+    height: 20px;
+    width: 20px;
+    border-radius: 100%;
+    color: #ffffff;
+    background-color: #dd6622;
+    font-size: 14px;
+    text-align: center;
+    margin-top: -45px;
+    margin-right: 4px;
+    z-index: 1;
+    display: block;
+    float: right;
 }
 
-#progress {    
+#progress {
     border-radius: 10px;
-    background-color: rgba(0,0,0,.7);    
-    color: white;    
-    font-size: 18px;    
-    font-weight: bold;    
-    height: 80px;    
-    left: 60px;    
-    line-height: 80px;    
+    background-color: rgba(0, 0, 0, .7);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    height: 80px;
+    left: 60px;
+    line-height: 80px;
     margin: 0px auto;
-    text-align: center;    
-    width: 200px; 
+    text-align: center;
+    width: 200px;
     z-index: 100;
 }
 
