@@ -37,7 +37,7 @@ public class ExerciseOperation extends Operation {
         ArrayList<String> mediaIDs = getChildCollection(sectionIDs, Activities.CONTENT_URI, Activities._MEDIA_ID,
                 Activities._PARENT_ID, Activities._SEQUENCE, null);
         ArrayList<String> activityIDs = getChildCollection(sectionIDs, Activities.CONTENT_URI, Activities._STRING_ID,
-                Activities._PARENT_ID, Activities._SEQUENCE, new Condition() {
+                Activities._PARENT_ID, Activities._SEQUENCE, null);     /* new Condition() {
             @Override
             public boolean selected(Cursor cursor) {
                 int type = CursorUtils.getInt(cursor, extraColumn());
@@ -48,7 +48,7 @@ public class ExerciseOperation extends Operation {
             public String extraColumn() {
                 return Activities._TYPE;
             }
-        });
+        });     */
         ArrayList<String> mediaIDsWithinProblems = getChildCollection(activityIDs, Problems.CONTENT_URI,
                 Problems._MEDIA_ID, Problems._PARENT_ID, Problems._SEQUENCE, null);
         ArrayList<String> problemIDs = getChildCollection(activityIDs, Problems.CONTENT_URI, Problems._STRING_ID,
