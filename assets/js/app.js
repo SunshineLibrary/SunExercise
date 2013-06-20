@@ -403,27 +403,42 @@ jQuery(function () {
                             }
                             var jump = JSON.parse(jumpText)[0]
 //                            var jump = sample_data.jump_condition[0]
+                            var showNext = function (currentActivity) {
+                                if (currentActivity.get('type') == 4) {
+                                    app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
+                                    console.log("no summary");
+                                } else {
+                                    setBody(new SummaryView({model: currentActivity}));
+                                    reloadPage();
+                                    console.log("summary");
+                                }
+                            }
                             if (jump == undefined) {
-                                setBody(new SummaryView({model: activity}))
-                                reloadPage()
+                                showNext(activity);
+//                                setBody(new SummaryView({model: activity}));
+//                                reloadPage();
                             } else {
                                 if (correctCount >= jump.condition.min && correctCount <= jump.condition.max) {
                                     if (jump.to_activity_id == -1) {
                                         endStage(aid, function (id) {
                                             activity.set({next_lesson: id})
-                                            setBody(new SummaryView({model: activity}))
-                                            reloadPage()
+                                            showNext(activity);
+//                                            setBody(new SummaryView({model: activity}))
+//                                            reloadPage()
                                         })
                                     } else {
-                                        checkin('activity', jump.to_activity_id)
-                                        activity.set({next_activity: jump.to_activity_id})
-                                        setBody(new SummaryView({model: activity}))
-                                        reloadPage()
+                                        checkin('activity', jump.to_activity_id);
+                                        activity.set({next_activity: jump.to_activity_id});
+                                        showNext(activity);
+
+//                                        setBody(new SummaryView({model: activity}))
+//                                        reloadPage()
                                     }
                                 } else {
                                     Log.i("don't jump!")
-                                    setBody(new SummaryView({model: activity}))
-                                    reloadPage()
+                                    showNext(activity);
+//                                    setBody(new SummaryView({model: activity}))
+//                                    reloadPage()
                                 }
                             }
                         })
