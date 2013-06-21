@@ -31,7 +31,6 @@ jQuery(function () {
      * @return {string}
      */
     GRADING_RESULT = function GRADING_RESULT(activity, userdata, target) {
-        console.log("GRADING_RESULT:" + activity + "," + userdata + "," + target);
         var activity_type = activity.get('type');
         if (activity_type == 4 || activity_type == 41) {
             if (userdata.correct == true) {
@@ -39,7 +38,7 @@ jQuery(function () {
             } else if (userdata.correct == false) {
                 return "做错了哎，正确答案是：" + target.get('correct_answers');
             }
-        } else if ((activity_type == 7 || activity_type == 41) && (userdata.current == 'EOF')) {
+        } else if ((activity_type == 7 || activity_type == 42) && (userdata.current == 'EOF')) {
             return "已经答完啦";
         }
     };

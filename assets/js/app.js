@@ -297,11 +297,12 @@ jQuery(function () {
             })
 
             app_router.on('route:activity', function (id) {
+                console.log("activity:"+id);
                 Sun.fetch("activity", {id: id}, function (activity) {
                         currentMaterial = "activity";
+                        var activity_type = activity.get("type");
                         if (currentMode == MODE.NORMAL) {
                             // activity with problems
-                            var activity_type = activity.get("type");
                             if (activity_type == 4 || activity_type == 41 || activity_type == 42 || activity_type == 7) {
                                 var completed = true;
                                 for (var i = 0; i < activity.get("problems").length; i++) {
@@ -340,11 +341,11 @@ jQuery(function () {
                                     })
                                 }
                             } else {
-                                Log.i("unsupported activity")
+                                console.log("unsupported activity")
                             }
                         } else {
                             // View only mode
-                            if (activity.get("type") == 4 || activity.get("type") == 41 || activity.get("type") == 7) {
+                            if (activity_type == 4 || activity_type== 41 || activity_type == 42 || activity_type == 7) {
                                 // Activity with problems
                                 var completed = true;
                                 for (var i = 0; i < activity.get("problems").length; i++) {
@@ -359,7 +360,7 @@ jQuery(function () {
                                     Sun.setviewed("activity", activity.get('id'))
                                     app_router.navigate("section/" + activity.get('section_id'), {trigger: true, replace: true})
                                 }
-                            } else if (activity.get("type") == 2 || activity.get('type') == 6) {
+                            } else if (activity_type == 2 || activity_type == 6) {
                                 // PDF and video
                                 var media = Sun.getmedia(activity.get('media_id'))
                                 Sun.fetch("section", {id: activity.get('section_id')}, function (section) {
@@ -441,7 +442,7 @@ jQuery(function () {
 //                                        reloadPage()
                                     }
                                 } else {
-                                    Log.i("don't jump!")
+                                    console.log("don't jump!")
                                     showNext(activity);
 //                                    setBody(new SummaryView({model: activity}))
 //                                    reloadPage()
@@ -493,7 +494,7 @@ jQuery(function () {
                     Sun.setviewed('activity', id)
                     app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
                 } else {
-                    Log.i("complete multiMedia," + id)
+                    console.log("complete multiMedia," + id)
                     activity.complete(null, function () {
                         if (activity.get('type') == 2) {
                             Interfaces.deletePlayLog()
@@ -575,7 +576,7 @@ jQuery(function () {
                             }
                         })
                     } else if (problem.get("type") == 2) {
-                        //Log.i("problem type 2")
+                        //console.log("problem type 2")
                         var answer = $('#answer').val()
                         var correct = false
                         if (answer == problem.get('choices')[0]['display_text']) {

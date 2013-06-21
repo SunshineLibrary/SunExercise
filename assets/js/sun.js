@@ -97,7 +97,7 @@ jQuery(function () {
                         Log.i("[WEB]fetched," + JSON.stringify(data))
                         ret = Sun.createMaterial(data, type)
                         // Remove this blog to disable cache
-                        MATERIAL_CACHE[id] = ret
+                        MATERIAL_CACHE[id] = ret;
                         if (callback != undefined) {
                             eval(callback)(ret, options)
                         }
@@ -105,12 +105,10 @@ jQuery(function () {
                 )
             } else {
                 // android dev mode
-//                Log.i("[ANDROID]fetch," + type + "," + JSON.stringify(options))
-                ret = Sun.requestMaterial(type, options["id"])
-//                Log.i("[ANDROID]fetched," + JSON.stringify(ret))
-//                console.log("[FETCHCOST]" + (new Date().getTime() - start) + ',' + type + ',' + id)
+                ret = Sun.requestMaterial(type, options["id"]);
                 if (callback != undefined) {
-                    MATERIAL_CACHE[id] = ret
+                    MATERIAL_CACHE[id] = ret;
+                    console.log('cached,' + options["id"]);
                     eval(callback)(ret, options)
                 }
             }
@@ -135,8 +133,13 @@ jQuery(function () {
                 var reqText = JSON.stringify(req);
                 android.requestUserData(reqText);
             }
+            console.log('set userdata cached,' + id);
+
             USER_DATA_CACHE[id] = options;
-            MATERIAL_CACHE[id].set('userdata', options);
+            var cached = MATERIAL_CACHE[id];
+            if (cached != undefined) {
+                cached.set('userdata', options);
+            }
             if (callback != undefined) {
                 eval(callback)(type, id, options)
             }
