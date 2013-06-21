@@ -376,6 +376,7 @@ h2 {
     background: #77BB55;
     width: 110px;
     padding: 13px 19px;
+    margin-bottom: 30px;
 }
 
 #next-question {
@@ -465,4 +466,8 @@ h2 {
     height: 50px;
     font-size: 18px;
     line-height: 22px;
+}
+
+.problem_type{
+    style:"color:#aaaaaa"
 }

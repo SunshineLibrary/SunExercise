@@ -8,6 +8,42 @@
 
 jQuery(function () {
 
+    ACTIVITY_TYPE = {
+        2: "视频题",
+        4: "练习题",
+        7: "诊断题",
+        6: "PDF题",
+        41: "题库题",
+        42: "调查题"
+    };
+
+    PROBLEM_TYPE = {
+        0: "单选",
+        1: "多选",
+        2: "填空",
+        3: "图片"
+    };
+
+    ACTIVITIES_WITH_PROBLEM = [4, 7, 41, 42];
+    ACTIVITIES_WITHOUT_PROBLEM = [2, 6];
+
+    /**
+     * @return {string}
+     */
+    GRADING_RESULT = function GRADING_RESULT(activity, userdata, target) {
+        console.log("GRADING_RESULT:" + activity + "," + userdata + "," + target);
+        var activity_type = activity.get('type');
+        if (activity_type == 4 || activity_type == 41) {
+            if (userdata.correct == true) {
+                return "嘿，答对啦！";
+            } else if (userdata.correct == false) {
+                return "做错了哎，正确答案是：" + target.get('correct_answers');
+            }
+        } else if ((activity_type == 7 || activity_type == 41) && (userdata.current == 'EOF')) {
+            return "已经答完啦";
+        }
+    };
+
     MODE = {
         NORMAL: 'NORMAL_MODE',
         VIEW_ONLY: 'VIEW_MODE'
@@ -226,7 +262,7 @@ jQuery(function () {
         complete: function (options, callback) {
             var type = this.get('type');
             var completed = false;
-            if (type == 4 || type == 7) {
+            if (type == 4 || type == 7 || type == 41 || type == 42) {
                 // activity with problems
                 // If all problem has completed, complete this activity
                 if (this.isComplete()) {
@@ -253,17 +289,19 @@ jQuery(function () {
      */
     Problem = Backbone.Model.extend({
         initialize: function (options) {
+            var userdata = Sun.getuserdata("problem", options.id);
             this.set({
-                userdata: Sun.getuserdata("problem", options.id),
+                userdata: userdata,
                 parent_id: options['activity_id']
             })
             var media_id = options['media_id'];
             if (media_id != undefined && media_id != "") {
+                console.log("media_id:" + media_id);
                 var mediaContent = Sun.getmedia(media_id);
                 var mediaPath = mediaContent.get('path');
                 if (mediaPath.endsWith(".mp3")) {
                     mediaContent.set({type: "audio"});
-                } else if (mediaPath.endsWith(".png") || mediaPath.endsWith(".jpg")) {
+                } else if (mediaPath.toUpperCase().endsWith(".PNG") || mediaPath.toUpperCase().endsWith(".JPG")) {
                     mediaContent.set({type: "image"});
                 } else {
                     console.log('Unsupport media file,' + mediaPath);
@@ -295,7 +333,8 @@ jQuery(function () {
                             }
                         }
                         problemRef.set({
-                            correct_answers: correct_answers
+                            correct_answers: correct_answers,
+                            gradingResult: GRADING_RESULT(activity, userdata, problemRef)
                         })
                     }
                 });

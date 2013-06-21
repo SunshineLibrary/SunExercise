@@ -112,64 +112,51 @@ jQuery(function () {
         }
     })
 
+
+    var RenderProblem = function(problemView){
+        var problem = problemView.model;
+        var activity = problemView.options['activity'];
+        var userdata = problem.get('userdata');
+        var gradingResult = GRADING_RESULT(activity, userdata, problem);
+        this.el = problemView.template({
+            target: problem,
+            problemId: problem.get('id'),
+            content: problem.get('body'),
+            choices: problem.get('choices'),
+            userdata: userdata,
+            media: problem.get('media'),
+            activity: activity,
+            activity_type: activity.get('type'),
+            gradingResult: gradingResult
+        });
+        return this
+    };
+
     SingleChoiceProblemView = Backbone.View.extend({
         template: Templates.Content.problem_sc,
         render: function () {
-            this.el = this.template({
-                target: this.model,
-                activity: this.options['activity']
-            });
-            return this
+            return RenderProblem(this);
         }
-    })
+    });
 
     MultiChoiceProblemView = Backbone.View.extend({
         template: Templates.Content.problem_mc,
         render: function () {
-            this.el = this.template({
-                target: this.model,
-                activity: this.options['activity']
-            })
-            return this
-        }
-    })
-
-    SingleChoiceProblemFooterView = Backbone.View.extend({
-        template: Templates.Footer.problem_sc,
-        render: function () {
-            this.el = this.template({
-                target: this.model,
-                activity: this.options['activity']
-            })
-            return this
+            return RenderProblem(this);
         }
     })
 
     SingleFillingProblemView = Backbone.View.extend({
         template: Templates.Content.problem_sf,
         render: function () {
-            this.el = this.template({
-                target: this.model,
-                activity: this.options['activity']
-            })
-            return this
+            return RenderProblem(this);
         }
     })
 
     ImageChoiceProblemView = Backbone.View.extend({
         template: Templates.Content.problem_img,
         render: function () {
-            var activity = this.options['activity'];
-            var userdata = this.options['userdata'];
-            this.el = this.template({
-                problem: this.model,
-                content: this.model.get('body'),
-                choices: this.model.get('choices'),
-                userdata: userdata,
-                activity: activity,
-                activity_type: activity.get('type')
-            });
-            return this
+            return RenderProblem(this);
         }
     })
 

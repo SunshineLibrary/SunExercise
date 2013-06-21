@@ -9,6 +9,7 @@ jQuery(function () {
 
     WEB_DEV_MODE = (typeof android == 'undefined');
 
+    // For Web dev only, a mock to userdata storage
     USER_DATA = new Object()
 
     USER_DATA_CACHE = new Object()
@@ -89,7 +90,7 @@ jQuery(function () {
                 Log.i("[WEB]fetch," + type + "," + JSON.stringify(options))
 
 //                mockMaterial = "http://42.121.65.247:9000/api/material"
-              mockMaterial = "http://127.0.0.1:9000/api/material"
+                mockMaterial = "http://127.0.0.1:9000/api/material"
                 $.getJSON(mockMaterial + "?callback=?",
                     options,
                     function (data) {
@@ -128,16 +129,14 @@ jQuery(function () {
                 Sun.getuserid())
             if (typeof android == "undefined") {
                 // web dev mode
-                Log.i("[WEB]set user data," + type + "," + id + "," + options)
-                USER_DATA[id] = JSON.stringify(options)
-                USER_DATA_CACHE[id] = undefined
+                USER_DATA[id] = JSON.stringify(options);
             } else {
                 // android dev mode
-                Log.i("[ANDROID]set user data," + type + "," + id + "," + options)
-                var reqText = JSON.stringify(req)
-                options["result"] = android.requestUserData(reqText)
-                USER_DATA_CACHE[id] = undefined
+                var reqText = JSON.stringify(req);
+                android.requestUserData(reqText);
             }
+            USER_DATA_CACHE[id] = options;
+            MATERIAL_CACHE[id].set('userdata', options);
             if (callback != undefined) {
                 eval(callback)(type, id, options)
             }
@@ -145,8 +144,8 @@ jQuery(function () {
 
         adduserdata: function (type, id, key, value) {
             // "post" method means set user data
-            var userdata = Sun.getuserdata(type, id)
-            userdata[key] = value
+            var userdata = Sun.getuserdata(type, id);
+            userdata[key] = value;
             userdata['event_created'] = (new Date()).getTime();
 
             var req = Sun.createrequest(
@@ -155,22 +154,17 @@ jQuery(function () {
                 type,
                 id,
                 JSON.stringify(userdata),
-                Sun.getuserid())
+                Sun.getuserid());
             if (typeof android == "undefined") {
                 // web dev mode
-                Log.i("[WEB]add user data")
-                USER_DATA[id] = JSON.stringify(userdata)
-                USER_DATA_CACHE[id] = undefined
+                USER_DATA[id] = JSON.stringify(userdata);
             } else {
                 // android dev mode
-                var reqText = JSON.stringify(req)
-                Log.i("[ANDROID]add user data," + reqText)
-                USER_DATA_CACHE[id] = undefined
-                android.requestUserData(reqText)
+                var reqText = JSON.stringify(req);
+                android.requestUserData(reqText);
             }
-            if (typeof callback != "undefined") {
-                eval(callback)(type, id)
-            }
+            USER_DATA_CACHE[id] = userdata;
+            MATERIAL_CACHE[id].set('userdata', userdata);
         },
 
         getuserdata: function (type, id) {
@@ -201,7 +195,7 @@ jQuery(function () {
             if (typeof android == "undefined") {
                 // web dev mode
                 Log.i("[WEB]get media," + id)
-                ret = new Media({"id": "03354928-9820-11e2-b307-00163e011797", "file_id": "1", "path": "http://shuwu.sunshine-library.org/system/files/1377/original/888a9f9d06ada3dfe4842149de51f61987c77a81.JPG?1369791427"})
+                ret = new Media({"id": "03354928-9820-11e2-b307-00163e011797", "file_id": "1", "path": "http://shuwu.sunshine-library.org/system/files/1377/original/888a9f9d06ada3dfe4842149de51f61987c77a81.JPG"})
             } else {
                 // android dev mode
                 Log.i("[ANDROID]get media," + id)
@@ -216,13 +210,6 @@ jQuery(function () {
 
         showuserdata: function () {
             Log.i("current userdata:" + JSON.stringify(USER_DATA))
-        },
-
-        resetuserdata: function () {
-            alert("before reset\r\n" + Object.keys(USER_DATA))
-            delete USER_DATA
-            USER_DATA = new Object()
-            alert("reset completed\r\n" + Object.keys(USER_DATA))
         },
 
         setcomplete: function (type, id, options, callback) {
@@ -268,15 +255,15 @@ jQuery(function () {
 
     Interfaces = {
         backpage: function () {
-            url = window.location.href
-            Log.i("backpage," + url)
+            url = window.location.href;
+            console.log("backpage," + url);
             if (url.lastIndexOf("#") < 0 || url.indexOf("subject") >= 0) {
                 // not in route, like index.html
                 // or at subject page, like index.html#subject/123456
-                Log.i("backpage," + url)
+                console.log("backpage," + url);
                 android.showExitDialog()
             } else {
-                goUpstairs()
+                goUpstairs();
             }
         },
 
@@ -361,8 +348,8 @@ jQuery(function () {
                 }, 1000)
             } else {
                 Log.i("[ANDROID]download," + id)
-                $('#lessonbox_download_' + id).addClass('disabled')
-                $('#lessonbox_download_' + id).attr('onclick', '').unbind('click')
+                $('#lessonbox_download_' + id).hide('disabled');
+                $('#lessonbox_download_' + id).attr('onclick', '').unbind('click');
                 android.download(id)
             }
         },

@@ -92,16 +92,19 @@ jQuery(function () {
                             }))
 
                             var pType = problem.get("type");
+                            var userdata = Sun.getuserdata("problem", id);
                             if (pType == "0") {
-                                setBody(new SingleChoiceProblemView({model: problem, activity: activity}))
+                                setBody(new SingleChoiceProblemView(
+                                    {model: problem, activity: activity, userdata: userdata}));
                             } else if (pType == "1") {
-                                setBody(new MultiChoiceProblemView({model: problem, activity: activity}))
+                                setBody(new MultiChoiceProblemView(
+                                    {model: problem, activity: activity, userdata: userdata}));
                             } else if (pType == "2") {
-                                setBody(new SingleFillingProblemView({model: problem, activity: activity}))
+                                setBody(new SingleFillingProblemView(
+                                    {model: problem, activity: activity, userdata: userdata}));
                             } else if (pType == "3") {
                                 // Single choice only
                                 var choices = problem.get('choices');
-                                var userdata = Sun.getuserdata("problem", id);
                                 for (var i = 0; i < choices.length; i++) {
                                     choices[i].media = Sun.getmedia(choices[i].media_id);
                                     console.log("Choice:" + problem.get('choices')[i].media.get('path'));
@@ -181,7 +184,9 @@ jQuery(function () {
                 Sun.fetch("lesson", {id: id}, function (lesson) {
                     currentLesson = lesson
                     currentMaterial = "lesson"
-                    Sun.adduserdata("lesson", id, "entered", "true")
+                    var userdata = Sun.getuserdata('lesson', id);
+                    userdata['entered'] = "true";
+                    Sun.setuserdata("lesson", id, userdata);
 
                     setHeader(
                         new LessonHeaderView({
@@ -296,7 +301,8 @@ jQuery(function () {
                         currentMaterial = "activity";
                         if (currentMode == MODE.NORMAL) {
                             // activity with problems
-                            if (activity.get("type") == 4 || activity.get("type") == 41 || activity.get("type") == 7) {
+                            var activity_type = activity.get("type");
+                            if (activity_type == 4 || activity_type == 41 || activity_type == 42 || activity_type == 7) {
                                 var completed = true;
                                 for (var i = 0; i < activity.get("problems").length; i++) {
                                     var problem = activity.get("problems").models[i]
@@ -459,23 +465,20 @@ jQuery(function () {
                 app_router.navigate("stage/" + id, {trigger: true, replace: true})
             }
 
+
+            var DEEP_MATERIALS = ["stage", "section", "activity", "problem", "summary"];
+
             goUpstairs = function () {
 //                console.log('get upstairs with current,' + currentMaterial)
-                if (currentMaterial == "lesson") {
+                if (currentMaterial == "lesson" && (typeof currentSubject != "undefined")) {
+                    console.log('back from lesson');
                     app_router.navigate("subject/" + currentSubject.get('id'), {trigger: true, replace: true})
-                } else if (currentMaterial == "stage") {
-                    app_router.navigate("lesson/" + currentLesson.get('id'), {trigger: true, replace: true})
-                } else if (currentMaterial == "section") {
-                    app_router.navigate("lesson/" + currentLesson.get('id'), {trigger: true, replace: true})
-                } else if (currentMaterial == "activity") {
-                    app_router.navigate("lesson/" + currentLesson.get('id'), {trigger: true, replace: true})
-                } else if (currentMaterial == "problem") {
-                    app_router.navigate("lesson/" + currentLesson.get('id'), {trigger: true, replace: true})
-                } else if (currentMaterial == "summary") {
+                } else if (DEEP_MATERIALS.indexOf(currentMaterial) != -1 && (typeof currentLesson != "undefined")) {
+                    console.log('back to lesson');
                     app_router.navigate("lesson/" + currentLesson.get('id'), {trigger: true, replace: true})
                 } else {
-                    Log.e('unsupported type to go upstairs,' + currentMaterial)
-                    app_router.navigate("subjects", {trigger: true, replace: true})
+                    console.log('unsupported type to go upstairs,' + currentMaterial);
+                    app_router.navigate("subjects", {trigger: true, replace: true});
                 }
             }
         }
@@ -528,7 +531,7 @@ jQuery(function () {
                 var currentActivity = ProblemController.currentActivity;
                 var activity_type = currentActivity.get('type');
                 var activity_id = currentActivity.id;
-                if (activity_type == 7) {
+                if (activity_type == 7 || activity_type == 42) {
                     app_router.navigate("activity/" + activity_id, {trigger: true, replace: true})
                 } else {
                     loadProblem(currentProblem.get('id'))
@@ -557,7 +560,6 @@ jQuery(function () {
                                 completeOk = false
                             }
                         }
-                        Log.i("grading result," + completeOk)
 
                         problem.complete({
                             correct: completeOk,
