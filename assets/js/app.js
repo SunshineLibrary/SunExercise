@@ -10,6 +10,7 @@ jQuery(function () {
         choiceNum = 0
         var AppRouter = Backbone.Router.extend({
             routes: {
+                "": "subjects",
                 "subjects": "subjects",
                 "subject/:id": "subject",
                 "lesson/:id": "lesson",
@@ -456,8 +457,6 @@ jQuery(function () {
 
             Backbone.history.start();
 
-            Interfaces.onReady();
-
             viewStage = function (id) {
                 currentMode = MODE.VIEW_ONLY
                 app_router.navigate("stage/" + id, {trigger: true, replace: true})
@@ -679,6 +678,8 @@ jQuery(function () {
         currentPageView = new PageView({model: currentPage, el: $("body")});
 
         initRoute()
+
+        Interfaces.onReady();
 
     }
 
