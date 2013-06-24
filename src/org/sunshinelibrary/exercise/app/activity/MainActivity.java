@@ -110,7 +110,7 @@ public class MainActivity extends TopActivity implements AndroidUIInterface {
         mWebView.getSettings().setPluginState(android.webkit.WebSettings.PluginState.ON_DEMAND);
 
 
-        startService(new Intent(MainActivity.this, NotificationService.class));
+//        startService(new Intent(MainActivity.this, NotificationService.class));
 
         Intent intent = new Intent(UserInfo.ACTION_SIGN_IN_ACTIVITY);
         intent.addCategory(Intent.CATEGORY_DEFAULT);
