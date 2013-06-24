@@ -145,12 +145,16 @@ jQuery(function () {
             app_router.on('route:subjects', function () {
                 Sun.fetch("subjects", null, function (subjects) {
                     currentMaterial = "subjects";
-                    var s = (currentSubject == undefined) ? subjects.at(0) : currentSubject;
-                    Sun.fetch("subject", {id: s.get('id')}, function (subject) {
-                        if (subject.get('lessons').length > 0) {
-                            app_router.navigate("subject/" + subject.id, {trigger: true, replace: true})
-                        }
-                    })
+                    if (subjects.length == 0) {
+                        console.log('no subject found');
+                    } else {
+                        var s = (typeof currentSubject == "undefined") ? subjects.at(0) : currentSubject;
+                        Sun.fetch("subject", {id: s.get('id')}, function (subject) {
+                            if (subject.get('lessons').length > 0) {
+                                app_router.navigate("subject/" + subject.id, {trigger: true, replace: true})
+                            }
+                        })
+                    }
                 })
             })
             app_router.on('route:subject', function (id) {
@@ -217,7 +221,7 @@ jQuery(function () {
 
                         if (!Sun.iscomplete("stage", id)) {
                             var current = userdata['current']
-                            if (current == undefined) {
+                            if (typeof current == "undefined") {
                                 app_router.navigate("section/" + sections[0].get('id'), {trigger: true, replace: true})
                             } else {
                                 app_router.navigate("section/" + current, {trigger: true, replace: true})
@@ -268,7 +272,7 @@ jQuery(function () {
 
                         if (!Sun.iscomplete("section", id)) {
                             var current = userdata['current']
-                            if (current == undefined) {
+                            if (typeof current == "undefined") {
                                 app_router.navigate("activity/" + activities[0].get('id'), {trigger: true, replace: true})
                             } else {
                                 app_router.navigate("activity/" + current, {trigger: true, replace: true})
@@ -404,7 +408,7 @@ jQuery(function () {
                             }))
 
                             var jumpText = activity.get('jump_condition')
-                            if (jumpText == undefined || jumpText == "") {
+                            if (typeof jumpText == "undefined" || jumpText == "") {
                                 jumpText = "[]"
                             }
                             var showNext = function (currentActivity) {
@@ -418,7 +422,7 @@ jQuery(function () {
                                 }
                             }
                             var jumps = JSON.parse(jumpText);
-                            if (jumps == undefined) {
+                            if (typeof jumps == "undefined") {
                                 showNext(activity);
                             } else {
                                 // TODO change to multiple jump condition support

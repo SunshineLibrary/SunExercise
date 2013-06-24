@@ -67,9 +67,9 @@ jQuery(function () {
         },
 
         fetch: function (type, options, callback, refresh) {
-            options = (options == undefined) ? {} : options
+            options = (options == null) ? {} : options
             // Only if the type is subjects, options can be undefined
-            var id = (options == undefined) ? 'subjects' : options['id']
+            var id = (typeof options == "undefined") ? 'subjects' : options['id']
 
             // Enable cache
             if (refresh != true) {
@@ -187,7 +187,7 @@ jQuery(function () {
                 Log.d("[ANDROID]get user data," + type + "," + id)
                 userdata = android.requestUserData(JSON.stringify(req))
             }
-            userdata = (userdata == undefined) ? "{}" : userdata
+            userdata = (typeof userdata == "undefined") ? "{}" : userdata
             var ret = JSON.parse(userdata)
             USER_DATA_CACHE[id] = ret
             return ret
@@ -359,10 +359,10 @@ jQuery(function () {
 
         onReady: function () {
             if (typeof android == "undefined") {
-                Log.i("[WEB]onReady")
+                Log.i("[WEB]onReady");
             } else {
-                Log.i("[ANDROID]onReady")
-                android.onReady()
+                console.log("[ANDROID]onReady");
+                android.onReady();
             }
         },
 
