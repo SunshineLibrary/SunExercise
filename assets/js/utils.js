@@ -6,22 +6,30 @@
  * To change this template use File | Settings | File Templates.
  */
 jQuery(function () {
-    checkin = function (type, id) {
-        console.log("checkin," + type + "," + id)
-        Sun.fetch("activity", {id: id}, function (activity) {
+    checkin = function (currentActivity, toActivityId) {
+        Sun.fetch("activity", {id: currentActivity.id}, function (activity) {
             Sun.fetch("section", {id: activity.get("section_id")}, function (section) {
-                Sun.fetch("stage", {id: section.get("stage_id")}, function (stage) {
-                    var userdata = Sun.getuserdata("stage", stage.get("id"))
-                    userdata["current"] = section.get('id')
-                    Sun.setuserdata("stage", stage.get("id"), userdata)
-                })
-                var userdata = Sun.getuserdata("section", section.get("id"))
-                userdata["current"] = activity.get('id')
-                Sun.setuserdata("section", section.get("id"), userdata)
+                    var userdata = Sun.getuserdata("section", section.get("id"));
+                    userdata["current"] = toActivityId;
+                    Sun.setuserdata("section", section.get("id"), userdata);
+                    // If to_activity and activity in same section, check all activities in path
+                    var found = false;
+                    var sectionLen = section.get('activities').length;
+                    for (var i = 0; i < sectionLen; i++) {
+                        var a = section.get('activities').models[i];
+                        if (a.id == toActivityId) {
+                            // in same section
+                            for (var j = i - 1; j > 0; j--) {
+                                Sun.setcomplete('activity', section.get('activities').models[j].id);
+                                console.log("complete activity");
+                            }
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        console.log("can't find to activity in current section");
+                    }
             })
-            /*var userdata = Sun.getuserdata("activity", activity.get("id"))
-            userdata["current"] = 'undefined'
-            Sun.setuserdata("activity", activity.get("id"), userdata)*/
         })
     }
 
@@ -86,7 +94,7 @@ jQuery(function () {
         })
     }
 
-    String.prototype.endsWith = function(suffix) {
+    String.prototype.endsWith = function (suffix) {
         return this.indexOf(suffix, this.length - suffix.length) !== -1;
     };
 

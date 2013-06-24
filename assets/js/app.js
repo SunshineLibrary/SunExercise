@@ -297,7 +297,7 @@ jQuery(function () {
             })
 
             app_router.on('route:activity', function (id) {
-                console.log("activity:"+id);
+                console.log("activity:" + id);
                 Sun.fetch("activity", {id: id}, function (activity) {
                         currentMaterial = "activity";
                         var activity_type = activity.get("type");
@@ -345,7 +345,7 @@ jQuery(function () {
                             }
                         } else {
                             // View only mode
-                            if (activity_type == 4 || activity_type== 41 || activity_type == 42 || activity_type == 7) {
+                            if (activity_type == 4 || activity_type == 41 || activity_type == 42 || activity_type == 7) {
                                 // Activity with problems
                                 var completed = true;
                                 for (var i = 0; i < activity.get("problems").length; i++) {
@@ -408,8 +408,6 @@ jQuery(function () {
                             if (jumpText == undefined || jumpText == "") {
                                 jumpText = "[]"
                             }
-                            var jump = JSON.parse(jumpText)[0];
-//                            var jump = sample_data.jump_condition[0]
                             var showNext = function (currentActivity) {
                                 if (currentActivity.get('type') == 42) {
                                     app_router.navigate("section/" + activity.get("section_id"), {trigger: true, replace: true})
@@ -420,32 +418,33 @@ jQuery(function () {
                                     console.log("summary");
                                 }
                             }
-                            if (jump == undefined) {
+                            var jumps = JSON.parse(jumpText);
+                            if (jumps == undefined) {
                                 showNext(activity);
-//                                setBody(new SummaryView({model: activity}));
-//                                reloadPage();
                             } else {
-                                if (correctCount >= jump.condition.min && correctCount <= jump.condition.max) {
-                                    if (jump.to_activity_id == -1) {
-                                        endStage(aid, function (id) {
-                                            activity.set({next_lesson: id})
+                                // TODO change to multiple jump condition support
+                                var jumpAway = false;
+                                for (var i = 0; i < jumps.length; i++) {
+                                    var jump = jumps[i];
+                                    if (correctCount >= jump.condition.min && correctCount <= jump.condition.max) {
+                                        jumpAway = true;
+                                        if (jump.to_activity_id == -1) {
+                                            console.log("endStage");
+                                            endStage(aid, function (id) {
+                                                activity.set({next_lesson: id});
+                                                showNext(activity);
+                                            })
+                                        } else {
+                                            checkin(activity, jump.to_activity_id);
+                                            activity.set({next_activity: jump.to_activity_id});
                                             showNext(activity);
-//                                            setBody(new SummaryView({model: activity}))
-//                                            reloadPage()
-                                        })
-                                    } else {
-                                        checkin('activity', jump.to_activity_id);
-                                        activity.set({next_activity: jump.to_activity_id});
-                                        showNext(activity);
-
-//                                        setBody(new SummaryView({model: activity}))
-//                                        reloadPage()
+                                        }
+                                        break;
                                     }
-                                } else {
-                                    console.log("don't jump!")
+                                }
+                                if (!jumpAway) {
+                                    console.log("don't jump!");
                                     showNext(activity);
-//                                    setBody(new SummaryView({model: activity}))
-//                                    reloadPage()
                                 }
                             }
                         })
