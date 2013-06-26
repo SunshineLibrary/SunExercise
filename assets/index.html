@@ -77,9 +77,8 @@
         <%
         for(var i=0 ; i < target.length ; i++){
         var subject = target.at(i);
-        %>
 
-        <%if($.inArray(subject.get('id'),target.showSubjects)>=0){
+        if($.inArray(subject.get('id'),target.showSubjects)>=0){
         var lessonArray = new Array()
         var lessonCount = undefined
         Sun.fetch('subject', {id: subject.get('id')}, function (l) {
@@ -87,9 +86,7 @@
         lessonCount = lessonArray.length
         })
 
-        for( var n=0,p=0; n
-        <lessonCount
-        ; n++ ){
+        for( var n=0,p=0; n < lessonCount ; n++ ){
         userdata = Sun.getuserdata('lesson',lessonArray.at(n).get('id'))
         var newstatus = userdata['entered']
         if(newstatus==undefined){

@@ -148,17 +148,14 @@ jQuery(function () {
                     if (subjects.length == 0) {
                         console.log('no subject found');
                     } else {
-                        var s = (typeof currentSubject == "undefined") ? subjects.at(0) : currentSubject;
-                        Sun.fetch("subject", {id: s.get('id')}, function (subject) {
-                            if (subject.get('lessons').length > 0) {
-                                app_router.navigate("subject/" + subject.id, {trigger: true, replace: true})
-                            }
+                        var s = (typeof currentSubject == "undefined") ? subjects.showSubjects[0] : currentSubject.id;
+                        Sun.fetch("subject", {id: s}, function (subject) {
+                            app_router.navigate("subject/" + subject.id, {trigger: true, replace: true})
                         })
                     }
                 })
             })
             app_router.on('route:subject', function (id) {
-                Log.i("subject " + id)
                 Sun.fetch("subjects", null, function (subjects) {
                     Sun.fetch("subject", {id: id}, function (subject) {
                         currentSubject = subject
@@ -167,13 +164,14 @@ jQuery(function () {
                             new SubjecsHeaderView({
                                 model: subjects,
                                 currentSubjectId: id
-                            }))
+                            })
+                        );
                         setBody(
                             new SubjectContentView({
                                 model: subject
                             })
-                        )
-                        reloadPage()
+                        );
+                        reloadPage();
 
                         $.each(subject.get('lessons').models, function (index, lesson) {
 //                            changeDownloadBtn(lesson.get('id'), (lesson.get('download_finish') == '1'))
@@ -183,7 +181,6 @@ jQuery(function () {
                 })
             })
             app_router.on('route:lesson', function (id) {
-                Log.i("lesson " + id)
                 Sun.fetch("lesson", {id: id}, function (lesson) {
                     currentLesson = lesson
                     currentMaterial = "lesson"
